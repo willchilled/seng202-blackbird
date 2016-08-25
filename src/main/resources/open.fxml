@@ -18,10 +18,10 @@
                   </Menu>
                   <Menu mnemonicParsing="false" text="Add Data">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Route" />
+                        <MenuItem fx:id="routeMenuItem" mnemonicParsing="false" text="Route" />
                         <MenuItem mnemonicParsing="false" text="Flight" />
                         <MenuItem mnemonicParsing="false" text="Airline" />
-                        <MenuItem mnemonicParsing="false" text="Airplane" />
+                        <MenuItem fx:id="airportMenuItem" mnemonicParsing="false" onAction="#addAirportData" text="Airport" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Export Data">
@@ -43,7 +43,7 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
+      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Flights">
             <content>
@@ -56,8 +56,8 @@
                      <children>
                         <TableView fx:id="routeTable" layoutX="13.0" layoutY="69.0" prefHeight="690.0" prefWidth="1142.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="Airline" />
-                            <TableColumn prefWidth="75.0" text="Airline ID" />
+                            <TableColumn fx:id="airlineCol" prefWidth="75.0" text="Airline" />
+                            <TableColumn fx:id="airlineIDCol" prefWidth="75.0" text="Airline ID" />
                               <TableColumn prefWidth="75.0" text="Source" />
                               <TableColumn prefWidth="75.0" text="Source ID" />
                               <TableColumn prefWidth="75.0" text="Dest" />

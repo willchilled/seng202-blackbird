@@ -1,4 +1,5 @@
 package seng202.group2.blackbirdModel;
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -158,61 +159,79 @@ public class Parser {
 	//TEST FOR PARSER. OBV FILES ARE LOCAL TO ME. CHANGE THESE DIRECTORIES TO TRY FOR YOURSELF. ONLY FOUR
 	//ATTRIBUTES HAVE BEEN TESTED FOR EACH FIELD ALTHOUGH IT IS IMPORTANT TO TRY OTHERS AS WELL.
 	public static void main(String[] args) {
+
+		JPanel mainPanel = new JPanel();
 		
 		//TESTING FLIGHT FILES A OK :)
-		File flightFile = new File("C:\\Users\\William\\Documents\\flight.csv");
-		ArrayList<FlightPoint> myFlightData = parseFlightData(flightFile);
-		for(int i = 0; i < myFlightData.size(); i++){
-			System.out.println("Test Flight Data Row[" + i + "]");
-			System.out.println("Type: " + myFlightData.get(i).getType());
-			System.out.println("LocaleID: " + myFlightData.get(i).getLocaleID());
-			System.out.println("Altitude: " + myFlightData.get(i).getAltitude());
-			System.out.println("Latitude: " + myFlightData.get(i).getLatitude());
-			System.out.println("Longitude: " + myFlightData.get(i).getLongitude());
-			System.out.println("\n");
+		File f;
+		String cwd = System.getProperty("user.dir");
+
+		JFileChooser jfc = new JFileChooser(cwd);
+		int userChoice = jfc.showOpenDialog(mainPanel);
+
+		switch (userChoice) {
+			case JFileChooser.APPROVE_OPTION:
+				f = jfc.getSelectedFile();
+				if (f.exists() && f.isFile() && f.canRead()) {
+
+
+//					//Flight data
+//					ArrayList<FlightPoint> myFlightData = parseFlightData(f);
+//					for(int i = 0; i < myFlightData.size(); i++){
+//						System.out.println("Test Flight Data Row[" + i + "]");
+//						System.out.println("Type: " + myFlightData.get(i).getType());
+//						System.out.println("LocaleID: " + myFlightData.get(i).getLocaleID());
+//						System.out.println("Altitude: " + myFlightData.get(i).getAltitude());
+//						System.out.println("Latitude: " + myFlightData.get(i).getLatitude());
+//						System.out.println("Longitude: " + myFlightData.get(i).getLongitude());
+//						System.out.println("\n");
+//					}
+
+//							//TESTING ROUTE FILES
+//					ArrayList<RoutePoint> myRouteData = parseRouteData(f);
+//					for(int i = 0; i < 50; i++){
+//						System.out.println("Test Route Data row[" + i + "]");
+//						System.out.println("Airline: " + myRouteData.get(i).getAirline());
+//						System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
+//						System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
+//						System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
+//						System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
+//						System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
+//						System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
+//						System.out.println("Stops: " + myRouteData.get(i).getStops());
+//						System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
+//						System.out.println("\n");
+//					}
+
+
+//							//TESTING AIRLINE FILES A OK :)
+//					ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
+//					for(int i = 0; i < 50; i++){
+//						System.out.println("Test Airline Data row[" + i + "]");
+//						System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
+//						System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
+//						System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
+//						System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
+//						System.out.println("\n");
+//					}
+
+							//TESTING AIRPORT FILES
+					ArrayList<AirportPoint> myAirportData = parseAirportData(f);
+					for(int i = 0; i < 500; i++) {
+						System.out.println("Test Airport Data row[" + i + "]");
+						System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
+						System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
+						System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
+						System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
+						System.out.println("\n");
+					}
+					return;
+				}
+			case JFileChooser.CANCEL_OPTION:
+				// fall through
+			case JFileChooser.ERROR_OPTION:
+				return;
 		}
-		
-//		//TESTING ROUTE FILES
-//		File routeFile = new File("C:\\Users\\William\\Documents\\routes.csv");
-//		ArrayList<RoutePoint> myRouteData = parseRouteData(routeFile);
-//		for(int i = 0; i < 50; i++){
-//			System.out.println("Test Route Data row[" + i + "]");
-//			System.out.println("Airline: " + myRouteData.get(i).getAirline());
-//			System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
-//			System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
-//			System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
-//			System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
-//			System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
-//			System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
-//			System.out.println("Stops: " + myRouteData.get(i).getStops());
-//			System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
-//			System.out.println("\n");
-//		}
-		
-//		//TESTING AIRLINE FILES A OK :)
-//		File airlineFile = new File("C:\\Users\\William\\Documents\\airlines.csv");
-//		ArrayList<AirlinePoint> myAirlineData = parseAirlineData(airlineFile);
-//		for(int i = 0; i < 50; i++){
-//			System.out.println("Test Airline Data row[" + i + "]");
-//			System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
-//			System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
-//			System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
-//			System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
-//			System.out.println("\n");
-//		}
-		
-//		//TESTING AIRPORT FILES
-//		File airportFile = new File("C:\\Users\\William\\Documents\\airports.csv");
-//		ArrayList<AirportPoint> myAirportData = parseAirportData(airportFile);
-//		for(int i = 0; i < 500; i++){	
-//			System.out.println("Test Airport Data row[" + i + "]");
-//			System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
-//			System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
-//			System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
-//			System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
-//			System.out.println("\n");
-//		}
-		
 
 	}
 	

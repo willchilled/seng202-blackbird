@@ -57,10 +57,14 @@ public class Filter {
 //        }
     }
 
-    public static void filterRoutes(ArrayList<RoutePoint> routes, String srcCountry, String destCountry) {
-        for (RoutePoint route : routes) {
-            //if (route.getSrcAirportID() && route.getDstAirportID()) {   //should airport be inside the route point? - linking of data
+    public static void filterRouteDest(ArrayList<RoutePoint> routes, String destCountry) {
+        //for (RoutePoint route : routes) {
+//
+//            if (route.getSrcAirportID())
+//        }
+    }
 
-        }
+    public static void filterRoutes(ArrayList<RoutePoint> routes, String srcCountry, String destCountry) {
+
     }
 }

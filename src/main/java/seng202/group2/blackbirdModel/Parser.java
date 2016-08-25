@@ -174,56 +174,68 @@ public class Parser {
 				f = jfc.getSelectedFile();
 				if (f.exists() && f.isFile() && f.canRead()) {
 
+					//Custom button text
+					Object[] options = {"Airport",
+							"Airline", "Flight", "Route",
+							"Cancel"};
+					String s = (String) JOptionPane.showInputDialog(mainPanel,
+							"Choose file type",
+							"Open file",
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							options,
+							options[2]);
+					if (s.equals("Airport")) {
+						//TESTING AIRPORT FILES
+						ArrayList<AirportPoint> myAirportData = parseAirportData(f);
+						for (int i = 0; i < 500; i++) {
+							System.out.println("Test Airport Data row[" + i + "]");
+							System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
+							System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
+							System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
+							System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
+							System.out.println("\n");
+						}
+					} else if (s.equals("Airline")) {
+						//TESTING AIRLINE FILES A OK :)
+						ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
+						for (int i = 0; i < 50; i++) {
+							System.out.println("Test Airline Data row[" + i + "]");
+							System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
+							System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
+							System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
+							System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
+							System.out.println("\n");
+						}
+					} else if (s.equals("Route")) {
+						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
+						for (int i = 0; i < 50; i++) {
+							System.out.println("Test Route Data row[" + i + "]");
+							System.out.println("Airline: " + myRouteData.get(i).getAirline());
+							System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
+							System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
+							System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
+							System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
+							System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
+							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
+							System.out.println("Stops: " + myRouteData.get(i).getStops());
+							System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
+							System.out.println("\n");
+						}
+					} else if (s.equals("Flight")) {
+						ArrayList<FlightPoint> myFlightData = parseFlightData(f);
+						for (int i = 0; i < myFlightData.size(); i++) {
+							System.out.println("Test Flight Data Row[" + i + "]");
+							System.out.println("Type: " + myFlightData.get(i).getType());
+							System.out.println("LocaleID: " + myFlightData.get(i).getLocaleID());
+							System.out.println("Altitude: " + myFlightData.get(i).getAltitude());
+							System.out.println("Latitude: " + myFlightData.get(i).getLatitude());
+							System.out.println("Longitude: " + myFlightData.get(i).getLongitude());
+							System.out.println("\n");
+						}
 
-//					//Flight data
-//					ArrayList<FlightPoint> myFlightData = parseFlightData(f);
-//					for(int i = 0; i < myFlightData.size(); i++){
-//						System.out.println("Test Flight Data Row[" + i + "]");
-//						System.out.println("Type: " + myFlightData.get(i).getType());
-//						System.out.println("LocaleID: " + myFlightData.get(i).getLocaleID());
-//						System.out.println("Altitude: " + myFlightData.get(i).getAltitude());
-//						System.out.println("Latitude: " + myFlightData.get(i).getLatitude());
-//						System.out.println("Longitude: " + myFlightData.get(i).getLongitude());
-//						System.out.println("\n");
-//					}
-
-//							//TESTING ROUTE FILES
-//					ArrayList<RoutePoint> myRouteData = parseRouteData(f);
-//					for(int i = 0; i < 50; i++){
-//						System.out.println("Test Route Data row[" + i + "]");
-//						System.out.println("Airline: " + myRouteData.get(i).getAirline());
-//						System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
-//						System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
-//						System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
-//						System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
-//						System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
-//						System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
-//						System.out.println("Stops: " + myRouteData.get(i).getStops());
-//						System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
-//						System.out.println("\n");
-//					}
-
-
-//							//TESTING AIRLINE FILES A OK :)
-//					ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
-//					for(int i = 0; i < 50; i++){
-//						System.out.println("Test Airline Data row[" + i + "]");
-//						System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
-//						System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
-//						System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
-//						System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
-//						System.out.println("\n");
-//					}
-
-							//TESTING AIRPORT FILES
-					ArrayList<AirportPoint> myAirportData = parseAirportData(f);
-					for(int i = 0; i < 500; i++) {
-						System.out.println("Test Airport Data row[" + i + "]");
-						System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
-						System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
-						System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
-						System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
-						System.out.println("\n");
+					} else if (s.equals("Cancel")) {
+						return;
 					}
 					return;
 				}

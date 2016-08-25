@@ -30,6 +30,33 @@ public class Filter {
         return filteredAirlines;
     }
 
+    public static ArrayList<AirlinePoint> activeAirlines(ArrayList<AirlinePoint> airlines, boolean active) {
+        if (active) {
+            ArrayList<AirlinePoint> activeAirlines = new ArrayList<AirlinePoint>();
+            for (AirlinePoint airline : airlines) {
+                if (airline.getActive().equals("Y")) {
+                    activeAirlines.add(airline);
+                }
+            }
+            return activeAirlines;
+        } else {
+            ArrayList<AirlinePoint> inactiveAirlines = new ArrayList<AirlinePoint>();
+            for (AirlinePoint airline : airlines) {
+                if (airline.getActive().equals("N")) {
+                    inactiveAirlines.add(airline);
+                }
+            }
+            return inactiveAirlines;
+        }
+    }
+
+    public static void filterRouteSrc(ArrayList<RoutePoint> routes, String srcCountry) {
+//        for (RoutePoint route : routes) {
+//
+//            if (route.getSrcAirportID())
+//        }
+    }
+
     public static void filterRoutes(ArrayList<RoutePoint> routes, String srcCountry, String destCountry) {
         for (RoutePoint route : routes) {
             //if (route.getSrcAirportID() && route.getDstAirportID()) {   //should airport be inside the route point? - linking of data

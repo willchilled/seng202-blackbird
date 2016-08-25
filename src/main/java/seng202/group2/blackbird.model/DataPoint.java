@@ -1,4 +1,4 @@
-package blackbird.control;
+package seng202.group2.blackbird.model;
 
 public class DataPoint {
 	

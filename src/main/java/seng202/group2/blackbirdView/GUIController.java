@@ -3,6 +3,7 @@ package seng202.group2.blackbirdView;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import seng202.group2.blackbirdModel.*;
 
@@ -21,6 +22,9 @@ public class GUIController {
 
     @FXML
     private javafx.scene.control.MenuItem newProjMenu;
+
+    @FXML
+    private MenuItem addDataMenuButton;
 
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
@@ -71,9 +75,12 @@ public class GUIController {
     public void show(){
 
         mainTabPane.setVisible(true);
+        addDataMenuButton.setDisable(false);
     }
 
     public void addAirportData(){
+
+
 
         System.out.println("Add Airport Data");
 

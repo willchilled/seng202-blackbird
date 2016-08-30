@@ -13,10 +13,10 @@
                   <Menu mnemonicParsing="false" text="Project">
                     <items>
                       <MenuItem fx:id="newProjMenu" mnemonicParsing="false" onAction="#show" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Load" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Load" />
                     </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Add Data">
+                  <Menu fx:id="addDataMenuButton" disable="true" mnemonicParsing="false" text="Add Data">
                      <items>
                         <MenuItem fx:id="routeMenuItem" mnemonicParsing="false" onAction="#addRouteData" text="Route" />
                         <MenuItem mnemonicParsing="false" text="Flight" />
@@ -24,7 +24,7 @@
                         <MenuItem fx:id="airportMenuItem" mnemonicParsing="false" onAction="#addAirportData" text="Airport" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Export Data">
+                  <Menu disable="true" mnemonicParsing="false" text="Export Data">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Route" />
                         <MenuItem mnemonicParsing="false" text="Flight" />

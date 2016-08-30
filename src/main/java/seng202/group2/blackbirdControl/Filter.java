@@ -90,8 +90,10 @@ public class Filter {
         }
     }
 
-    //filter routes based on equipment
-    public static void routeEquipment(ArrayList<RoutePoint> routes, String[] equipment) {
-
+    //filter routes based on equipment (from drop down?)
+    public static void routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
+        for (RoutePoint route : routes) {
+            //if (route.getEquipment())
+        }
     }
 }

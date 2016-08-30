@@ -226,7 +226,7 @@ public class Parser {
 							}
 							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
 							System.out.println("\n");
-							//Hello
+
 						}
 					} else if (s.equals("Flight")) {
 						ArrayList<FlightPoint> myFlightData = parseFlightData(f);

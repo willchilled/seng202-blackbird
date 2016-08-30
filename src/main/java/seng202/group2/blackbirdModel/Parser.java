@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Parser {
-	
+	//issues: if an entry contains a comma within, it messes with the indexing of the line
+	//if a route has multiple equipment, it is not set properly
 	
 	//FLIGHTS
 	public static ArrayList<FlightPoint> parseFlightData(File file){
@@ -210,7 +211,7 @@ public class Parser {
 						}
 					} else if (s.equals("Route")) {
 						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
-						for (int i = 0; i < 50; i++) {
+						for (int i = 0; i < 1; i++) {
 							System.out.println("Test Route Data row[" + i + "]");
 							System.out.println("Airline: " + myRouteData.get(i).getAirline());
 							System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
@@ -220,8 +221,13 @@ public class Parser {
 							System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
 							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
 							System.out.println("Stops: " + myRouteData.get(i).getStops());
-							System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
+							System.out.print("Equipment:");
+							for (String equip :myRouteData.get(i).getEquipment()){
+								System.out.print(" " + equip);
+							}
+							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
 							System.out.println("\n");
+							//Hello
 						}
 					} else if (s.equals("Flight")) {
 						ArrayList<FlightPoint> myFlightData = parseFlightData(f);
@@ -247,7 +253,6 @@ public class Parser {
 		}
 
 	}
-	
-	
+
 }
 

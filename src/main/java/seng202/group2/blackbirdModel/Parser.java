@@ -219,8 +219,12 @@ public class Parser {
 							System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
 							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
 							System.out.println("Stops: " + myRouteData.get(i).getStops());
-							System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
+							System.out.print("Equipment:");
+							for (String equip :myRouteData.get(i).getEquipment()){
+								System.out.print(" " + equip);
+							}
 							System.out.println("\n");
+							//Hello
 						}
 					} else if (s.equals("Flight")) {
 						ArrayList<FlightPoint> myFlightData = parseFlightData(f);

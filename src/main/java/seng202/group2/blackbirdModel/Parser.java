@@ -58,23 +58,26 @@ public class Parser {
                     String[] routePoint = line.split(",");
 
                     String airline = routePoint[0];
-                    int airlineID = Integer.parseInt(routePoint[1]);
-                    RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
+                    //if(!(routePoint[1].equals("\\N"))) {
+                    //FOR SOME REASON CHUCKING IN THIS IF STATEMENT DOESN'T FIX THE PROBLEM PLZ HELP
+                        int airlineID = Integer.parseInt(routePoint[1]);
+                        RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
 
-                    myRoutePoint.setSrcAirport(routePoint[2]);
-                    if (!(routePoint[3].equals("\\N"))) {
-                        myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
-                    }
-                    myRoutePoint.setDstAirport(routePoint[4]);
-                    if (!(routePoint[5].equals("\\N"))) {
-                        myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
-                    }
-                    myRoutePoint.setCodeshare(routePoint[6]);
-                    myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-                    myRoutePoint.setEquipment(routePoint[8].split(" "));
+                        myRoutePoint.setSrcAirport(routePoint[2]);
+                        if (!(routePoint[3].equals("\\N"))) {
+                            myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
+                        }
+                        myRoutePoint.setDstAirport(routePoint[4]);
+                        if (!(routePoint[5].equals("\\N"))) {
+                            myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
+                        }
+                        myRoutePoint.setCodeshare(routePoint[6]);
+                        myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
+                        myRoutePoint.setEquipment(routePoint[8].split(" "));
 
 
-                    myRouteData.add(myRoutePoint);
+                        myRouteData.add(myRoutePoint);
+                    //}
                 }else{
                     //TODO
                     // HANDLE INCORRECT FIELD DATA

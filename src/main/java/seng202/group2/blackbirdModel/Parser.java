@@ -11,6 +11,18 @@ public class Parser {
 	//if a route has multiple equipment, it is not set properly
 	
 	//FLIGHTS
+	private static boolean checkNull(String[] dataEntry){
+		boolean nullEntry = false;
+		for (String data : dataEntry) {
+			//System.out.println(data);
+			if (data.equals("\\N")) {
+				//System.out.println("Null entry true");
+				nullEntry = true;
+			}
+		}
+		return nullEntry;
+	}
+	
 	public static ArrayList<FlightPoint> parseFlightData(File file){
 		
 		ArrayList<FlightPoint> myFlightSet = new ArrayList<FlightPoint>();
@@ -21,16 +33,24 @@ public class Parser {
 			while ((line = br.readLine()) != null) {
 			    if(numberOfCommas(line) == 4) {
                     String[] flightPoint = line.split(",");
+                    
+                    if(!checkNull(flightPoint)) {
+                    	String type = flightPoint[0];
+                    	String localeID = flightPoint[1];
+                    	int altitude = Integer.parseInt(flightPoint[2]);
+                    	float latitude = Float.parseFloat(flightPoint[3]);
+                    	float longitude = Float.parseFloat(flightPoint[4]);
+                    	FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
+                                longitude);
+                        myFlightSet.add(myFlightPoint);
+                    } else {
+                    	//handle null data somehow here
+                    	continue;
+                    }
 
-                    String type = flightPoint[0];
-                    String localeID = flightPoint[1];
-                    int altitude = Integer.parseInt(flightPoint[2]);
-                    float latitude = Float.parseFloat(flightPoint[3]);
-                    float longitude = Float.parseFloat(flightPoint[4]);
-
-                    FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
-                            longitude);
-                    myFlightSet.add(myFlightPoint);
+//                    FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
+//                            longitude);
+//                    myFlightSet.add(myFlightPoint);
                 }
 			}
 		} catch (NumberFormatException e) {
@@ -56,31 +76,40 @@ public class Parser {
 			while ((line = br.readLine()) != null) {
                 if(numberOfCommas(line) == 8) {
                     String[] routePoint = line.split(",");
+                    
+                    if(!checkNull(routePoint)) {
+                    	//System.out.println("Got here");
 
-                    String airline = routePoint[0];
+                    	String airline = routePoint[0];
                     //if(!(routePoint[1].equals("\\N"))) {
                     //FOR SOME REASON CHUCKING IN THIS IF STATEMENT DOESN'T FIX THE PROBLEM PLZ HELP
                         int airlineID = Integer.parseInt(routePoint[1]);
                         RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
 
                         myRoutePoint.setSrcAirport(routePoint[2]);
-                        if (!(routePoint[3].equals("\\N"))) {
-                            myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
-                        }
+                        myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
                         myRoutePoint.setDstAirport(routePoint[4]);
-                        if (!(routePoint[5].equals("\\N"))) {
-                            myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
-                        }
+                        myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
                         myRoutePoint.setCodeshare(routePoint[6]);
                         myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-                        myRoutePoint.setEquipment(routePoint[8].split(" "));
-
+                        //myRoutePoint.setEquipment(routePoint[8]);
+                        if (!routePoint[8].isEmpty()){
+                        	myRoutePoint.setEquipment(routePoint[8].split(" "));
+                        } else {
+                        	System.out.println("Empty equipment");
+                        	myRoutePoint.setEquipment(null);
+                        }
 
                         myRouteData.add(myRoutePoint);
+                    } else {
+                    	//deal with null data here
+                    	continue;
+                    }
                     //}
                 }else{
                     //TODO
                     // HANDLE INCORRECT FIELD DATA
+                	continue;
                 }
 			}
 		} catch (NumberFormatException e) {
@@ -106,23 +135,30 @@ public class Parser {
 			    //Check number of fields is correct
                 if(numberOfCommas(line) == 7) {
                     String[] airlinePoint = line.split(",");
+                    
+                    if(!checkNull(airlinePoint)) {
 
-                    int airlineID = Integer.parseInt(airlinePoint[0]);
-                    String airlineName = airlinePoint[1];
-                    AirlinePoint myAirlinePoint = new AirlinePoint(airlineID, airlineName);
+	                    int airlineID = Integer.parseInt(airlinePoint[0]);
+	                    String airlineName = airlinePoint[1];
+	                    AirlinePoint myAirlinePoint = new AirlinePoint(airlineID, airlineName);
+	
+	                    myAirlinePoint.setAirlineAlias(airlinePoint[2]);
+	                    myAirlinePoint.setIata(airlinePoint[3]);
+	                    myAirlinePoint.setIcao(airlinePoint[4]);
+	                    myAirlinePoint.setCallsign(airlinePoint[5]);
+	                    myAirlinePoint.setCountry(airlinePoint[6]);
+	                    myAirlinePoint.setActive(airlinePoint[7]);
 
-                    myAirlinePoint.setAirlineAlias(airlinePoint[2]);
-                    myAirlinePoint.setIata(airlinePoint[3]);
-                    myAirlinePoint.setIcao(airlinePoint[4]);
-                    myAirlinePoint.setCallsign(airlinePoint[5]);
-                    myAirlinePoint.setCountry(airlinePoint[6]);
-                    myAirlinePoint.setActive(airlinePoint[7]);
 
-
-                    myAirlineData.add(myAirlinePoint);
+	                    myAirlineData.add(myAirlinePoint);
+                    } else {
+                    	//deal with null data here
+                    	continue;
+                    }
                 }else{
                     //TODO
                     //DEAL WITH BAD DATA! not correct amount of fields
+                	continue;
                 }
 			}
 		} catch (NumberFormatException e) {
@@ -149,28 +185,35 @@ public class Parser {
 			    //Checking if there are the right amount of fields before trying to parse
 			    if(numberOfCommas(line) == 11) {
                     String[] airportPoint = line.split(",");
+                    
+                    if(!checkNull(airportPoint)) {
 
-                    int airportID = Integer.parseInt(airportPoint[0]);
-                    String airportName = airportPoint[1];
-                    AirportPoint myAirportPoint = new AirportPoint(airportID, airportName);
-
-                    myAirportPoint.setAirportCity(airportPoint[2]);
-                    myAirportPoint.setAirportCountry(airportPoint[3]);
-                    myAirportPoint.setIata(airportPoint[4]);
-                    myAirportPoint.setIcao(airportPoint[5]);
-                    myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
-                    myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
-                    myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
-                    myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
-                    myAirportPoint.setDst(airportPoint[10]);
-                    myAirportPoint.setTz(airportPoint[11]);
-
-
-                    myAirportData.add(myAirportPoint);
+	                    int airportID = Integer.parseInt(airportPoint[0]);
+	                    String airportName = airportPoint[1];
+	                    AirportPoint myAirportPoint = new AirportPoint(airportID, airportName);
+	
+	                    myAirportPoint.setAirportCity(airportPoint[2]);
+	                    myAirportPoint.setAirportCountry(airportPoint[3]);
+	                    myAirportPoint.setIata(airportPoint[4]);
+	                    myAirportPoint.setIcao(airportPoint[5]);
+	                    myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
+	                    myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
+	                    myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
+	                    myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
+	                    myAirportPoint.setDst(airportPoint[10]);
+	                    myAirportPoint.setTz(airportPoint[11]);
+	
+	
+	                    myAirportData.add(myAirportPoint);
+                    } else {
+                    	//deal with null data here
+                    	continue;
+                    }
 
                 }else{
                     //TODO
                     //There weren't the right number of fields, handle this data somehow!
+                	continue;
                 }
 			}
 		} catch (NumberFormatException e) {
@@ -257,8 +300,9 @@ public class Parser {
 							for (String equip :myRouteData.get(i).getEquipment()){
 								System.out.print(" " + equip);
 							}
-							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
 							System.out.println("\n");
+							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
+							
 
 						}
 					} else if (s.equals("Flight")) {

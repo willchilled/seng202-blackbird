@@ -195,6 +195,7 @@ public class Parser {
 							System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
 							System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
 							System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
+							//System.out.println("AirportLatitude: ") + myAirportData.get(i).getLatitude());
 							System.out.println("\n");
 						}
 					} else if (s.equals("Airline")) {

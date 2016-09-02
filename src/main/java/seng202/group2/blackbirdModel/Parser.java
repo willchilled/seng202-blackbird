@@ -19,17 +19,19 @@ public class Parser {
 			br = new BufferedReader(new FileReader(file));
 			String line = "";
 			while ((line = br.readLine()) != null) {
-			    String[] flightPoint = line.split(",");
-			    
-				String type = flightPoint[0];
-				String localeID = flightPoint[1];
-				int altitude = Integer.parseInt(flightPoint[2]);
-				float latitude = Float.parseFloat(flightPoint[3]);
-				float longitude = Float.parseFloat(flightPoint[4]);
+			    if(numberOfCommas(line) == 4) {
+                    String[] flightPoint = line.split(",");
 
-			   FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
-					   longitude);
-			   myFlightSet.add(myFlightPoint);
+                    String type = flightPoint[0];
+                    String localeID = flightPoint[1];
+                    int altitude = Integer.parseInt(flightPoint[2]);
+                    float latitude = Float.parseFloat(flightPoint[3]);
+                    float longitude = Float.parseFloat(flightPoint[4]);
+
+                    FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
+                            longitude);
+                    myFlightSet.add(myFlightPoint);
+                }
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -52,22 +54,31 @@ public class Parser {
 			br = new BufferedReader(new FileReader(file));
 			String line = "";
 			while ((line = br.readLine()) != null) {
-			    String[] routePoint = line.split(",");
-			    
-			    String airline = routePoint[0];
-				int airlineID = Integer.parseInt(routePoint[1]);
-				RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
-				
-				myRoutePoint.setSrcAirport(routePoint[2]);
-				myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
-				myRoutePoint.setDstAirport(routePoint[4]);
-				myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
-				myRoutePoint.setCodeshare(routePoint[6]);
-				myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-				myRoutePoint.setEquipment(routePoint[8].split(" "));	
+                if(numberOfCommas(line) == 8) {
+                    String[] routePoint = line.split(",");
+
+                    String airline = routePoint[0];
+                    int airlineID = Integer.parseInt(routePoint[1]);
+                    RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
+
+                    myRoutePoint.setSrcAirport(routePoint[2]);
+                    if (!(routePoint[3].equals("\\N"))) {
+                        myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
+                    }
+                    myRoutePoint.setDstAirport(routePoint[4]);
+                    if (!(routePoint[5].equals("\\N"))) {
+                        myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
+                    }
+                    myRoutePoint.setCodeshare(routePoint[6]);
+                    myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
+                    myRoutePoint.setEquipment(routePoint[8].split(" "));
 
 
-			   myRouteData.add(myRoutePoint);
+                    myRouteData.add(myRoutePoint);
+                }else{
+                    //TODO
+                    // HANDLE INCORRECT FIELD DATA
+                }
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -89,21 +100,27 @@ public class Parser {
 			br = new BufferedReader(new FileReader(file));
 			String line = "";
 			while ((line = br.readLine()) != null) {
-			    String[] airlinePoint = line.split(",");
-			    
-				int airlineID = Integer.parseInt(airlinePoint[0]);
-				String airlineName = airlinePoint[1];
-				AirlinePoint myAirlinePoint = new AirlinePoint(airlineID, airlineName);
-				
-				myAirlinePoint.setAirlineAlias(airlinePoint[2]);
-				myAirlinePoint.setIata(airlinePoint[3]);
-				myAirlinePoint.setIcao(airlinePoint[4]);
-				myAirlinePoint.setCallsign(airlinePoint[5]);
-				myAirlinePoint.setCountry(airlinePoint[6]);
-				myAirlinePoint.setActive(airlinePoint[7]);
+			    //Check number of fields is correct
+                if(numberOfCommas(line) == 7) {
+                    String[] airlinePoint = line.split(",");
 
-			   
-			   myAirlineData.add(myAirlinePoint);
+                    int airlineID = Integer.parseInt(airlinePoint[0]);
+                    String airlineName = airlinePoint[1];
+                    AirlinePoint myAirlinePoint = new AirlinePoint(airlineID, airlineName);
+
+                    myAirlinePoint.setAirlineAlias(airlinePoint[2]);
+                    myAirlinePoint.setIata(airlinePoint[3]);
+                    myAirlinePoint.setIcao(airlinePoint[4]);
+                    myAirlinePoint.setCallsign(airlinePoint[5]);
+                    myAirlinePoint.setCountry(airlinePoint[6]);
+                    myAirlinePoint.setActive(airlinePoint[7]);
+
+
+                    myAirlineData.add(myAirlinePoint);
+                }else{
+                    //TODO
+                    //DEAL WITH BAD DATA! not correct amount of fields
+                }
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -125,25 +142,33 @@ public class Parser {
 			br = new BufferedReader(new FileReader(file));
 			String line = "";
 			while ((line = br.readLine()) != null) {
-			    String[] airportPoint = line.split(",");
-			    
-				int airportID = Integer.parseInt(airportPoint[0]);
-				String airportName = airportPoint[1];
-				AirportPoint myAirportPoint = new AirportPoint(airportID, airportName);
-				
-				myAirportPoint.setAirportCity(airportPoint[2]);
-				myAirportPoint.setAirportCountry(airportPoint[3]);
-				myAirportPoint.setIata(airportPoint[4]);
-				myAirportPoint.setIcao(airportPoint[5]);
-				myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
-				myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
-				myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
-				myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
-				myAirportPoint.setDst(airportPoint[10]);
-				myAirportPoint.setTz(airportPoint[11]);	
+
+			    //Checking if there are the right amount of fields before trying to parse
+			    if(numberOfCommas(line) == 11) {
+                    String[] airportPoint = line.split(",");
+
+                    int airportID = Integer.parseInt(airportPoint[0]);
+                    String airportName = airportPoint[1];
+                    AirportPoint myAirportPoint = new AirportPoint(airportID, airportName);
+
+                    myAirportPoint.setAirportCity(airportPoint[2]);
+                    myAirportPoint.setAirportCountry(airportPoint[3]);
+                    myAirportPoint.setIata(airportPoint[4]);
+                    myAirportPoint.setIcao(airportPoint[5]);
+                    myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
+                    myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
+                    myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
+                    myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
+                    myAirportPoint.setDst(airportPoint[10]);
+                    myAirportPoint.setTz(airportPoint[11]);
 
 
-			   myAirportData.add(myAirportPoint);
+                    myAirportData.add(myAirportPoint);
+
+                }else{
+                    //TODO
+                    //There weren't the right number of fields, handle this data somehow!
+                }
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -154,6 +179,10 @@ public class Parser {
 		
 		return myAirportData;
 	}
+
+	public static int numberOfCommas(String line){
+        return line.length() - line.replace(",", "").length();
+    }
 	
 
 	
@@ -201,7 +230,7 @@ public class Parser {
 					} else if (s.equals("Airline")) {
 						//TESTING AIRLINE FILES A OK :)
 						ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
-						for (int i = 0; i < 50; i++) {
+						for (int i = 0; i < 500; i++) {
 							System.out.println("Test Airline Data row[" + i + "]");
 							System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
 							System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
@@ -211,7 +240,7 @@ public class Parser {
 						}
 					} else if (s.equals("Route")) {
 						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
-						for (int i = 0; i < 1; i++) {
+						for (int i = 0; i < 500; i++) {
 							System.out.println("Test Route Data row[" + i + "]");
 							System.out.println("Airline: " + myRouteData.get(i).getAirline());
 							System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());

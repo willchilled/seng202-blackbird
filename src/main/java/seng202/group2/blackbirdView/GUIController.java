@@ -1,11 +1,15 @@
 package seng202.group2.blackbirdView;
 
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
+import seng202.group2.blackbirdControl.Filter;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
@@ -17,6 +21,8 @@ import java.util.ArrayList;
  * Created by emr65 on 13/08/16.
  */
 public class GUIController {
+
+    ObservableList<String> countryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada");
 
     @FXML
     private TabPane mainTabPane;
@@ -71,6 +77,30 @@ public class GUIController {
     @FXML private TableColumn routeEqCol;
 
 
+    // Filter Menu testing
+    @FXML private ChoiceBox filterMenu;
+    @FXML private Button filterButton;
+
+    @FXML
+    private void initialize(){
+        filterMenu.setValue("Australia");
+        filterMenu.setItems(countryList);
+    }
+
+
+    public void filterButtonPressed(){
+        System.out.println("HERE!");
+        String selection = filterMenu.getValue().toString();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("filter button pressed ! " + selection);
+        alert.showAndWait();
+
+
+        //Filter.filterAirportCountry(airportPoints, filterMenu.getValue().toString());
+
+    }
+
+
 
 
     public void show(){
@@ -88,10 +118,13 @@ public class GUIController {
 
         System.out.println("Add Airport Data");
 
-        //File f;
-        //f = getFile();
-        //ArrayList<AirportPoint> airportPoints;
-        //ArrayList<AirportPoint> myAirportData = Parser.parseAirportData(f);
+        File f;
+        f = getFile();
+      //  ArrayList<AirportPoint> airportPoints;
+        ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(f);
+
+     /**
+      * Test Airport Points
 
         ArrayList<AirportPoint> airportPoints = new ArrayList<AirportPoint>();
 
@@ -120,7 +153,7 @@ public class GUIController {
         testAirport2.setTz("Pacific/Auckland");
 
         airportPoints.add(testAirport);
-        airportPoints.add(testAirport2);
+        airportPoints.add(testAirport2); **/
 
         airportTable.getItems().setAll(airportPoints);
 
@@ -143,10 +176,11 @@ public class GUIController {
 
         System.out.println("Add Airline Data");
 
-        //File f;
-        //f = getFile();
-        //ArrayList<AirlinePoint> airlinePoints;
-        //ArrayList<AirlinePoint> myAirlineData = Parser.parseAirlineData(f);
+        /** UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
+        File f;
+        f = getFile();
+        ArrayList<AirlinePoint> myAirlineData = Parser.parseAirlineData(f);
+         **/
 
 
         //Creating a test airline to add in while waiting for the parser to be working
@@ -189,12 +223,14 @@ public class GUIController {
 
         System.out.println("Add Route Data");
 
-        //File f;
-        //f = getFile();
-        //ArrayList<RoutePoint> routePoints;
-        //ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
+        /** UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
+        File f;
+        f = getFile();
+        ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
+         **/
 
 
+        //COMMENT THIS OUT/DELETE ONCE PARSER WORKING
         //Creating a test airline to add in while waiting for the parser to be working
         ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
 
@@ -219,7 +255,7 @@ public class GUIController {
 
 
         routePoints.add(testRoute);
-        routePoints.add(testRoute2);
+        routePoints.add(testRoute2);  //UP UNTIL HERE COMMENTED OUT / DELETED WHEN PARSER WORKING
 
         routeTable.getItems().setAll(routePoints);
 
@@ -242,7 +278,6 @@ public class GUIController {
     public File getFile() {
 
         File f;
-
         String cwd = System.getProperty("user.dir");
 
         JFileChooser jfc = new JFileChooser(cwd);

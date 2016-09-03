@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Parser {
-	//issues: if an entry contains a comma within, it messes with the indexing of the line
-	//if a route has multiple equipment, it is not set properly
+	//issues: Currently just skipping Null data and data which has additional commas in their name
 	
 	//FLIGHTS
 	private static boolean checkNull(String[] dataEntry){
@@ -264,7 +263,7 @@ public class Parser {
 //							//System.out.println("AirportLatitude: ") + myAirportData.get(i).getLatitude());
 //							System.out.println("\n");
 //						}
-						System.out.println(myAirportData.size());
+						System.out.println("Successfully added: " + myAirportData.size());
 					} else if (s.equals("Airline")) {
 						//TESTING AIRLINE FILES A OK :)
 						ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
@@ -276,7 +275,7 @@ public class Parser {
 //							System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
 //							System.out.println("\n");
 //						}
-						System.out.println(myAirlineData.size());
+						System.out.println("Successfully added: " + myAirlineData.size());
 					} else if (s.equals("Route")) {
 						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
 //						for (int i = 0; i < 500; i++) {
@@ -296,7 +295,7 @@ public class Parser {
 //							System.out.println("\n");
 //							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
 //						}
-						System.out.println(myRouteData.size());
+						System.out.println("Successfully added: " + myRouteData.size());
 					} else if (s.equals("Flight")) {
 						ArrayList<FlightPoint> myFlightData = parseFlightData(f);
 						for (int i = 0; i < myFlightData.size(); i++) {

@@ -15,6 +15,7 @@ import seng202.group2.blackbirdModel.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +23,16 @@ import java.util.ArrayList;
  */
 public class GUIController {
 
-    ObservableList<String> countryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada");
+    //ObservableList<String> countryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
+    ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
+    ObservableList<String> countryList = FXCollections.observableArrayList("No values Loaded");
+
+    ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+
+    public void setAllPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
+
+    public ArrayList<AirportPoint> getAllPoints(){return allPoints;}
+
 
     @FXML
     private TabPane mainTabPane;
@@ -81,11 +91,24 @@ public class GUIController {
     @FXML private ChoiceBox filterMenu;
     @FXML private Button filterButton;
 
+
+    private ObservableList<String> populateCountryList(){
+        //ArrayList<AirportPoint> allPoints = getAllPoints();
+        ArrayList<String> countries = Filter.filterCountries(getAllPoints());
+        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
+
+        return countryList;
+    }
+
     @FXML
     private void initialize(){
-        filterMenu.setValue("Australia");
+
+        filterMenu.setValue(countryList.get(0));
+       // countryList = populateCountryList();
         filterMenu.setItems(countryList);
     }
+
+
 
 
     public void filterButtonPressed(){
@@ -96,7 +119,38 @@ public class GUIController {
         alert.showAndWait();
 
 
-        //Filter.filterAirportCountry(airportPoints, filterMenu.getValue().toString());
+
+        ArrayList<AirportPoint> allPoints = getAllPoints(); //airportTable.getItems();
+        ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
+
+
+        airportTable.getItems().setAll(filteredPoints);
+
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+
+
+
+
+        /*
+        File f= getAirportFilePath();
+        System.out.println(f);
+        System.out.println("Helloi");
+        ArrayList<AirportPoint> currentPoints = Parser.parseAirportData(f);
+        System.out.println(currentPoints);
+        //currentPoints = Filter.filterAirportCountry(currentPoints, filterMenu.getValue().toString());
+       // System.out.println(currentPoints);
+        */
 
     }
 
@@ -119,9 +173,32 @@ public class GUIController {
         System.out.println("Add Airport Data");
 
         File f;
+
         f = getFile();
-      //  ArrayList<AirportPoint> airportPoints;
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(f);
+        setAllPoints(airportPoints);
+
+        airportTable.getItems().setAll(airportPoints);
+
+
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+
+        //Now we need to update the filtering menu
+        //Note we may the get(0) might break if you load an empty file
+        countryList = populateCountryList();
+        filterMenu.setItems(countryList);
+        filterMenu.setValue(countryList.get(0));
 
      /**
       * Test Airport Points
@@ -155,20 +232,7 @@ public class GUIController {
         airportPoints.add(testAirport);
         airportPoints.add(testAirport2); **/
 
-        airportTable.getItems().setAll(airportPoints);
 
-        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
-        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
-        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
-        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
-        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
-        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
-        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
-        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
-        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
-        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
-        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
-        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
 
     }
 
@@ -287,6 +351,7 @@ public class GUIController {
             case JFileChooser.APPROVE_OPTION:
                 f = jfc.getSelectedFile();
                 if (f.exists() && f.isFile() && f.canRead()) {
+
                     return f;
                 }
             case JFileChooser.CANCEL_OPTION:

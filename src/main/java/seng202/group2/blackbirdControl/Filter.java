@@ -1,10 +1,13 @@
 package seng202.group2.blackbirdControl;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.RoutePoint;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by mch230 on 25/08/16.
@@ -12,8 +15,11 @@ import java.util.ArrayList;
 public class Filter {
     //filter airports when given a single country
     public static ArrayList<AirportPoint> filterAirportCountry(ArrayList<AirportPoint> airports, String country) {
+       // System.out.println(country);
+       // country = "\"" + country + "\""; //THIS WILL NEED TO CHANGE IF WE Change how stuff goes intot he table
         ArrayList<AirportPoint> filteredAirports = new ArrayList<AirportPoint>();
         for (AirportPoint airport : airports) {
+           // System.out.println(airport.getAirportName());
             if (airport.getAirportCountry().equals(country)) {
                 filteredAirports.add(airport);
             }
@@ -96,4 +102,25 @@ public class Filter {
             //if (route.getEquipment())
         }
     }
+
+
+    public static ArrayList<String> filterCountries(ArrayList<AirportPoint> allPoints){
+        ArrayList<String> allCountries = new ArrayList<String>();
+        String currentCountry;
+        for (AirportPoint airport : allPoints) {
+            currentCountry = airport.getAirportCountry();
+            if (!allCountries.contains(currentCountry)) {
+                //System.out.println(currentCountry);
+                allCountries.add(currentCountry);
+            }
+
+        }
+        Collections.sort(allCountries, String.CASE_INSENSITIVE_ORDER);
+        return allCountries;
+    }
+
+
+
+
+
 }

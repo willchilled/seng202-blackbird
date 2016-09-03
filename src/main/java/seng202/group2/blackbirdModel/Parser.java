@@ -75,14 +75,11 @@ public class Parser {
 			String line = "";
 			while ((line = br.readLine()) != null) {
                 if(numberOfCommas(line) == 8) {
-                    String[] routePoint = line.split(",");
+                    String[] routePoint = line.split(",", -1);
                     
                     if(!checkNull(routePoint)) {
-                    	//System.out.println("Got here");
 
                     	String airline = routePoint[0];
-                    //if(!(routePoint[1].equals("\\N"))) {
-                    //FOR SOME REASON CHUCKING IN THIS IF STATEMENT DOESN'T FIX THE PROBLEM PLZ HELP
                         int airlineID = Integer.parseInt(routePoint[1]);
                         RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
 
@@ -92,13 +89,7 @@ public class Parser {
                         myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
                         myRoutePoint.setCodeshare(routePoint[6]);
                         myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-                        //myRoutePoint.setEquipment(routePoint[8]);
-                        if (!routePoint[8].isEmpty()){
-                        	myRoutePoint.setEquipment(routePoint[8].split(" "));
-                        } else {
-                        	System.out.println("Empty equipment");
-                        	myRoutePoint.setEquipment(null);
-                        }
+                        myRoutePoint.setEquipment(routePoint[8]);
 
                         myRouteData.add(myRoutePoint);
                     } else {
@@ -264,47 +255,48 @@ public class Parser {
 					if (s.equals("Airport")) {
 						//TESTING AIRPORT FILES
 						ArrayList<AirportPoint> myAirportData = parseAirportData(f);
-						for (int i = 0; i < 500; i++) {
-							System.out.println("Test Airport Data row[" + i + "]");
-							System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
-							System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
-							System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
-							System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
-							//System.out.println("AirportLatitude: ") + myAirportData.get(i).getLatitude());
-							System.out.println("\n");
-						}
+//						for (int i = 0; i < 500; i++) {
+//							System.out.println("Test Airport Data row[" + i + "]");
+//							System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
+//							System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
+//							System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
+//							System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
+//							//System.out.println("AirportLatitude: ") + myAirportData.get(i).getLatitude());
+//							System.out.println("\n");
+//						}
+						System.out.println(myAirportData.size());
 					} else if (s.equals("Airline")) {
 						//TESTING AIRLINE FILES A OK :)
 						ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
-						for (int i = 0; i < 500; i++) {
-							System.out.println("Test Airline Data row[" + i + "]");
-							System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
-							System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
-							System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
-							System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
-							System.out.println("\n");
-						}
+//						for (int i = 0; i < 500; i++) {
+//							System.out.println("Test Airline Data row[" + i + "]");
+//							System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
+//							System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
+//							System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
+//							System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
+//							System.out.println("\n");
+//						}
+						System.out.println(myAirlineData.size());
 					} else if (s.equals("Route")) {
 						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
-						for (int i = 0; i < 500; i++) {
-							System.out.println("Test Route Data row[" + i + "]");
-							System.out.println("Airline: " + myRouteData.get(i).getAirline());
-							System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
-							System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
-							System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
-							System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
-							System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
-							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
-							System.out.println("Stops: " + myRouteData.get(i).getStops());
-							System.out.print("Equipment:");
-							for (String equip :myRouteData.get(i).getEquipment()){
-								System.out.print(" " + equip);
-							}
-							System.out.println("\n");
-							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
-							
-
-						}
+//						for (int i = 0; i < 500; i++) {
+//							System.out.println("Test Route Data row[" + i + "]");
+//							System.out.println("Airline: " + myRouteData.get(i).getAirline());
+//							System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
+//							System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
+//							System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
+//							System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
+//							System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
+//							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
+//							System.out.println("Stops: " + myRouteData.get(i).getStops());
+//							System.out.print("Equipment:");
+//							for (String equip :myRouteData.get(i).getEquipment()){
+//								System.out.print(" " + equip);
+//							}
+//							System.out.println("\n");
+//							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
+//						}
+						System.out.println(myRouteData.size());
 					} else if (s.equals("Flight")) {
 						ArrayList<FlightPoint> myFlightData = parseFlightData(f);
 						for (int i = 0; i < myFlightData.size(); i++) {

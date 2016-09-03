@@ -63,6 +63,12 @@ public class Parser {
 		return myFlightSet;
 	}
 
+	private static String[] removeQuotes(String[] line){
+		for (int i=0; i<line.length; i++){
+			line[i] = line[i].replaceAll("^\"|\"$", "");
+		}
+		return line;
+	}
 	
 	//ROUTES
 	public static ArrayList<RoutePoint> parseRouteData(File file){
@@ -76,6 +82,8 @@ public class Parser {
 			while ((line = br.readLine()) != null) {
                 if(numberOfCommas(line) == 8) {
                     String[] routePoint = line.split(",");
+
+					//routePoint = removeQuotes(routePoint);
                     
                     if(!checkNull(routePoint)) {
                     	//System.out.println("Got here");
@@ -94,7 +102,7 @@ public class Parser {
                         myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
                         //myRoutePoint.setEquipment(routePoint[8]);
                         if (!routePoint[8].isEmpty()){
-                        	myRoutePoint.setEquipment(routePoint[8].split(" "));
+                        	//myRoutePoint.setEquipment(routePoint[8].split(" "));
                         } else {
                         	System.out.println("Empty equipment");
                         	myRoutePoint.setEquipment(null);
@@ -137,6 +145,8 @@ public class Parser {
                     String[] airlinePoint = line.split(",");
                     
                     if(!checkNull(airlinePoint)) {
+
+						airlinePoint = removeQuotes(airlinePoint);
 
 	                    int airlineID = Integer.parseInt(airlinePoint[0]);
 	                    String airlineName = airlinePoint[1];
@@ -187,6 +197,8 @@ public class Parser {
                     String[] airportPoint = line.split(",");
                     
                     if(!checkNull(airportPoint)) {
+
+						airportPoint = removeQuotes(airportPoint);
 
 	                    int airportID = Integer.parseInt(airportPoint[0]);
 	                    String airportName = airportPoint[1];
@@ -297,9 +309,11 @@ public class Parser {
 							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
 							System.out.println("Stops: " + myRouteData.get(i).getStops());
 							System.out.print("Equipment:");
+							/*
 							for (String equip :myRouteData.get(i).getEquipment()){
 								System.out.print(" " + equip);
 							}
+							*/
 							System.out.println("\n");
 							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
 							

@@ -296,6 +296,7 @@ public class GUIController {
 
         //COMMENT THIS OUT/DELETE ONCE PARSER WORKING
         //Creating a test airline to add in while waiting for the parser to be working
+
         ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
 
         RoutePoint testRoute = new RoutePoint("route airline", 56);
@@ -305,7 +306,7 @@ public class GUIController {
         testRoute.setDstAirportID(55);
         testRoute.setCodeshare("Y");
         testRoute.setStops(0);
-        testRoute.setEquipment(new String[]{"777", "747"});
+        //testRoute.setEquipment(new String[]{"777", "747"});
 
 
         RoutePoint testRoute2 = new RoutePoint("route airline 2", 66);
@@ -315,7 +316,7 @@ public class GUIController {
         testRoute2.setDstAirportID(779);
         testRoute2.setCodeshare("Y");
         testRoute2.setStops(2);
-        testRoute2.setEquipment(new String[]{"747"});
+       // testRoute2.setEquipment(new String[]{"747"});
 
 
         routePoints.add(testRoute);

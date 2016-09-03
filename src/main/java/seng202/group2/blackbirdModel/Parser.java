@@ -26,7 +26,6 @@ public class Parser {
 	public static ArrayList<FlightPoint> parseFlightData(File file){
 		
 		ArrayList<FlightPoint> myFlightSet = new ArrayList<FlightPoint>();
-
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -78,7 +77,7 @@ public class Parser {
                 if(numberOfCommas(line) == 8) {
                     String[] routePoint = line.split(",");
                     
-                    if(!checkNull(routePoint)) {;
+                    if(!checkNull(routePoint)) {
                     	//System.out.println("Got here");
 
                     	String airline = routePoint[0];
@@ -94,7 +93,7 @@ public class Parser {
                         myRoutePoint.setCodeshare(routePoint[6]);
                         myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
                         //myRoutePoint.setEquipment(routePoint[8]);
-                        if (!(routePoint[8].isEmpty())){
+                        if (!routePoint[8].isEmpty()){
                         	myRoutePoint.setEquipment(routePoint[8].split(" "));
                         } else {
                         	System.out.println("Empty equipment");
@@ -136,18 +135,13 @@ public class Parser {
 			    //Check number of fields is correct
                 if(numberOfCommas(line) == 7) {
                     String[] airlinePoint = line.split(",");
-
-					airlinePoint = removeQuotes(airlinePoint);
                     
                     if(!checkNull(airlinePoint)) {
 
 	                    int airlineID = Integer.parseInt(airlinePoint[0]);
 	                    String airlineName = airlinePoint[1];
-
 	                    AirlinePoint myAirlinePoint = new AirlinePoint(airlineID, airlineName);
-
-
-
+	
 	                    myAirlinePoint.setAirlineAlias(airlinePoint[2]);
 	                    myAirlinePoint.setIata(airlinePoint[3]);
 	                    myAirlinePoint.setIcao(airlinePoint[4]);
@@ -177,13 +171,7 @@ public class Parser {
 		return myAirlineData;	}
 	
 	
-	private static String[] removeQuotes(String[] line){
-		for (int i=0; i<line.length; i++){
-			line[i] = line[i].replaceAll("^\"|\"$", "");
-		}
-
-		return line;
-	}
+	
 	//AIRPORTS
 	public static ArrayList<AirportPoint> parseAirportData(File file){
 
@@ -197,14 +185,11 @@ public class Parser {
 			    //Checking if there are the right amount of fields before trying to parse
 			    if(numberOfCommas(line) == 11) {
                     String[] airportPoint = line.split(",");
-                    airportPoint = removeQuotes(airportPoint);
-
+                    
                     if(!checkNull(airportPoint)) {
 
 	                    int airportID = Integer.parseInt(airportPoint[0]);
 	                    String airportName = airportPoint[1];
-
-
 	                    AirportPoint myAirportPoint = new AirportPoint(airportID, airportName);
 	
 	                    myAirportPoint.setAirportCity(airportPoint[2]);

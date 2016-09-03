@@ -10,7 +10,7 @@ public class RoutePoint extends DataPoint {
 	private int dstAirportID;
 	private String codeshare;
 	private int stops;
-	private String[] equipment;	
+	private String equipment;	
 	
 	public RoutePoint(String airline, int airlineID){	
 		
@@ -84,11 +84,11 @@ public class RoutePoint extends DataPoint {
 		this.stops = stops;
 	}
 
-	public String[] getEquipment() {
+	public String getEquipment() {
 		return equipment;
 	}
 
-	public void setEquipment(String[] equipment) {
+	public void setEquipment(String equipment) {
 		this.equipment = equipment;
 	}
 

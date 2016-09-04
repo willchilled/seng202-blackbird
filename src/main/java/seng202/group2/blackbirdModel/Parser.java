@@ -81,7 +81,7 @@ public class Parser {
 			String line = "";
 			while ((line = br.readLine()) != null) {
                 if(numberOfCommas(line) == 8) {
-                    String[] routePoint = line.split(",");
+                    String[] routePoint = line.split(",", -1);
 
 					//routePoint = removeQuotes(routePoint);
                     
@@ -100,13 +100,13 @@ public class Parser {
                         myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
                         myRoutePoint.setCodeshare(routePoint[6]);
                         myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-                        //myRoutePoint.setEquipment(routePoint[8]);
-                        if (!routePoint[8].isEmpty()){
-                        	//myRoutePoint.setEquipment(routePoint[8].split(" "));
-                        } else {
-                        	System.out.println("Empty equipment");
-                        	myRoutePoint.setEquipment(null);
-                        }
+                        myRoutePoint.setEquipment(routePoint[8]);
+//                        if (!routePoint[8].isEmpty()){
+//                        	//myRoutePoint.setEquipment(routePoint[8].split(" "));
+//                        } else {
+//                        	System.out.println("Empty equipment");
+//                        	myRoutePoint.setEquipment(null);
+//                        }
 
                         myRouteData.add(myRoutePoint);
                     } else {

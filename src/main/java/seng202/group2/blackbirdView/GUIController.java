@@ -25,14 +25,20 @@ import java.util.ArrayList;
 public class GUIController {
 
     //ObservableList<String> countryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
-    ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
+    //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     ObservableList<String> countryList = FXCollections.observableArrayList("No values Loaded");
+    ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
 
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+    ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
 
     public void setAllPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
 
     public ArrayList<AirportPoint> getAllPoints(){return allPoints;}
+
+    public void setAllAirlinePoints(ArrayList<AirlinePoint> points){this.allAirlinePoints = points;}
+
+    public ArrayList<AirlinePoint> getAllAirlinePoints(){return allAirlinePoints;}
 
 
     @FXML
@@ -93,12 +99,20 @@ public class GUIController {
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
 
+    @FXML private ChoiceBox airlineFilterMenu;
+
 
     private ObservableList<String> populateCountryList(){
         //ArrayList<AirportPoint> allPoints = getAllPoints();
-        ArrayList<String> countries = Filter.filterCountries(getAllPoints());
+        ArrayList<String> countries = Filter.filterAirportCountries(getAllPoints());
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
 
+        return countryList;
+    }
+
+    private ObservableList<String> populateAirlineCountryList(){
+        ArrayList<String> countries = Filter.filterAirLineCountries(getAllAirlinePoints());
+        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         return countryList;
     }
 
@@ -108,6 +122,9 @@ public class GUIController {
         filterMenu.setValue(countryList.get(0));
        // countryList = populateCountryList();
         filterMenu.setItems(countryList);
+
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+        airlineFilterMenu.setItems(airlineCountryList);
     }
 
 
@@ -190,15 +207,22 @@ public class GUIController {
 
     public void addAirlineData(){
 
-        System.out.println("Add Airline Data");
+       // System.out.println("Add Airline Data");
 
-        /** UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
         File f;
         f = getFile();
         ArrayList<AirlinePoint> myAirlineData = Parser.parseAirlineData(f);
-         **/
+
+        setAllAirlinePoints(myAirlineData);
+
+        airlineCountryList = populateAirlineCountryList();
+        airlineFilterMenu.setItems(airlineCountryList);
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+
+        updateAirlinesTable(myAirlineData);
 
 
+        /*
         //Creating a test airline to add in while waiting for the parser to be working
         ArrayList<AirlinePoint> airlinePoints = new ArrayList<AirlinePoint>();
 
@@ -220,9 +244,14 @@ public class GUIController {
 
         airlinePoints.add(testAirline);
         airlinePoints.add(testAirline2);
+        */
 
-        airlineTable.getItems().setAll(airlinePoints);
 
+    }
+
+    public void updateAirlinesTable(ArrayList<AirlinePoint> points){
+
+        airlineTable.getItems().setAll(points);
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
@@ -231,6 +260,7 @@ public class GUIController {
         airlineCallsignCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("callsign"));
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
         airlineActCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
+
     }
 
 
@@ -346,6 +376,22 @@ public class GUIController {
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
 
+
+    }
+
+    public void airlinefilterButtonPressed(ActionEvent actionEvent) {
+
+        String selection = airlineFilterMenu.getValue().toString();
+
+        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints(); //airportTable.getItems();
+        ArrayList<AirlinePoint> filteredPoints = Filter.filterAirlineCountry(allPoints, selection);
+        //Filter.filterAirportCountry(allPoints, selection);
+        updateAirlinesTable(filteredPoints);
+    }
+
+    public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
+        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints(); //airportTable.getItems()
+        updateAirlinesTable(allPoints);
 
     }
 }

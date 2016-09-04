@@ -104,7 +104,7 @@ public class Filter {
     }
 
 
-    public static ArrayList<String> filterCountries(ArrayList<AirportPoint> allPoints){
+    public static ArrayList<String> filterAirportCountries(ArrayList<AirportPoint> allPoints){
         ArrayList<String> allCountries = new ArrayList<String>();
         String currentCountry;
         for (AirportPoint airport : allPoints) {
@@ -117,6 +117,23 @@ public class Filter {
         }
         Collections.sort(allCountries, String.CASE_INSENSITIVE_ORDER);
         return allCountries;
+    }
+
+
+    public static ArrayList<String> filterAirLineCountries(ArrayList<AirlinePoint> allPoints){
+        ArrayList<String> allCountries = new ArrayList<String>();
+        String currentCountry;
+        for (AirlinePoint airport : allPoints) {
+            currentCountry = airport.getCountry();
+            if (!allCountries.contains(currentCountry)) {
+                //System.out.println(currentCountry);
+                allCountries.add(currentCountry);
+            }
+
+        }
+        Collections.sort(allCountries, String.CASE_INSENSITIVE_ORDER);
+        return allCountries;
+
     }
 
 

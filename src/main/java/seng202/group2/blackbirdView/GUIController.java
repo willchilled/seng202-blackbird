@@ -3,6 +3,7 @@ package seng202.group2.blackbirdView;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -90,6 +91,7 @@ public class GUIController {
     // Filter Menu testing
     @FXML private ChoiceBox filterMenu;
     @FXML private Button filterButton;
+    @FXML private Button airportSeeAllButton;
 
 
     private ObservableList<String> populateCountryList(){
@@ -110,47 +112,19 @@ public class GUIController {
 
 
 
-
     public void filterButtonPressed(){
+        /*
         System.out.println("HERE!");
-        String selection = filterMenu.getValue().toString();
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("filter button pressed ! " + selection);
         alert.showAndWait();
-
-
+        */
+        String selection = filterMenu.getValue().toString();
 
         ArrayList<AirportPoint> allPoints = getAllPoints(); //airportTable.getItems();
         ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
-
-
-        airportTable.getItems().setAll(filteredPoints);
-
-        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
-        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
-        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
-        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
-        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
-        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
-        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
-        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
-        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
-        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
-        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
-        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
-
-
-
-
-        /*
-        File f= getAirportFilePath();
-        System.out.println(f);
-        System.out.println("Helloi");
-        ArrayList<AirportPoint> currentPoints = Parser.parseAirportData(f);
-        System.out.println(currentPoints);
-        //currentPoints = Filter.filterAirportCountry(currentPoints, filterMenu.getValue().toString());
-       // System.out.println(currentPoints);
-        */
+        updateAirportsTable(filteredPoints);
 
     }
 
@@ -168,34 +142,12 @@ public class GUIController {
 
     public void addAirportData(){
 
-
-
         System.out.println("Add Airport Data");
-
         File f;
-
         f = getFile();
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(f);
-        setAllPoints(airportPoints);
-
-        airportTable.getItems().setAll(airportPoints);
-
-
-        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
-        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
-        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
-        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
-        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
-        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
-        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
-        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
-        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
-        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
-        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
-        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
-
-        //Now we need to update the filtering menu
-        //Note we may the get(0) might break if you load an empty file
+        setAllPoints(airportPoints); //imports setter, keeps track of all points
+        updateAirportsTable(airportPoints);
         countryList = populateCountryList();
         filterMenu.setItems(countryList);
         filterMenu.setValue(countryList.get(0));
@@ -361,5 +313,39 @@ public class GUIController {
                 System.out.println("ERROR IN FILE");
         }
         return null;
+    }
+
+    public void airportSeeAllButtonPressed(ActionEvent actionEvent) {
+
+        String selection = filterMenu.getValue().toString();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("See All button pressed ! " + selection);
+        alert.showAndWait();
+
+
+
+        ArrayList<AirportPoint> allPoints = getAllPoints(); //airportTable.getItems();
+       // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
+        updateAirportsTable(allPoints);
+
+    }
+
+    public void updateAirportsTable(ArrayList<AirportPoint> points){
+
+        airportTable.getItems().setAll(points);
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+
+
     }
 }

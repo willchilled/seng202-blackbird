@@ -22,7 +22,19 @@ public class Parser {
 		}
 		return nullEntry;
 	}
-	
+
+
+
+	private static void checkFields(String[] dataEntry, FlightPoint flight, ArrayList<FlightPoint> myFlightSet) {
+		for (String data : dataEntry) {
+			if (data.equals("\\N")) {
+				data = null;
+			}
+		}
+
+	}
+
+	//fields of airpoint point shouldn't be null?
 	public static ArrayList<FlightPoint> parseFlightData(File file){
 		
 		ArrayList<FlightPoint> myFlightSet = new ArrayList<FlightPoint>();
@@ -30,7 +42,9 @@ public class Parser {
 		try {
 			br = new BufferedReader(new FileReader(file));
 			String line = "";
+			int count = 0;
 			while ((line = br.readLine()) != null) {
+				count++;
 			    if(numberOfCommas(line) == 4) {
                     String[] flightPoint = line.split(",");
                     
@@ -44,14 +58,12 @@ public class Parser {
                                 longitude);
                         myFlightSet.add(myFlightPoint);
                     } else {
-                    	//handle null data somehow here
-                    	continue;
+                    	System.err.println("Error: Null field in flight data. All fields must be filled");
+                    	break;
                     }
-
-//                    FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
-//                            longitude);
-//                    myFlightSet.add(myFlightPoint);
-                }
+                } else {
+					System.err.println("Error: Unexpected comma found on line: " + count);
+				}
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -69,55 +81,74 @@ public class Parser {
 		}
 		return line;
 	}
-	
+
+	private static RoutePoint nullRouteData(String[] routePoint, RoutePoint myRoutePoint){
+
+		myRoutePoint.setSrcAirport(routePoint[2]);	//cant be null?
+		if (routePoint[3].equals("\\N")) {
+			myRoutePoint.setSrcAirportID(0);	//0 as placeholder null value
+		} else {
+			myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
+		}
+		myRoutePoint.setDstAirport(routePoint[4]);	//cant be null?
+		if (routePoint[5].equals("\\N")) {
+			myRoutePoint.setDstAirportID(0);
+		} else {
+			myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
+		}
+		myRoutePoint.setCodeshare(routePoint[6]);
+		myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
+		myRoutePoint.setEquipment(routePoint[8]);
+
+		return myRoutePoint;
+	}
+
 	//ROUTES
+	//add commas in for route equipment
 	public static ArrayList<RoutePoint> parseRouteData(File file){
-		
-		
+
 		ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(file));
 			String line = "";
+			int count = 0;
 			while ((line = br.readLine()) != null) {
+				count++;
                 if(numberOfCommas(line) == 8) {
                     String[] routePoint = line.split(",", -1);
 
 					//routePoint = removeQuotes(routePoint);
                     
-                    if(!checkNull(routePoint)) {
-                    	//System.out.println("Got here");
+                    //if(!checkNull(routePoint)) {
 
                     	String airline = routePoint[0];
-                    //if(!(routePoint[1].equals("\\N"))) {
-                    //FOR SOME REASON CHUCKING IN THIS IF STATEMENT DOESN'T FIX THE PROBLEM PLZ HELP
-                        int airlineID = Integer.parseInt(routePoint[1]);
+						int airlineID = 0;	// 0 if airlineID is null
+						if (!routePoint[1].equals("\\N")) {
+							airlineID = Integer.parseInt(routePoint[1]);
+						}
                         RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
+						myRoutePoint = nullRouteData(routePoint, myRoutePoint);
 
-                        myRoutePoint.setSrcAirport(routePoint[2]);
-                        myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
-                        myRoutePoint.setDstAirport(routePoint[4]);
-                        myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
-                        myRoutePoint.setCodeshare(routePoint[6]);
-                        myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-                        myRoutePoint.setEquipment(routePoint[8]);
-//                        if (!routePoint[8].isEmpty()){
-//                        	//myRoutePoint.setEquipment(routePoint[8].split(" "));
-//                        } else {
-//                        	System.out.println("Empty equipment");
-//                        	myRoutePoint.setEquipment(null);
-//                        }
+//                        myRoutePoint.setSrcAirport(routePoint[2]);
+//                        myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
+//                        myRoutePoint.setDstAirport(routePoint[4]);
+//                        myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
+//                        myRoutePoint.setCodeshare(routePoint[6]);
+//                        myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
+//                        myRoutePoint.setEquipment(routePoint[8]);
 
                         myRouteData.add(myRoutePoint);
-                    } else {
+                    //} else {
                     	//deal with null data here
-                    	continue;
-                    }
+                    	//continue;
+                    //}
                     //}
                 }else{
                     //TODO
+					System.err.println("Error: Unexpected comma found on line: " + count);
+					System.err.println("The line: " + line);
                     // HANDLE INCORRECT FIELD DATA
-                	continue;
                 }
 			}
 		} catch (NumberFormatException e) {
@@ -276,49 +307,50 @@ public class Parser {
 					if (s.equals("Airport")) {
 						//TESTING AIRPORT FILES
 						ArrayList<AirportPoint> myAirportData = parseAirportData(f);
-						for (int i = 0; i < 500; i++) {
-							System.out.println("Test Airport Data row[" + i + "]");
-							System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
-							System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
-							System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
-							System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
-							//System.out.println("AirportLatitude: ") + myAirportData.get(i).getLatitude());
-							System.out.println("\n");
-						}
+//						for (int i = 0; i < 500; i++) {
+//							System.out.println("Test Airport Data row[" + i + "]");
+//							System.out.println("AirportID: " + myAirportData.get(i).getAirportID());
+//							System.out.println("AirportName: " + myAirportData.get(i).getAirportName());
+//							System.out.println("AirportCity: " + myAirportData.get(i).getAirportCity());
+//							System.out.println("AirportCountry: " + myAirportData.get(i).getAirportCountry());
+//							//System.out.println("AirportLatitude: ") + myAirportData.get(i).getLatitude());
+//							System.out.println("\n");
+//						}
+						System.out.println("Airports successfully added: " + myAirportData.size());
 					} else if (s.equals("Airline")) {
 						//TESTING AIRLINE FILES A OK :)
 						ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
-						for (int i = 0; i < 500; i++) {
-							System.out.println("Test Airline Data row[" + i + "]");
-							System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
-							System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
-							System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
-							System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
-							System.out.println("\n");
-						}
+//						for (int i = 0; i < 500; i++) {
+//							System.out.println("Test Airline Data row[" + i + "]");
+//							System.out.println("Airline ID: " + myAirlineData.get(i).getAirlineID());
+//							System.out.println("Airline Name: " + myAirlineData.get(i).getAirlineName());
+//							System.out.println("Airline Alias: " + myAirlineData.get(i).getAirlineAlias());
+//							System.out.println("IATA Code: " + myAirlineData.get(i).getIata());
+//							System.out.println("\n");
+//						}
+						System.out.println("Airlines successfully added: " + myAirlineData.size());
 					} else if (s.equals("Route")) {
 						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
-						for (int i = 0; i < 500; i++) {
-							System.out.println("Test Route Data row[" + i + "]");
-							System.out.println("Airline: " + myRouteData.get(i).getAirline());
-							System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
-							System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
-							System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
-							System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
-							System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
-							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
-							System.out.println("Stops: " + myRouteData.get(i).getStops());
-							System.out.print("Equipment:");
+//						for (int i = 0; i < 500; i++) {
+//							System.out.println("Test Route Data row[" + i + "]");
+//							System.out.println("Airline: " + myRouteData.get(i).getAirline());
+//							System.out.println("AirlineID: " + myRouteData.get(i).getAirlineID());
+//							System.out.println("Src Airport: " + myRouteData.get(i).getSrcAirport());
+//							System.out.println("Src Airport ID: " + myRouteData.get(i).getSrcAirportID());
+//							System.out.println("Dst Airport: " + myRouteData.get(i).getDstAirport());
+//							System.out.println("Dst Airport ID: " + myRouteData.get(i).getDstAirportID());
+//							System.out.println("CodeShare: " + myRouteData.get(i).getCodeshare());
+//							System.out.println("Stops: " + myRouteData.get(i).getStops());
+//							System.out.print("Equipment:");
 							/*
 							for (String equip :myRouteData.get(i).getEquipment()){
 								System.out.print(" " + equip);
 							}
 							*/
-							System.out.println("\n");
+//							System.out.println("\n");
 							//System.out.println("Equipment: " + myRouteData.get(i).getEquipment());
-							
-
-						}
+						//}
+						System.out.println("Routes successfully added: " + myRouteData.size());
 					} else if (s.equals("Flight")) {
 						ArrayList<FlightPoint> myFlightData = parseFlightData(f);
 						for (int i = 0; i < myFlightData.size(); i++) {
@@ -330,7 +362,6 @@ public class Parser {
 							System.out.println("Longitude: " + myFlightData.get(i).getLongitude());
 							System.out.println("\n");
 						}
-
 					} else if (s.equals("Cancel")) {
 						return;
 					}

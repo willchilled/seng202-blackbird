@@ -26,15 +26,22 @@ public class GUIController {
     //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
+    ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
 
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
 
     public void setAllPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
 
+    public void setAirlineActiveList(ObservableList<String> activeList){this.airlineActiveList = activeList;}
+
+    public ObservableList<String> getAirlineActiveList(){return airlineActiveList;}
+
     public ArrayList<AirportPoint> getAllPoints(){return allPoints;}
 
     public void setAllAirlinePoints(ArrayList<AirlinePoint> points){this.allAirlinePoints = points;}
+
+   //public void setAirlineActiveListData(ArrayList<AirlinePoint> points){this.airlineActiveList = points;}
 
     public ArrayList<AirlinePoint> getAllAirlinePoints(){return allAirlinePoints;}
 
@@ -98,6 +105,7 @@ public class GUIController {
     @FXML private Button airportSeeAllButton;
 
     @FXML private ChoiceBox airlineFilterMenu;
+    @FXML private ChoiceBox airlineActiveMenu;
 
 
 
@@ -110,6 +118,9 @@ public class GUIController {
         airportFilterMenu.setItems(airPortCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         airlineFilterMenu.setItems(airlineCountryList);
+
+        airlineActiveMenu.setItems(airlineActiveList);
+        airlineActiveMenu.setValue(airlineActiveList.get(0));
     }
 
     private File getFile() {
@@ -208,10 +219,13 @@ public class GUIController {
 
         setAllAirlinePoints(myAirlineData);
 
+        setAirlineActiveList(populateAirlineActiveList());
+
+        airlineActiveMenu.setItems(getAirlineActiveList());
+        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
         airlineCountryList = populateAirlineCountryList();
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
-
         updateAirlinesTable(myAirlineData);
 
 
@@ -359,12 +373,38 @@ public class GUIController {
 
     public void airlinefilterButtonPressed(ActionEvent actionEvent) {
 
-        String selection = airlineFilterMenu.getValue().toString();
+        String countrySelection = airlineFilterMenu.getValue().toString();
+        String activeSelection = airlineActiveMenu.getValue().toString();
 
-        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints(); //airportTable.getItems();
-        ArrayList<AirlinePoint> filteredPoints = Filter.filterAirlineCountry(allPoints, selection);
-        //Filter.filterAirportCountry(allPoints, selection);
+        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints();
+        ArrayList<AirlinePoint> filteredPoints = new ArrayList<AirlinePoint>();
+
+        if (countrySelection != "None"){
+            filteredPoints = Filter.filterAirlineCountry(allPoints, countrySelection);
+        }
+        if (activeSelection != "None") {
+            if (activeSelection != "None") {
+
+                if (activeSelection == "Active") {
+                    filteredPoints = Filter.activeAirlines(filteredPoints, true);
+
+                } else {
+                    filteredPoints = Filter.activeAirlines(filteredPoints, false);
+                }
+                // filteredPoints = Filter //add filter method
+
+
+            }
+        }
         updateAirlinesTable(filteredPoints);
+
+
+
+
+
+    }
+
+    public void routesFilterbyCountryButtonPressed(ActionEvent actionEvent) {
     }
 
     /*******************************************************************************************************************
@@ -376,6 +416,13 @@ public class GUIController {
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         ArrayList<AirlinePoint> allPoints = getAllAirlinePoints(); //airportTable.getItems()
         updateAirlinesTable(allPoints);
+
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+        airlineFilterMenu.setItems(airlineCountryList);
+
+        airlineActiveMenu.setItems(airlineActiveList);
+        airlineActiveMenu.setValue(airlineActiveList.get(0));
+
 
     }
 
@@ -392,7 +439,10 @@ public class GUIController {
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
         updateAirportsTable(allPoints);
 
+
     }
+
+    public void routesSeeallDataButtonPressed(ActionEvent actionEvent) {}
 
 
     /*******************************************************************************************************************
@@ -412,6 +462,31 @@ public class GUIController {
     private ObservableList<String> populateAirlineCountryList(){
         ArrayList<String> countries = Filter.filterAirLineCountries(getAllAirlinePoints());
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
+        countryList = addNullValue(countryList); //we need to add a null value
+        //System.out.println(countryList);
         return countryList;
     }
+
+    private ObservableList<String> populateAirlineActiveList(){
+        ObservableList<String> airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
+
+        return airlineActiveList;
+    }
+
+    private ObservableList<String> addNullValue(ObservableList<String> populatedList){
+        populatedList.add(0, "None");
+        return populatedList;
+    }
+
+    private ObservableList<String> removeNullValue(ObservableList<String> populatedList){
+        if (populatedList.get(0) == "None"){
+            populatedList.remove(0);
+        }
+
+        return populatedList;
+    }
+
+
+
+
 }

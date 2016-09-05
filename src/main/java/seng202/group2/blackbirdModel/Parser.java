@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 public class Parser {
 	//issues: if an entry contains a comma within, it messes with the indexing of the line
-	//deciding which fields shouldn't be null
+	//handling semantics: checking which fields should be unique, checking for valid IATA/ICAO codes, deciding which fields
+	//shouldn't be null.
 	
 	//FLIGHTS
 	private static boolean checkNull(String[] dataEntry){
@@ -21,17 +22,6 @@ public class Parser {
 			}
 		}
 		return nullEntry;
-	}
-
-
-
-	private static void checkFields(String[] dataEntry, FlightPoint flight, ArrayList<FlightPoint> myFlightSet) {
-		for (String data : dataEntry) {
-			if (data.equals("\\N")) {
-				data = null;
-			}
-		}
-
 	}
 
 	//fields of airpoint point shouldn't be null?
@@ -59,9 +49,11 @@ public class Parser {
                         myFlightSet.add(myFlightPoint);
                     } else {
                     	System.err.println("Error: Null field in flight data. All fields must be filled");
+						//currently, aborting if any null fields present in flight data.
                     	break;
                     }
                 } else {
+					//will any flight data have extra commas?
 					System.err.println("Error: Unexpected comma found on line: " + count);
 				}
 			}

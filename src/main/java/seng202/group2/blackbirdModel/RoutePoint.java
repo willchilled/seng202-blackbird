@@ -1,7 +1,8 @@
 package seng202.group2.blackbirdModel;
 
 public class RoutePoint extends DataPoint {
-	
+
+	private int routeID;
 	private String airline;
 	private int airlineID;
 	private String srcAirport;
@@ -19,8 +20,14 @@ public class RoutePoint extends DataPoint {
 		this.airline = airline;
 		this.airlineID = airlineID;
 	}
-	
-	
+
+	public int getRouteID() {
+		return routeID;
+	}
+
+	public void setRouteID(int routeID) {
+		this.routeID = routeID;
+	}
 	
 	public String getAirline() {
 		return airline;

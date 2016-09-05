@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Parser {
 	//issues: if an entry contains a comma within, it messes with the indexing of the line
-	//if a route has multiple equipment, it is not set properly
+	//deciding which fields shouldn't be null
 	
 	//FLIGHTS
 	private static boolean checkNull(String[] dataEntry){
@@ -82,7 +82,7 @@ public class Parser {
 		return line;
 	}
 
-	private static RoutePoint nullRouteData(String[] routePoint, RoutePoint myRoutePoint){
+	private static RoutePoint checkRouteData(String[] routePoint, RoutePoint myRoutePoint){
 
 		myRoutePoint.setSrcAirport(routePoint[2]);	//cant be null?
 		if (routePoint[3].equals("\\N")) {
@@ -119,33 +119,22 @@ public class Parser {
                     String[] routePoint = line.split(",", -1);
 
 					//routePoint = removeQuotes(routePoint);
-                    
-                    //if(!checkNull(routePoint)) {
 
-                    	String airline = routePoint[0];
-						int airlineID = 0;	// 0 if airlineID is null
-						if (!routePoint[1].equals("\\N")) {
-							airlineID = Integer.parseInt(routePoint[1]);
-						}
-                        RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
-						myRoutePoint = nullRouteData(routePoint, myRoutePoint);
+					String airline = routePoint[0];
+					int airlineID = 0;	// 0 if airlineID is null
 
-//                        myRoutePoint.setSrcAirport(routePoint[2]);
-//                        myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
-//                        myRoutePoint.setDstAirport(routePoint[4]);
-//                        myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
-//                        myRoutePoint.setCodeshare(routePoint[6]);
-//                        myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-//                        myRoutePoint.setEquipment(routePoint[8]);
+					if (!routePoint[1].equals("\\N")) {
+						airlineID = Integer.parseInt(routePoint[1]);
+					}
 
-                        myRouteData.add(myRoutePoint);
-                    //} else {
-                    	//deal with null data here
-                    	//continue;
-                    //}
-                    //}
-                }else{
-                    //TODO
+					RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
+
+					myRoutePoint = checkRouteData(routePoint, myRoutePoint);
+					myRoutePoint.setRouteID(count);	//set our own routeID
+
+					myRouteData.add(myRoutePoint);
+                } else {
+                    //currently picking up empty lines in text file
 					System.err.println("Error: Unexpected comma found on line: " + count);
 					System.err.println("The line: " + line);
                     // HANDLE INCORRECT FIELD DATA
@@ -161,7 +150,22 @@ public class Parser {
 		return myRouteData;
 	}
 	
-	
+
+	private static AirlinePoint checkAirlineData(String[] airlinePoint, AirlinePoint myAirlinePoint) {
+		if (airlinePoint[2].equals("\\N")) {
+			myAirlinePoint.setAirlineAlias("");	//set as empty string if null?
+		} else {
+			myAirlinePoint.setAirlineAlias(airlinePoint[2]);
+		}
+		myAirlinePoint.setIata(airlinePoint[3]);
+		myAirlinePoint.setIcao(airlinePoint[4]);
+		myAirlinePoint.setCallsign(airlinePoint[5]);
+		myAirlinePoint.setCountry(airlinePoint[6]);
+		myAirlinePoint.setActive(airlinePoint[7]);
+
+		return myAirlinePoint;
+	}
+
 	//AIRLINES
 	public static ArrayList<AirlinePoint> parseAirlineData(File file){
 		
@@ -170,36 +174,33 @@ public class Parser {
 		try {
 			br = new BufferedReader(new FileReader(file));
 			String line = "";
+			int count = 0;
 			while ((line = br.readLine()) != null) {
+				count++;
 			    //Check number of fields is correct
                 if(numberOfCommas(line) == 7) {
                     String[] airlinePoint = line.split(",");
                     
-                    if(!checkNull(airlinePoint)) {
+                    //if(!checkNull(airlinePoint)) {
 
 						airlinePoint = removeQuotes(airlinePoint);
 
-	                    int airlineID = Integer.parseInt(airlinePoint[0]);
-	                    String airlineName = airlinePoint[1];
+	                    int airlineID = Integer.parseInt(airlinePoint[0]);	//shouldnt be null
+	                    String airlineName = airlinePoint[1];	//shouldnt be null
 	                    AirlinePoint myAirlinePoint = new AirlinePoint(airlineID, airlineName);
-	
-	                    myAirlinePoint.setAirlineAlias(airlinePoint[2]);
-	                    myAirlinePoint.setIata(airlinePoint[3]);
-	                    myAirlinePoint.setIcao(airlinePoint[4]);
-	                    myAirlinePoint.setCallsign(airlinePoint[5]);
-	                    myAirlinePoint.setCountry(airlinePoint[6]);
-	                    myAirlinePoint.setActive(airlinePoint[7]);
+						myAirlinePoint = checkAirlineData(airlinePoint, myAirlinePoint);
 
 
 	                    myAirlineData.add(myAirlinePoint);
-                    } else {
+                    //} else {
                     	//deal with null data here
-                    	continue;
-                    }
-                }else{
+                    	//continue;
+                    //}
+                } else {
                     //TODO
                     //DEAL WITH BAD DATA! not correct amount of fields
-                	continue;
+					System.err.println("Error: Unexpected comma found on line: " + count);
+					System.err.println("The line: " + line);
                 }
 			}
 		} catch (NumberFormatException e) {

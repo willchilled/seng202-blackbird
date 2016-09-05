@@ -10,7 +10,9 @@ public class RoutePoint extends DataPoint {
 	private int dstAirportID;
 	private String codeshare;
 	private int stops;
-	private String equipment;	
+	private String equipment;
+	//Country source
+	//Country destination
 	
 	public RoutePoint(String airline, int airlineID){	
 		

@@ -246,16 +246,16 @@ public class GUIController {
 
         System.out.println("Add Route Data");
 
-        /** UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
+        // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
          f = getFile();
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-         **/
+
 
 
         //COMMENT THIS OUT/DELETE ONCE PARSER WORKING
         //Creating a test airline to add in while waiting for the parser to be working
-
+/**
         ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
 
         RoutePoint testRoute = new RoutePoint("route airline", 56);
@@ -280,8 +280,8 @@ public class GUIController {
 
         routePoints.add(testRoute);
         routePoints.add(testRoute2);  //UP UNTIL HERE COMMENTED OUT / DELETED WHEN PARSER WORKING
-
-        routeTable.getItems().setAll(routePoints);
+**/
+        routeTable.getItems().setAll(myRouteData);
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));

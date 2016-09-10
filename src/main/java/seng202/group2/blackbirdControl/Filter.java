@@ -104,7 +104,8 @@ public class Filter {
     }
 
 
-    public static ArrayList<String> filterAirportCountries(ArrayList<AirportPoint> allPoints){
+    public static ArrayList<String> filterUniqueAirportCountries(ArrayList<AirportPoint> allPoints){
+        //Finds unique countries that have aiports
         ArrayList<String> allCountries = new ArrayList<String>();
         String currentCountry;
         for (AirportPoint airport : allPoints) {
@@ -120,7 +121,8 @@ public class Filter {
     }
 
 
-    public static ArrayList<String> filterAirLineCountries(ArrayList<AirlinePoint> allPoints){
+    public static ArrayList<String> filterUniqueAirLineCountries(ArrayList<AirlinePoint> allPoints){
+        //Returns a list of all unique countries
         ArrayList<String> allCountries = new ArrayList<String>();
         String currentCountry;
         for (AirlinePoint airport : allPoints) {

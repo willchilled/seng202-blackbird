@@ -97,16 +97,69 @@ public class SQLiteJDBC {
     }
 
     public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
-        for (AirportPoint airport : airportPoints) {
+        try {
 
-            addAiportPoint(airport);
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+
+            for (AirportPoint airport : airportPoints) {
+                int airportID = airport.getAirportID();
+                String airportName = airport.getAirportName();
+                String City = airport.getAirportCity();
+                String Country = airport.getAirportCountry();
+                String Iata = airport.getIata();
+                String Icao = airport.getIcao();
+                float Latitude = airport.getLatitude();
+                float Longtitude = airport.getLongitude();
+                float Altitude = airport.getAltitude();
+                float timezone = airport.getTimeZone();
+                String Dst = airport.getDst();
+                String tz= airport.getTz();
+
+                String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, LONGTITUDE ,ALTITUDE, TIMEZONE, DST, TZ) " +
+                        "VALUES (" +
+                        + airportID + ", \"" +
+                        airportName  + "\", \"" +
+                        City + "\", \"" +
+                        Country +  "\", \"" +
+                        Iata + "\", \"" +
+                        Icao + "\", " +
+                        Latitude + ", " +
+                        Longtitude + ", " +
+                        Altitude + ", " +
+                        timezone + ", \"" +
+                        Dst + "\", \"" +
+                        tz + "\"); ";
+
+                // System.out.println(sql);
+                stmt.executeUpdate(sql);
 
 
+            }
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            //System.exit(0);
+            System.out.println("Could not add :");
+           // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
         }
+        System.out.println("Records created successfully");
     }
 
-    private static void addAiportPoint(AirportPoint airport) {
+
+    protected static void addAiportPoint(AirportPoint airport) {
         //System.out.println("SHIT HAPPENS");
+
+
 
         int airportID = airport.getAirportID();
         String airportName = airport.getAirportName();

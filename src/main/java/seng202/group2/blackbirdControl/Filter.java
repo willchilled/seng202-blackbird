@@ -1,13 +1,11 @@
 package seng202.group2.blackbirdControl;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -142,8 +140,10 @@ public class Filter {
     }
 
 
-    public static void getAllAirlinePointsfromDB() {
-
+    public static ArrayList<AirlinePoint> getAllAirlinePointsfromDB() {
+        String sql = " SELECT * FROM AIRLINE";
+        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
+        return allPoints;
     }
 
     public static ArrayList<AirportPoint> getAllAirportPointsFromDB() {

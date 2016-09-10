@@ -223,11 +223,12 @@ public class GUIController {
         File f;
         f = getFile();
         ArrayList<AirlinePoint> myAirlineData = Parser.parseAirlineData(f);
+        BBDatabase.addAirlinePointstoDB(myAirlineData);
 
-       // myAirlineData = Filter.getAllAirlinePoints();
-
+        myAirlineData = Filter.getAllAirlinePointsfromDB();
+        //System.out.println(myAirlineData);
+       // myAirlineData = Filter.getAllAirlinePointsfromDB();
         setAllAirlinePoints(myAirlineData);
-
         setAirlineActiveList(populateAirlineActiveList());
 
         airlineActiveMenu.setItems(getAirlineActiveList());

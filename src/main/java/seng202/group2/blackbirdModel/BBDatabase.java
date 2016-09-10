@@ -61,11 +61,23 @@ public class BBDatabase {
                         " TIMEZONE       FLOAT," +
                         " DST            VARCHAR(5)," +
                         " TZ             VARCHAR(40))";
-
-
-        System.out.println(sql);
+       // System.out.println(sql);
         return sql;
 
+    }
+
+    private static String createAirlineTable(){
+        String sql = "CREATE TABLE AIRLINE " +
+                "(ID INT PRIMARY KEY    NOT NULL," +
+                " NAME           VARCHAR(40)   NOT NULL," +
+                " ALIAS           VARCHAR(40)   NOT NULL," +
+                " IATA           VARCHAR(40)   NOT NULL," +
+                " ICAO           VARCHAR(40)," +
+                " CALLSIGN           VARCHAR(40)," +
+                " COUNTRY           VARCHAR(40)," +
+                " ACTIVE           VARCHAR(1))";
+        //System.out.println(sql);
+        return sql;
     }
 
     public static void createTables() {
@@ -84,21 +96,23 @@ public class BBDatabase {
 
             stmt = c.createStatement();
             String sql = createAirportTable();
-
-
             stmt.executeUpdate(sql);
+
+            sql = createAirlineTable();
+            stmt.executeUpdate(sql);
+
             stmt.close();
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Airport Table created successfully");
+        System.out.println("AIPORT + AIRLINE Table created successfully");
 
     }
 
 
-    //##########################Adding Airport Data#########################################//
+    //##########################Adding  Data#########################################//
     public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
         //This method adds multiple points to the Database
         try {
@@ -155,6 +169,58 @@ public class BBDatabase {
             //System.exit(0);
             System.out.println("Could not add :");
            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
+        }
+        System.out.println("Records created successfully");
+    }
+
+    public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
+        //This method adds multiple points to the Database
+        try {
+
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+
+            for (AirlinePoint airport : airlinePoints) {
+
+                int id = airport.getAirlineID();
+                String name = airport.getAirlineName();
+                String alias = airport.getAirlineAlias();
+                String iata = airport.getIata();
+                String icao = airport.getIcao();
+                String callsign = airport.getCallsign();
+                String country = airport.getCountry();
+                String active = airport.getActive();
+
+
+
+                String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
+                        "VALUES (" +
+                        + id + ", \"" +
+                        name  + "\", \"" +
+                        alias + "\", \"" +
+                        iata +  "\", \"" +
+                        icao + "\", \"" +
+                        callsign + "\", \"" +
+                        country + "\", \""+
+                        active + "\");";
+                // System.out.println(sql);
+                stmt.executeUpdate(sql);
+            }
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            //System.exit(0);
+            System.out.println("Could not add :");
+            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
         }
         System.out.println("Records created successfully");
     }
@@ -248,8 +314,7 @@ public class BBDatabase {
                 float timezone = rs.getFloat("TIMEZONE");
                 String Dst = rs.getString("DST");
                 String tz= rs.getString("TZ");
-
-                System.out.println(airportName);
+               // System.out.println(airportName);
 
                 AirportPoint myPoint = new AirportPoint(airportID, airportName);
                 myPoint.setAirportCity(City);
@@ -262,7 +327,6 @@ public class BBDatabase {
                 myPoint.setTimeZone(timezone);
                 myPoint.setDst(Dst);
                 myPoint.setTz(tz);
-
                 allPoints.add(myPoint);
 
 
@@ -279,5 +343,53 @@ public class BBDatabase {
         return allPoints;
     }
 
+    public static ArrayList<AirlinePoint> performAirlinesQuery(String sql) {
+        Connection c = makeConnection();
+        ArrayList<AirlinePoint> allPoints = new ArrayList<AirlinePoint>();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( sql );
+            while ( rs.next() ) {
+
+
+                int airportID = rs.getInt("ID");
+                String airportName = rs.getString("NAME");
+                String alias = rs.getString("alias");
+                String Iata = rs.getString("IATA");
+                String Icao = rs.getString("ICAO");
+                String callsign = rs.getString("CALLSIGN");
+                String country = rs.getString("COUNTRY");
+                String active = rs.getString("Active");
+
+
+                // System.out.println(airportName);
+                AirlinePoint myPoint = new AirlinePoint(airportID, airportName);
+                myPoint.setAirlineName(airportName);
+                myPoint.setAirlineAlias(alias);
+                myPoint.setIata(Iata);
+                myPoint.setCallsign(callsign);
+                myPoint.setCountry(country);
+                myPoint.setActive(active);
+
+                allPoints.add(myPoint);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Airlines Query done successfully");
+
+        return allPoints;
+
+    }
 }
 

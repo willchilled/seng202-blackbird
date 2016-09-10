@@ -148,6 +148,10 @@ public class GUIController {
     public void show(){
 
         mainTabPane.setVisible(true);
+        //SQQliteJDBC myDb = new SQQliteJDBC();
+        //SQLiteJDBC.dropTables();
+        SQLiteJDBC.createTables();
+        //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
         routeTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Route"));
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
@@ -166,6 +170,7 @@ public class GUIController {
         File f;
         f = getFile();
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(f);
+        SQLiteJDBC.addAiportPortsToDB(airportPoints);
         setAllPoints(airportPoints); //imports setter, keeps track of all points
         updateAirportsTable(airportPoints);
         airPortCountryList = populateCountryList();

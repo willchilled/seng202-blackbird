@@ -226,6 +226,8 @@ public class GUIController {
         BBDatabase.addAirlinePointstoDB(myAirlineData);
 
         myAirlineData = Filter.getAllAirlinePointsfromDB();
+
+
         //System.out.println(myAirlineData);
        // myAirlineData = Filter.getAllAirlinePointsfromDB();
         setAllAirlinePoints(myAirlineData);
@@ -379,7 +381,7 @@ public class GUIController {
         String countrySelection = airportFilterMenu.getValue().toString();
 
         if (countrySelection != "None"){
-            ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry2(countrySelection);
+            ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsByCountryUsingDB(countrySelection);
             updateAirportsTable(filteredPoints);
         }
         else{
@@ -398,27 +400,34 @@ public class GUIController {
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
 
-        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints();
-        ArrayList<AirlinePoint> filteredPoints = new ArrayList<AirlinePoint>();
-
-        if (countrySelection != "None"){
-            filteredPoints = Filter.filterAirlineCountry(allPoints, countrySelection);
-        }
-        if (activeSelection != "None") {
-            if (activeSelection != "None") {
-
-                if (activeSelection == "Active") {
-                    filteredPoints = Filter.activeAirlines(filteredPoints, true);
-
-                } else {
-                    filteredPoints = Filter.activeAirlines(filteredPoints, false);
-                }
-                // filteredPoints = Filter //add filter method
+        ArrayList<String> menusPressed  = new ArrayList<String>();
+        menusPressed.add(countrySelection);
+        menusPressed.add(activeSelection);
 
 
-            }
-        }
-        updateAirlinesTable(filteredPoints);
+        ArrayList<AirlinePoint> allPoints = Filter.filterAirlinesBySelections(menusPressed);
+        updateAirlinesTable(allPoints);
+
+//        ArrayList<AirlinePoint> filteredPoints = new ArrayList<AirlinePoint>();
+//
+//        if (countrySelection != "None"){
+//            filteredPoints = Filter.filterAirlineCountry(allPoints, countrySelection);
+//        }
+//        if (activeSelection != "None") {
+//            if (activeSelection != "None") {
+//
+//                if (activeSelection == "Active") {
+//                    filteredPoints = Filter.activeAirlines(filteredPoints, true);
+//
+//                } else {
+//                    filteredPoints = Filter.activeAirlines(filteredPoints, false);
+//                }
+//                // filteredPoints = Filter //add filter method
+//
+//
+//            }
+//        }
+//        updateAirlinesTable(filteredPoints);
 
 
 
@@ -485,7 +494,7 @@ public class GUIController {
 
     private ObservableList<String> populateAirlineCountryList(){
         //Populates the airline countries list
-        ArrayList<String> countries = Filter.filterUniqueAirLineCountries(getAllAirlinePoints());
+        ArrayList<String> countries = Filter.filterUniqueAirLineCountries(Filter.getAllAirlinePointsfromDB());
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = addNullValue(countryList); //we need to add a null value
         //System.out.println(countryList);

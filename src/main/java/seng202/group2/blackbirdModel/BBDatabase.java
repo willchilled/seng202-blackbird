@@ -189,6 +189,7 @@ public class BBDatabase {
 
                 int id = airport.getAirlineID();
                 String name = airport.getAirlineName();
+                //System.out.println(name);
                 String alias = airport.getAirlineAlias();
                 String iata = airport.getIata();
                 String icao = airport.getIcao();
@@ -386,7 +387,7 @@ public class BBDatabase {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Airlines Query done successfully");
+        System.out.println("Airlines Query done successfully:" + sql);
 
         return allPoints;
 

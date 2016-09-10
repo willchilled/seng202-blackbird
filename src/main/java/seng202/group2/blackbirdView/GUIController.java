@@ -4,18 +4,28 @@ package seng202.group2.blackbirdView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdControl.Filter;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static javafx.fxml.FXMLLoader.load;
 
 /**
  * Created by emr65 on 13/08/16.
@@ -58,7 +68,7 @@ public class GUIController {
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
-   // @FXML private TableView<AirportPoint> airportTable;
+    //@FXML private TableView<AirportPoint> airportTable;
 
 
 
@@ -107,7 +117,8 @@ public class GUIController {
     @FXML private ChoiceBox airlineFilterMenu;
     @FXML private ChoiceBox airlineActiveMenu;
 
-
+    //Airline Popup Info
+  //  @FXML private Text nameText;
 
 
     @FXML
@@ -179,38 +190,6 @@ public class GUIController {
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
-     /**
-      * Test Airport Points
-
-        ArrayList<AirportPoint> airportPoints = new ArrayList<AirportPoint>();
-
-        AirportPoint testAirport = new AirportPoint(233, "TestAirportName");
-        testAirport.setAirportCity("Christchurch");
-        testAirport.setAirportCountry("New Zealand");
-        testAirport.setIata("CHC");
-        testAirport.setIcao("NZCH");
-        testAirport.setLatitude(43.489358f);
-        testAirport.setLongitude(172.532225f);
-        testAirport.setAltitude(127);
-        testAirport.setTimeZone(12);
-        testAirport.setDst("Z");
-        testAirport.setTz("Pacific/Auckland");
-
-        AirportPoint testAirport2 = new AirportPoint(355, "TestAirportName2");
-        testAirport2.setAirportCity("London");
-        testAirport2.setAirportCountry("New Zealand");
-        testAirport2.setIata("CHC");
-        testAirport2.setIcao("NZCH");
-        testAirport2.setLatitude(43.489358f);
-        testAirport2.setLongitude(172.532225f);
-        testAirport2.setAltitude(127);
-        testAirport2.setTimeZone(12);
-        testAirport2.setDst("Z");
-        testAirport2.setTz("Pacific/Auckland");
-
-        airportPoints.add(testAirport);
-        airportPoints.add(testAirport2); **/
-
 
 
     }
@@ -240,30 +219,6 @@ public class GUIController {
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         updateAirlinesTable(myAirlineData);
 
-
-        /*
-        //Creating a test airline to add in while waiting for the parser to be working
-        ArrayList<AirlinePoint> airlinePoints = new ArrayList<AirlinePoint>();
-
-        AirlinePoint testAirline = new AirlinePoint(1, "Test Airline 1");
-        testAirline.setAirlineAlias("ANA");
-        testAirline.setIata("NH");
-        testAirline.setIcao("ANA");
-        testAirline.setCallsign("ALL NIPPON");
-        testAirline.setCountry("Japan");
-        testAirline.setActive("Y");
-
-        AirlinePoint testAirline2 = new AirlinePoint(2, "Test Airline 2");
-        testAirline2.setAirlineAlias("YYT");
-        testAirline2.setIata("RE");
-        testAirline2.setIcao("YYT");
-        testAirline2.setCallsign("WOW TEST");
-        testAirline2.setCountry("A Country");
-        testAirline2.setActive("Y");
-
-        airlinePoints.add(testAirline);
-        airlinePoints.add(testAirline2);
-        */
 
 
     }
@@ -341,6 +296,38 @@ public class GUIController {
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
         airlineActCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
 
+
+        airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    String myText = airlineTable.getSelectionModel().getSelectedItem().getAirlineName();
+                    System.out.println(myText);
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
+                        root = loader.load();
+                        AirlinePopUpController popUpController = loader.getController();
+                        popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("My Popup test");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        //System.out.println("AH NO!");
+                    }
+
+                }
+            }
+        });
     }
 
     private void updateAirportsTable(ArrayList<AirportPoint> points){
@@ -358,6 +345,36 @@ public class GUIController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+
+        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
+                        root = loader.load();
+                        AirportPopUpController popUpController = loader.getController();
+                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("My Popup test");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        //System.out.println("AH NO!");
+                    }
+
+                }
+            }
+        });
 
 
     }

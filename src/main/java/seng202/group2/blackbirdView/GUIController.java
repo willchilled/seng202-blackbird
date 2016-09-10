@@ -31,13 +31,13 @@ public class GUIController {
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
 
-    public void setAllPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
+    public void setAllAirportPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
 
     public void setAirlineActiveList(ObservableList<String> activeList){this.airlineActiveList = activeList;}
 
     public ObservableList<String> getAirlineActiveList(){return airlineActiveList;}
 
-    public ArrayList<AirportPoint> getAllPoints(){return allPoints;}
+    public ArrayList<AirportPoint> getAllAirportPoints(){return allPoints;}
 
     public void setAllAirlinePoints(ArrayList<AirlinePoint> points){this.allAirlinePoints = points;}
 
@@ -150,7 +150,7 @@ public class GUIController {
         mainTabPane.setVisible(true);
         //SQQliteJDBC myDb = new SQQliteJDBC();
         //SQLiteJDBC.dropTables();
-        SQLiteJDBC.createTables();
+        BBDatabase.createTables();
         //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
         routeTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Route"));
@@ -170,10 +170,12 @@ public class GUIController {
         File f;
         f = getFile();
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(f);
-        SQLiteJDBC.addAiportPortsToDB(airportPoints);
-        setAllPoints(airportPoints); //imports setter, keeps track of all points
+        BBDatabase.addAiportPortsToDB(airportPoints);
+        airportPoints = Filter.getAllAirportPointsFromDB();
+        setAllAirportPoints(airportPoints); //imports setter, keeps track of all points
+
         updateAirportsTable(airportPoints);
-        airPortCountryList = populateCountryList();
+        airPortCountryList = populateAirportCountryList();
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
@@ -221,6 +223,8 @@ public class GUIController {
         File f;
         f = getFile();
         ArrayList<AirlinePoint> myAirlineData = Parser.parseAirlineData(f);
+
+       // myAirlineData = Filter.getAllAirlinePoints();
 
         setAllAirlinePoints(myAirlineData);
 
@@ -370,11 +374,20 @@ public class GUIController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("filter button pressed ! " + selection);
         alert.showAndWait();
-        */
-        String selection = airportFilterMenu.getValue().toString();
-        ArrayList<AirportPoint> allPoints = getAllPoints(); //airportTable.getItems();
-        ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
-        updateAirportsTable(filteredPoints);
+        */ //NEED TO ADD CASE FOR NONE SELECTED
+        String countrySelection = airportFilterMenu.getValue().toString();
+
+        if (countrySelection != "None"){
+            ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry2(countrySelection);
+            updateAirportsTable(filteredPoints);
+        }
+        else{
+            updateAirportsTable(getAllAirportPoints());
+        }
+
+        //ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
+        //ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
+        //updateAirportsTable(filteredPoints);
 
     }
 
@@ -444,7 +457,7 @@ public class GUIController {
 
 
 
-        ArrayList<AirportPoint> allPoints = getAllPoints(); //airportTable.getItems();
+        ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
         updateAirportsTable(allPoints);
 
@@ -460,12 +473,12 @@ public class GUIController {
      *******************************************************************************************************************
      ******************************************************************************************************************/
 
-    private ObservableList<String> populateCountryList(){
+    private ObservableList<String> populateAirportCountryList(){
         //Populates the dropdown of airline countries
-        //ArrayList<AirportPoint> allPoints = getAllPoints();
-        ArrayList<String> countries = Filter.filterUniqueAirportCountries(getAllPoints());
+        //ArrayList<AirportPoint> allPoints = getAllAirportPoints();
+        ArrayList<String> countries = Filter.filterUniqueAirportCountries();
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
-
+        countryList = addNullValue(countryList);
         return countryList;
     }
 

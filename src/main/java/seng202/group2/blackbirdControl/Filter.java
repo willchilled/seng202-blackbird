@@ -3,6 +3,7 @@ package seng202.group2.blackbirdControl;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.AirportPoint;
+import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
 import java.util.ArrayList;
@@ -104,9 +105,11 @@ public class Filter {
     }
 
 
-    public static ArrayList<String> filterUniqueAirportCountries(ArrayList<AirportPoint> allPoints){
-        //Finds unique countries that have aiports
+
+    public static ArrayList<String> filterUniqueAirportCountries(){
+        //Finds unique countries that have aiports using thie database
         ArrayList<String> allCountries = new ArrayList<String>();
+        ArrayList<AirportPoint> allPoints = getAllAirportPointsFromDB();
         String currentCountry;
         for (AirportPoint airport : allPoints) {
             currentCountry = airport.getAirportCountry();
@@ -139,7 +142,22 @@ public class Filter {
     }
 
 
+    public static void getAllAirlinePointsfromDB() {
 
+    }
 
+    public static ArrayList<AirportPoint> getAllAirportPointsFromDB() {
+        //gets all Aiport Points from the database
+        String sql = "SELECT * FROM AIRPORT";
+        ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+        allPoints = BBDatabase.performAirpointsQuery(sql);
+        return allPoints;
+    }
 
+    public static ArrayList<AirportPoint> filterAirportCountry2(String countrySelection) {
+        String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\"";
+        ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+        allPoints = BBDatabase.performAirpointsQuery(sql);
+        return allPoints;
+    }
 }

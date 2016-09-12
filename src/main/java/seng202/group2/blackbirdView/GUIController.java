@@ -598,8 +598,6 @@ public class GUIController {
         ArrayList<String> uniqueSources = new ArrayList<String>();
         String sql = "Src";
         uniqueSources = Filter.findDistinctStringsFromRoutes(sql);
-
-
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = addNullValue(uniqueObservableSources);
         routesFilterBySourceMenu.setItems(uniqueObservableSources);
@@ -608,18 +606,33 @@ public class GUIController {
     }
 
     private void populateRoutesFilterbyDestList(){
-        ArrayList<String> myArrayList = new ArrayList<String>();
-        ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
+        ArrayList<String> uniqueSources = new ArrayList<String>();
+        String sql = "Dst";
+        uniqueSources = Filter.findDistinctStringsFromRoutes(sql);
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        uniqueObservableSources = addNullValue(uniqueObservableSources);
+        routesFilterbyDestMenu.setItems(uniqueObservableSources);
+        routesFilterbyDestMenu.setValue(uniqueObservableSources.get(0));
     }
 
     private void populateRoutesFilterByStopsList(){
-        ArrayList<String> myArrayList = new ArrayList<String>();
-        ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
+        ArrayList<String> uniqueSources = new ArrayList<String>();
+        String sql = "Stops";
+        uniqueSources = Filter.findDistinctStringsFromRoutes(sql);
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        uniqueObservableSources = addNullValue(uniqueObservableSources);
+        routesFilterByStopsMenu.setItems(uniqueObservableSources);
+        routesFilterByStopsMenu.setValue(uniqueObservableSources.get(0));
     }
 
     private void populateRoutesFilterByEquipList(){
-        ArrayList<String> myArrayList = new ArrayList<String>();
-        ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
+        ArrayList<String> uniqueSources = new ArrayList<String>();
+        String sql = "Stops";
+        uniqueSources = Filter.findDistinctStringsFromRoutes(sql);
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        uniqueObservableSources = addNullValue(uniqueObservableSources);
+        routesFilterbyEquipMenu.setItems(uniqueObservableSources);
+        routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
     }
 
 
@@ -627,10 +640,9 @@ public class GUIController {
     private void updateRoutesDropdowns() {
         System.out.println("Ahoy");
         populateRoutesFilterBySourceList();
-
-        //populateRoutesFilterbyDestList();
-        //populateRoutesFilterByStopsList();
-        //populateRoutesFilterByEquipList();
+        populateRoutesFilterbyDestList();
+        populateRoutesFilterByStopsList();
+        populateRoutesFilterByEquipList();
     }
 
 

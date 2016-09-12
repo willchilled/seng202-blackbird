@@ -221,48 +221,7 @@ public class GUIController {
          f = getFile();
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
 
-
-
-        //COMMENT THIS OUT/DELETE ONCE PARSER WORKING
-        //Creating a test airline to add in while waiting for the parser to be working
-/**
-        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
-
-        RoutePoint testRoute = new RoutePoint("route airline", 56);
-        testRoute.setSrcAirport("Src Airport hey");
-        testRoute.setSrcAirportID(444);
-        testRoute.setDstAirport("Dst airport ho");
-        testRoute.setDstAirportID(55);
-        testRoute.setCodeshare("Y");
-        testRoute.setStops(0);
-        //testRoute.setEquipment(new String[]{"777", "747"});
-
-
-        RoutePoint testRoute2 = new RoutePoint("route airline 2", 66);
-        testRoute2.setSrcAirport("Src Airport ho");
-        testRoute2.setSrcAirportID(333);
-        testRoute2.setDstAirport("Dst airport hey");
-        testRoute2.setDstAirportID(779);
-        testRoute2.setCodeshare("Y");
-        testRoute2.setStops(2);
-        // testRoute2.setEquipment(new String[]{"747"});
-
-
-        routePoints.add(testRoute);
-        routePoints.add(testRoute2);  //UP UNTIL HERE COMMENTED OUT / DELETED WHEN PARSER WORKING
-**/
-        routeTable.getItems().setAll(myRouteData);
-
-        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
-        routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
-        routeSrcCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirport"));
-        routeSrcIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportID"));
-        routeDestCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirport"));
-        routeDestIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportID"));
-        routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
-        routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
-        routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
-
+        updateRoutesTable(myRouteData);
 
     }
 
@@ -316,6 +275,53 @@ public class GUIController {
                 }
             }
         });
+    }
+
+    private void updateRoutesTable(ArrayList<RoutePoint> points){
+
+        routeTable.getItems().setAll(points);
+
+        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
+        routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
+        routeSrcCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirport"));
+        routeSrcIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportID"));
+        routeDestCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirport"));
+        routeDestIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportID"));
+        routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
+        routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
+        routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+
+        routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
+                        root = loader.load();
+                        RoutePopUpController popUpController = loader.getController();
+                        popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("My Popup test");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        //System.out.println("AH NO!");
+                    }
+
+                }
+            }
+        });
+
+
     }
 
     private void updateAirportsTable(ArrayList<AirportPoint> points){

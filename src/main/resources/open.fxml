@@ -72,12 +72,12 @@
                            </columnResizePolicy>
                            <columns>
                               <TableColumn fx:id="routeAirlineCol" prefWidth="75.0" text="Airline" />
-                              <TableColumn fx:id="routeAirlineIDCol" prefWidth="75.0" text="Airline ID" />
+                              <TableColumn fx:id="routeAirlineIDCol" prefWidth="75.0" text="Airline ID" visible="false" />
                               <TableColumn fx:id="routeSrcCol" prefWidth="75.0" text="Source" />
-                              <TableColumn fx:id="routeSrcIDCol" prefWidth="75.0" text="Source ID" />
+                              <TableColumn fx:id="routeSrcIDCol" prefWidth="75.0" text="Source ID" visible="false" />
                               <TableColumn fx:id="routeDestCol" prefWidth="75.0" text="Dest" />
-                              <TableColumn fx:id="routeDestIDCol" prefWidth="75.0" text="Dest ID" />
-                              <TableColumn fx:id="routeCSCol" prefWidth="75.0" text="Codeshare" />
+                              <TableColumn fx:id="routeDestIDCol" prefWidth="75.0" text="Dest ID" visible="false" />
+                              <TableColumn fx:id="routeCSCol" prefWidth="75.0" text="Codeshare" visible="false" />
                               <TableColumn fx:id="routeStopsCol" prefWidth="75.0" text="Stops" />
                               <TableColumn fx:id="routeEqCol" prefWidth="75.0" text="Equipment" />
                            </columns>

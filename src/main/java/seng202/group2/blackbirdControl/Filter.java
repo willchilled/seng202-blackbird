@@ -5,7 +5,8 @@ import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by mch230 on 25/08/16.
@@ -162,61 +163,39 @@ public class Filter {
     }
 
     public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed) {
-        //Please read this before editing this function
-        //The function takes all of the selections pressed, and then subs the values into the selections string using a string formatter
-        //It then adds it to the query
-        //it first checks if all strings are not none and if that is true it performs the query "Select * from Airline
-        //Other wise subs all strings in
-        //Ask Stefan Before messing with this
+        //System.out.println(menusPressed);
+        String sql = "SELECT * FROM AIRLINE WHERE ";
+        String countryselection = menusPressed.get(0);
+        String activeSelection = menusPressed.get(1);
 
-        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\" AND ", "ACTIVE=\"%1$s\" AND "));
-       System.out.println(menusPressed.get(1));
-        String outputString = "SELECT * FROM AIRLINE ";
+        String active = "ACTIVE=\"";
+        String country = "COUNTRY=\"" + countryselection + "\"";
 
-        boolean allNone = true;
+        if (activeSelection == "Active"){
+            active += "Y\"";
+        }
+        else if (activeSelection == "Inactive"){
+            active += "N\"";
+        }
 
-        for (String currentSelection: menusPressed){
-            if (currentSelection != "None"){
-                allNone = false;
-            }
+        if(countryselection == "None" && activeSelection=="None"){
+            sql = "SELECT * FROM AIRLINE";
+        }
+        else if (countryselection != "None" && activeSelection != "None"){
+            sql += country +  " AND " + active + ";";
+        }
+        else if(countryselection == "None"){
+            sql += active + ";";
+        }
+        else if (activeSelection == "None"){
+
+            sql += country;
         }
 
 
-        if (!allNone){
-            outputString += "WHERE ";
-            for (int i=0; i<menusPressed.size(); i++){
-                String currentSelection = menusPressed.get(i);
-                StringBuilder sb = new StringBuilder();
-                Formatter formatter = new Formatter(sb, Locale.US);
-                if(currentSelection != "None"){
-                    outputString += formatter.format(allSelections.get(i), currentSelection);
-                }
-            }
+        System.out.println("Perfomring query:"+ sql);
 
-        }
-
-        outputString = removeLastAND(outputString);
-
-        System.out.println("\n\n");
-        System.out.println(outputString);
-        System.out.println("\n\n");
-
-
-
-        System.out.println("Perfomring query:"+ outputString);
-
-        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(outputString);
+        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
         return allPoints;
-    }
-
-    private static String removeLastAND(String outputString) {
-
-        String substring = outputString.substring(outputString.length()-4, outputString.length()-1);
-        if (substring.equals("AND")){
-            outputString = outputString.substring(0, outputString.length()-4);
-        }
-
-        return outputString;
-
     }
 }

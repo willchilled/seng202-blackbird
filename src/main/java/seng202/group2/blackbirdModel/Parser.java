@@ -1,4 +1,5 @@
 package seng202.group2.blackbirdModel;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -274,9 +275,30 @@ public class Parser {
 		return myAirportData;
 	}
 
-	public static int numberOfCommas(String line){
+	private static int numberOfCommas(String line){
         return line.length() - line.replace(",", "").length();
     }
+
+
+	public static void linkRoutesAndAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+		//function to link routes and airports, however it is very inefficient atm
+		//called when flags from GUI (airportdataloaded = true, routedataloaded = true)
+		for (RoutePoint route : routes) {
+			int srcAirportId = route.getSrcAirportID();
+			int destAirportId = route.getDstAirportID();
+
+			for (AirportPoint airport : airports) {
+				if (srcAirportId == airport.getAirportID()) {
+					route.setSource(airport);
+					airport.incrementRoutes();
+
+				} else if (destAirportId == airport.getAirportID()) {
+					route.setDestination(airport);
+					airport.incrementRoutes();
+				}
+			}
+		}
+	}
 	
 
 	
@@ -336,6 +358,11 @@ public class Parser {
 						System.out.println("Airlines successfully added: " + myAirlineData.size());
 					} else if (s.equals("Route")) {
 						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
+						//equipment filter test
+//						ArrayList<RoutePoint> myRoutes = Filter.routeEquipment(myRouteData, "747 CR2");
+//						for (RoutePoint equip : myRoutes){
+//							System.out.println(equip.getEquipment());
+//						}
 //						for (int i = 0; i < 500; i++) {
 //							System.out.println("Test Route Data row[" + i + "]");
 //							System.out.println("Airline: " + myRouteData.get(i).getAirline());

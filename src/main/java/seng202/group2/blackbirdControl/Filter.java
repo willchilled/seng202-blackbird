@@ -5,8 +5,7 @@ import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Created by mch230 on 25/08/16.
@@ -163,6 +162,39 @@ public class Filter {
     }
 
     public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed) {
+
+        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\"", "ACTIVE=\"%1$2s\""));
+
+        System.out.println(allSelections);
+        String outputString = "SELECT * FROM AIRLINE";
+
+
+        if (menusPressed.contains("None")){
+            System.out.println("HERE");
+        }
+
+        else{
+
+        }
+
+
+
+        StringBuilder sb = new StringBuilder();
+        Formatter formatter = new Formatter(sb, Locale.US);
+
+        System.out.println(formatter.format(allSelections.get(0), "HELLO"));
+
+        for (int i=0; i<menusPressed.size()-1; i++){
+
+
+        }
+
+
+
+
+
+
+
         //System.out.println(menusPressed);
         String sql = "SELECT * FROM AIRLINE WHERE ";
         String countryselection = menusPressed.get(0);

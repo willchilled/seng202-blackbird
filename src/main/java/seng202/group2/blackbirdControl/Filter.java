@@ -1,12 +1,11 @@
 package seng202.group2.blackbirdControl;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.AirportPoint;
+import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -104,9 +103,11 @@ public class Filter {
     }
 
 
-    public static ArrayList<String> filterUniqueAirportCountries(ArrayList<AirportPoint> allPoints){
-        //Finds unique countries that have aiports
+
+    public static ArrayList<String> filterUniqueAirportCountries(){
+        //Finds unique countries that have aiports using thie database
         ArrayList<String> allCountries = new ArrayList<String>();
+        ArrayList<AirportPoint> allPoints = getAllAirportPointsFromDB();
         String currentCountry;
         for (AirportPoint airport : allPoints) {
             currentCountry = airport.getAirportCountry();
@@ -125,8 +126,9 @@ public class Filter {
         //Returns a list of all unique countries
         ArrayList<String> allCountries = new ArrayList<String>();
         String currentCountry;
-        for (AirlinePoint airport : allPoints) {
-            currentCountry = airport.getCountry();
+        for (AirlinePoint airline : allPoints) {
+            currentCountry = airline.getCountry();
+            //System.out.println(currentCountry);
             if (!allCountries.contains(currentCountry)) {
                 //System.out.println(currentCountry);
                 allCountries.add(currentCountry);
@@ -139,7 +141,61 @@ public class Filter {
     }
 
 
+    public static ArrayList<AirlinePoint> getAllAirlinePointsfromDB() {
+        String sql = " SELECT * FROM AIRLINE;";
+        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
+        return allPoints;
+    }
+
+    public static ArrayList<AirportPoint> getAllAirportPointsFromDB() {
+        //gets all Aiport Points from the database
+        String sql = "SELECT * FROM AIRPORT;";
+        ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+        allPoints = BBDatabase.performAirpointsQuery(sql);
+        return allPoints;
+    }
+
+    public static ArrayList<AirportPoint> filterAiportsByCountryUsingDB(String countrySelection) {
+        String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\";";
+        ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+        allPoints = BBDatabase.performAirpointsQuery(sql);
+        return allPoints;
+    }
+
+    public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed) {
+        //System.out.println(menusPressed);
+        String sql = "SELECT * FROM AIRLINE WHERE ";
+        String countryselection = menusPressed.get(0);
+        String activeSelection = menusPressed.get(1);
+
+        String active = "ACTIVE=\"";
+        String country = "COUNTRY=\"" + countryselection + "\"";
+
+        if (activeSelection == "Active"){
+            active += "Y\"";
+        }
+        else if (activeSelection == "Inactive"){
+            active += "N\"";
+        }
+
+        if(countryselection == "None" && activeSelection=="None"){
+            sql = "SELECT * FROM AIRLINE";
+        }
+        else if (countryselection != "None" && activeSelection != "None"){
+            sql += country +  " AND " + active + ";";
+        }
+        else if(countryselection == "None"){
+            sql += active + ";";
+        }
+        else if (activeSelection == "None"){
+
+            sql += country;
+        }
 
 
+        System.out.println("Perfomring query:"+ sql);
 
+        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
+        return allPoints;
+    }
 }

@@ -253,6 +253,7 @@ public class Parser {
 					AirportPoint myAirportPoint = new AirportPoint(airportID, airportName);
 					myAirportPoint = checkAirportData(airportPoint, myAirportPoint);
 
+					//SQLiteJDBC.addAiportPoint(myAirportPoint);
 					myAirportData.add(myAirportPoint);
 
 

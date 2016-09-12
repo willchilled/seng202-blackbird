@@ -68,6 +68,7 @@ public class GUIController {
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
+    @FXML private TableView<FlightPoint> flightTable;
     //@FXML private TableView<AirportPoint> airportTable;
 
 
@@ -107,6 +108,13 @@ public class GUIController {
     @FXML private TableColumn routeCSCol;
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
+
+    // ROUTE Table columns
+    @FXML private TableColumn flightTypeCol;
+    @FXML private TableColumn flightLocaleCol;
+    @FXML private TableColumn flightAltitudeCol;
+    @FXML private TableColumn flightLatitudeCol;
+    @FXML private TableColumn flightLongitudeCol;
 
 
     // Filter Menu testing
@@ -167,6 +175,7 @@ public class GUIController {
         routeTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Route"));
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
         airportTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airport"));
+        flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
     }
 
     /*******************************************************************************************************************
@@ -236,6 +245,20 @@ public class GUIController {
         updateRoutesTable(myRouteData);
 
     }
+    public void addFlightData(){
+        //adds route data into country rout list
+
+        System.out.println("Add Flight Data");
+
+        // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
+        File f;
+        f = getFile();
+        ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+
+        updateFlightsTable(myFlightData);
+
+    }
+
 
     /*******************************************************************************************************************
      *******************************************************************************************************************
@@ -381,6 +404,50 @@ public class GUIController {
                 }
             }
         });
+
+
+    }
+
+    private void updateFlightsTable(ArrayList<FlightPoint> points){
+        //updates FLIGHTS table with a set of FLIGHT POINTS
+        flightTable.getItems().setAll(points);
+
+        flightTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
+        flightLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
+        flightAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
+        flightLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
+        flightLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
+
+/**                 SORT THIS OUT ONCE DECIDED WHAT TO DO WITH FLIGHTS
+        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
+                        root = loader.load();
+                        AirportPopUpController popUpController = loader.getController();
+                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("My Popup test");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        //System.out.println("AH NO!");
+                    }
+
+                }
+            }
+        });**/
 
 
     }

@@ -21,7 +21,7 @@
                   <Menu fx:id="addDataMenuButton" disable="true" mnemonicParsing="false" text="Add Data">
                      <items>
                         <MenuItem fx:id="routeMenuItem" mnemonicParsing="false" onAction="#addRouteData" text="Route" />
-                        <MenuItem mnemonicParsing="false" text="Flight" />
+                        <MenuItem fx:id="flightMenuItem" mnemonicParsing="false" onAction="#addFlightData" text="Flight" />
                         <MenuItem mnemonicParsing="false" onAction="#addAirlineData" text="Airline" />
                         <MenuItem fx:id="airportMenuItem" mnemonicParsing="false" onAction="#addAirportData" text="Airport" />
                      </items>
@@ -47,26 +47,62 @@
    <center>
       <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="Flights">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </Tab>
+            <Tab text="Flights">
+               <content>
+                  <GridPane>
+                     <children>
+                        <TableView fx:id="flightTable" maxWidth="1.7976931348623157E308" prefHeight="606.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                           <columns>
+                              <TableColumn fx:id="flightTypeCol" prefWidth="75.0" text="Type" />
+                              <TableColumn fx:id="flightLocaleCol" prefWidth="75.0" text="LocaleID" />
+                              <TableColumn fx:id="flightAltitudeCol" prefWidth="75.0" text="Altitude" />
+                              <TableColumn fx:id="flightLatitudeCol" prefWidth="75.0" text="Latitude" />
+                              <TableColumn fx:id="flightLongitudeCol" prefWidth="75.0" text="Longitude" />
+                           </columns>
+                        </TableView>
+                        <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
+                                 <children>
+                                    <ChoiceBox layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
+                                    <Button layoutX="222.0" layoutY="18.0" mnemonicParsing="false" text="Filter" />
+                                    <Button layoutX="297.0" layoutY="17.0" mnemonicParsing="false" text="See all" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="612.0" minHeight="10.0" prefHeight="178.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="696.0" minHeight="10.0" prefHeight="690.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </Tab>
             <Tab text="Routes">
                <content>
                   <GridPane>
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.0" minWidth="10.0" prefWidth="20.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1119.0" minWidth="10.0" prefWidth="1119.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1109.0" minWidth="10.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="24.0" minWidth="25.0" prefWidth="25.0" />
+                        <ColumnConstraints maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1119.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="628.0" minHeight="10.0" prefHeight="158.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="732.0" minHeight="10.0" prefHeight="698.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="650.0" minHeight="20.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TableView fx:id="routeTable" prefHeight="690.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TableView fx:id="routeTable" prefHeight="690.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
@@ -101,17 +137,17 @@
                <content>
                   <GridPane>
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="570.0" minWidth="0.0" prefWidth="20.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1167.0" minWidth="10.0" prefWidth="1134.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1167.0" minWidth="10.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="612.0" minHeight="10.0" prefHeight="178.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="696.0" minHeight="10.0" prefHeight="690.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="628.0" minHeight="20.0" prefHeight="71.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TableView fx:id="airportTable" prefHeight="606.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TableView fx:id="airportTable" maxWidth="1.7976931348623157E308" prefHeight="606.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
@@ -150,16 +186,16 @@
                   <GridPane>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="570.0" minWidth="10.0" prefWidth="25.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1143.0" minWidth="10.0" prefWidth="1133.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1142.0" minWidth="10.0" prefWidth="20.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1142.0" minWidth="10.0" prefWidth="25.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints maxHeight="379.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="379.0" minHeight="130.0" prefHeight="137.0" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="696.0" minHeight="10.0" prefHeight="620.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="612.0" minHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TableView fx:id="airlineTable" prefHeight="597.0" prefWidth="1129.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TableView fx:id="airlineTable" maxWidth="1.7976931348623157E308" prefHeight="597.0" prefWidth="1129.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="airlineIDCol" prefWidth="75.0" text="ID" />
                             <TableColumn fx:id="airlineNameCol" prefWidth="75.0" text="Name" />

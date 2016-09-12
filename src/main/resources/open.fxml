@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -13,18 +15,18 @@
                   <Menu mnemonicParsing="false" text="Project">
                     <items>
                       <MenuItem fx:id="newProjMenu" mnemonicParsing="false" onAction="#show" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Load" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="Load" />
                     </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Add Data">
+                  <Menu fx:id="addDataMenuButton" disable="true" mnemonicParsing="false" text="Add Data">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Route" />
+                        <MenuItem fx:id="routeMenuItem" mnemonicParsing="false" onAction="#addRouteData" text="Route" />
                         <MenuItem mnemonicParsing="false" text="Flight" />
-                        <MenuItem mnemonicParsing="false" text="Airline" />
-                        <MenuItem mnemonicParsing="false" text="Airplane" />
+                        <MenuItem mnemonicParsing="false" onAction="#addAirlineData" text="Airline" />
+                        <MenuItem fx:id="airportMenuItem" mnemonicParsing="false" onAction="#addAirportData" text="Airport" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Export Data">
+                  <Menu disable="true" mnemonicParsing="false" text="Export Data">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Route" />
                         <MenuItem mnemonicParsing="false" text="Flight" />
@@ -43,84 +45,150 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
+      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Flights">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
-          <Tab text="Routes">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <Tab text="Routes">
+               <content>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.0" minWidth="10.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1119.0" minWidth="10.0" prefWidth="1119.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1109.0" minWidth="10.0" prefWidth="20.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="628.0" minHeight="10.0" prefHeight="158.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="732.0" minHeight="10.0" prefHeight="698.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="650.0" minHeight="20.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <TableView fx:id="routeTable" layoutX="13.0" layoutY="69.0" prefHeight="690.0" prefWidth="1142.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="Airline" />
-                            <TableColumn prefWidth="75.0" text="Airline ID" />
-                              <TableColumn prefWidth="75.0" text="Source" />
-                              <TableColumn prefWidth="75.0" text="Source ID" />
-                              <TableColumn prefWidth="75.0" text="Dest" />
-                              <TableColumn prefWidth="75.0" text="Dest ID" />
-                              <TableColumn prefWidth="75.0" text="Codeshare" />
-                              <TableColumn prefWidth="75.0" text="Stops" />
-                              <TableColumn prefWidth="75.0" text="Equipment" />
-                          </columns>
+                        <TableView fx:id="routeTable" prefHeight="690.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
+                           <columns>
+                              <TableColumn fx:id="routeAirlineCol" prefWidth="75.0" text="Airline" />
+                              <TableColumn fx:id="routeAirlineIDCol" prefWidth="75.0" text="Airline ID" visible="false" />
+                              <TableColumn fx:id="routeSrcCol" prefWidth="75.0" text="Source" />
+                              <TableColumn fx:id="routeSrcIDCol" prefWidth="75.0" text="Source ID" visible="false" />
+                              <TableColumn fx:id="routeDestCol" prefWidth="75.0" text="Dest" />
+                              <TableColumn fx:id="routeDestIDCol" prefWidth="75.0" text="Dest ID" visible="false" />
+                              <TableColumn fx:id="routeCSCol" prefWidth="75.0" text="Codeshare" visible="false" />
+                              <TableColumn fx:id="routeStopsCol" prefWidth="75.0" text="Stops" />
+                              <TableColumn fx:id="routeEqCol" prefWidth="75.0" text="Equipment" />
+                           </columns>
                         </TableView>
+                        <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
+                                 <children>
+                                    <ChoiceBox fx:id="routesFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
+                                    <Button fx:id="routesFilterbyCountryButton" layoutX="222.0" layoutY="18.0" mnemonicParsing="false" onAction="#routesFilterbyCountryButtonPressed" text="Filter" />
+                                    <Button fx:id="routesSeeallDataButton" layoutX="297.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesSeeallDataButtonPressed" text="See all" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
                      </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
+                  </GridPane>
+               </content>
+            </Tab>
             <Tab text="Airports">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <content>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="570.0" minWidth="0.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1167.0" minWidth="10.0" prefWidth="1134.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1167.0" minWidth="10.0" prefWidth="20.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="612.0" minHeight="10.0" prefHeight="178.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="696.0" minHeight="10.0" prefHeight="690.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="628.0" minHeight="20.0" prefHeight="71.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <TableView fx:id="airportTable" layoutX="13.0" layoutY="69.0" prefHeight="690.0" prefWidth="1142.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="ID" />
-                              <TableColumn prefWidth="75.0" text="Name" />
-                            <TableColumn prefWidth="75.0" text="City" />
-                              <TableColumn prefWidth="75.0" text="Country" />
-                              <TableColumn prefWidth="75.0" text="IATA/FF" />
-                              <TableColumn prefWidth="75.0" text="ICAO" />
-                              <TableColumn prefWidth="75.0" text="Lattitude" />
-                              <TableColumn prefWidth="75.0" text="Longitude" />
-                              <TableColumn prefWidth="75.0" text="Altitude" />
-                              <TableColumn prefWidth="75.0" text="TimeZone" />
-                              <TableColumn prefWidth="75.0" text="DST" />
-                              <TableColumn prefWidth="75.0" text="TZ" />
-                          </columns>
+                        <TableView fx:id="airportTable" prefHeight="606.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
+                           <columns>
+                              <TableColumn fx:id="airportIDCol" prefWidth="75.0" text="ID" />
+                              <TableColumn fx:id="airportNameCol" prefWidth="75.0" text="Name" />
+                              <TableColumn fx:id="airportCityCol" prefWidth="75.0" text="City" />
+                              <TableColumn fx:id="airportCountryCol" prefWidth="75.0" text="Country" />
+                              <TableColumn fx:id="airportIATACol" prefWidth="75.0" text="IATA/FF" visible="false" />
+                              <TableColumn fx:id="airportICAOCol" prefWidth="96.33331298828125" text="ICAO" visible="false" />
+                              <TableColumn fx:id="airportLatCol" prefWidth="93.66668701171875" text="Lattitude" visible="false" />
+                              <TableColumn fx:id="airportLongCol" prefWidth="75.0" text="Longitude" visible="false" />
+                              <TableColumn fx:id="airportAltCol" prefWidth="75.0" text="Altitude" visible="false" />
+                              <TableColumn fx:id="airportTimeCol" prefWidth="75.0" text="TimeZone" visible="false" />
+                              <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="DST" visible="false" />
+                              <TableColumn fx:id="airportTZCol" prefWidth="60.3333740234375" text="TZ" />
+                           </columns>
                         </TableView>
-                     </children></AnchorPane>
-              </content>
+                        <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
+                                 <children>
+                                    <ChoiceBox fx:id="airportFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
+                                    <Button fx:id="filterButton" layoutX="222.0" layoutY="18.0" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" />
+                                    <Button fx:id="airportSeeAllButton" layoutX="297.0" layoutY="17.0" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" text="See all" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </GridPane>
+               </content>
             </Tab>
             <Tab text="Airlines">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <content>
+                  <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="570.0" minWidth="10.0" prefWidth="25.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1143.0" minWidth="10.0" prefWidth="1133.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1142.0" minWidth="10.0" prefWidth="20.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="379.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="696.0" minHeight="10.0" prefHeight="620.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="612.0" minHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <TableView fx:id="airlineTable" layoutX="13.0" layoutY="69.0" prefHeight="690.0" prefWidth="1142.0">
+                        <TableView fx:id="airlineTable" prefHeight="597.0" prefWidth="1129.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="75.0" text="Name" />
-                              <TableColumn prefWidth="75.0" text="Alias" />
-                              <TableColumn prefWidth="75.0" text="IATA" />
-                              <TableColumn prefWidth="75.0" text="ICAO" />
-                              <TableColumn prefWidth="75.0" text="Callsign" />
-                              <TableColumn prefWidth="75.0" text="Country" />
-                              <TableColumn prefWidth="75.0" text="Active" />
+                            <TableColumn fx:id="airlineIDCol" prefWidth="75.0" text="ID" />
+                            <TableColumn fx:id="airlineNameCol" prefWidth="75.0" text="Name" />
+                              <TableColumn fx:id="airlineAliasCol" prefWidth="75.0" text="Alias" visible="false" />
+                              <TableColumn fx:id="airlineIATACol" prefWidth="75.0" text="IATA" visible="false" />
+                              <TableColumn fx:id="airlineICAOCol" prefWidth="75.0" text="ICAO" visible="false" />
+                              <TableColumn fx:id="airlineCallsignCol" prefWidth="75.0" text="Callsign" visible="false" />
+                              <TableColumn fx:id="airlineCountryCol" prefWidth="75.0" text="Country" />
+                              <TableColumn fx:id="airlineActCol" prefWidth="87.0" text="Active" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                     </children></AnchorPane>
-              </content>
+                        <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="1116.0">
+                                 <children>
+                                    <ChoiceBox fx:id="airlineFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
+                                    <Button fx:id="airlineFilterButton" layoutX="961.0" layoutY="17.0" mnemonicParsing="false" onAction="#airlinefilterButtonPressed" text="Filter" />
+                                    <Button fx:id="airlineSeeAllButton" layoutX="1024.0" layoutY="17.0" mnemonicParsing="false" onAction="#airlineSeeAllButtonPressed" text="See all" />
+                                    <ChoiceBox fx:id="airlineActiveMenu" layoutX="191.0" layoutY="17.0" prefWidth="150.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </GridPane>
+               </content>
             </Tab>
         </tabs>
       </TabPane>

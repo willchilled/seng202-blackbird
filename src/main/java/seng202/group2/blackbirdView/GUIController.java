@@ -607,22 +607,19 @@ public class GUIController {
 
     }
 
-    private ObservableList<String>populateRoutesFilterbyDestList(){
+    private void populateRoutesFilterbyDestList(){
         ArrayList<String> myArrayList = new ArrayList<String>();
         ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
-        return myList;
     }
 
-    private ObservableList<String>populateRoutesFilterByStopsList(){
+    private void populateRoutesFilterByStopsList(){
         ArrayList<String> myArrayList = new ArrayList<String>();
         ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
-        return myList;
     }
 
-    private ObservableList<String>populateRoutesFilterByEquipList(){
+    private void populateRoutesFilterByEquipList(){
         ArrayList<String> myArrayList = new ArrayList<String>();
         ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
-        return myList;
     }
 
 

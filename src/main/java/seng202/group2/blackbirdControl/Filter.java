@@ -59,19 +59,34 @@ public class Filter {
     }
 
     //filter routes based on departure location
-    public static void filterRouteSrc(ArrayList<RoutePoint> routes, String srcCountry) {
-//        for (RoutePoint route : routes) {
-//
-//            if (route.getSrcAirportID())
-//        }
+    public static ArrayList<RoutePoint> filterRouteSrc(ArrayList<RoutePoint> routes, String srcCountry) {
+        ArrayList<RoutePoint> srcRoutes = new ArrayList<RoutePoint>();
+        for (RoutePoint route : routes) {
+            AirportPoint source = route.getSource();
+            if (source.getAirportCountry().equals(srcCountry)) {
+                srcRoutes.add(route);
+            }
+        }
+        return srcRoutes;
     }
 
     //filter routes based on destination
-    public static void filterRoutes(ArrayList<RoutePoint> routes, String destCountry) {
+    public static ArrayList<RoutePoint> filterRouteDest(ArrayList<RoutePoint> routes, String destCountry) {
+        ArrayList<RoutePoint> destRoutes = new ArrayList<RoutePoint>();
         for (RoutePoint route : routes) {
-            //if (route.getSrcAirportID() && route.getDstAirportID()) {   //should airport be inside the route point? - linking of data
-
+            AirportPoint dest = route.getDestination();
+            if (dest.getAirportCountry().equals(destCountry)) {
+                destRoutes.add(route);
+            }
         }
+        return destRoutes;
+    }
+
+    //method combining filter by src and dest for routes
+    public static ArrayList<RoutePoint> filterRoutes(ArrayList<RoutePoint> routes, String srcCountry, String destCountry) {
+        ArrayList<RoutePoint> srcroutes = filterRouteSrc(routes, srcCountry);
+        ArrayList<RoutePoint> allRoutes = filterRouteDest(srcroutes, destCountry);
+        return allRoutes;
     }
 
     //filter direct or indirect routes

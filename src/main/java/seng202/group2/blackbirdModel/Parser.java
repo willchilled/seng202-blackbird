@@ -277,6 +277,27 @@ public class Parser {
 	public static int numberOfCommas(String line){
         return line.length() - line.replace(",", "").length();
     }
+
+
+	public static void linkRoutesAndAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+		//function to link routes and airports, however it is very inefficient atm
+		//called when flags from GUI (airportdataloaded = true, routedataloaded = true)
+		for (RoutePoint route : routes) {
+			int srcAirportId = route.getSrcAirportID();
+			int destAirportId = route.getDstAirportID();
+
+			for (AirportPoint airport : airports) {
+				if (srcAirportId == airport.getAirportID()) {
+					route.setSource(airport);
+					airport.incrementRoutes();
+
+				} else if (destAirportId == airport.getAirportID()) {
+					route.setDestination(airport);
+					airport.incrementRoutes();
+				}
+			}
+		}
+	}
 	
 
 	

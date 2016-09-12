@@ -14,12 +14,18 @@ public class AirportPoint extends DataPoint {
 	private float timeZone;
 	private String dst;
 	private String tz;
+
+	private int numberOfRoutes;
 	
 	public AirportPoint(int airportID, String airportName){
 		
 		this.airportID = airportID;
 		this.airportName = airportName;
 		
+	}
+
+	public void incrementRoutes() {
+		numberOfRoutes++;
 	}
 	
 	

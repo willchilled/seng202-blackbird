@@ -52,7 +52,7 @@
                <content>
                   <GridPane>
                      <children>
-                        <TitledPane animated="false" prefHeight="85.0" prefWidth="1078.0" text="Sesarch **This needs fixing**" GridPane.columnIndex="1">
+                        <TitledPane animated="false" prefHeight="85.0" prefWidth="1078.0" text="Search **This needs fixing**" GridPane.columnIndex="1">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="1067.0">
                                  <children>

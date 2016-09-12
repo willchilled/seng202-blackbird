@@ -68,7 +68,8 @@ public class GUIController {
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
-    @FXML private TableView<FlightPoint> flightTable;
+    @FXML private TableView<Flight> flightTable;
+    @FXML private TableView<FlightPoint> flightPointTable;
     //@FXML private TableView<AirportPoint> airportTable;
 
 
@@ -109,12 +110,18 @@ public class GUIController {
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
 
-    // ROUTE Table columns
-    @FXML private TableColumn flightTypeCol;
-    @FXML private TableColumn flightLocaleCol;
-    @FXML private TableColumn flightAltitudeCol;
-    @FXML private TableColumn flightLatitudeCol;
-    @FXML private TableColumn flightLongitudeCol;
+    // FLIGHT POINT Table columns
+    @FXML private TableColumn flightPointTypeCol;
+    @FXML private TableColumn flightPointLocaleCol;
+    @FXML private TableColumn flightPointAltitudeCol;
+    @FXML private TableColumn flightPointLatitudeCol;
+    @FXML private TableColumn flightPointLongitudeCol;
+
+    //FLIGHT Table columns\
+    @FXML private TableColumn flightSourceCol;
+    @FXML private TableColumn flightDestCol;
+
+
 
 
     // Filter Menu testing
@@ -245,6 +252,7 @@ public class GUIController {
         updateRoutesTable(myRouteData);
 
     }
+
     public void addFlightData(){
         //adds route data into country rout list
 
@@ -253,9 +261,9 @@ public class GUIController {
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
         File f;
         f = getFile();
-        ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+        ArrayList<FlightPoint> myFlightPointData = Parser.parseFlightData(f);
 
-        updateFlightsTable(myFlightData);
+        updateFlightsTable(myFlightPointData);
 
     }
 
@@ -410,19 +418,41 @@ public class GUIController {
 
     private void updateFlightsTable(ArrayList<FlightPoint> points){
         //updates FLIGHTS table with a set of FLIGHT POINTS
-        flightTable.getItems().setAll(points);
+        Flight myFlight = new Flight(points);
 
-        flightTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
-        flightLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
-        flightAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
-        flightLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
-        flightLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
 
-/**                 SORT THIS OUT ONCE DECIDED WHAT TO DO WITH FLIGHTS
+        flightTable.getItems().addAll(myFlight);
+        flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
+        flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
+
+        /**
+
+        flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
+        flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
+        flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
+        flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
+        flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
+**/
+                 //SORT THIS OUT ONCE DECIDED WHAT TO DO WITH FLIGHTS
         flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+
+                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
+
+                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
+
+                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
+                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
+                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
+                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
+                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
+                }
+
+                }
+                });
+                    /**
                     Stage stage;
                     Parent root;
                     stage = new Stage();

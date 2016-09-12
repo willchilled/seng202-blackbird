@@ -1,7 +1,10 @@
 package seng202.group2.blackbirdModel;
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sha162 on 10/09/16.
@@ -80,6 +83,63 @@ public class BBDatabase {
         return sql;
     }
 
+    private static String createRouteTable(){
+        //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
+        String sql = "CREATE TABLE ROUTE" +
+                "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
+                "Airline    CHAR(2) NOT NULL /*Airline iata for route*/," +
+                "Airlineid  INTEGER /*ID of Airline for route*/," +
+                "Src        CHAR(3) NOT NULL /*Source location for route*/," +
+                "Srcid      INTEGER NOT NULL /*ID number for source location location*/," +
+                "Dst        CHAR(3) NOT NULL /*Destination location for route*/," +
+                "Dstid      INTEGER NOT NULL /*ID number for destination location*/," +
+                "Codeshare  CHAR(1) /*'Y' if operated by another carrier*/," +
+                "Stops      INTEGER NOT NULL /*Number of stops the route takes*/," +
+                "foreign key (Src, Srcid, Dst, Dstid) references AIRPORT," +
+                "PRIMARY KEY (IDnum)" +
+                ")";;
+        return sql;
+    }
+
+    private static String createEquipmentTable(){
+        //creates an equipment table for sqlite, is used to give routes the multivalued atribute equipment
+        String sql = "CREATE TABLE EQUIPMENT" +
+                "(IDnum          INTEGER NOT NULL /*Comes from route*/, " +
+                "EquipmentName CHAR(3) NOT NULL," +
+                "PRIMARY KEY (EquipmentName, IDnum), "+
+                "FOREIGN KEY (IDnum) " +
+                "REFERENCES ROUTE (IDnum)" +
+                ")";
+        return sql;
+    }
+
+    private static String createFlightTable(){
+        String sql = "CREATE TABLE FLIGHT" +
+                "(Flightid  INTEGER NOT NULL /*ID number for the flight*/,"+
+                "Src        CHAR(4) NOT NULL /*Source Airport ICAO code*/," +
+                "Dst        CHAR(4) NOT NULL /*Destination Airport ICAO code*/,"+
+                "PRIMARY KEY (Flightid)" +
+                ")";
+        return sql;
+    }
+
+    private static String createFlightPointTable(){
+        String sql = "CREATE TABLE FLIGHTPOINT" +
+                "(LocaleID      VARCHAR(5) NOT NULL, "+
+                "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
+                "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
+                "Latitude       INTEGER NOT NULL /*Latitudinal co-ordinates for flight point*/, " +
+                "Longitude      INTEGER NOT NULL /*Longitudinal co-ordinates for flight point*/, "+
+                "Flightid       INTEGER NOT NULL /*comes from flight*/," +
+                "PRIMARY KEY (Flightid, LocaleID),"+
+                "FOREIGN KEY (Flightid)" +
+                "REFERENCES FLIGHT (Flightid)" +
+                ")";
+        return sql;
+    }
+
+
+
     public static void createTables() {
         //dropTables();
         setDataBaseName("jdbc:sqlite:default.db");
@@ -101,13 +161,26 @@ public class BBDatabase {
             sql = createAirlineTable();
             stmt.executeUpdate(sql);
 
+            sql = createRouteTable();
+            stmt.executeUpdate(sql);
+
+            sql = createEquipmentTable();
+            stmt.executeUpdate(sql);
+
+            sql = createFlightTable();
+            stmt.executeUpdate(sql);
+
+            sql = createFlightPointTable();
+            stmt.executeUpdate(sql);
+
+
             stmt.close();
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("AIPORT + AIRLINE Table created successfully");
+        System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
 
     }
 
@@ -172,6 +245,74 @@ public class BBDatabase {
         }
         System.out.println("Records created successfully");
     }
+
+    public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
+        //adds routes into the database
+        try{
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            //Add all routes
+            for (RoutePoint route : routePoints) {
+
+                //get info for route
+                int IDnum = route.getRouteID();
+                String Airline = route.getAirline();
+                int Airlineid = route.getAirlineID();
+                String src = route.getSrcAirport();
+                int srcid = route.getSrcAirportID();
+                String dst = route.getDstAirport();
+                int dstid = route.getDstAirportID();
+                String codeshare = route.getCodeshare();
+                int Stops = route.getStops();
+                System.out.println(codeshare);
+
+                //make route sql text to execute
+                    String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
+                        "VALUES (" +
+                        + IDnum + ", " +
+                        "\"" + Airline + "\", " +
+                        Airlineid + ", " +
+                        "\"" + src + "\", " +
+                        srcid + ", " +
+                        "\"" + dst + "\", " +
+                        dstid + ", " +
+                        "\"" + codeshare + "\", " +
+                        Stops + ");";
+
+                //execute route sql
+                stmt.executeUpdate(sql);
+
+                //equipment is special cos its a dick
+                String strEquipment = route.getEquipment();
+                String[] ListEquipment = strEquipment.split(" ");
+
+                //make equipment sql
+                //for all equipment in route
+                for(String equip : ListEquipment){
+                    //add equipment to equipment table
+                    sql = "INSERT INTO EQUIPMENT (IDnum, EquipmentName)" +
+                            "VALUES(" +
+                            "" + IDnum + ", " +
+                            "\"" + equip + "\");";
+                    stmt.executeUpdate(sql);
+                }
+            }
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            System.out.println("Could not add :");
+        }
+        System.out.println("Records created successfully");
+        }
 
     public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
         //This method adds multiple points to the Database

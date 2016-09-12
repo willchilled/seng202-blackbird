@@ -232,7 +232,7 @@ public class GUIController {
          File f;
          f = getFile();
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-
+        BBDatabase.addRoutePointstoDB(myRouteData);
         updateRoutesTable(myRouteData);
 
     }

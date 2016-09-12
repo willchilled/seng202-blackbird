@@ -423,6 +423,13 @@ public class GUIController {
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
 
+        if (activeSelection =="Active"){
+            activeSelection = "Y";
+        }
+        else if (activeSelection == "Inactive"){
+            activeSelection = "N";
+        }
+
         ArrayList<String> menusPressed  = new ArrayList<String>();
         menusPressed.add(countrySelection);
         menusPressed.add(activeSelection);

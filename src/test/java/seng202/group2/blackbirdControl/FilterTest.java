@@ -163,7 +163,7 @@ public class FilterTest extends TestCase {
 
         selectedFields.removeAll(selectedFields);
         selectedFields.add("None");
-        selectedFields.add("Active");
+        selectedFields.add("Y");
         airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
 
         assertEquals(airlinePoints.size(), 20); // "None", "Y"
@@ -176,7 +176,7 @@ public class FilterTest extends TestCase {
 
         selectedFields.removeAll(selectedFields);
         selectedFields.add("Canada");
-        selectedFields.add("Inactive");
+        selectedFields.add("N");
         airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
         assertEquals(airlinePoints.size(), 9);
 

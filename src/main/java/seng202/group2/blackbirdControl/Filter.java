@@ -162,72 +162,61 @@ public class Filter {
     }
 
     public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed) {
+        //Please read this before editing this function
+        //The function takes all of the selections pressed, and then subs the values into the selections string using a string formatter
+        //It then adds it to the query
+        //it first checks if all strings are not none and if that is true it performs the query "Select * from Airline
+        //Other wise subs all strings in
+        //Ask Stefan Before messing with this
 
-        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\"", "ACTIVE=\"%1$2s\""));
+        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\" AND ", "ACTIVE=\"%1$s\" AND "));
+       System.out.println(menusPressed.get(1));
+        String outputString = "SELECT * FROM AIRLINE ";
 
-        System.out.println(allSelections);
-        String outputString = "SELECT * FROM AIRLINE";
+        boolean allNone = true;
 
-
-        if (menusPressed.contains("None")){
-            System.out.println("HERE");
-        }
-
-        else{
-
-        }
-
-
-
-        StringBuilder sb = new StringBuilder();
-        Formatter formatter = new Formatter(sb, Locale.US);
-
-        System.out.println(formatter.format(allSelections.get(0), "HELLO"));
-
-        for (int i=0; i<menusPressed.size()-1; i++){
-
-
+        for (String currentSelection: menusPressed){
+            if (currentSelection != "None"){
+                allNone = false;
+            }
         }
 
 
+        if (!allNone){
+            outputString += "WHERE ";
+            for (int i=0; i<menusPressed.size(); i++){
+                String currentSelection = menusPressed.get(i);
+                StringBuilder sb = new StringBuilder();
+                Formatter formatter = new Formatter(sb, Locale.US);
+                if(currentSelection != "None"){
+                    outputString += formatter.format(allSelections.get(i), currentSelection);
+                }
+            }
 
-
-
-
-
-        //System.out.println(menusPressed);
-        String sql = "SELECT * FROM AIRLINE WHERE ";
-        String countryselection = menusPressed.get(0);
-        String activeSelection = menusPressed.get(1);
-
-        String active = "ACTIVE=\"";
-        String country = "COUNTRY=\"" + countryselection + "\"";
-
-        if (activeSelection == "Active"){
-            active += "Y\"";
-        }
-        else if (activeSelection == "Inactive"){
-            active += "N\"";
         }
 
-        if(countryselection == "None" && activeSelection=="None"){
-            sql = "SELECT * FROM AIRLINE";
-        }
-        else if (countryselection != "None" && activeSelection != "None"){
-            sql += country +  " AND " + active + ";";
-        }
-        else if(countryselection == "None"){
-            sql += active + ";";
-        }
-        else if (activeSelection == "None"){
+        outputString = removeLastAND(outputString);
 
-            sql += country;
-        }
+        System.out.println("\n\n");
+        System.out.println(outputString);
+        System.out.println("\n\n");
 
 
-        System.out.println("Perfomring query:"+ sql);
 
-        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
+        System.out.println("Perfomring query:"+ outputString);
+
+        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(outputString);
         return allPoints;
+    }
+
+    private static String removeLastAND(String outputString) {
+
+        String substring = outputString.substring(outputString.length()-4, outputString.length()-1);
+        if (substring.equals("AND")){
+            outputString = outputString.substring(0, outputString.length()-4);
+        }
+
+        return outputString;
+
     }
 }

@@ -1,4 +1,5 @@
 package seng202.group2.blackbirdModel;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -274,7 +275,7 @@ public class Parser {
 		return myAirportData;
 	}
 
-	public static int numberOfCommas(String line){
+	private static int numberOfCommas(String line){
         return line.length() - line.replace(",", "").length();
     }
 
@@ -357,6 +358,11 @@ public class Parser {
 						System.out.println("Airlines successfully added: " + myAirlineData.size());
 					} else if (s.equals("Route")) {
 						ArrayList<RoutePoint> myRouteData = parseRouteData(f);
+						//equipment filter test
+//						ArrayList<RoutePoint> myRoutes = Filter.routeEquipment(myRouteData, "747 CR2");
+//						for (RoutePoint equip : myRoutes){
+//							System.out.println(equip.getEquipment());
+//						}
 //						for (int i = 0; i < 500; i++) {
 //							System.out.println("Test Route Data row[" + i + "]");
 //							System.out.println("Airline: " + myRouteData.get(i).getAirline());

@@ -7,6 +7,8 @@ import seng202.group2.blackbirdModel.RoutePoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by mch230 on 25/08/16.
@@ -82,7 +84,7 @@ public class Filter {
         return destRoutes;
     }
 
-    //method combining filter by src and dest for routes
+    //method combining filter by src and dest for routes, dunno if this is needed or not?
     public static ArrayList<RoutePoint> filterRoutes(ArrayList<RoutePoint> routes, String srcCountry, String destCountry) {
         ArrayList<RoutePoint> srcroutes = filterRouteSrc(routes, srcCountry);
         ArrayList<RoutePoint> allRoutes = filterRouteDest(srcroutes, destCountry);
@@ -111,12 +113,25 @@ public class Filter {
     }
 
     //filter routes based on equipment (from drop down?)
-    public static void routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
-        for (RoutePoint route : routes) {
-            //if (route.getEquipment())
-        }
-    }
+    //Should also work if multiple equipment (SPACE SEPARATED) is given- will match if any of these equipment is present
+    public static ArrayList<RoutePoint> routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
 
+        ArrayList<RoutePoint> foundRoutes = new ArrayList<RoutePoint>();
+
+        String newEquipmentString = equipment.replaceAll(" ", "|");
+        Pattern p = Pattern.compile("\\b(" + newEquipmentString + ")\\b");
+        for (RoutePoint route : routes) {
+            String myString = route.getEquipment();
+
+            Matcher m = p.matcher(myString);
+
+            if (m.find()) {
+                //System.out.println("Match found");
+                foundRoutes.add(route);
+            }
+        }
+        return foundRoutes;
+    }
 
 
     public static ArrayList<String> filterUniqueAirportCountries(){
@@ -177,6 +192,7 @@ public class Filter {
         return allPoints;
     }
 
+    //intellij gave warning about using == for strings
     public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed) {
         //System.out.println(menusPressed);
         String sql = "SELECT * FROM AIRLINE WHERE ";

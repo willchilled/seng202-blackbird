@@ -38,8 +38,30 @@ public class GUIController {
     ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
 
+    ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
+    ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
+    ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
+    ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+
+
+
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
+
+
+    public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
+    public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
+
+    public void setRoutesFilterbyDestList(ArrayList<String> destList){ this.routesFilterbyDestList = routesFilterbyDestList;}
+    public ObservableList<String> getRoutesFilterbyDestList(){return routesFilterbyDestList;}
+
+    public void SetRoutesFilterByStopsList(ArrayList<String> stopsList){ this.routesFilterByStopsList = routesFilterByStopsList;}
+    public ObservableList<String> getRoutesFilterByStopsList(){return routesFilterByStopsList;}
+
+    public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
+    public ObservableList<String> getRoutesFilterbyEquipList(){return routesFilterbyEquipList;}
+
+
 
     public void setAllAirportPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
 
@@ -117,6 +139,11 @@ public class GUIController {
     @FXML private ChoiceBox airlineFilterMenu;
     @FXML private ChoiceBox airlineActiveMenu;
 
+    @FXML private ChoiceBox routesFilterBySourceMenu;
+    @FXML private ChoiceBox routesFilterbyDestMenu;
+    @FXML private ChoiceBox routesFilterByStopsMenu;
+    @FXML private ChoiceBox routesFilterbyEquipMenu;
+
     //Airline Popup Info
   //  @FXML private Text nameText;
 
@@ -131,6 +158,16 @@ public class GUIController {
         airlineFilterMenu.setItems(airlineCountryList);
         airlineActiveMenu.setItems(airlineActiveList);
         airlineActiveMenu.setValue(airlineActiveList.get(0));
+
+        routesFilterBySourceMenu.setValue(getRoutesFilterBySourceList().get(0));
+        routesFilterBySourceMenu.setItems(getRoutesFilterBySourceList());
+        routesFilterbyDestMenu.setValue(getRoutesFilterbyDestList().get(0));
+        routesFilterbyDestMenu.setItems(getRoutesFilterbyDestList());
+        routesFilterByStopsMenu.setValue(getRoutesFilterByStopsList().get(0));
+        routesFilterByStopsMenu.setItems(getRoutesFilterByStopsList());
+        routesFilterbyEquipMenu.setValue(getRoutesFilterbyEquipList().get(0));
+        routesFilterbyEquipMenu.setItems(getRoutesFilterbyEquipList());
+
     }
 
     private File getFile() {
@@ -234,8 +271,11 @@ public class GUIController {
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
 
         updateRoutesTable(myRouteData);
+        updateRoutesDropdowns();
 
     }
+
+
 
     /*******************************************************************************************************************
      *******************************************************************************************************************
@@ -465,7 +505,8 @@ public class GUIController {
 
     }
 
-    public void routesFilterbyCountryButtonPressed(ActionEvent actionEvent) {
+    public void routesFilterButtonPressed(ActionEvent actionEvent) {
+        System.out.println("I HAVE BEEN PRESSED");
     }
 
     /*******************************************************************************************************************
@@ -551,6 +592,40 @@ public class GUIController {
         }
 
         return populatedList;
+    }
+
+    private ObservableList<String>populateRoutesFilterBySourceList(){
+        ArrayList<String> myArrayList = new ArrayList<String>();
+        myArrayList = Filter.findUniqueRoutesBySource();
+        ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
+        return myList;
+    }
+
+    private ObservableList<String>populateRoutesFilterbyDestList(){
+        ArrayList<String> myArrayList = new ArrayList<String>();
+        ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
+        return myList;
+    }
+
+    private ObservableList<String>populateRoutesFilterByStopsList(){
+        ArrayList<String> myArrayList = new ArrayList<String>();
+        ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
+        return myList;
+    }
+
+    private ObservableList<String>populateRoutesFilterByEquipList(){
+        ArrayList<String> myArrayList = new ArrayList<String>();
+        ObservableList<String> myList = FXCollections.observableArrayList(myArrayList);
+        return myList;
+    }
+
+
+
+    private void updateRoutesDropdowns() {
+        populateRoutesFilterBySourceList();
+        populateRoutesFilterbyDestList();
+        populateRoutesFilterByStopsList();
+        populateRoutesFilterByEquipList();
     }
 
 

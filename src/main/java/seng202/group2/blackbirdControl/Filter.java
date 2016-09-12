@@ -170,40 +170,35 @@ public class Filter {
         //Ask Stefan Before messing with this
 
         ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\" AND ", "ACTIVE=\"%1$s\" AND "));
-       System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
 
         boolean allNone = true;
 
-        for (String currentSelection: menusPressed){
-            if (currentSelection != "None"){
+        for (String currentSelection : menusPressed) {
+            if (currentSelection != "None") {
                 allNone = false;
             }
         }
 
 
-        if (!allNone){
+        if (!allNone) {
             outputString += "WHERE ";
-            for (int i=0; i<menusPressed.size(); i++){
+            for (int i = 0; i < menusPressed.size(); i++) {
                 String currentSelection = menusPressed.get(i);
                 StringBuilder sb = new StringBuilder();
                 Formatter formatter = new Formatter(sb, Locale.US);
-                if(currentSelection != "None"){
+                if (currentSelection != "None") {
                     outputString += formatter.format(allSelections.get(i), currentSelection);
                 }
             }
 
+
+            outputString = removeLastAND(outputString);
+
+
+
         }
-
-        outputString = removeLastAND(outputString);
-
-        System.out.println("\n\n");
-        System.out.println(outputString);
-        System.out.println("\n\n");
-
-
-
-        System.out.println("Perfomring query:"+ outputString);
+        System.out.println("Perfomring query:" + outputString);
 
         ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(outputString);
         return allPoints;
@@ -219,4 +214,15 @@ public class Filter {
         return outputString;
 
     }
+
+    public static ArrayList<String> findUniqueRoutesBySource() {
+        String sql = "Select DISTINCT Src from ROUTES";
+
+        //ArrayList<String> uniqueRoutes = BBDatabase.performRoutesQueryUsingDB();
+
+        ArrayList<String> allPoints = new ArrayList<String>();
+        return allPoints;
+
+    }
 }
+

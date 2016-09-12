@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -61,8 +62,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1109.0" minWidth="10.0" prefWidth="20.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="628.0" minHeight="10.0" prefHeight="158.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="732.0" minHeight="10.0" prefHeight="698.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="628.0" minHeight="10.0" prefHeight="152.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="732.0" minHeight="10.0" prefHeight="599.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="650.0" minHeight="20.0" prefHeight="63.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
@@ -84,11 +85,18 @@
                         </TableView>
                         <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
                            <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="114.0" prefWidth="1114.0">
                                  <children>
-                                    <ChoiceBox fx:id="routesFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
-                                    <Button fx:id="routesFilterbyCountryButton" layoutX="222.0" layoutY="18.0" mnemonicParsing="false" onAction="#routesFilterbyCountryButtonPressed" text="Filter" />
-                                    <Button fx:id="routesSeeallDataButton" layoutX="297.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesSeeallDataButtonPressed" text="See all" />
+                                    <ChoiceBox fx:id="routesFilterBySourceMenu" layoutX="26.0" layoutY="26.0" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="routesFilterbyDestMenu" layoutX="195.0" layoutY="25.0" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" prefWidth="150.0" />
+                                    <Button fx:id="routesFilterButton" layoutX="948.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Filter" />
+                                    <Button fx:id="routesSeeallDataButton" layoutX="1022.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesSeeallDataButtonPressed" text="See all" />
+                                    <Text layoutX="35.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Source" />
+                                    <Text layoutX="196.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
+                                    <Text layoutX="364.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" />
+                                    <Text layoutX="529.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" />
                                  </children>
                               </AnchorPane>
                            </content>

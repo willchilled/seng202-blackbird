@@ -87,10 +87,10 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="114.0" prefWidth="1114.0">
                                  <children>
-                                    <ChoiceBox fx:id="routesFilterBySourceMenu" layoutX="26.0" layoutY="26.0" prefWidth="150.0" />
-                                    <ChoiceBox fx:id="routesFilterbyDestMenu" layoutX="195.0" layoutY="25.0" prefWidth="150.0" />
-                                    <ChoiceBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" prefWidth="150.0" />
-                                    <ChoiceBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="routesFilterBySourceMenu" layoutX="26.0" layoutY="26.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="routesFilterbyDestMenu" layoutX="195.0" layoutY="25.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" prefWidth="150.0" />
                                     <Button fx:id="routesFilterButton" layoutX="948.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Filter" />
                                     <Button fx:id="routesSeeallDataButton" layoutX="1022.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesSeeallDataButtonPressed" text="See all" />
                                     <Text layoutX="35.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Source" />
@@ -142,7 +142,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
                                  <children>
-                                    <ChoiceBox fx:id="airportFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="airportFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
                                     <Button fx:id="filterButton" layoutX="222.0" layoutY="18.0" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" />
                                     <Button fx:id="airportSeeAllButton" layoutX="297.0" layoutY="17.0" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" text="See all" />
                                  </children>
@@ -186,10 +186,10 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="1116.0">
                                  <children>
-                                    <ChoiceBox fx:id="airlineFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="airlineFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
                                     <Button fx:id="airlineFilterButton" layoutX="961.0" layoutY="17.0" mnemonicParsing="false" onAction="#airlinefilterButtonPressed" text="Filter" />
                                     <Button fx:id="airlineSeeAllButton" layoutX="1024.0" layoutY="17.0" mnemonicParsing="false" onAction="#airlineSeeAllButtonPressed" text="See all" />
-                                    <ChoiceBox fx:id="airlineActiveMenu" layoutX="191.0" layoutY="17.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="airlineActiveMenu" layoutX="191.0" layoutY="17.0" prefWidth="150.0" />
                                  </children>
                               </AnchorPane>
                            </content>

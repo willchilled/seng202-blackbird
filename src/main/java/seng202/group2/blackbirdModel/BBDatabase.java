@@ -270,7 +270,7 @@ public class BBDatabase {
                 int dstid = route.getDstAirportID();
                 String codeshare = route.getCodeshare();
                 int Stops = route.getStops();
-                System.out.println(codeshare);
+               // System.out.println(codeshare);
 
                 //make route sql text to execute
                     String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
@@ -531,6 +531,41 @@ public class BBDatabase {
         System.out.println("Airlines Query done successfully:" + sql);
 
         return allPoints;
+
+    }
+
+    public static ArrayList<String> performDistinctRoutesQuery(String sql) {
+
+        Connection c = makeConnection();
+        ArrayList<AirlinePoint> allPoints = new ArrayList<AirlinePoint>();
+
+        ArrayList<String> uniqueEntities = new ArrayList<>();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( sql );
+            while ( rs.next() ) {
+
+                String myresult = rs.getString(1); //We can use 0 as it only returns 1 result
+                //rs.get
+                //System.out.println(myresult);
+                uniqueEntities.add(myresult);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Disting Query Query done successfully:" + sql);
+
+        return uniqueEntities;
 
     }
 }

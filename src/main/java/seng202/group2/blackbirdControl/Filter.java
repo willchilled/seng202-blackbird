@@ -215,13 +215,18 @@ public class Filter {
 
     }
 
-    public static ArrayList<String> findUniqueRoutesBySource() {
-        String sql = "Select DISTINCT Src from ROUTES";
+    public static ArrayList<String> findDistinctStringsFromRoutes(String input) {
+        String sql = "SELECT DISTINCT %s from ROUTE";
+        sql = String.format(sql, input);
+        ArrayList<String> uniqueSources = BBDatabase.performDistinctRoutesQuery(sql);
 
-        //ArrayList<String> uniqueRoutes = BBDatabase.performRoutesQueryUsingDB();
+        //ArrayList<String> allPoints = new ArrayList<String>();
+        //uniqueSources = Collections.sort(uniqueSources);
+        Collections.sort(uniqueSources, String.CASE_INSENSITIVE_ORDER);
 
-        ArrayList<String> allPoints = new ArrayList<String>();
-        return allPoints;
+        //System.out.println(uniqueSources);
+
+        return uniqueSources;
 
     }
 }

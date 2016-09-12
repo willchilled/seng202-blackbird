@@ -3,7 +3,10 @@ package seng202.group2.blackbirdControl;
 import junit.framework.TestCase;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.AirportPoint;
+import seng202.group2.blackbirdModel.BBDatabase;
+import seng202.group2.blackbirdModel.Parser;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -11,8 +14,36 @@ import java.util.ArrayList;
  */
 public class FilterTest extends TestCase {
 
+    public void setUp() throws Exception {
+        super.setUp();
+        String cwd = System.getProperty("user.dir");
+        String airlinesFileString;
+        String airportsFileString;
+
+        airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
+        airportsFileString = cwd + "/JUnitTesting/airports.txt";
+
+        File airlinesFile = new File(airlinesFileString);
+        File airportsFile = new File(airportsFileString);
+
+        ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
+        ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
+
+
+        BBDatabase.deleteDBFile();
+        BBDatabase.createTables();
+        BBDatabase.addAirlinePointstoDB(airlinePoints);
+        BBDatabase.addAiportPortsToDB(airportPoints);
+        //myAirlineData = Filter.getAllAirlinePointsfromDB();
+        ArrayList<AirlinePoint> AirlinePoint = new ArrayList<>();
+    }
+
 
     public void testFilterAirportCountry() throws Exception {
+
+
+
+        /*
         ArrayList<AirportPoint> airportPoints = new ArrayList<AirportPoint>();
         ArrayList<AirportPoint> empty = new ArrayList<AirportPoint>();
 
@@ -38,6 +69,7 @@ public class FilterTest extends TestCase {
         //Filter a list with a result that does exist
         airportPoints = Filter.filterAirportCountry(airportPoints, "I DONT EXIST");
         assertEquals(airportPoints.size(), 0);
+        */
 
 
 
@@ -107,4 +139,48 @@ public class FilterTest extends TestCase {
 
     }
 
+    public void testGetAllAirlinePointsfromDB(){
+        ArrayList<AirlinePoint> airlinePoints = new ArrayList<>();
+        airlinePoints = Filter.getAllAirlinePointsfromDB();
+        assertEquals(airlinePoints.size(), 100);
+    }
+
+    public void testGetAllAirportPointsFromDB(){
+        ArrayList<AirportPoint> airportPoints = new ArrayList<>();
+        airportPoints = Filter.getAllAirportPointsFromDB();
+        assertEquals(airportPoints.size(), 100);
+    }
+
+    public void testFilterAirlinesBySelections(){
+        ArrayList<AirlinePoint> airlinePoints = new ArrayList<>();
+
+        ArrayList<String> selectedFields = new ArrayList<>();
+        selectedFields.add("None");
+        selectedFields.add("None");
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+
+        assertEquals(airlinePoints.size(), 100); //Both lines are None
+
+        selectedFields.removeAll(selectedFields);
+        selectedFields.add("None");
+        selectedFields.add("Active");
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+
+        assertEquals(airlinePoints.size(), 20); // "None", "Y"
+
+        selectedFields.removeAll(selectedFields);
+        selectedFields.add("Germany");
+        selectedFields.add("None");
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+        assertEquals(airlinePoints.size(), 1); // "Germany", "None"
+
+        selectedFields.removeAll(selectedFields);
+        selectedFields.add("Canada");
+        selectedFields.add("Inactive");
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+        assertEquals(airlinePoints.size(), 9);
+
+
+
+    }
 }

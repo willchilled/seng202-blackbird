@@ -2,15 +2,19 @@ package seng202.group2.blackbirdControl;
 
 import seng202.group2.blackbirdModel.AirportPoint;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by mch230 on 30/08/16.
  */
 public class Analyser {
 
+    //calculate distance between two airports
+    //may need to convert the input parameters to be strings instead, if that's easier for the GUI?
     public static double calculateDistance(AirportPoint airport1, AirportPoint airport2) {
-        //calculate the distance between two airports
         //based off the haversine formula: http://www.movable-type.co.uk/scripts/latlong.html
-        //issue- apparently this is slow. Google maps has a function to calculate distance between two points, could we use this?
+        //issue- apparently this is slow. Google maps has a function to calculate distance between two points which might be better?
         float lat1 = airport1.getLatitude();
         float long1 = airport1.getLongitude();
 
@@ -34,7 +38,7 @@ public class Analyser {
     }
 
     //ranks airports based on the number of routes
-    public static void rankAirports(boolean mostRoutes) {
+    public static void rankAirports(ArrayList<AirportPoint> airports, boolean mostRoutes) {
         if (mostRoutes) {   //rank by the most routes
 
         } else {    //rank by the fewest routes

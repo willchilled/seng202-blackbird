@@ -8,23 +8,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="304.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdView.AirlinePopUpController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdView.AirlinePopUpController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="127.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="340.0" minHeight="0.0" prefHeight="261.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="127.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="340.0" minHeight="0.0" prefHeight="237.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="340.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label fx:id="nameText" alignment="CENTER" prefHeight="24.0" prefWidth="400.0" text="Airline Name" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Pane prefHeight="261.0" prefWidth="200.0" GridPane.rowIndex="1">
+      <Pane prefHeight="373.0" prefWidth="394.0" GridPane.rowIndex="1">
          <children>
-            <GridPane layoutX="67.0" layoutY="20.0" prefHeight="209.0" prefWidth="252.0">
+            <GridPane layoutX="67.0" layoutY="15.0" prefHeight="209.0" prefWidth="252.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="104.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="148.0" />
@@ -83,6 +79,20 @@
                   <Label fx:id="activeText" text="active" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                </children>
             </GridPane>
+         </children>
+      </Pane>
+      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;">
+         <children>
+            <Label fx:id="nameText" alignment="CENTER" layoutX="3.0" layoutY="16.0" prefHeight="24.0" prefWidth="400.0" text="Airline Name" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.rowIndex="2">
+         <children>
+            <Button layoutX="181.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
          </children>
       </Pane>
    </children>

@@ -47,5 +47,11 @@ public class AirlinePopUpController {
     public void setAirlinePoint(AirlinePoint airlinePoint) {
         this.airlinePoint = airlinePoint;
     }
+
+
+    public void editAirline(){
+        System.out.println("nothing happens yet");
+        //airlinePoint.setCountry("POOS");
+    }
 }
 

@@ -404,15 +404,13 @@ public class GUIController {
         alert.showAndWait();
         */ //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();
-        //String searchQuery = airportSearchQuery.getText().toString();
+        String searchQuery = airportSearchQuery.getText();
+        System.out.println(searchQuery);
 
-        if (countrySelection != "None"){
-            ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsByCountryUsingDB(countrySelection);
-            updateAirportsTable(filteredPoints);
-        }
-        else{
-            updateAirportsTable(getAllAirportPoints());
-        }
+
+        ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsByCountryUsingDB(countrySelection, searchQuery);
+        updateAirportsTable(filteredPoints);
+
 
         //ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
         //ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);

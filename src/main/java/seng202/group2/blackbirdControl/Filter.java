@@ -155,10 +155,19 @@ public class Filter {
         return allPoints;
     }
 
-    public static ArrayList<AirportPoint> filterAiportsByCountryUsingDB(String countrySelection) {
-        String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\";";
-        ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
-        allPoints = BBDatabase.performAirpointsQuery(sql);
+    public static ArrayList<AirportPoint> filterAiportsByCountryUsingDB(String countrySelection, String query) {
+        ArrayList<AirportPoint> allPoints;
+        String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
+                " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR ALTITUDE='%1$s'" +
+                " OR TIMEZONE='%1$s' OR DST='%1$s' OR TZ='%1$s');", query);
+        if(countrySelection != "None") {
+            String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\"" + " AND " + searchString;
+            allPoints = BBDatabase.performAirpointsQuery(sql);
+        }else{
+            String sql = "SELECT * FROM AIRPORT WHERE " + searchString;
+            allPoints = BBDatabase.performAirpointsQuery(sql);
+        }
+
         return allPoints;
     }
 

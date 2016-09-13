@@ -295,7 +295,7 @@ public class GUIController {
     }
 
 
-
+/*
     public void addFlightData(){
         //adds flight data
         System.out.println("Add Flight Data");
@@ -305,7 +305,7 @@ public class GUIController {
         ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
         BBDatabase.addFlighttoDB(myFlightData);
     }
-
+    */
     public void addFlightData(){
         //adds route data into country rout list
 

@@ -152,32 +152,33 @@ public class FilterTest extends TestCase {
     }
 
     public void testFilterAirlinesBySelections(){
+        String search = "";
         ArrayList<AirlinePoint> airlinePoints = new ArrayList<>();
 
         ArrayList<String> selectedFields = new ArrayList<>();
         selectedFields.add("None");
         selectedFields.add("None");
-        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
 
         assertEquals(airlinePoints.size(), 100); //Both lines are None
 
         selectedFields.removeAll(selectedFields);
         selectedFields.add("None");
         selectedFields.add("Y");
-        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
 
         assertEquals(airlinePoints.size(), 20); // "None", "Y"
 
         selectedFields.removeAll(selectedFields);
         selectedFields.add("Germany");
         selectedFields.add("None");
-        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
         assertEquals(airlinePoints.size(), 1); // "Germany", "None"
 
         selectedFields.removeAll(selectedFields);
         selectedFields.add("Canada");
         selectedFields.add("N");
-        airlinePoints = Filter.filterAirlinesBySelections(selectedFields);
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
         assertEquals(airlinePoints.size(), 9);
 
 

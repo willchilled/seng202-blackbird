@@ -5,6 +5,7 @@ import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -154,14 +155,23 @@ public class Filter {
         return allPoints;
     }
 
-    public static ArrayList<AirportPoint> filterAiportsByCountryUsingDB(String countrySelection) {
-        String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\";";
-        ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
-        allPoints = BBDatabase.performAirpointsQuery(sql);
+    public static ArrayList<AirportPoint> filterAiportsByCountryUsingDB(String countrySelection, String query) {
+        ArrayList<AirportPoint> allPoints;
+        String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
+                " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR ALTITUDE='%1$s'" +
+                " OR TIMEZONE='%1$s' OR DST='%1$s' OR TZ='%1$s');", query);
+        if(countrySelection != "None") {
+            String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\"" + " AND " + searchString;
+            allPoints = BBDatabase.performAirpointsQuery(sql);
+        }else{
+            String sql = "SELECT * FROM AIRPORT WHERE " + searchString;
+            allPoints = BBDatabase.performAirpointsQuery(sql);
+        }
+
         return allPoints;
     }
 
-    public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed) {
+    public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed, String search) {
         //Please read this before editing this function
         //The function takes all of the selections pressed, and then subs the values into the selections string using a string formatter
         //It then adds it to the query
@@ -169,36 +179,52 @@ public class Filter {
         //Other wise subs all strings in
         //Ask Stefan Before messing with this
 
+        String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
+                "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
         ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\" AND ", "ACTIVE=\"%1$s\" AND "));
+        System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
 
         boolean allNone = true;
 
-        for (String currentSelection : menusPressed) {
-            if (currentSelection != "None") {
+        for (String currentSelection: menusPressed){
+            if (currentSelection != "None"){
                 allNone = false;
             }
         }
 
 
-        if (!allNone) {
+        if (!allNone){
             outputString += "WHERE ";
-            for (int i = 0; i < menusPressed.size(); i++) {
+            for (int i=0; i<menusPressed.size(); i++){
                 String currentSelection = menusPressed.get(i);
                 StringBuilder sb = new StringBuilder();
                 Formatter formatter = new Formatter(sb, Locale.US);
-                if (currentSelection != "None") {
+                if(currentSelection != "None"){
                     outputString += formatter.format(allSelections.get(i), currentSelection);
                 }
             }
 
-
-            outputString = removeLastAND(outputString);
-
-
-
         }
-        System.out.println("Perfomring query:" + outputString);
+
+        //If there are no filters selected, we must begin the statement with WHERE before beginning the search query
+        //statement. However if there are filters selected, we must continue the statement with AND before appending
+        // the search query statement.
+        outputString = removeLastAND(outputString);
+        if(allNone) {
+            outputString += " WHERE ";
+        }else{
+            outputString += " AND ";
+        }
+        outputString += searchString;
+
+        System.out.println("\n\n");
+        System.out.println(outputString);
+        System.out.println("\n\n");
+
+
+
+        System.out.println("Perfomring query:"+ outputString);
 
         ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(outputString);
         return allPoints;
@@ -215,14 +241,5 @@ public class Filter {
 
     }
 
-    public static ArrayList<String> findUniqueRoutesBySource() {
-        String sql = "Select DISTINCT Src from ROUTES";
 
-        //ArrayList<String> uniqueRoutes = BBDatabase.performRoutesQueryUsingDB();
-
-        ArrayList<String> allPoints = new ArrayList<String>();
-        return allPoints;
-
-    }
 }
-

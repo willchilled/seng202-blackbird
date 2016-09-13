@@ -143,8 +143,9 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
                                  <children>
                                     <ChoiceBox fx:id="airportFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
-                                    <Button fx:id="filterButton" layoutX="222.0" layoutY="18.0" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" />
-                                    <Button fx:id="airportSeeAllButton" layoutX="297.0" layoutY="17.0" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" text="See all" />
+                                    <Button fx:id="filterButton" layoutX="956.0" layoutY="19.0" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" />
+                                    <Button fx:id="airportSeeAllButton" layoutX="1032.0" layoutY="17.0" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" text="See all" />
+                                    <TextField fx:id="airportSearchQuery" layoutX="192.0" layoutY="19.0" promptText="Search..." />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -186,10 +187,11 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="1116.0">
                                  <children>
-                                    <ChoiceBox fx:id="airlineFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="airlineFilterMenu" layoutX="32.0" layoutY="17.0" prefWidth="150.0" />
                                     <Button fx:id="airlineFilterButton" layoutX="961.0" layoutY="17.0" mnemonicParsing="false" onAction="#airlinefilterButtonPressed" text="Filter" />
                                     <Button fx:id="airlineSeeAllButton" layoutX="1024.0" layoutY="17.0" mnemonicParsing="false" onAction="#airlineSeeAllButtonPressed" text="See all" />
                                     <ChoiceBox fx:id="airlineActiveMenu" layoutX="191.0" layoutY="17.0" prefWidth="150.0" />
+                                    <TextField fx:id="airlineSearchQuery" layoutX="356.0" layoutY="17.0" promptText="Search..." />
                                  </children>
                               </AnchorPane>
                            </content>

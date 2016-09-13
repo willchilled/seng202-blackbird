@@ -133,11 +133,13 @@ public class GUIController {
 
     // Filter Menu testing
     @FXML private ChoiceBox airportFilterMenu;
+    @FXML private TextField airportSearchQuery;
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
 
     @FXML private ChoiceBox airlineFilterMenu;
     @FXML private ChoiceBox airlineActiveMenu;
+    @FXML private TextField airlineSearchQuery;
 
     @FXML private ChoiceBox routesFilterBySourceMenu;
     @FXML private ChoiceBox routesFilterbyDestMenu;
@@ -442,14 +444,13 @@ public class GUIController {
         alert.showAndWait();
         */ //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();
+        String searchQuery = airportSearchQuery.getText();
+        System.out.println(searchQuery);
 
-        if (countrySelection != "None"){
-            ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsByCountryUsingDB(countrySelection);
-            updateAirportsTable(filteredPoints);
-        }
-        else{
-            updateAirportsTable(getAllAirportPoints());
-        }
+
+        ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsByCountryUsingDB(countrySelection, searchQuery);
+        updateAirportsTable(filteredPoints);
+
 
         //ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
         //ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
@@ -462,6 +463,7 @@ public class GUIController {
 
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
+        String searchQuery = airlineSearchQuery.getText().toString();
 
         if (activeSelection =="Active"){
             activeSelection = "Y";
@@ -475,7 +477,7 @@ public class GUIController {
         menusPressed.add(activeSelection);
 
 
-        ArrayList<AirlinePoint> allPoints = Filter.filterAirlinesBySelections(menusPressed);
+        ArrayList<AirlinePoint> allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);
         updateAirlinesTable(allPoints);
 
 //        ArrayList<AirlinePoint> filteredPoints = new ArrayList<AirlinePoint>();

@@ -59,7 +59,7 @@ public class BBDatabase {
                         " NAME           VARCHAR(40)   NOT NULL," +
                         " CITY           VARCHAR(40)   NOT NULL," +
                         " COUNTRY        VARCHAR(40)   NOT NULL," +
-                        " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null
+                        " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                         " ICAO           CHAR(4)," +
                         " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
                         " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
@@ -76,12 +76,12 @@ public class BBDatabase {
         String sql = "CREATE TABLE AIRLINE " +
                 "(ID INT PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
-                " ALIAS           VARCHAR(40)   NOT NULL," +
-                " IATA           VARCHAR(40)   NOT NULL," +
-                " ICAO           VARCHAR(40)," +
+                " ALIAS           VARCHAR(40)," +   //alias can be null
+                " IATA           CHAR(2)," +    //can have either IATA or ICAO
+                " ICAO           CHAR(3)," +
                 " CALLSIGN           VARCHAR(40)," +
-                " COUNTRY           VARCHAR(40)," +
-                " ACTIVE           VARCHAR(1))";
+                " COUNTRY           VARCHAR(40) NOT NULL," + //not null?
+                " ACTIVE           CHAR(1) constraint check_active check (ACTIVE in ('Y', 'N')) )";
         //System.out.println(sql);
         return sql;
     }
@@ -417,32 +417,8 @@ public class BBDatabase {
             //System.out.println("Opened database successfully");
             stmt = c.createStatement();
 
-            for (AirlinePoint airport : airlinePoints) {
-
-                int id = airport.getAirlineID();
-                String name = airport.getAirlineName();
-                //System.out.println(name);
-                String alias = airport.getAirlineAlias();
-                String iata = airport.getIata();
-                String icao = airport.getIcao();
-                String callsign = airport.getCallsign();
-                String country = airport.getCountry();
-                String active = airport.getActive();
-
-
-
-                String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
-                        "VALUES (" +
-                        + id + ", \"" +
-                        name  + "\", \"" +
-                        alias + "\", \"" +
-                        iata +  "\", \"" +
-                        icao + "\", \"" +
-                        callsign + "\", \"" +
-                        country + "\", \""+
-                        active + "\");";
-                // System.out.println(sql);
-                stmt.executeUpdate(sql);
+            for (AirlinePoint airline : airlinePoints) {
+                addSingleAirline(airline, stmt);
             }
 
             stmt.close();
@@ -453,11 +429,47 @@ public class BBDatabase {
 
             //System.exit(0);
             System.out.println("Could not add :");
-            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
         }
         System.out.println("Records created successfully");
     }
 
+    private static void addSingleAirline(AirlinePoint airline, Statement stmt) {
+        int id = airline.getAirlineID();
+        String name = airline.getAirlineName();
+        //System.out.println(name);
+        String alias = airline.getAirlineAlias();
+        String iata = airline.getIata();
+        String icao = airline.getIcao();
+        String callsign = airline.getCallsign();
+        String country = airline.getCountry();
+        String active = airline.getActive();
+
+
+
+        String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
+                "VALUES (" +
+                + id + ", \"" +
+                name  + "\", \"" +
+                alias + "\", \"" +
+                iata +  "\", \"" +
+                icao + "\", \"" +
+                callsign + "\", \"" +
+                country + "\", \""+
+                active + "\");";
+        // System.out.println(sql);
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("Could not add: " + id + " " + name + " " + alias + " " + iata + ", " + icao + ", " + country + ", " + active);
+            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
+            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
+            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+                            "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            //System.exit(0);
+        }
+    }
 
 
 

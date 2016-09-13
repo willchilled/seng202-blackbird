@@ -211,12 +211,21 @@ public class Parser {
 
 		myAirportPoint.setAirportCity(airportPoint[2]);
 		myAirportPoint.setAirportCountry(airportPoint[3]);
-		myAirportPoint.setIata(airportPoint[4]);
-		if (airportPoint[5].equals("\\N")) {
-			myAirportPoint.setIcao("");	//set as empty string
+		if (airportPoint[4].isEmpty()) {
+			myAirportPoint.setIata(null);
+		} else {
+			myAirportPoint.setIata(airportPoint[4]);
+		}
+		if (airportPoint[5].isEmpty()) {
+			myAirportPoint.setIcao(null);
 		} else {
 			myAirportPoint.setIcao(airportPoint[5]);
 		}
+//		if (airportPoint[5].equals("\\N")) {
+//			myAirportPoint.setIcao("");	//set as empty string
+//		} else {
+			//myAirportPoint.setIcao(airportPoint[5]);
+//		}
 
 		myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
 		myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));

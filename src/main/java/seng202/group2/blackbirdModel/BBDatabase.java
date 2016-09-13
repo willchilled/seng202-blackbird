@@ -1,6 +1,8 @@
 package seng202.group2.blackbirdModel;
 import com.sun.xml.internal.bind.v2.model.core.ID;
+import seng202.group2.blackbirdView.GUIController;
 
+import javax.swing.*;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,13 +53,14 @@ public class BBDatabase {
 
     //#######################MAKING TABLES//
     private static String createAirportTable(){
+        //added additional constraints on some of the fields, but i think adding some on parsing as well may simplify things?
         String sql = "CREATE TABLE AIRPORT " +
                         "(ID INT PRIMARY KEY    NOT NULL," +
                         " NAME           VARCHAR(40)   NOT NULL," +
                         " CITY           VARCHAR(40)   NOT NULL," +
                         " COUNTRY        VARCHAR(40)   NOT NULL," +
-                        " IATA           CHAR(3) UNIQUE," +
-                        " ICAO           CHAR(4) UNIQUE," +
+                        " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null
+                        " ICAO           CHAR(4)," +
                         " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
                         " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
                         " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
@@ -261,7 +264,6 @@ public class BBDatabase {
     public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
         //This method adds multiple points to the Database
         try {
-
             Connection c = makeConnection();
             Statement stmt = null;
             Class.forName("org.sqlite.JDBC");
@@ -272,55 +274,26 @@ public class BBDatabase {
 
             for (AirportPoint airport : airportPoints) {
                 addSingleAirport(airport, stmt);
-//                int airportID = airport.getAirportID();
-//                String airportName = airport.getAirportName();
-//                String City = airport.getAirportCity();
-//                String Country = airport.getAirportCountry();
-//                String Iata = airport.getIata();
-//                String Icao = airport.getIcao();
-//                float Latitude = airport.getLatitude();
-//                float Longitude = airport.getLongitude();
-//                float Altitude = airport.getAltitude();
-//                float timezone = airport.getTimeZone();
-//                String Dst = airport.getDst();
-//                String tz= airport.getTz();
-//                //System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
-//
-//                String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
-//                        "VALUES (" +
-//                        + airportID + ", \"" +
-//                        airportName  + "\", \"" +
-//                        City + "\", \"" +
-//                        Country +  "\", \"" +
-//                        Iata + "\", \"" +
-//                        Icao + "\", " +
-//                        Latitude + ", " +
-//                        Longitude + ", " +
-//                        Altitude + ", " +
-//                        timezone + ", \"" +
-//                        Dst + "\", \"" +
-//                        tz + "\"); ";
-//
-//                // System.out.println(sql);
-//                stmt.executeUpdate(sql);
-
-
             }
 
             stmt.close();
             c.commit();
             c.close();
-        } catch ( Exception e ) {
+        } catch ( Exception e ) {   //should this exception be made more specific? Or surrounding a more specific code block?
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 
             //System.exit(0);
-            System.out.println("Could not add :");
+            //System.out.println("Could not add :");
 
         }
         System.out.println("Records created successfully");
     }
 
-    public static void addSingleAirport(AirportPoint airport, Statement stmt) {
+    //Replaced this with addSingleAirport- my bad. Needed a separate method to add each individual entry to make the try-catch useful
+//    protected static void addAiportPointToDB(AirportPoint airport) {
+
+
+    private static void addSingleAirport(AirportPoint airport, Statement stmt) {
         int airportID = airport.getAirportID();
         String airportName = airport.getAirportName();
         String City = airport.getAirportCity();
@@ -356,7 +329,11 @@ public class BBDatabase {
         } catch (SQLException e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
-
+            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
+            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
+            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+                    "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
+                    "Error", JOptionPane.ERROR_MESSAGE);
             //System.exit(0);
         }
     }
@@ -481,63 +458,7 @@ public class BBDatabase {
         System.out.println("Records created successfully");
     }
 
-    protected static void addAiportPointToDB(AirportPoint airport) {
-        //This method adds a singular Airport Point to DB -- Use this for adding data
-        //need to make catch useful
 
-        int airportID = airport.getAirportID();
-        String airportName = airport.getAirportName();
-        String City = airport.getAirportCity();
-        String Country = airport.getAirportCountry();
-        String Iata = airport.getIata();
-        String Icao = airport.getIcao();
-        float Latitude = airport.getLatitude();
-        float Longitude = airport.getLongitude();
-        float Altitude = airport.getAltitude();
-        float timezone = airport.getTimeZone();
-        String Dst = airport.getDst();
-        String tz= airport.getTz();
-
-      //  System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
-
-
-
-
-        try {
-            Connection c = makeConnection();
-            Statement stmt = null;
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
-            //System.out.println("Opened database successfully");
-            stmt = c.createStatement();
-            String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
-                    "VALUES (" +
-                    + airportID + ", \"" +
-                    airportName  + "\", \"" +
-                    City + "\", \"" +
-                    Country +  "\", \"" +
-                    Iata + "\", \"" +
-                    Icao + "\", " +
-                    Latitude + ", " +
-                    Longitude + ", " +
-                    Altitude + ", " +
-                    timezone + ", \"" +
-                    Dst + "\", \"" +
-                    tz + "\"); ";
-            stmt.executeUpdate(sql);
-            stmt.close();
-            c.commit();
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-
-           //System.exit(0);
-            System.out.println("Could not add :");
-            System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
-        }
-        //System.out.println("Records created successfully");
-    }
 
 
 

@@ -5,7 +5,6 @@ import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -241,15 +240,27 @@ public class Filter {
 
     }
 
-    public static ArrayList<String> findDistinctStringsFromRoutes(String input) {
-        String sql = "SELECT DISTINCT %s from ROUTE";
-        sql = String.format(sql, input);
-        ArrayList<String> uniqueSources = BBDatabase.performDistinctRoutesQuery(sql);
-
+    public static ArrayList<String> findDistinctStringFromTable(String input, String Table) {
+        String sql = "SELECT DISTINCT %s from %s";
+        sql = String.format(sql, input, Table);
+        ArrayList<String> uniqueSources = BBDatabase.performDistinctStringQuery(sql);
         //ArrayList<String> allPoints = new ArrayList<String>();
         //uniqueSources = Collections.sort(uniqueSources);
         Collections.sort(uniqueSources, String.CASE_INSENSITIVE_ORDER);
+        //System.out.println(uniqueSources);
+        //Hello world
 
+        return uniqueSources;
+
+    }
+
+    public static ArrayList<String> findDistinctStringsFromEquip(String input) {
+        String sql = "SELECT DISTINCT %s from EQUIPMENT";
+        sql = String.format(sql, input);
+        ArrayList<String> uniqueSources = BBDatabase.performDistinctStringQuery(sql);
+        //ArrayList<String> allPoints = new ArrayList<String>();
+        //uniqueSources = Collections.sort(uniqueSources);
+        Collections.sort(uniqueSources, String.CASE_INSENSITIVE_ORDER);
         //System.out.println(uniqueSources);
         //Hello world
 

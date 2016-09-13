@@ -620,7 +620,7 @@ public class BBDatabase {
 
     }
 
-    public static ArrayList<String> performDistinctRoutesQuery(String sql) {
+    public static ArrayList<String> performDistinctStringQuery(String sql) {
 
         Connection c = makeConnection();
         ArrayList<AirlinePoint> allPoints = new ArrayList<AirlinePoint>();

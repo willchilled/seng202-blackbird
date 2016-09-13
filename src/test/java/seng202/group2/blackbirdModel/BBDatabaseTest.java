@@ -1,9 +1,7 @@
 package seng202.group2.blackbirdModel;
 
 import junit.framework.TestCase;
-import seng202.group2.blackbirdControl.Filter;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -60,7 +58,7 @@ public class BBDatabaseTest extends TestCase {
     }
 
     public void testPerformDistinctRoutesQuery() throws Exception {
-        ArrayList<String> myResult = BBDatabase.performDistinctRoutesQuery("Select DISTINCT Src from ROUTE");
+        ArrayList<String> myResult = BBDatabase.performDistinctStringQuery("Select DISTINCT Src from ROUTE");
 
     }
 

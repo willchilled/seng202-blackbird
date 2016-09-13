@@ -187,7 +187,7 @@ public class FilterTest extends TestCase {
     }
 
     public void testFindDistinctStringsFromRoutes(){
-        Filter.findDistinctStringsFromRoutes("Src");
+        Filter.findDistinctStringFromTable("Src", "ROUTE");
 
     }
 }

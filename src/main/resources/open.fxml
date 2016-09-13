@@ -173,6 +173,7 @@
                                     <Text layoutX="196.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
                                     <Text layoutX="364.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" />
                                     <Text layoutX="529.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" />
+                                    <TextField fx:id="routesSearchMenu" layoutX="699.0" layoutY="24.0" promptText="Search..." />
                                  </children>
                               </AnchorPane>
                            </content>

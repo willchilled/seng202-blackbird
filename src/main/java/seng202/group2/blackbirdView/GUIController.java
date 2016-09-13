@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdControl.Filter;
@@ -142,8 +143,6 @@ public class GUIController {
     //FLIGHT Table columns\
     @FXML private TableColumn flightSourceCol;
     @FXML private TableColumn flightDestCol;
-
-
 
 
     // Filter Menu testing
@@ -295,7 +294,6 @@ public class GUIController {
     }
 
 
-/*
     public void addFlightData(){
         //adds flight data
         System.out.println("Add Flight Data");
@@ -304,8 +302,12 @@ public class GUIController {
         f = getFile();
         ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
         BBDatabase.addFlighttoDB(myFlightData);
+        updateFlightsTable(myFlightData);
     }
-    */
+
+
+
+    /* This is adding the flight without the database
     public void addFlightData(){
         //adds route data into country rout list
 
@@ -318,7 +320,7 @@ public class GUIController {
 
         updateFlightsTable(myFlightPointData);
 
-    }
+    }*/
 
 
     /*******************************************************************************************************************
@@ -330,7 +332,30 @@ public class GUIController {
     private void updateAirlinesTable(ArrayList<AirlinePoint> points){
         //Updates the view with a given set of airline points
         airlineTable.getItems().setAll(points);
+
+        //Trying to change the colour of rows
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
+        airlineIDCol.setCellFactory(column -> {
+            return new TableCell<AirlinePoint, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    //setText(empty ? "" : getItem().toString());
+                    //setGraphic(null);
+
+                    TableRow<AirlinePoint> currentRow = getTableRow();
+
+                    if (!isEmpty()) {
+
+                        if(item == 2)
+                            currentRow.setStyle("-fx-background-color:lightcoral");
+                    }
+                }
+            };
+        });
+
+
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
         airlineIATACol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("iata"));
@@ -338,6 +363,13 @@ public class GUIController {
         airlineCallsignCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("callsign"));
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
         airlineActCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
+
+
+
+
+
+
+
 
 
         airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -478,15 +510,6 @@ public class GUIController {
         flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
         flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
 
-        /**
-
-        flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
-        flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
-        flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
-        flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
-        flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
-**/
-                 //SORT THIS OUT ONCE DECIDED WHAT TO DO WITH FLIGHTS
         flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event){
@@ -505,33 +528,6 @@ public class GUIController {
 
                 }
                 });
-                    /**
-                    Stage stage;
-                    Parent root;
-                    stage = new Stage();
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
-                        root = loader.load();
-                        AirportPopUpController popUpController = loader.getController();
-                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
-                        popUpController.setUpPopUp();
-
-                        stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
-                        stage.initModality(Modality.NONE);
-                        stage.initOwner(null);
-
-                        stage.show();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        //System.out.println("AH NO!");
-                    }
-
-                }
-            }
-        });**/
-
 
     }
 

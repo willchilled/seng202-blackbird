@@ -137,10 +137,10 @@ public class GUIController {
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
 
-    @FXML private ChoiceBox airlineFilterMenu;
-    @FXML private ChoiceBox airlineActiveMenu;
+;
     @FXML private ComboBox airlineFilterMenu;
     @FXML private ComboBox airlineActiveMenu;
+    @FXML private TextField airlineSearchQuery;
 
     @FXML private ComboBox routesFilterBySourceMenu;
     @FXML private ComboBox routesFilterbyDestMenu;

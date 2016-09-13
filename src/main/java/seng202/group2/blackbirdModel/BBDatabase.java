@@ -359,7 +359,6 @@ public class BBDatabase {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
-            //System.out.println("Opened database successfully");
             stmt = c.createStatement();
 
             //Add all routes
@@ -390,9 +389,7 @@ public class BBDatabase {
                         Stops + ");";
 
                 //execute route sql
-                System.out.println(sql);
                 stmt.executeUpdate(sql);
-            }
 
                 //equipment is special cos its a dick
                 String strEquipment = route.getEquipment();
@@ -418,7 +415,7 @@ public class BBDatabase {
             //System.out.println("Could not add :");
         }
         System.out.println("Records created successfully");
-        }
+    }
 
     public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
         //This method adds multiple points to the Database

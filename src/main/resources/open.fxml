@@ -143,9 +143,9 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
                                  <children>
                                     <ComboBox fx:id="airportFilterMenu" layoutX="27.0" layoutY="19.0" prefWidth="150.0" />
-                                    <Button fx:id="filterButton" layoutX="222.0" layoutY="18.0" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" />
-                                    <Button fx:id="airportSeeAllButton" layoutX="297.0" layoutY="17.0" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" text="See all" />
-                                     <TextField fx:id="airportSearchQuery" layoutX="192.0" layoutY="19.0" promptText="Search..." />
+                                    <Button fx:id="filterButton" layoutX="951.0" layoutY="17.0" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" />
+                                    <Button fx:id="airportSeeAllButton" layoutX="1038.0" layoutY="17.0" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" text="See all" />
+                                     <TextField fx:id="airportSearchQuery" layoutX="191.0" layoutY="19.0" promptText="Search..." />
                                  </children>
                               </AnchorPane>
                            </content>

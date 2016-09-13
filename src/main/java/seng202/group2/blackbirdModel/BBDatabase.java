@@ -56,15 +56,15 @@ public class BBDatabase {
                         " NAME           VARCHAR(40)   NOT NULL," +
                         " CITY           VARCHAR(40)   NOT NULL," +
                         " COUNTRY        VARCHAR(40)   NOT NULL," +
-                        " IATA           VARCHAR(5)," +
-                        " ICAO           VARCHAR(5)," +
-                        " LATITUDE       FLOAT," +
-                        " LONGTITUDE     FLOAT,"+
-                        " ALTITUDE       FLOAT," +
-                        " TIMEZONE       FLOAT," +
-                        " DST            VARCHAR(5)," +
+                        " IATA           CHAR(3) UNIQUE," +
+                        " ICAO           CHAR(4) UNIQUE," +
+                        " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
+                        " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
+                        " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
+                        " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
+                        " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U'))," +
                         " TZ             VARCHAR(40))";
-       // System.out.println(sql);
+       System.out.println(sql);
         return sql;
 
     }
@@ -199,36 +199,38 @@ public class BBDatabase {
             stmt = c.createStatement();
 
             for (AirportPoint airport : airportPoints) {
-                int airportID = airport.getAirportID();
-                String airportName = airport.getAirportName();
-                String City = airport.getAirportCity();
-                String Country = airport.getAirportCountry();
-                String Iata = airport.getIata();
-                String Icao = airport.getIcao();
-                float Latitude = airport.getLatitude();
-                float Longtitude = airport.getLongitude();
-                float Altitude = airport.getAltitude();
-                float timezone = airport.getTimeZone();
-                String Dst = airport.getDst();
-                String tz= airport.getTz();
-
-                String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, LONGTITUDE ,ALTITUDE, TIMEZONE, DST, TZ) " +
-                        "VALUES (" +
-                        + airportID + ", \"" +
-                        airportName  + "\", \"" +
-                        City + "\", \"" +
-                        Country +  "\", \"" +
-                        Iata + "\", \"" +
-                        Icao + "\", " +
-                        Latitude + ", " +
-                        Longtitude + ", " +
-                        Altitude + ", " +
-                        timezone + ", \"" +
-                        Dst + "\", \"" +
-                        tz + "\"); ";
-
-                // System.out.println(sql);
-                stmt.executeUpdate(sql);
+                addSingleAirport(airport, stmt);
+//                int airportID = airport.getAirportID();
+//                String airportName = airport.getAirportName();
+//                String City = airport.getAirportCity();
+//                String Country = airport.getAirportCountry();
+//                String Iata = airport.getIata();
+//                String Icao = airport.getIcao();
+//                float Latitude = airport.getLatitude();
+//                float Longitude = airport.getLongitude();
+//                float Altitude = airport.getAltitude();
+//                float timezone = airport.getTimeZone();
+//                String Dst = airport.getDst();
+//                String tz= airport.getTz();
+//                //System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
+//
+//                String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
+//                        "VALUES (" +
+//                        + airportID + ", \"" +
+//                        airportName  + "\", \"" +
+//                        City + "\", \"" +
+//                        Country +  "\", \"" +
+//                        Iata + "\", \"" +
+//                        Icao + "\", " +
+//                        Latitude + ", " +
+//                        Longitude + ", " +
+//                        Altitude + ", " +
+//                        timezone + ", \"" +
+//                        Dst + "\", \"" +
+//                        tz + "\"); ";
+//
+//                // System.out.println(sql);
+//                stmt.executeUpdate(sql);
 
 
             }
@@ -241,9 +243,50 @@ public class BBDatabase {
 
             //System.exit(0);
             System.out.println("Could not add :");
-           // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
+
         }
         System.out.println("Records created successfully");
+    }
+
+    public static void addSingleAirport(AirportPoint airport, Statement stmt) {
+        int airportID = airport.getAirportID();
+        String airportName = airport.getAirportName();
+        String City = airport.getAirportCity();
+        String Country = airport.getAirportCountry();
+        String Iata = airport.getIata();
+        String Icao = airport.getIcao();
+        float Latitude = airport.getLatitude();
+        float Longitude = airport.getLongitude();
+        float Altitude = airport.getAltitude();
+        float timezone = airport.getTimeZone();
+        String Dst = airport.getDst();
+        String tz= airport.getTz();
+        //System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
+
+        String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
+                "VALUES (" +
+                + airportID + ", \"" +
+                airportName  + "\", \"" +
+                City + "\", \"" +
+                Country +  "\", \"" +
+                Iata + "\", \"" +
+                Icao + "\", " +
+                Latitude + ", " +
+                Longitude + ", " +
+                Altitude + ", " +
+                timezone + ", \"" +
+                Dst + "\", \"" +
+                tz + "\"); ";
+
+        // System.out.println(sql);
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
+
+            //System.exit(0);
+        }
     }
 
     public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
@@ -309,7 +352,7 @@ public class BBDatabase {
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 
-            System.out.println("Could not add :");
+            //System.out.println("Could not add :");
         }
         System.out.println("Records created successfully");
         }
@@ -362,7 +405,7 @@ public class BBDatabase {
 
             //System.exit(0);
             System.out.println("Could not add :");
-            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
+            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
         }
         System.out.println("Records created successfully");
     }
@@ -378,13 +421,13 @@ public class BBDatabase {
         String Iata = airport.getIata();
         String Icao = airport.getIcao();
         float Latitude = airport.getLatitude();
-        float Longtitude = airport.getLongitude();
+        float Longitude = airport.getLongitude();
         float Altitude = airport.getAltitude();
         float timezone = airport.getTimeZone();
         String Dst = airport.getDst();
         String tz= airport.getTz();
 
-      //  System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
+      //  System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
 
 
 
@@ -397,7 +440,7 @@ public class BBDatabase {
             c.setAutoCommit(false);
             //System.out.println("Opened database successfully");
             stmt = c.createStatement();
-            String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, LONGTITUDE ,ALTITUDE, TIMEZONE, DST, TZ) " +
+            String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
                     "VALUES (" +
                     + airportID + ", \"" +
                     airportName  + "\", \"" +
@@ -406,7 +449,7 @@ public class BBDatabase {
                     Iata + "\", \"" +
                     Icao + "\", " +
                     Latitude + ", " +
-                    Longtitude + ", " +
+                    Longitude + ", " +
                     Altitude + ", " +
                     timezone + ", \"" +
                     Dst + "\", \"" +
@@ -420,7 +463,7 @@ public class BBDatabase {
 
            //System.exit(0);
             System.out.println("Could not add :");
-            System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
+            System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
         }
         //System.out.println("Records created successfully");
     }
@@ -451,7 +494,7 @@ public class BBDatabase {
                 String Iata = rs.getString("IATA");
                 String Icao = rs.getString("ICAO");
                 float Latitude = rs.getFloat("LATITUDE");
-                float Longtitude = rs.getFloat("LONGTITUDE");
+                float Longitude = rs.getFloat("Longitude");
                 float Altitude = rs.getFloat("ALTITUDE");
                 float timezone = rs.getFloat("TIMEZONE");
                 String Dst = rs.getString("DST");
@@ -464,7 +507,7 @@ public class BBDatabase {
                 myPoint.setIata(Iata);
                 myPoint.setIcao(Icao);
                 myPoint.setLatitude(Latitude);
-                myPoint.setLongitude(Longtitude);
+                myPoint.setLongitude(Longitude);
                 myPoint.setAltitude((int)Altitude);
                 myPoint.setTimeZone(timezone);
                 myPoint.setDst(Dst);

@@ -284,6 +284,7 @@ public class Parser {
 		//function to link routes and airports, however it is very inefficient atm
 		//called when flags from GUI (airportdataloaded = true, routedataloaded = true)
 		for (RoutePoint route : routes) {
+			//int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
 			int srcAirportId = route.getSrcAirportID();
 			int destAirportId = route.getDstAirportID();
 
@@ -295,6 +296,9 @@ public class Parser {
 				} else if (destAirportId == airport.getAirportID()) {
 					route.setDestination(airport);
 					airport.incrementRoutes();
+				} else {
+					//TODO
+					//raise an exception here? a route is using an airport that doesn't exist
 				}
 			}
 		}

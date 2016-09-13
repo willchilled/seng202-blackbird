@@ -122,7 +122,7 @@
                               <TableColumn fx:id="airportCountryCol" prefWidth="75.0" text="Country" />
                               <TableColumn fx:id="airportIATACol" prefWidth="75.0" text="IATA/FF" visible="false" />
                               <TableColumn fx:id="airportICAOCol" prefWidth="96.33331298828125" text="ICAO" visible="false" />
-                              <TableColumn fx:id="airportLatCol" prefWidth="93.66668701171875" text="Lattitude" visible="false" />
+                              <TableColumn fx:id="airportLatCol" prefWidth="93.66668701171875" text="Latitude" visible="false" />
                               <TableColumn fx:id="airportLongCol" prefWidth="75.0" text="Longitude" visible="false" />
                               <TableColumn fx:id="airportAltCol" prefWidth="75.0" text="Altitude" visible="false" />
                               <TableColumn fx:id="airportTimeCol" prefWidth="75.0" text="TimeZone" visible="false" />

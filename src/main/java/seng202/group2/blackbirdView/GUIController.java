@@ -111,11 +111,13 @@ public class GUIController {
 
     // Filter Menu testing
     @FXML private ChoiceBox airportFilterMenu;
+    @FXML private TextField airportSearchQuery;
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
 
     @FXML private ChoiceBox airlineFilterMenu;
     @FXML private ChoiceBox airlineActiveMenu;
+    @FXML private TextField airlineSearchQuery;
 
     //Airline Popup Info
   //  @FXML private Text nameText;
@@ -402,6 +404,7 @@ public class GUIController {
         alert.showAndWait();
         */ //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();
+        //String searchQuery = airportSearchQuery.getText().toString();
 
         if (countrySelection != "None"){
             ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsByCountryUsingDB(countrySelection);
@@ -422,6 +425,7 @@ public class GUIController {
 
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
+        String searchQuery = airlineSearchQuery.getText().toString();
 
         if (activeSelection =="Active"){
             activeSelection = "Y";
@@ -435,7 +439,7 @@ public class GUIController {
         menusPressed.add(activeSelection);
 
 
-        ArrayList<AirlinePoint> allPoints = Filter.filterAirlinesBySelections(menusPressed);
+        ArrayList<AirlinePoint> allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);
         updateAirlinesTable(allPoints);
 
 //        ArrayList<AirlinePoint> filteredPoints = new ArrayList<AirlinePoint>();

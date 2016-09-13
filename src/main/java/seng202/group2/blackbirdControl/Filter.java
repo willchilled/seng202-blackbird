@@ -5,6 +5,7 @@ import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -161,7 +162,7 @@ public class Filter {
         return allPoints;
     }
 
-    public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed) {
+    public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed, String search) {
         //Please read this before editing this function
         //The function takes all of the selections pressed, and then subs the values into the selections string using a string formatter
         //It then adds it to the query
@@ -169,8 +170,10 @@ public class Filter {
         //Other wise subs all strings in
         //Ask Stefan Before messing with this
 
+        String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
+                "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
         ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\" AND ", "ACTIVE=\"%1$s\" AND "));
-       System.out.println(menusPressed.get(1));
+        System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
 
         boolean allNone = true;
@@ -195,7 +198,16 @@ public class Filter {
 
         }
 
+        //If there are no filters selected, we must begin the statement with WHERE before beginning the search query
+        //statement. However if there are filters selected, we must continue the statement with AND before appending
+        // the search query statement.
         outputString = removeLastAND(outputString);
+        if(allNone) {
+            outputString += " WHERE ";
+        }else{
+            outputString += " AND ";
+        }
+        outputString += searchString;
 
         System.out.println("\n\n");
         System.out.println(outputString);
@@ -219,4 +231,6 @@ public class Filter {
         return outputString;
 
     }
+
+
 }

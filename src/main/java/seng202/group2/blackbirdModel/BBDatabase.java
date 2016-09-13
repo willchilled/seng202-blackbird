@@ -115,25 +115,27 @@ public class BBDatabase {
 
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
-                "(Flightid  INTEGER NOT NULL /*ID number for the flight*/,"+
-                "Src        CHAR(4) NOT NULL /*Source Airport ICAO code*/," +
-                "Dst        CHAR(4) NOT NULL /*Destination Airport ICAO code*/,"+
+                "(Flightid  ROWID/*ID number for the flight*/,"+
+                "SrcICAO    CHAR(4) NOT NULL /*Source Airport ICAO code*/," +
+                "DstICAO    CHAR(4) NOT NULL /*Destination Airport ICAO code*/,"+
                 "PRIMARY KEY (Flightid)" +
                 ")";
+        System.out.println(sql);
         return sql;
     }
 
     private static String createFlightPointTable(){
         String sql = "CREATE TABLE FLIGHTPOINT" +
-                "(LocaleID      VARCHAR(5) NOT NULL, "+
+                "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
+                "LocaleID       VARCHAR(5) NOT NULL, "+
                 "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
                 "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
-                "Latitude       INTEGER NOT NULL /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      INTEGER NOT NULL /*Longitudinal co-ordinates for flight point*/, "+
+                "Latitude       REAL NOT NULL /*Latitudinal co-ordinates for flight point*/, " +
+                "Longitude      REAL NOT NULL /*Longitudinal co-ordinates for flight point*/, "+
                 "Flightid       INTEGER NOT NULL /*comes from flight*/," +
-                "PRIMARY KEY (Flightid, LocaleID),"+
+                "PRIMARY KEY (SeqOrder, Flightid),"+
                 "FOREIGN KEY (Flightid)" +
-                "REFERENCES FLIGHT (Flightid)" +
+                "REFERENCES FLIGHT (Flightid) ON DELETE CASCADE" +
                 ")";
         return sql;
     }
@@ -186,6 +188,77 @@ public class BBDatabase {
 
 
     //##########################Adding  Data#########################################//
+
+    public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints){
+        //Adding flight points into data base
+        try {
+            //connect yo DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+
+            //first make a flight with start and end
+            FlightPoint srcPoint =  flightPoints.get(0);
+            FlightPoint dstPoint =  flightPoints.get(flightPoints.size() - 1);
+
+            String srcICAO = srcPoint.getLocaleID();
+            String dstICAO = dstPoint.getLocaleID();
+
+
+            String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) " +
+                    "VALUES (" + "\"" + srcICAO + "\", " + "\"" + dstICAO + "\");";
+
+            stmt.executeUpdate(sql);
+
+            //get the new flight id
+            sql = "SELECT MAX(Flightid) FROM FLIGHT;";
+            ResultSet rs = stmt.executeQuery( sql );
+            int flightid = rs.getInt("Flightid");
+
+            //initialise order to show the sequence of the flight points
+            int order = 1;
+
+
+            //for all flight points
+            for (FlightPoint point: flightPoints){
+
+                //get info for point
+                String locID = point.getLocaleID();
+                String locType = point.getType();
+                int altitude = point.getAltitude();
+                float latitude = point.getLatitude();
+                float longitude = point.getLongitude();
+
+                sql = "INSERT INTO FLIGHTPOINT (SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, Flightid)" +
+                        "Values (" +
+                        order + ", " +
+                        "\"" + locID +"\", " +
+                        "\"" + locType +"\", " +
+                        altitude + ", " +
+                        latitude + ", " +
+                        longitude + ")";
+
+                //execute route sql
+                stmt.executeUpdate(sql);
+
+                //increment order for next point
+                order ++;
+
+            }
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
         //This method adds multiple points to the Database
         try {
@@ -270,10 +343,9 @@ public class BBDatabase {
                 int dstid = route.getDstAirportID();
                 String codeshare = route.getCodeshare();
                 int Stops = route.getStops();
-                System.out.println(codeshare);
 
                 //make route sql text to execute
-                    String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
+                String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
                         "VALUES (" +
                         + IDnum + ", " +
                         "\"" + Airline + "\", " +

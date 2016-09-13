@@ -224,7 +224,7 @@ public class GUIController {
     }
 
     public void addRouteData(){
-        //adds route data into country rout list
+        //adds route data into route list
 
         System.out.println("Add Route Data");
 
@@ -235,6 +235,16 @@ public class GUIController {
         BBDatabase.addRoutePointstoDB(myRouteData);
         updateRoutesTable(myRouteData);
 
+    }
+
+    public void addFlightData(){
+        //adds flight data
+        System.out.println("Add Flight Data");
+
+        File f;
+        f = getFile();
+        ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+        BBDatabase.addFlighttoDB(myFlightData);
     }
 
     /*******************************************************************************************************************

@@ -12,6 +12,7 @@ public class RoutePoint extends DataPoint {
 	private String codeshare;
 	private int stops;
 	private String equipment;
+	private Boolean correctEntry;
 
 	private AirportPoint source;
 	private AirportPoint destination;

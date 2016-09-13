@@ -190,231 +190,7 @@ public class BBDatabase {
 
     //##########################Adding  Data#########################################//
 
-    public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints){
-        //Adding flight points into data base
-        try {
-
-            //Connect to DB
-            Connection c = makeConnection();
-            Statement stmt = null;
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
-            stmt = c.createStatement();
-
-            //first make a flight with start and end
-            FlightPoint srcPoint =  flightPoints.get(0);
-            FlightPoint dstPoint =  flightPoints.get(flightPoints.size() - 1);
-
-            String srcICAO = srcPoint.getLocaleID();
-            String dstICAO = dstPoint.getLocaleID();
-
-
-            String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) " +
-                    "VALUES (" +
-                    "\"" + srcICAO + "\", " +
-                    "\"" + dstICAO + "\"" +
-                    ");";
-
-            stmt.executeUpdate(sql);
-
-            //get the new flight id
-            sql = "SELECT FlightIDNum, MAX(FlightIDNum) FROM FLIGHT";
-            ResultSet rs = stmt.executeQuery(sql);
-            int flightid = rs.getInt("FlightIDNum");
-
-            //initialise order to show the sequence of the flight points
-            int order = 1;
-
-
-            //for all flight points
-            for (FlightPoint point: flightPoints){
-
-                //get info for point
-                String locID = point.getLocaleID();
-                String locType = point.getType();
-                int altitude = point.getAltitude();
-                float latitude = point.getLatitude();
-                float longitude = point.getLongitude();
-                System.out.println("not ded3");
-                sql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
-                        "Values (" +
-                        order + ", " +
-                        "\"" + locID +"\", " +
-                        "\"" + locType +"\", " +
-                        altitude + ", " +
-                        latitude + ", " +
-                        longitude + ", " +
-                        flightid +")";
-
-                //execute route sql
-                stmt.executeUpdate(sql);
-
-                //increment order for next point
-                order ++;
-
-            }
-
-            stmt.close();
-            c.commit();
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-
-            //System.exit(0);
-            System.out.println("Could not add :");
-            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
-        }
-        System.out.println("Records created successfully");
-    }
-
-    public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
-        //This method adds multiple points to the Database
-        try {
-
-            Connection c = makeConnection();
-            Statement stmt = null;
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
-            //System.out.println("Opened database successfully");
-            stmt = c.createStatement();
-
-            for (AirportPoint airport : airportPoints) {
-                addSingleAirport(airport, stmt);
-            }
-
-            stmt.close();
-            c.commit();
-            c.close();
-        } catch ( Exception e ) {   //should this exception be made more specific? Or surrounding a more specific code block?
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-
-            //System.exit(0);
-            //System.out.println("Could not add :");
-
-        }
-        System.out.println("Records created successfully");
-    }
-
-    //Replaced this with addSingleAirport- my bad. Needed a separate method to add each individual entry to make the try-catch useful
-//    protected static void addAiportPointToDB(AirportPoint airport) {
-
-
-    private static void addSingleAirport(AirportPoint airport, Statement stmt) {
-        int airportID = airport.getAirportID();
-        String airportName = airport.getAirportName();
-        String City = airport.getAirportCity();
-        String Country = airport.getAirportCountry();
-        String Iata = airport.getIata();
-        String Icao = airport.getIcao();
-        float Latitude = airport.getLatitude();
-        float Longitude = airport.getLongitude();
-        float Altitude = airport.getAltitude();
-        float timezone = airport.getTimeZone();
-        String Dst = airport.getDst();
-        String tz= airport.getTz();
-        //System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
-
-        String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
-                "VALUES (" +
-                + airportID + ", \"" +
-                airportName  + "\", \"" +
-                City + "\", \"" +
-                Country +  "\", \"" +
-                Iata + "\", \"" +
-                Icao + "\", " +
-                Latitude + ", " +
-                Longitude + ", " +
-                Altitude + ", " +
-                timezone + ", \"" +
-                Dst + "\", \"" +
-                tz + "\"); ";
-
-        // System.out.println(sql);
-        try {
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
-            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
-            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                    "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-            //System.exit(0);
-            System.out.println("Could not add :");
-           // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
-        }
-
-    }
-
-    public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
-        //adds routes into the database
-        try{
-            //Connect to DB
-            Connection c = makeConnection();
-            Statement stmt = null;
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
-            stmt = c.createStatement();
-
-            //Add all routes
-            for (RoutePoint route : routePoints) {
-
-                //get info for route
-                int IDnum = route.getRouteID();
-                String Airline = route.getAirline();
-                int Airlineid = route.getAirlineID();
-                String src = route.getSrcAirport();
-                int srcid = route.getSrcAirportID();
-                String dst = route.getDstAirport();
-                int dstid = route.getDstAirportID();
-                String codeshare = route.getCodeshare();
-                int Stops = route.getStops();
-
-                //make route sql text to execute
-                String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
-                        "VALUES (" +
-                        + IDnum + ", " +
-                        "\"" + Airline + "\", " +
-                        Airlineid + ", " +
-                        "\"" + src + "\", " +
-                        srcid + ", " +
-                        "\"" + dst + "\", " +
-                        dstid + ", " +
-                        "\"" + codeshare + "\", " +
-                        Stops + ");";
-
-                //execute route sql
-                stmt.executeUpdate(sql);
-
-                //equipment is special cos its a dick
-                String strEquipment = route.getEquipment();
-                String[] ListEquipment = strEquipment.split(" ");
-
-                //make equipment sql
-                //for all equipment in route
-                for(String equip : ListEquipment){
-                    //add equipment to equipment table
-                    sql = "INSERT INTO EQUIPMENT (IDnum, EquipmentName)" +
-                            "VALUES(" +
-                            "" + IDnum + ", " +
-                            "\"" + equip + "\");";
-                    stmt.executeUpdate(sql);
-                }
-            }
-            stmt.close();
-            c.commit();
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-
-            //System.out.println("Could not add :");
-        }
-    }
-
+    //Airline Adding
     public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
         //This method adds multiple points to the Database
         try {
@@ -474,11 +250,264 @@ public class BBDatabase {
             System.out.println("Could not add: " + id + " " + name + " " + alias + " " + iata + ", " + icao + ", " + country + ", " + active);
             //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
             //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                            "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-//            //System.exit(0);
+            //JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+            //              "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
+            //    "Error", JOptionPane.ERROR_MESSAGE);
+            //System.exit(0);
         }
+    }
+
+    //Airport Adding
+    public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
+        //This method adds multiple points to the Database
+        try {
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            //System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+
+            for (AirportPoint airport : airportPoints) {
+                addSingleAirport(airport, stmt);
+            }
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch ( Exception e ) {   //should this exception be made more specific? Or surrounding a more specific code block?
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            //System.exit(0);
+            //System.out.println("Could not add :");
+
+        }
+        System.out.println("Records created successfully");
+    }
+
+    private static void addSingleAirport(AirportPoint airport, Statement stmt) {
+        int airportID = airport.getAirportID();
+        String airportName = airport.getAirportName();
+        String City = airport.getAirportCity();
+        String Country = airport.getAirportCountry();
+        String Iata = airport.getIata();
+        String Icao = airport.getIcao();
+        float Latitude = airport.getLatitude();
+        float Longitude = airport.getLongitude();
+        float Altitude = airport.getAltitude();
+        float timezone = airport.getTimeZone();
+        String Dst = airport.getDst();
+        String tz= airport.getTz();
+        //System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
+
+        String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
+                "VALUES (" +
+                + airportID + ", \"" +
+                airportName  + "\", \"" +
+                City + "\", \"" +
+                Country +  "\", \"" +
+                Iata + "\", \"" +
+                Icao + "\", " +
+                Latitude + ", " +
+                Longitude + ", " +
+                Altitude + ", " +
+                timezone + ", \"" +
+                Dst + "\", \"" +
+                tz + "\"); ";
+
+        // System.out.println(sql);
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
+            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
+            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
+            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            //System.exit(0);
+        }
+    }
+
+    //Route Adding
+    public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
+        //adds routes into the database
+        try{
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            //Add all routes
+            for (RoutePoint route : routePoints) {
+                //make route in db
+                addSingleRoutetoDB(route, stmt);
+            }
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            //System.out.println("Could not add :");
+        }
+        System.out.println("Records created successfully");
+    }
+
+    private static void addSingleRoutetoDB(RoutePoint route, Statement stmt){
+        //get info for route
+        int IDnum = route.getRouteID();
+        String Airline = route.getAirline();
+        int Airlineid = route.getAirlineID();
+        String src = route.getSrcAirport();
+        int srcid = route.getSrcAirportID();
+        String dst = route.getDstAirport();
+        int dstid = route.getDstAirportID();
+        String codeshare = route.getCodeshare();
+        int Stops = route.getStops();
+
+        //make route sql text to execute
+        String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
+                "VALUES (" +
+                +IDnum + ", " +
+                "\"" + Airline + "\", " +
+                Airlineid + ", " +
+                "\"" + src + "\", " +
+                srcid + ", " +
+                "\"" + dst + "\", " +
+                dstid + ", " +
+                "\"" + codeshare + "\", " +
+                Stops + ");";
+
+        //equipment is special cos its a dick
+        String strEquipment = route.getEquipment();
+        String[] ListEquipment = strEquipment.split(" ");
+
+        //make equipment sql
+        //for all equipment in route
+        for (String equip : ListEquipment) {
+            //add equipment to equipment table
+            String EquipSql = "INSERT INTO EQUIPMENT (IDnum, EquipmentName)" +
+                    "VALUES(" +
+                    "" + IDnum + ", " +
+                    "\"" + equip + "\");";
+            try {
+                stmt.executeUpdate(EquipSql);
+            }catch  (SQLException e){
+                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                System.out.println("Could not add: " + equip +"With Route: " + IDnum);
+//                JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                        "Could not add: " + equip + ", with Route: " + IDnum, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+//        try{
+//            stmt.executeUpdate(routeSql);
+//        }catch (SQLException e){
+//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+
+    }
+
+    //Flight Adding
+    public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints){
+        //Adding flight points into data base
+        try {
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            //first make a flight with start and end
+            FlightPoint srcPoint = flightPoints.get(0);
+            FlightPoint dstPoint = flightPoints.get(flightPoints.size() - 1);
+
+            String srcICAO = srcPoint.getLocaleID();
+            String dstICAO = dstPoint.getLocaleID();
+
+
+            String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) " +
+                    "VALUES (" +
+                    "\"" + srcICAO + "\", " +
+                    "\"" + dstICAO + "\"" +
+                    ");";
+
+            try {
+                stmt.executeUpdate(sql);
+
+                //get the new flight id
+                sql = "SELECT FlightIDNum, MAX(FlightIDNum) FROM FLIGHT";
+                ResultSet rs = stmt.executeQuery(sql);
+                int flightid = rs.getInt("FlightIDNum");
+
+                //initialise order to show the sequence of the flight points
+                int order = 1;
+
+                //for all flight points
+                for (FlightPoint point : flightPoints) {
+                    addSingleFlighttoDB(point, stmt, flightid, order);
+                    order++;
+
+                }
+
+                stmt.close();
+                c.commit();
+                c.close();
+            } catch (SQLException e) {
+                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                System.out.println("Could not add Flight");
+//                JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                                "Could not add Flight \n" + "From: " + srcICAO + "\nTo: " + dstICAO,
+//                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            //System.out.println("Could not add :");
+        }
+        System.out.println("Records created successfully");
+    }
+
+    private static void addSingleFlighttoDB(FlightPoint point, Statement stmt, int flightid, int order) {
+        //get info for point
+        try {
+            String locID = point.getLocaleID();
+            String locType = point.getType();
+            int altitude = point.getAltitude();
+            float latitude = point.getLatitude();
+            float longitude = point.getLongitude();
+            System.out.println("not ded3");
+            String FlightSql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
+                    "Values (" +
+                    order + ", " +
+                    "\"" + locID + "\", " +
+                    "\"" + locType + "\", " +
+                    altitude + ", " +
+                    latitude + ", " +
+                    longitude + ", " +
+                    flightid + ")";
+
+            //execute route sql
+            stmt.executeUpdate(FlightSql);
+        }catch  ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            //System.out.println("Could not add :");
+        }
+        System.out.println("Records created successfully");
+
+        //increment order for next point
     }
 
 

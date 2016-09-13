@@ -10,6 +10,7 @@ public class AirlinePoint extends DataPoint {
 	private String callsign;
 	private String country;
 	private String active;
+	private Boolean correctEntry;
 	
 	
 	public AirlinePoint(int airlineID, String airlineName){

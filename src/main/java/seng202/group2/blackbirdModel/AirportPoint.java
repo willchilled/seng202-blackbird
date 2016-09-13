@@ -14,6 +14,7 @@ public class AirportPoint extends DataPoint {
 	private float timeZone;
 	private String dst;
 	private String tz;
+	private Boolean correctEntry;
 
 	private int numberOfRoutes;
 	

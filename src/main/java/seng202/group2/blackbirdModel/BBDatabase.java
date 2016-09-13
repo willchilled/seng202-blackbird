@@ -1,5 +1,4 @@
 package seng202.group2.blackbirdModel;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import seng202.group2.blackbirdView.GUIController;
 
 import javax.swing.*;
@@ -340,14 +339,14 @@ public class BBDatabase {
             System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
             //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
             //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-                    "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
-                    "Error", JOptionPane.ERROR_MESSAGE);
+//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                    "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
             //System.exit(0);
             System.out.println("Could not add :");
            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
         }
-        System.out.println("Records created successfully");
+
     }
 
     public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
@@ -414,7 +413,6 @@ public class BBDatabase {
 
             //System.out.println("Could not add :");
         }
-        System.out.println("Records created successfully");
     }
 
     public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
@@ -476,10 +474,10 @@ public class BBDatabase {
             System.out.println("Could not add: " + id + " " + name + " " + alias + " " + iata + ", " + icao + ", " + country + ", " + active);
             //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
             //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-                            "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            //System.exit(0);
+//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                            "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//            //System.exit(0);
         }
     }
 

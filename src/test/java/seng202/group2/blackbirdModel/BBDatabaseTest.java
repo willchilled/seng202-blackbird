@@ -55,7 +55,7 @@ public class BBDatabaseTest extends TestCase {
 
     public void testPerformAirlinesQuery() throws Exception {
         ArrayList<AirlinePoint> airlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE");
-        assertEquals(airlinePoints.size(), 100);
+        assertEquals(airlinePoints.size(), 99);
 
     }
 

@@ -59,7 +59,7 @@ public class BBDatabase {
                         " NAME           VARCHAR(40)   NOT NULL," +
                         " CITY           VARCHAR(40)   NOT NULL," +
                         " COUNTRY        VARCHAR(40)   NOT NULL," +
-                        " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null
+                        " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                         " ICAO           CHAR(4)," +
                         " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
                         " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
@@ -76,12 +76,12 @@ public class BBDatabase {
         String sql = "CREATE TABLE AIRLINE " +
                 "(ID INT PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
-                " ALIAS           VARCHAR(40)   NOT NULL," +
-                " IATA           VARCHAR(40)   NOT NULL," +
-                " ICAO           VARCHAR(40)," +
+                " ALIAS           VARCHAR(40)," +   //alias can be null
+                " IATA           CHAR(2)," +    //can have either IATA or ICAO
+                " ICAO           CHAR(3)," +
                 " CALLSIGN           VARCHAR(40)," +
-                " COUNTRY           VARCHAR(40)," +
-                " ACTIVE           VARCHAR(1))";
+                " COUNTRY           VARCHAR(40) NOT NULL," + //not null?
+                " ACTIVE           CHAR(1) constraint check_active check (ACTIVE in ('Y', 'N')) )";
         //System.out.println(sql);
         return sql;
     }
@@ -118,11 +118,11 @@ public class BBDatabase {
 
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
-                "(Flightid  ROWID/*ID number for the flight*/,"+
-                "SrcICAO    CHAR(4) NOT NULL /*Source Airport ICAO code*/," +
-                "DstICAO    CHAR(4) NOT NULL /*Destination Airport ICAO code*/,"+
-                "PRIMARY KEY (Flightid)" +
+                "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
+                "SrcICAO        VARCHAR(5) NOT NULL /*Source ICAO code*/," +
+                "DstICAO        VARCHAR(5) NOT NULL /*Destination ICAO code*/" +
                 ")";
+        System.out.println(sql);
         return sql;
     }
 
@@ -134,10 +134,10 @@ public class BBDatabase {
                 "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
                 "Latitude       REAL NOT NULL /*Latitudinal co-ordinates for flight point*/, " +
                 "Longitude      REAL NOT NULL /*Longitudinal co-ordinates for flight point*/, "+
-                "Flightid       INTEGER NOT NULL /*comes from flight*/," +
-                "PRIMARY KEY (SeqOrder, Flightid),"+
-                "FOREIGN KEY (Flightid)" +
-                "REFERENCES FLIGHT (Flightid) ON DELETE CASCADE" +
+                "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
+                "PRIMARY KEY (FlightIDNum, SeqOrder),"+
+                "FOREIGN KEY (FlightIDNum)" +
+                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +
                 ")";
         return sql;
     }
@@ -194,13 +194,13 @@ public class BBDatabase {
     public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints){
         //Adding flight points into data base
         try {
-            //connect yo DB
+
+            //Connect to DB
             Connection c = makeConnection();
             Statement stmt = null;
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
-            //System.out.println("Opened database successfully");
             stmt = c.createStatement();
 
             //first make a flight with start and end
@@ -212,14 +212,17 @@ public class BBDatabase {
 
 
             String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) " +
-                    "VALUES (" + "\"" + srcICAO + "\", " + "\"" + dstICAO + "\");";
+                    "VALUES (" +
+                    "\"" + srcICAO + "\", " +
+                    "\"" + dstICAO + "\"" +
+                    ");";
 
             stmt.executeUpdate(sql);
 
             //get the new flight id
-            sql = "SELECT MAX(Flightid) FROM FLIGHT;";
-            ResultSet rs = stmt.executeQuery( sql );
-            int flightid = rs.getInt("Flightid");
+            sql = "SELECT FlightIDNum, MAX(FlightIDNum) FROM FLIGHT";
+            ResultSet rs = stmt.executeQuery(sql);
+            int flightid = rs.getInt("FlightIDNum");
 
             //initialise order to show the sequence of the flight points
             int order = 1;
@@ -234,15 +237,16 @@ public class BBDatabase {
                 int altitude = point.getAltitude();
                 float latitude = point.getLatitude();
                 float longitude = point.getLongitude();
-
-                sql = "INSERT INTO FLIGHTPOINT (SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, Flightid)" +
+                System.out.println("not ded3");
+                sql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
                         "Values (" +
                         order + ", " +
                         "\"" + locID +"\", " +
                         "\"" + locType +"\", " +
                         altitude + ", " +
                         latitude + ", " +
-                        longitude + ")";
+                        longitude + ", " +
+                        flightid +")";
 
                 //execute route sql
                 stmt.executeUpdate(sql);
@@ -251,14 +255,18 @@ public class BBDatabase {
                 order ++;
 
             }
+
             stmt.close();
             c.commit();
             c.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            //System.exit(0);
+            System.out.println("Could not add :");
+            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longtitude + Altitude + timezone + Dst + tz);
         }
+        System.out.println("Records created successfully");
     }
 
     public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
@@ -377,6 +385,7 @@ public class BBDatabase {
                         Stops + ");";
 
                 //execute route sql
+                System.out.println(sql);
                 stmt.executeUpdate(sql);
 
                 //equipment is special cos its a dick
@@ -417,32 +426,8 @@ public class BBDatabase {
             //System.out.println("Opened database successfully");
             stmt = c.createStatement();
 
-            for (AirlinePoint airport : airlinePoints) {
-
-                int id = airport.getAirlineID();
-                String name = airport.getAirlineName();
-                //System.out.println(name);
-                String alias = airport.getAirlineAlias();
-                String iata = airport.getIata();
-                String icao = airport.getIcao();
-                String callsign = airport.getCallsign();
-                String country = airport.getCountry();
-                String active = airport.getActive();
-
-
-
-                String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
-                        "VALUES (" +
-                        + id + ", \"" +
-                        name  + "\", \"" +
-                        alias + "\", \"" +
-                        iata +  "\", \"" +
-                        icao + "\", \"" +
-                        callsign + "\", \"" +
-                        country + "\", \""+
-                        active + "\");";
-                // System.out.println(sql);
-                stmt.executeUpdate(sql);
+            for (AirlinePoint airline : airlinePoints) {
+                addSingleAirline(airline, stmt);
             }
 
             stmt.close();
@@ -453,11 +438,47 @@ public class BBDatabase {
 
             //System.exit(0);
             System.out.println("Could not add :");
-            // System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
         }
         System.out.println("Records created successfully");
     }
 
+    private static void addSingleAirline(AirlinePoint airline, Statement stmt) {
+        int id = airline.getAirlineID();
+        String name = airline.getAirlineName();
+        //System.out.println(name);
+        String alias = airline.getAirlineAlias();
+        String iata = airline.getIata();
+        String icao = airline.getIcao();
+        String callsign = airline.getCallsign();
+        String country = airline.getCountry();
+        String active = airline.getActive();
+
+
+
+        String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
+                "VALUES (" +
+                + id + ", \"" +
+                name  + "\", \"" +
+                alias + "\", \"" +
+                iata +  "\", \"" +
+                icao + "\", \"" +
+                callsign + "\", \"" +
+                country + "\", \""+
+                active + "\");";
+        // System.out.println(sql);
+        try {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("Could not add: " + id + " " + name + " " + alias + " " + iata + ", " + icao + ", " + country + ", " + active);
+            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
+            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
+            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+                            "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            //System.exit(0);
+        }
+    }
 
 
 

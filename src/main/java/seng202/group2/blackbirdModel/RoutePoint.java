@@ -12,9 +12,11 @@ public class RoutePoint extends DataPoint {
 	private String codeshare;
 	private int stops;
 	private String equipment;
-	//Country source
-	//Country destination
-	
+
+	private AirportPoint source;
+	private AirportPoint destination;
+
+
 	public RoutePoint(String airline, int airlineID){	
 		
 		this.airline = airline;
@@ -101,4 +103,19 @@ public class RoutePoint extends DataPoint {
 		this.equipment = equipment;
 	}
 
+	public AirportPoint getSource() {
+		return source;
+	}
+
+	public void setSource(AirportPoint source) {
+		this.source = source;
+	}
+
+	public AirportPoint getDestination() {
+		return destination;
+	}
+
+	public void setDestination(AirportPoint destination) {
+		this.destination = destination;
+	}
 }

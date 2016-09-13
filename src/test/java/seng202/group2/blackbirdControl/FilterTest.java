@@ -1,10 +1,7 @@
 package seng202.group2.blackbirdControl;
 
 import junit.framework.TestCase;
-import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdModel.Parser;
+import seng202.group2.blackbirdModel.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,23 +16,27 @@ public class FilterTest extends TestCase {
         String cwd = System.getProperty("user.dir");
         String airlinesFileString;
         String airportsFileString;
+        String routesFileString;
 
         airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
         airportsFileString = cwd + "/JUnitTesting/airports.txt";
+        routesFileString = cwd + "/JUnitTesting/route.txt";
 
         File airlinesFile = new File(airlinesFileString);
         File airportsFile = new File(airportsFileString);
+        File routesFile = new File(routesFileString);
 
         ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
+        ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
 
 
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
         BBDatabase.addAirlinePointstoDB(airlinePoints);
         BBDatabase.addAiportPortsToDB(airportPoints);
+        BBDatabase.addRoutePointstoDB(routePoints);
         //myAirlineData = Filter.getAllAirlinePointsfromDB();
-        ArrayList<AirlinePoint> AirlinePoint = new ArrayList<>();
     }
 
 
@@ -182,6 +183,11 @@ public class FilterTest extends TestCase {
         assertEquals(airlinePoints.size(), 9);
 
 
+
+    }
+
+    public void testFindDistinctStringsFromRoutes(){
+        Filter.findDistinctStringsFromRoutes("Src");
 
     }
 }

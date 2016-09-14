@@ -10,7 +10,7 @@ public class AirlinePoint extends DataPoint {
 	private String callsign;
 	private String country;
 	private String active;
-	private Boolean correctEntry;
+	private int correctEntry;
 	
 	
 	public AirlinePoint(int airlineID, String airlineName){
@@ -84,6 +84,15 @@ public class AirlinePoint extends DataPoint {
 	public void setActive(String active) {
 		this.active = active;
 	}
+
+	public int getCorrectEntry() {
+		return correctEntry;
+	}
+
+	public void setCorrectEntry(int correctEntry) {
+		this.correctEntry = correctEntry;
+	}
+
 
 
 }

@@ -7,7 +7,7 @@ public class FlightPoint extends DataPoint {
 	private int altitude;
 	private float latitude;
 	private float longitude;
-	private Boolean correctEntry;
+	private int correctEntry;
 	
 	public FlightPoint(String type, String localeID, int altitude, float latitude, float longitude){
 		
@@ -56,6 +56,14 @@ public class FlightPoint extends DataPoint {
 
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
+	}
+
+	public int getCorrectEntry() {
+		return correctEntry;
+	}
+
+	public void setCorrectEntry(int correctEntry) {
+		this.correctEntry = correctEntry;
 	}
 
 

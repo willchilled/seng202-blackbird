@@ -17,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TableCell;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdControl.Filter;
@@ -25,6 +26,7 @@ import seng202.group2.blackbirdModel.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -474,7 +476,7 @@ public class GUIController {
     private void updateAirlinesTable(ArrayList<AirlinePoint> points){
         //Updates the view with a given set of airline points
         airlineTable.getItems().setAll(points);
-
+/**
         //Trying to change the colour of rows
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
         airlineIDCol.setCellFactory(column -> {
@@ -495,7 +497,7 @@ public class GUIController {
                     }
                 }
             };
-        });
+        });**/
 
 
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
@@ -595,7 +597,41 @@ public class GUIController {
 
         //Trying to change the colour of rows
 
+
+
+
         airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
+
+// Custom rendering of the table cell.
+        airportErrorCol.setCellFactory(column -> {
+            return new TableCell<AirportPoint, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    TableRow<AirportPoint> currentRow = getTableRow();
+
+                    if (item == null || empty) {
+                        setText(null);
+                        currentRow.setStyle("");
+                    } else {
+                        // Format date.
+                        setText(String.valueOf(item));
+
+                        // Style all dates in March with a different color.
+                        if (item == 0) {
+
+                            currentRow.setTextFill(Color.CHOCOLATE);
+                            currentRow.setStyle("-fx-background-color: lightcoral");
+                        } else {
+                            currentRow.setTextFill(Color.BLACK);
+                            currentRow.setStyle("");
+                        }
+                    }
+                }
+            };
+        });
+
+/*
         airportErrorCol.setCellFactory(column -> {
             return new TableCell<AirportPoint, Integer>() {
                 @Override
@@ -607,6 +643,7 @@ public class GUIController {
 
                     TableRow<AirportPoint> currentRow = getTableRow();
 
+
                     if (!isEmpty()) {
 
                         if(item == 0)
@@ -615,7 +652,7 @@ public class GUIController {
                 }
             };
         });
-
+*/
         //Trying to change the colour of rows
 
 

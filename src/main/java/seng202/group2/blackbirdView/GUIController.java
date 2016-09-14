@@ -324,6 +324,64 @@ public class GUIController {
 
     }*/
 
+    public void addSingleRoute() {
+        //Brings up popup to insert route values
+        try {
+            Stage adderStage = new Stage();
+            Parent root;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RouteAddingPopUp.fxml"));
+            root = loader.load();
+
+            adderStage.setScene(new Scene(root));
+            adderStage.setTitle("Add Route Information");
+            adderStage.initModality(Modality.NONE);
+            adderStage.initOwner(null);
+
+            adderStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addSingleAirline() {
+        //Brings up popup to insert airline values
+        try {
+            Stage adderStage = new Stage();
+            Parent root;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirlineAddingPopUp.fxml"));
+            root = loader.load();
+
+            adderStage.setScene(new Scene(root));
+            adderStage.setTitle("Add Airline Information");
+            adderStage.initModality(Modality.NONE);
+            adderStage.initOwner(null);
+
+            adderStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addSingleAirport() {
+        //Brings up popup to insert airport values
+        try {
+            Stage adderStage = new Stage();
+            Parent root;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirportAddingPopUp.fxml"));
+            root = loader.load();
+
+            adderStage.setScene(new Scene(root));
+            adderStage.setTitle("Add Airport Informationt");
+            adderStage.initModality(Modality.NONE);
+            adderStage.initOwner(null);
+
+            adderStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     /*******************************************************************************************************************
      *******************************************************************************************************************

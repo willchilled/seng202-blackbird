@@ -150,21 +150,35 @@ public class Filter {
         //gets all Aiport Points from the database
         String sql = "SELECT * FROM AIRPORT;";
         ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
-        allPoints = BBDatabase.performAirpointsQuery(sql);
+        allPoints = BBDatabase.performAirportsQuery(sql);
         return allPoints;
     }
 
-    public static ArrayList<AirportPoint> filterAiportsByCountryUsingDB(String countrySelection, String query) {
+    public static ArrayList<AirportPoint> filterAirportsBySelections(String countrySelection, String query) {
+        //Filters aiports by country and string query
         ArrayList<AirportPoint> allPoints;
         String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
                 " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR ALTITUDE='%1$s'" +
                 " OR TIMEZONE='%1$s' OR DST='%1$s' OR TZ='%1$s');", query);
+        String sql = "SELECT * FROM AIRPORT ";
+
+
+
         if(countrySelection != "None") {
-            String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\"" + " AND " + searchString;
-            allPoints = BBDatabase.performAirpointsQuery(sql);
+            //If there is a country
+            sql += "WHERE COUNTRY=\"" + countrySelection + "\"";
+            if (query.length() != 0){
+                //If there is a search string query
+                sql += " AND " + searchString;
+            }
+            allPoints = BBDatabase.performAirportsQuery(sql);
         }else{
-            String sql = "SELECT * FROM AIRPORT WHERE " + searchString;
-            allPoints = BBDatabase.performAirpointsQuery(sql);
+            if (query.length() >0) { //If there is a searchString query
+                sql += "WHERE " + searchString;
+            }
+
+            allPoints = BBDatabase.performAirportsQuery(sql);
+
         }
 
         return allPoints;
@@ -222,7 +236,7 @@ public class Filter {
 
 
 
-        ArrayList<RoutePoint> routePoints = BBDatabase.performRoutesQuery(outputString);
+        routePoints = BBDatabase.performRoutesQuery(outputString);
         return routePoints;
     }
 

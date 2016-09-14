@@ -190,4 +190,23 @@ public class FilterTest extends TestCase {
         Filter.findDistinctStringFromTable("Src", "ROUTE");
 
     }
+
+    public void testFilterAiportsBySelections() throws Exception {
+        ArrayList<AirportPoint> allPoints = new ArrayList<>();
+        allPoints = Filter.filterAirportsBySelections("None", "");
+
+        assertEquals(allPoints.size(), 100);
+
+        allPoints = Filter.filterAirportsBySelections("Greenland", "");
+        assertEquals(allPoints.size(), 4);
+
+
+        allPoints = Filter.filterAirportsBySelections("Greenland", "Sondrestrom");
+        assertEquals(allPoints.size(), 1);
+
+        allPoints = Filter.filterAirportsBySelections("None", "Sondrestrom");
+        assertEquals(allPoints.size(), 1);
+
+
+    }
 }

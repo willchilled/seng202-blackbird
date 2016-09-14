@@ -612,7 +612,7 @@ public class GUIController {
         System.out.println(searchQuery);
 
 
-        ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsBySelections(countrySelection, searchQuery);
+        ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
         updateAirportsTable(filteredPoints);
 
 

@@ -5,6 +5,7 @@ import seng202.group2.blackbirdModel.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by sha162 on 4/09/16.
@@ -156,31 +157,34 @@ public class FilterTest extends TestCase {
         String search = "";
         ArrayList<AirlinePoint> airlinePoints = new ArrayList<>();
 
-        ArrayList<String> selectedFields = new ArrayList<>();
-        selectedFields.add("None");
-        selectedFields.add("None");
+        ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Russia", "None"));
         airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
+        assertEquals(airlinePoints.size(), 5); //Country Selected
 
+        selectedFields = new ArrayList<>(Arrays.asList("None", "None"));
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
         assertEquals(airlinePoints.size(), 99); //Both lines are None
 
-        selectedFields.removeAll(selectedFields);
-        selectedFields.add("None");
-        selectedFields.add("Y");
+        selectedFields = new ArrayList<>(Arrays.asList("Russia", "Y"));
         airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
+        assertEquals(airlinePoints.size(), 0); //Both selections no search
 
-        assertEquals(airlinePoints.size(), 20); // "None", "Y"
-
-        selectedFields.removeAll(selectedFields);
-        selectedFields.add("Germany");
-        selectedFields.add("None");
+        selectedFields = new ArrayList<>(Arrays.asList("Russia", "N"));
         airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
-        assertEquals(airlinePoints.size(), 1); // "Germany", "None"
+        assertEquals(airlinePoints.size(), 5); //Both selections no search
 
-        selectedFields.removeAll(selectedFields);
-        selectedFields.add("Canada");
-        selectedFields.add("N");
-        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
-        assertEquals(airlinePoints.size(), 9);
+        selectedFields = new ArrayList<>(Arrays.asList("Russia", "N"));
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, "AED");
+        assertEquals(airlinePoints.size(), 1); //Both selections and Search
+
+        selectedFields = new ArrayList<>(Arrays.asList("Russia", "None"));
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, "N");
+        assertEquals(airlinePoints.size(), 5); //One selection and Search
+
+        selectedFields = new ArrayList<>(Arrays.asList("None", "N"));
+        airlinePoints = Filter.filterAirlinesBySelections(selectedFields, "Russia");
+        assertEquals(airlinePoints.size(), 5); //One selection and Search
+
 
 
 

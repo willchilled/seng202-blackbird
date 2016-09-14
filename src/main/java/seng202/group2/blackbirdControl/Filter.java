@@ -249,12 +249,15 @@ public class Filter {
         //it first checks if all strings are not none and if that is true it performs the query "Select * from Airline
         //Other wise subs all strings in
         //Ask Stefan Before messing with this
+        String searchString = "";
+        if (search.length() >0){
+            searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
+                    "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
+        }
 
-        String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
-                "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
 
-        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\" AND ", "ACTIVE=\"%1$s\" AND "));
-        System.out.println(menusPressed.get(1));
+        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
+        //System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
 
         boolean allNone = true;
@@ -281,10 +284,13 @@ public class Filter {
         //statement. However if there are filters selected, we must continue the statement with AND before appending
         // the search query statement.
         outputString = removeLastAND(outputString);
-        if(allNone) {
-            outputString += " WHERE ";
-        }else{
-            outputString += " AND ";
+        if (search.length() >0){
+            if(allNone){
+                outputString += " WHERE ";
+            }
+            else{
+                outputString += " AND ";
+            }
         }
         outputString += searchString;
 

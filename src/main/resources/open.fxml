@@ -168,7 +168,7 @@
                                     <ComboBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" prefWidth="150.0" />
                                     <ComboBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" prefWidth="150.0" />
                                     <Button fx:id="routesFilterButton" layoutX="979.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Filter" />
-                                    <Button fx:id="routesSeeallDataButton" layoutX="1053.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesSeeallDataButtonPressed" text="See all" />
+                                    <Button fx:id="routesSeeallDataButton" layoutX="1053.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesSeeAllDataButtonPressed" text="See all" />
                                     <Text layoutX="35.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Source" />
                                     <Text layoutX="196.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
                                     <Text layoutX="364.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" />
@@ -214,6 +214,7 @@
                               <TableColumn fx:id="airportTimeCol" prefWidth="75.0" text="TimeZone" visible="false" />
                               <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="DST" visible="false" />
                               <TableColumn fx:id="airportTZCol" prefWidth="60.3333740234375" text="TZ" />
+                              <TableColumn fx:id="airportsErrorCol" prefWidth="75.0" text="Errors" />
                            </columns>
                         </TableView>
                         <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">

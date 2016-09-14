@@ -1,6 +1,7 @@
 package seng202.group2.blackbirdView;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -120,6 +121,7 @@ public class GUIController {
     @FXML private TableColumn airportTimeCol;
     @FXML private TableColumn airportDSTCol;
     @FXML private TableColumn airportTZCol;
+    @FXML private TableColumn airportErrorCol;
 
 // AIRLINE Table columns
     @FXML private TableColumn airlineIDCol;
@@ -506,12 +508,6 @@ public class GUIController {
 
 
 
-
-
-
-
-
-
         airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event){
@@ -595,6 +591,10 @@ public class GUIController {
     private void updateAirportsTable(ArrayList<AirportPoint> points){
         //updates airpoirts table with a set of airpoints
         airportTable.getItems().setAll(points);
+
+        //Trying to change the colour of rows
+
+
         airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
         airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
@@ -607,6 +607,7 @@ public class GUIController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Boolean>("correctEntry"));
 
         airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -803,7 +804,7 @@ public class GUIController {
 
     }
 
-    public void routesSeeallDataButtonPressed(ActionEvent actionEvent) {}
+    public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {}
 
 
     /*******************************************************************************************************************

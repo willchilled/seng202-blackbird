@@ -218,6 +218,7 @@ public class Parser {
 			myAirportPoint.setAirportCity(airportPoint[2]);
 			myAirportPoint.setAirportCountry(airportPoint[3]);
 
+
 			if (airportPoint[4].isEmpty() || airportPoint[4].equals("\\N")) {
 				myAirportPoint.setIata("");
 			} else {
@@ -259,6 +260,7 @@ public class Parser {
 			myAirportPoint.setCorrectEntry(false);
 			return myAirportPoint;
 		}
+		myAirportPoint.setCorrectEntry(true);
 
 		return myAirportPoint;
 	}

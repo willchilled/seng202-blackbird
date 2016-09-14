@@ -158,7 +158,7 @@ public class Filter {
         //Filters aiports by country and string query
         ArrayList<AirportPoint> allPoints;
         String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
-                " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR ALTITUDE='%1$s'" +
+                " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR LONGITUDE='%1$s' OR ALTITUDE='%1$s'" +
                 " OR TIMEZONE='%1$s' OR DST='%1$s' OR TZ='%1$s');", query);
         String sql = "SELECT * FROM AIRPORT ";
 
@@ -299,12 +299,6 @@ public class Filter {
             }
         }
         outputString += searchString;
-
-        System.out.println("\n\n");
-        System.out.println(outputString);
-        System.out.println("\n\n");
-
-
 
         System.out.println("Perfomring query:"+ outputString);
 

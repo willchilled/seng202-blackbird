@@ -10,7 +10,8 @@ import java.util.ArrayList;
 public class Parser {
 	//issues: if an entry contains a comma within, it messes with the indexing of the line
 	//handling semantics: checking which fields should be unique, checking for valid IATA/ICAO codes, deciding which fields
-	//shouldn't be null.
+	//shouldn't be null
+
 	
 	//FLIGHTS
 	private static boolean checkNull(String[] dataEntry){
@@ -39,7 +40,7 @@ public class Parser {
 			    if(numberOfCommas(line) == 4) {
                     String[] flightPoint = line.split(",");
                     
-                    if(!checkNull(flightPoint)) {
+                    if(!checkNull(flightPoint)){
                     	String type = flightPoint[0];
                     	String localeID = flightPoint[1];
                     	int altitude = Integer.parseInt(flightPoint[2]);
@@ -172,8 +173,9 @@ public class Parser {
 			while ((line = br.readLine()) != null) {
 				count++;
 			    //Check number of fields is correct
+				String[] airlinePoint = line.split(",");
                 if(numberOfCommas(line) == 7) {
-                    String[] airlinePoint = line.split(",");
+
                     
                     //if(!checkNull(airlinePoint)) {
 

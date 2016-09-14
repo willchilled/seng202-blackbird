@@ -47,8 +47,17 @@ public class GUIController {
 
 
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+    //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
+
     ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
 
+//    public ArrayList<AirportPoint> getAllValidPoints() {
+//        return allValidPoints;
+//    }
+//
+//    public void setAllValidPoints(ArrayList<AirportPoint> allValidPoints) {
+//        this.allValidPoints = allValidPoints;
+//    }
 
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
     public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
@@ -236,12 +245,13 @@ public class GUIController {
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
-        ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(f);
-        BBDatabase.addAiportPortsToDB(airportPoints);
-        airportPoints = Filter.getAllAirportPointsFromDB();
-        setAllAirportPoints(airportPoints); //imports setter, keeps track of all points
+        ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
+        BBDatabase.addAiportPortsToDB(allairportPoints);
+        ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
-        updateAirportsTable(airportPoints);
+        setAllAirportPoints(allairportPoints); //imports setter, keeps track of all points
+        updateAirportsTable(allairportPoints);
+
         airPortCountryList = populateAirportCountryList();
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));

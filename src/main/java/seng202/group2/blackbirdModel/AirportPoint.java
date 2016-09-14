@@ -14,9 +14,18 @@ public class AirportPoint extends DataPoint {
 	private float timeZone;
 	private String dst;
 	private String tz;
+
 	private Boolean correctEntry;
 
 	private int numberOfRoutes;
+
+//	@Override
+//	public boolean equals(Object obj){
+//		//megan's test for bad data...
+//		AirportPoint mypoint = (AirportPoint) obj;
+//		if(this.getAirportID() == mypoint.getAirportID()) return true;
+//		else return false;
+//	}
 	
 	public AirportPoint(int airportID, String airportName){
 		
@@ -124,6 +133,14 @@ public class AirportPoint extends DataPoint {
 
 	public void setTz(String tz) {
 		this.tz = tz;
+	}
+
+	public Boolean getCorrectEntry() {
+		return correctEntry;
+	}
+
+	public void setCorrectEntry(Boolean correctEntry) {
+		this.correctEntry = correctEntry;
 	}
 
 

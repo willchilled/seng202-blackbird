@@ -54,10 +54,10 @@ public class BBDatabase {
     private static String createAirportTable(){
         //added additional constraints on some of the fields, but i think adding some on parsing as well may simplify things?
         String sql = "CREATE TABLE AIRPORT " +
-                        "(ID INT PRIMARY KEY    NOT NULL," +
+                        "(ID INTEGER PRIMARY KEY    NOT NULL," +
                         " NAME           VARCHAR(40)   NOT NULL," +
                         " CITY           VARCHAR(40)   NOT NULL," +
-                        " COUNTRY        VARCHAR(40)   NOT NULL," +
+                        " COUNTRY        VARCHAR(150)   NOT NULL," +
                         " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                         " ICAO           CHAR(4)," +
                         " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
@@ -73,7 +73,7 @@ public class BBDatabase {
 
     private static String createAirlineTable(){
         String sql = "CREATE TABLE AIRLINE " +
-                "(ID INT PRIMARY KEY    NOT NULL," +
+                "(ID INTEGER PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
                 " ALIAS           VARCHAR(40)," +   //alias can be null
                 " IATA           CHAR(2)," +    //can have either IATA or ICAO
@@ -87,17 +87,19 @@ public class BBDatabase {
 
     private static String createRouteTable(){
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
+        //need to check if this is actually being added properly? i thought the database would shit itself if you tried
+        //to add routes before airports since it needs to reference the foreign keys
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
-                "Airline    CHAR(2) NOT NULL /*Airline iata for route*/," +
+                "Airline    VARCHAR(3) NOT NULL /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
                 "Airlineid  INTEGER /*ID of Airline for route*/," +
-                "Src        CHAR(3) NOT NULL /*Source location for route*/," +
+                "Src        VARCHAR(4) NOT NULL /*Source location for route*/," +   //either the IATA(3) or ICAO(4)
                 "Srcid      INTEGER NOT NULL /*ID number for source location location*/," +
-                "Dst        CHAR(3) NOT NULL /*Destination location for route*/," +
+                "Dst        VARCHAR(4) NOT NULL /*Destination location for route*/," +   //either the IATA(3) or ICAO(4)
                 "Dstid      INTEGER NOT NULL /*ID number for destination location*/," +
-                "Codeshare  CHAR(1) /*'Y' if operated by another carrier*/," +
+                "Codeshare  CHAR(1) constraint check_codeshare check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
                 "Stops      INTEGER NOT NULL /*Number of stops the route takes*/," +
-                "foreign key (Src, Srcid, Dst, Dstid) references AIRPORT," +
+                "foreign key (Srcid, Dstid) references AIRPORT," +    //foreign key can only be primary key of other table
                 "PRIMARY KEY (IDnum)" +
                 ")";;
         return sql;
@@ -107,10 +109,9 @@ public class BBDatabase {
         //creates an equipment table for sqlite, is used to give routes the multivalued atribute equipment
         String sql = "CREATE TABLE EQUIPMENT" +
                 "(IDnum          INTEGER NOT NULL /*Comes from route*/, " +
-                "EquipmentName CHAR(3) NOT NULL," +
+                "EquipmentName CHAR(3) NOT NULL," +     //can this be null?
                 "PRIMARY KEY (EquipmentName, IDnum), "+
-                "FOREIGN KEY (IDnum) " +
-                "REFERENCES ROUTE (IDnum)" +
+                "FOREIGN KEY (IDnum) REFERENCES ROUTE (IDnum)" +
                 ")";
         return sql;
     }
@@ -118,8 +119,8 @@ public class BBDatabase {
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
-                "SrcICAO        VARCHAR(5) NOT NULL /*Source ICAO code*/," +
-                "DstICAO        VARCHAR(5) NOT NULL /*Destination ICAO code*/" +
+                "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
+                "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +       //either the IATA(3) or ICAO(4)
                 ")";
         System.out.println(sql);
         return sql;
@@ -127,16 +128,16 @@ public class BBDatabase {
 
     private static String createFlightPointTable(){
         String sql = "CREATE TABLE FLIGHTPOINT" +
-                "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
+                "(SeqOrder         INTEGER NOT NULL UNIQUE /*gives the sequence of the flight points*/," +
                 "LocaleID       VARCHAR(5) NOT NULL, "+
                 "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
                 "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
-                "Latitude       REAL NOT NULL /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      REAL NOT NULL /*Longitudinal co-ordinates for flight point*/, "+
+                "Latitude       FLOAT NOT NULL constraint check_lat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
+                "Longitude      FLOAT NOT NULL constraint check_long check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder),"+
                 "FOREIGN KEY (FlightIDNum)" +
-                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +
+                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +   //?
                 ")";
         return sql;
     }
@@ -320,13 +321,12 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
+            airport.setCorrectEntry(false);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
-            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
-            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao + Dst);
+//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
             //System.exit(0);
         }
     }
@@ -405,16 +405,16 @@ public class BBDatabase {
 //                        "Could not add: " + equip + ", with Route: " + IDnum, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-//        try{
-//            stmt.executeUpdate(routeSql);
-//        }catch (SQLException e){
-//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-//            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+
+        try{
+            stmt.executeUpdate(routeSql);
+        }catch (SQLException e){
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
 //            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
 //                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
 //                    "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-
+        }
     }
 
     //Flight Adding

@@ -205,37 +205,59 @@ public class Parser {
 		}
 		
 		return myAirlineData;	}
-	
-	
-	private static AirportPoint checkAirportData(String[] airportPoint, AirportPoint myAirportPoint) {
 
-		myAirportPoint.setAirportCity(airportPoint[2]);
-		myAirportPoint.setAirportCountry(airportPoint[3]);
-		if (airportPoint[4].isEmpty()) {
-			myAirportPoint.setIata(null);
-		} else {
-			myAirportPoint.setIata(airportPoint[4]);
-		}
-		if (airportPoint[5].isEmpty()) {
-			myAirportPoint.setIcao(null);
-		} else {
-			myAirportPoint.setIcao(airportPoint[5]);
-		}
-//		if (airportPoint[5].equals("\\N")) {
-//			myAirportPoint.setIcao("");	//set as empty string
-//		} else {
-			//myAirportPoint.setIcao(airportPoint[5]);
-//		}
+	private static boolean checkAlphaNumeric(String s) {
+		return (s.matches("[a-zA-Z0-9]+"));
+	}
+	
+	private static AirportPoint checkAirportData(String[] airportPoint, int count) {
+		AirportPoint myAirportPoint = new AirportPoint(0, "Error on input file line: " + count);
+		try {
+			myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0]));
+			myAirportPoint.setAirportName(airportPoint[1]);
+			myAirportPoint.setAirportCity(airportPoint[2]);
+			myAirportPoint.setAirportCountry(airportPoint[3]);
 
-		myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
-		myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
-		myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
-		myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
-		myAirportPoint.setDst(airportPoint[10]);
-		if (airportPoint[11].equals("\\N")) {
-			myAirportPoint.setTz("");
-		} else {
-			myAirportPoint.setTz(airportPoint[11]);
+			if (airportPoint[4].isEmpty() || airportPoint[4].equals("\\N")) {
+				myAirportPoint.setIata("");
+			} else {
+				if (checkAlphaNumeric(airportPoint[4])) {
+					myAirportPoint.setIata(airportPoint[4]);
+				} else {
+					myAirportPoint.setAirportID(0);
+					myAirportPoint.setIata("");
+					myAirportPoint.setAirportName("Error on input file line: " + count);
+					myAirportPoint.setCorrectEntry(false);
+					return myAirportPoint;
+				}
+			}
+
+			if (airportPoint[5].isEmpty() || airportPoint[5].equals("\\N")) {
+				myAirportPoint.setIcao("");
+			} else {
+				if (checkAlphaNumeric(airportPoint[5])) {
+					myAirportPoint.setIcao(airportPoint[5]);
+				} else {
+					myAirportPoint.setAirportID(0);
+					myAirportPoint.setIcao("");
+					myAirportPoint.setAirportName("Error on input file line: " + count);
+					myAirportPoint.setCorrectEntry(false);
+					return myAirportPoint;
+				}
+			}
+			myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
+			myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
+			myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
+			myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
+			myAirportPoint.setDst(airportPoint[10]);
+			if (airportPoint[11].equals("\\N")) {
+				myAirportPoint.setTz("");		//default to unknown
+			} else {
+				myAirportPoint.setTz(airportPoint[11]);
+			}
+		} catch (NumberFormatException e) {
+			myAirportPoint.setCorrectEntry(false);
+			return myAirportPoint;
 		}
 
 		return myAirportPoint;
@@ -252,29 +274,33 @@ public class Parser {
 			int count = 0;
 			while ((line = br.readLine()) != null) {
 				count++;
-			    //Checking if there are the right amount of fields before trying to parse
+
+				if (line.isEmpty()) {
+					continue;
+				}
+
 			    if(numberOfCommas(line) == 11) {
                     String[] airportPoint = line.split(",");
 
 					airportPoint = removeQuotes(airportPoint);
-
-					int airportID = Integer.parseInt(airportPoint[0]);	//shouldnt be null
-					String airportName = airportPoint[1];	//shouldnt be null
-					AirportPoint myAirportPoint = new AirportPoint(airportID, airportName);
-					myAirportPoint = checkAirportData(airportPoint, myAirportPoint);
+					AirportPoint myAirportPoint = checkAirportData(airportPoint, count);
 
 					//SQLiteJDBC.addAiportPoint(myAirportPoint);
 					myAirportData.add(myAirportPoint);
 
 
                 } else {
-					System.err.println("Error: Unexpected comma found on line: " + count);
-					System.err.println("The line: " + line);
-                    //TODO
-                    //There weren't the right number of fields, handle this data somehow!
+					String[] airportPoint = line.split(",");
+					int airportID = Integer.parseInt(airportPoint[0]);
+
+					AirportPoint myAirportPoint = new AirportPoint(0, "Input File line: " + count);
+					myAirportPoint.setCorrectEntry(false);
+					myAirportData.add(myAirportPoint);
+					//System.out.println("Added");
                 }
 			}
 		} catch (NumberFormatException e) {
+			//Need a better way of handling number format exceptions.........
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {

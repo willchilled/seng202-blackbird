@@ -77,6 +77,13 @@
                   <Label fx:id="icaoText" text="icao" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                   <Label fx:id="callsignText" text="callsign" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                   <Label fx:id="activeText" text="active" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                  <TextField fx:id="airlineIDTextEdit" promptText="eg. 14289" visible="false" GridPane.columnIndex="1" />
+                  <TextField fx:id="airlineCountryTextEdit" promptText="eg New Zealand" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="airlineAliasTextEdit" promptText="eg ANZ Air New Zealand" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="airlineIATATextEdit" promptText="eg NZ" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="airlineICAOTextEdit" promptText="eg ANZ" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="airlineCallsignTextEdit" promptText="eg NEW ZEALAND" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <TextField fx:id="airlineActiveTextEdit" promptText="eg Y" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                </children>
             </GridPane>
          </children>
@@ -88,11 +95,15 @@
                   <Font size="20.0" />
                </font>
             </Label>
+            <TextField fx:id="airlineNameTextEdit" layoutX="118.0" layoutY="16.0" promptText="eg Air Napier" visible="false" />
          </children>
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.rowIndex="2">
          <children>
-            <Button layoutX="181.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
+            <Button fx:id="airlineEditButton" layoutX="181.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
+            <Button fx:id="airlineFinishButton" layoutX="322.0" layoutY="13.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
+            <Button fx:id="airlineCancelButton" layoutX="20.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
+            <Text fx:id="airlineInvalidDataText" fill="#c61010" layoutX="154.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INVALID DATA!" visible="false" />
          </children>
       </Pane>
    </children>

@@ -197,7 +197,7 @@
                         <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TableView fx:id="airportTable" maxWidth="1.7976931348623157E308" prefHeight="606.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                        <TableView fx:id="airportTable" prefHeight="690.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
@@ -248,7 +248,7 @@
                         <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TableView fx:id="airlineTable" maxWidth="1.7976931348623157E308" prefHeight="597.0" prefWidth="1129.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                        <TableView fx:id="airlineTable" prefHeight="690.0" prefWidth="1142.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="airlineIDCol" prefWidth="75.0" text="ID" />
                             <TableColumn fx:id="airlineNameCol" prefWidth="75.0" text="Name" />

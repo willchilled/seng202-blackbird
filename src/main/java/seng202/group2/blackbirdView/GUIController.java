@@ -527,7 +527,7 @@ public class GUIController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("View/Edit Data");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 

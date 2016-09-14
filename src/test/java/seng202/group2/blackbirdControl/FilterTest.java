@@ -237,7 +237,7 @@ public class FilterTest extends TestCase {
 
         selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "CR2"));
         routePoints = Filter.filterRoutesBySelections(selectedFields, search);
-        assertEquals(routePoints.size(), 1); //One item in query
+        assertEquals(routePoints.size(), 0); //One item in query
 
     }
 }

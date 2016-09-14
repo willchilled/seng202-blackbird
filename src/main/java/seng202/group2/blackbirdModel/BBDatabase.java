@@ -324,9 +324,9 @@ public class BBDatabase {
             System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
             //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
             //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
-                    "Error", JOptionPane.ERROR_MESSAGE);
+//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
             //System.exit(0);
         }
     }
@@ -389,9 +389,9 @@ public class BBDatabase {
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
             System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
-            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
-                    "Error", JOptionPane.ERROR_MESSAGE);
+//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
 

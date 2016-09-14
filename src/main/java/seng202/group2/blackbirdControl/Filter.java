@@ -205,10 +205,8 @@ public class Filter {
             outputString += "WHERE ";
             for (int i=0; i<menusPressed.size(); i++){
                 String currentSelection = menusPressed.get(i);
-                StringBuilder sb = new StringBuilder();
-                Formatter formatter = new Formatter(sb, Locale.US); // WHAT IS THIS??? Why are we saying our locale is the US?
                 if(currentSelection != "None"){
-                    outputString += formatter.format(allSelections.get(i), currentSelection);
+                    outputString += String.format(allSelections.get(i), currentSelection);
                 }
             }
 
@@ -272,10 +270,8 @@ public class Filter {
             outputString += "WHERE ";
             for (int i=0; i<menusPressed.size(); i++){
                 String currentSelection = menusPressed.get(i);
-                StringBuilder sb = new StringBuilder();
-                Formatter formatter = new Formatter(sb, Locale.US);
                 if(currentSelection != "None"){
-                    outputString += formatter.format(allSelections.get(i), currentSelection);
+                    outputString += String.format(allSelections.get(i), currentSelection);
                 }
             }
 

@@ -171,6 +171,9 @@ public class GUIController {
     private void initialize(){
         //Automatic initialisation when the program starts
 
+        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
@@ -219,11 +222,15 @@ public class GUIController {
         //SQLiteJDBC.dropTables();
         BBDatabase.createTables();
         //SQQliteJDBC.dropTables();
-        addDataMenuButton.setDisable(false);
+        //addDataMenuButton.setDisable(false);
+        //addDataMenuButton.setDisable(true);
+
+
         routeTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Route"));
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
         airportTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airport"));
         flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
+
     }
 
     /*******************************************************************************************************************
@@ -231,6 +238,69 @@ public class GUIController {
      *************************************** ADDING DATA ***************************************************************
      *******************************************************************************************************************
      ******************************************************************************************************************/
+
+    public void addALLData(){
+        //MASTER OVERRIDE FUNCTION DONT SCREW WITH THIS UNLESS YOU ARE A WIZARD
+        String cwd = System.getProperty("user.dir");
+        String airlinesFileString;
+        String airportsFileString;
+        String routesFileString;
+        String flightsFileString;
+
+        airlinesFileString = cwd + "/TestFiles/airlines.txt";
+        airportsFileString = cwd + "/TestFiles/airports.txt";
+        routesFileString = cwd + "/TestFiles/route.txt";
+        flightsFileString = cwd + "/TestFiles/flight.txt";
+
+        File airlinesFile = new File(airlinesFileString);
+        File airportsFile = new File(airportsFileString);
+        File routesFile = new File(routesFileString);
+        File flightsFile = new File(flightsFileString);
+
+        ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
+        ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
+        ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
+        ArrayList<FlightPoint> flightPoints = Parser.parseFlightData(flightsFile);
+
+
+
+        BBDatabase.deleteDBFile();
+        BBDatabase.createTables();
+        BBDatabase.addAirlinePointstoDB(airlinePoints);
+        BBDatabase.addAiportPortsToDB(airportPoints);
+        BBDatabase.addRoutePointstoDB(routePoints);
+        BBDatabase.addFlighttoDB(flightPoints);
+
+        airportPoints = Filter.getAllAirportPointsFromDB();
+        setAllAirportPoints(airportPoints); //imports setter, keeps track of all points
+
+        updateAirportsTable(airportPoints);
+        airPortCountryList = populateAirportCountryList();
+        airportFilterMenu.setItems(airPortCountryList);
+        airportFilterMenu.setValue(airPortCountryList.get(0));
+
+        airlinePoints = Filter.getAllAirlinePointsfromDB();
+
+
+        //System.out.println(myAirlineData);
+        // myAirlineData = Filter.getAllAirlinePointsfromDB();
+        setAllAirlinePoints(airlinePoints);
+        setAirlineActiveList(populateAirlineActiveList());
+
+        airlineActiveMenu.setItems(getAirlineActiveList());
+        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
+        airlineCountryList = populateAirlineCountryList();
+        airlineFilterMenu.setItems(airlineCountryList);
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+        updateAirlinesTable(airlinePoints);
+
+        updateRoutesTable(routePoints);
+        updateRoutesDropdowns();
+
+        updateFlightsTable(flightPoints);
+
+
+    }
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list

@@ -143,5 +143,13 @@ public class AirportPoint extends DataPoint {
 		this.correctEntry = correctEntry;
 	}
 
+	@Override
+	public String toString(){
+
+		//Format of original file is:
+		//ID, Name, City, Country, IATA, ICAO, Latitude, Longitude, Altitude, TimeZone, DST, TZ
+		return airportID + ", " + airportName + ", " + airportCity + ", " + airportCountry + ", " + iata + ", " + icao + ", " + latitude + ", " + longitude + ", " + altitude + ", " + timeZone + ", " + dst + ", " + tz;
+	}
+
 
 }

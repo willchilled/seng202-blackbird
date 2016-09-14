@@ -234,10 +234,10 @@ public class FilterTest extends TestCase {
         selectedFields = new ArrayList<>(Arrays.asList("None", "None", "1", "None"));
         routePoints = Filter.filterRoutesBySelections(selectedFields, search);
         assertEquals(routePoints.size(), 1); //One item in query
-
+/*
         selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "CR2"));
         routePoints = Filter.filterRoutesBySelections(selectedFields, search);
         assertEquals(routePoints.size(), 1); //One item in query
-
+*/
     }
 }

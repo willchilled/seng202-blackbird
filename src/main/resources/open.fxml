@@ -167,13 +167,14 @@
                                     <ComboBox fx:id="routesFilterbyDestMenu" layoutX="195.0" layoutY="25.0" prefWidth="150.0" />
                                     <ComboBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" prefWidth="150.0" />
                                     <ComboBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" prefWidth="150.0" />
-                                    <Button fx:id="routesFilterButton" layoutX="948.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Filter" />
-                                    <Button fx:id="routesSeeallDataButton" layoutX="1022.0" layoutY="17.0" mnemonicParsing="false" onAction="#routesSeeallDataButtonPressed" text="See all" />
+                                    <Button fx:id="routesFilterButton" layoutX="979.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Filter" />
+                                    <Button fx:id="routesSeeallDataButton" layoutX="1053.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesSeeallDataButtonPressed" text="See all" />
                                     <Text layoutX="35.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Source" />
                                     <Text layoutX="196.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
                                     <Text layoutX="364.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" />
                                     <Text layoutX="529.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" />
-                                    <TextField fx:id="routesSearchMenu" layoutX="699.0" layoutY="24.0" promptText="Search..." />
+                                    <Button fx:id="addRouteToTable" layoutX="872.0" layoutY="24.0" mnemonicParsing="false" onAction="#addSingleRoute" text="Add Route" />
+                                    <TextField fx:id="routesSearchMenu" layoutX="699.0" layoutY="24.0" prefHeight="25.0" prefWidth="157.0" promptText="Search..." />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -223,6 +224,7 @@
                                     <Button fx:id="filterButton" layoutX="951.0" layoutY="17.0" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" />
                                     <Button fx:id="airportSeeAllButton" layoutX="1038.0" layoutY="17.0" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" text="See all" />
                                      <TextField fx:id="airportSearchQuery" layoutX="191.0" layoutY="19.0" promptText="Search..." />
+                                     <Button fx:id="addAirportToTable" layoutX="841.0" layoutY="17.0" mnemonicParsing="false" onAction="#addSingleAirport" text="Add Airport" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -269,6 +271,7 @@
                                     <Button fx:id="airlineSeeAllButton" layoutX="1024.0" layoutY="17.0" mnemonicParsing="false" onAction="#airlineSeeAllButtonPressed" text="See all" />
                                     <ComboBox fx:id="airlineActiveMenu" layoutX="191.0" layoutY="17.0" prefWidth="150.0" />
                                      <TextField fx:id="airlineSearchQuery" layoutX="356.0" layoutY="17.0" promptText="Search..." />
+                                     <Button fx:id="addAirlineToTable" layoutX="841.0" layoutY="17.0" mnemonicParsing="false" onAction="#addSingleAirline" text="Add Airline" />
                                  </children>
                               </AnchorPane>
                            </content>

@@ -213,4 +213,31 @@ public class FilterTest extends TestCase {
 
 
     }
+
+    public void testFilterRoutesBySelections() throws Exception{
+        ArrayList<RoutePoint> routePoints = new ArrayList<>();
+        String search = "";
+
+
+        ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "None"));
+        routePoints = Filter.filterRoutesBySelections(selectedFields, search);
+        assertEquals(routePoints.size(), 100); //Nothing in query
+
+        selectedFields = new ArrayList<>(Arrays.asList("DME", "None", "None", "None"));
+        routePoints = Filter.filterRoutesBySelections(selectedFields, search);
+        assertEquals(routePoints.size(), 4); //One item in quert
+
+        selectedFields = new ArrayList<>(Arrays.asList("None", "KZN", "None", "None"));
+        routePoints = Filter.filterRoutesBySelections(selectedFields, search);
+        assertEquals(routePoints.size(), 7); //One item in query
+
+        selectedFields = new ArrayList<>(Arrays.asList("None", "None", "1", "None"));
+        routePoints = Filter.filterRoutesBySelections(selectedFields, search);
+        assertEquals(routePoints.size(), 1); //One item in query
+
+        selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "CR2"));
+        routePoints = Filter.filterRoutesBySelections(selectedFields, search);
+        assertEquals(routePoints.size(), 1); //One item in query
+
+    }
 }

@@ -171,8 +171,8 @@ public class GUIController {
     private void initialize(){
         //Automatic initialisation when the program starts
 
-        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -222,7 +222,7 @@ public class GUIController {
         //SQLiteJDBC.dropTables();
         BBDatabase.createTables();
         //SQQliteJDBC.dropTables();
-        //addDataMenuButton.setDisable(false);
+        addDataMenuButton.setDisable(false);
         //addDataMenuButton.setDisable(true);
 
 

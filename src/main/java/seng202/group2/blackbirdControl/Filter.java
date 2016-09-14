@@ -192,6 +192,10 @@ public class Filter {
 //            "WHERE EQUIPMENT.IDnum = ROUTE.IDnum"
         String outputString = "SELECT * FROM ROUTE ";
 
+        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.IDnum = ROUTE.IDnum AND EQUIPMENT.EquipmentName='CR2'
+
+        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.EquipmentName='CR2'
+
         ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
         boolean allNone = true;
 
@@ -215,12 +219,14 @@ public class Filter {
         //statement. However if there are filters selected, we must continue the statement with AND before appending
         // the search query statement.
         outputString = removeLastAND(outputString);
-        if(allNone) {
-            outputString += " WHERE ";
-        }else{
-            outputString += " AND ";
+        if (searchQuery.length() >0){
+            if(allNone){
+                outputString += " WHERE ";
+            }
+            else{
+                outputString += " AND ";
+            }
         }
-        outputString += searchString;
 
         System.out.println("\n\n");
         System.out.println(outputString);

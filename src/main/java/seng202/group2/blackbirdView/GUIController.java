@@ -589,8 +589,32 @@ public class GUIController {
     }
 
     private void updateAirportsTable(ArrayList<AirportPoint> points){
+
         //updates airpoirts table with a set of airpoints
         airportTable.getItems().setAll(points);
+
+        //Trying to change the colour of rows
+
+        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
+        airportErrorCol.setCellFactory(column -> {
+            return new TableCell<AirportPoint, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    //setText(empty ? "" : getItem().toString());
+                    //setGraphic(null);
+
+                    TableRow<AirportPoint> currentRow = getTableRow();
+
+                    if (!isEmpty()) {
+
+                        if(item == 0)
+                            currentRow.setStyle("-fx-background-color:lightcoral");
+                    }
+                }
+            };
+        });
 
         //Trying to change the colour of rows
 
@@ -607,7 +631,8 @@ public class GUIController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
-        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Boolean>("correctEntry"));
+        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
+
 
         airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override

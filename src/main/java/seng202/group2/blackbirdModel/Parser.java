@@ -228,7 +228,7 @@ public class Parser {
 					myAirportPoint.setAirportID(0);
 					myAirportPoint.setIata("");
 					myAirportPoint.setAirportName("Error on input file line: " + count);
-					myAirportPoint.setCorrectEntry(false);
+					myAirportPoint.setCorrectEntry(0);
 					return myAirportPoint;
 				}
 			}
@@ -242,7 +242,7 @@ public class Parser {
 					myAirportPoint.setAirportID(0);
 					myAirportPoint.setIcao("");
 					myAirportPoint.setAirportName("Error on input file line: " + count);
-					myAirportPoint.setCorrectEntry(false);
+					myAirportPoint.setCorrectEntry(0);
 					return myAirportPoint;
 				}
 			}
@@ -257,10 +257,10 @@ public class Parser {
 				myAirportPoint.setTz(airportPoint[11]);
 			}
 		} catch (NumberFormatException e) {
-			myAirportPoint.setCorrectEntry(false);
+			myAirportPoint.setCorrectEntry(0);
 			return myAirportPoint;
 		}
-		myAirportPoint.setCorrectEntry(true);
+		myAirportPoint.setCorrectEntry(1);
 
 		return myAirportPoint;
 	}
@@ -296,7 +296,7 @@ public class Parser {
 					int airportID = Integer.parseInt(airportPoint[0]);
 
 					AirportPoint myAirportPoint = new AirportPoint(0, "Input File line: " + count);
-					myAirportPoint.setCorrectEntry(false);
+					myAirportPoint.setCorrectEntry(0);
 					myAirportData.add(myAirportPoint);
 					//System.out.println("Added");
                 }

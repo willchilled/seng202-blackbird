@@ -319,7 +319,7 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            airport.setCorrectEntry(false);
+            airport.setCorrectEntry(0);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
 //            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +

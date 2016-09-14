@@ -214,7 +214,7 @@
                               <TableColumn fx:id="airportTimeCol" prefWidth="75.0" text="TimeZone" visible="false" />
                               <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="DST" visible="false" />
                               <TableColumn fx:id="airportTZCol" prefWidth="60.3333740234375" text="TZ" />
-                              <TableColumn fx:id="airportsErrorCol" prefWidth="75.0" text="Errors" />
+                              <TableColumn fx:id="airportErrorCol" prefWidth="75.0" text="Errors" />
                            </columns>
                         </TableView>
                         <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">

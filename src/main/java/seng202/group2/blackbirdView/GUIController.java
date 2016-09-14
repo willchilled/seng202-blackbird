@@ -24,7 +24,9 @@ import seng202.group2.blackbirdModel.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -614,6 +616,16 @@ public class GUIController {
 
     public void routesFilterButtonPressed(ActionEvent actionEvent) {
         System.out.println("I HAVE BEEN PRESSED");
+        String sourceSelection = routesFilterBySourceMenu.getValue().toString();
+        String destSelection = routesFilterbyDestMenu.getValue().toString();
+        String stopsSelection = routesFilterByStopsMenu.getValue().toString();
+        String equipSelection = routesFilterbyEquipMenu.getValue().toString();
+        String searchQuery = routesSearchMenu.getText().toString();
+
+        ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
+        ArrayList<RoutePoint> routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
+
     }
 
     /*******************************************************************************************************************

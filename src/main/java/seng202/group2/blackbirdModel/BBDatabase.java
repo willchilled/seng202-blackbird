@@ -384,6 +384,18 @@ public class BBDatabase {
                 "\"" + codeshare + "\", " +
                 Stops + ");";
 
+
+        try {
+            stmt.executeUpdate(routeSql);
+        } catch (SQLException e) {
+            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+
         //equipment is special cos its a dick
         String strEquipment = route.getEquipment();
         String[] ListEquipment = strEquipment.split(" ");

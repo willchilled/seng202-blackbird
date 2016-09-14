@@ -170,6 +170,17 @@ public class Filter {
         return allPoints;
     }
 
+    public static ArrayList<RoutePoint> filterRoutesBySelections(ArrayList<String> menusPressed, String searchQuery) {
+        String searchString = String.format("");
+                                                                                    //Source dest stops equip
+        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "Src=\"%s\" AND " ));
+//            "SELECT * from EQUIPMENT, ROUTE\n" +
+//            "WHERE EQUIPMENT.IDnum = ROUTE.IDnum"
+
+
+        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
+        return routePoints;
+    }
     public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed, String search) {
         //Please read this before editing this function
         //The function takes all of the selections pressed, and then subs the values into the selections string using a string formatter
@@ -267,5 +278,7 @@ public class Filter {
         return uniqueSources;
 
     }
+
+
 }
 

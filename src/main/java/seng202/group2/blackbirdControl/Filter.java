@@ -150,25 +150,103 @@ public class Filter {
         //gets all Aiport Points from the database
         String sql = "SELECT * FROM AIRPORT;";
         ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
-        allPoints = BBDatabase.performAirpointsQuery(sql);
+        allPoints = BBDatabase.performAirportsQuery(sql);
         return allPoints;
     }
 
-    public static ArrayList<AirportPoint> filterAiportsByCountryUsingDB(String countrySelection, String query) {
+    public static ArrayList<AirportPoint> filterAirportsBySelections(String countrySelection, String query) {
+        //Filters aiports by country and string query
         ArrayList<AirportPoint> allPoints;
         String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
                 " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR ALTITUDE='%1$s'" +
                 " OR TIMEZONE='%1$s' OR DST='%1$s' OR TZ='%1$s');", query);
+        String sql = "SELECT * FROM AIRPORT ";
+
+
+
         if(countrySelection != "None") {
-            String sql = "SELECT * FROM AIRPORT WHERE COUNTRY=\"" + countrySelection + "\"" + " AND " + searchString;
-            allPoints = BBDatabase.performAirpointsQuery(sql);
+            //If there is a country
+            sql += "WHERE COUNTRY=\"" + countrySelection + "\"";
+            if (query.length() != 0){
+                //If there is a search string query
+                sql += " AND " + searchString;
+            }
+            allPoints = BBDatabase.performAirportsQuery(sql);
         }else{
-            String sql = "SELECT * FROM AIRPORT WHERE " + searchString;
-            allPoints = BBDatabase.performAirpointsQuery(sql);
+            if (query.length() >0) { //If there is a searchString query
+                sql += "WHERE " + searchString;
+            }
+
+            allPoints = BBDatabase.performAirportsQuery(sql);
+
         }
 
         return allPoints;
     }
+
+    public static ArrayList<RoutePoint> filterRoutesBySelections(ArrayList<String> menusPressed, String searchQuery) {
+        String searchString = String.format("");
+                                                                                    //Source dest stops equip
+        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "Src=\"%s\" AND " ));
+//            "SELECT * from EQUIPMENT, ROUTE\n" +
+//            "WHERE EQUIPMENT.IDnum = ROUTE.IDnum"
+        String outputString = "SELECT * FROM ROUTE ";
+
+        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.IDnum = ROUTE.IDnum AND EQUIPMENT.EquipmentName='CR2'
+
+        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.EquipmentName='CR2'
+
+        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
+        boolean allNone = true;
+
+        for (String currentSelection: menusPressed){
+            if (currentSelection != "None"){
+                allNone = false;
+            }
+        }
+
+        if (!allNone){
+            outputString += "WHERE ";
+            for (int i=0; i<menusPressed.size(); i++){
+                String currentSelection = menusPressed.get(i);
+                if(currentSelection != "None"){
+                    outputString += String.format(allSelections.get(i), currentSelection);
+                }
+            }
+
+        }
+        //If there are no filters selected, we must begin the statement with WHERE before beginning the search query
+        //statement. However if there are filters selected, we must continue the statement with AND before appending
+        // the search query statement.
+        outputString = removeLastAND(outputString);
+        if (searchQuery.length() >0){
+            if(allNone){
+                outputString += " WHERE ";
+            }
+            else{
+                outputString += " AND ";
+            }
+        }
+
+        System.out.println("\n\n");
+        System.out.println(outputString);
+        System.out.println("\n\n");
+        outputString = removeLastAND(outputString);
+
+
+
+        System.out.println("Perfomring query:"+ outputString);
+
+
+
+
+        routePoints = BBDatabase.performRoutesQuery(outputString);
+        return routePoints;
+    }
+
+
+
+
 
     public static ArrayList<AirlinePoint> filterAirlinesBySelections(ArrayList<String> menusPressed, String search) {
         //Please read this before editing this function
@@ -177,11 +255,15 @@ public class Filter {
         //it first checks if all strings are not none and if that is true it performs the query "Select * from Airline
         //Other wise subs all strings in
         //Ask Stefan Before messing with this
+        String searchString = "";
+        if (search.length() >0){
+            searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
+                    "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
+        }
 
-        String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
-                "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
-        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%1$2s\" AND ", "ACTIVE=\"%1$s\" AND "));
-        System.out.println(menusPressed.get(1));
+
+        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
+        //System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
 
         boolean allNone = true;
@@ -197,10 +279,8 @@ public class Filter {
             outputString += "WHERE ";
             for (int i=0; i<menusPressed.size(); i++){
                 String currentSelection = menusPressed.get(i);
-                StringBuilder sb = new StringBuilder();
-                Formatter formatter = new Formatter(sb, Locale.US);
                 if(currentSelection != "None"){
-                    outputString += formatter.format(allSelections.get(i), currentSelection);
+                    outputString += String.format(allSelections.get(i), currentSelection);
                 }
             }
 
@@ -210,10 +290,13 @@ public class Filter {
         //statement. However if there are filters selected, we must continue the statement with AND before appending
         // the search query statement.
         outputString = removeLastAND(outputString);
-        if(allNone) {
-            outputString += " WHERE ";
-        }else{
-            outputString += " AND ";
+        if (search.length() >0){
+            if(allNone){
+                outputString += " WHERE ";
+            }
+            else{
+                outputString += " AND ";
+            }
         }
         outputString += searchString;
 
@@ -267,5 +350,7 @@ public class Filter {
         return uniqueSources;
 
     }
+
+
 }
 

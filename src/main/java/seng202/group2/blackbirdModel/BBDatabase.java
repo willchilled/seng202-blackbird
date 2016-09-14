@@ -57,7 +57,7 @@ public class BBDatabase {
                         "(ID INTEGER PRIMARY KEY    NOT NULL," +
                         " NAME           VARCHAR(40)   NOT NULL," +
                         " CITY           VARCHAR(40)   NOT NULL," +
-                        " COUNTRY        VARCHAR(150)   NOT NULL," +
+                        " COUNTRY        VARCHAR(40)   NOT NULL," +
                         " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                         " ICAO           CHAR(4)," +
                         " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
@@ -87,8 +87,6 @@ public class BBDatabase {
 
     private static String createRouteTable(){
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
-        //need to check if this is actually being added properly? i thought the database would shit itself if you tried
-        //to add routes before airports since it needs to reference the foreign keys
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
                 "Airline    VARCHAR(3) NOT NULL /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
@@ -137,7 +135,7 @@ public class BBDatabase {
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder),"+
                 "FOREIGN KEY (FlightIDNum)" +
-                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +   //?
+                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +
                 ")";
         return sql;
     }
@@ -323,7 +321,7 @@ public class BBDatabase {
         } catch (SQLException e) {
             airport.setCorrectEntry(false);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao + Dst);
+            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
 //            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
 //                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
 //                    "Error", JOptionPane.ERROR_MESSAGE);
@@ -384,6 +382,18 @@ public class BBDatabase {
                 "\"" + codeshare + "\", " +
                 Stops + ");";
 
+
+        try {
+            stmt.executeUpdate(routeSql);
+        } catch (SQLException e) {
+            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
+//                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+
         //equipment is special cos its a dick
         String strEquipment = route.getEquipment();
         String[] ListEquipment = strEquipment.split(" ");
@@ -400,21 +410,21 @@ public class BBDatabase {
                 stmt.executeUpdate(EquipSql);
             }catch  (SQLException e){
                 System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                System.out.println("Could not add: " + equip +"With Route: " + IDnum);
+                System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
 //                JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
 //                        "Could not add: " + equip + ", with Route: " + IDnum, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-
-        try{
-            stmt.executeUpdate(routeSql);
-        }catch (SQLException e){
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+//        try{
+//            stmt.executeUpdate(routeSql);
+//        }catch (SQLException e){
+//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
 //            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
 //                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
 //                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
+//        }
+
     }
 
     //Flight Adding
@@ -514,7 +524,7 @@ public class BBDatabase {
 
 
     //######################### FILTER METHODS#################################
-    public static ArrayList<AirportPoint> performAirpointsQuery(String sql) {
+    public static ArrayList<AirportPoint> performAirportsQuery(String sql) {
         Connection c = makeConnection();
         ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
 
@@ -615,6 +625,58 @@ public class BBDatabase {
             System.exit(0);
         }
         System.out.println("Airlines Query done successfully:" + sql);
+
+        return allPoints;
+
+    }
+
+
+
+    public static ArrayList<RoutePoint> performRoutesQuery(String sql) {
+        Connection c = makeConnection();
+        ArrayList<RoutePoint> allPoints = new ArrayList<RoutePoint>();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( sql );
+            while ( rs.next() ) {
+
+
+                int routeID = rs.getInt("IDnum");
+                String airline = rs.getString("Airline");
+                String airlineID = rs.getString("Airlineid");
+                String src = rs.getString("Src");
+                String srcID = rs.getString("Srcid");
+                String dest = rs.getString("Dst");
+                String destID = rs.getString("Dstid");
+                String codeShare = rs.getString("Codeshare");
+                String stops = rs.getString("Stops");
+
+
+                // System.out.println(airportName);
+                RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
+                myPoint.setSrcAirport(src);
+                myPoint.setSrcAirportID(Integer.parseInt(srcID));
+                myPoint.setDstAirport(dest);
+                myPoint.setDstAirportID(Integer.parseInt(destID));
+                myPoint.setCodeshare(codeShare);
+                myPoint.setStops(Integer.parseInt(stops));
+
+                allPoints.add(myPoint);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Routes Query done successfully:" + sql);
 
         return allPoints;
 

@@ -526,7 +526,7 @@ public class BBDatabase {
 
 
     //######################### FILTER METHODS#################################
-    public static ArrayList<AirportPoint> performAirpointsQuery(String sql) {
+    public static ArrayList<AirportPoint> performAirportsQuery(String sql) {
         Connection c = makeConnection();
         ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
 

@@ -178,6 +178,7 @@ public class Filter {
 //            "WHERE EQUIPMENT.IDnum = ROUTE.IDnum"
         String outputString = "SELECT * FROM ROUTE ";
 
+        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
         boolean allNone = true;
 
         for (String currentSelection: menusPressed){
@@ -224,6 +225,7 @@ public class Filter {
         ArrayList<RoutePoint> routePoints = BBDatabase.performRoutesQuery(outputString);
         return routePoints;
     }
+
 
 
 

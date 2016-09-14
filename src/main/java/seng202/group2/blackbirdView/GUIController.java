@@ -24,7 +24,6 @@ import seng202.group2.blackbirdModel.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -555,7 +554,7 @@ public class GUIController {
         System.out.println(searchQuery);
 
 
-        ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsByCountryUsingDB(countrySelection, searchQuery);
+        ArrayList<AirportPoint> filteredPoints = Filter.filterAiportsBySelections(countrySelection, searchQuery);
         updateAirportsTable(filteredPoints);
 
 

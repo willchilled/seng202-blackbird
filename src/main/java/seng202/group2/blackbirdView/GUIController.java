@@ -298,7 +298,7 @@ public class GUIController {
 
 
     public void addFlightData(){
-        //adds flight data
+        //adds flight data now using the database
         System.out.println("Add Flight Data");
 
         File f;
@@ -624,6 +624,8 @@ public class GUIController {
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
         ArrayList<RoutePoint> routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
+        updateRoutesTable(routePoints);
 
 
     }

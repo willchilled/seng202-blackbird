@@ -632,6 +632,58 @@ public class BBDatabase {
 
     }
 
+
+
+    public static ArrayList<RoutePoint> performRoutesQuery(String sql) {
+        Connection c = makeConnection();
+        ArrayList<RoutePoint> allPoints = new ArrayList<RoutePoint>();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( sql );
+            while ( rs.next() ) {
+
+
+                int routeID = rs.getInt("IDnum");
+                String airline = rs.getString("Airline");
+                String airlineID = rs.getString("Airlineid");
+                String src = rs.getString("Src");
+                String srcID = rs.getString("Srcid");
+                String dest = rs.getString("Dst");
+                String destID = rs.getString("Dstid");
+                String codeShare = rs.getString("Codeshare");
+                String stops = rs.getString("Stops");
+
+
+                // System.out.println(airportName);
+                RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
+                myPoint.setSrcAirport(src);
+                myPoint.setSrcAirportID(Integer.parseInt(srcID));
+                myPoint.setDstAirport(dest);
+                myPoint.setDstAirportID(Integer.parseInt(destID));
+                myPoint.setCodeshare(codeShare);
+                myPoint.setStops(Integer.parseInt(stops));
+
+                allPoints.add(myPoint);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Routes Query done successfully:" + sql);
+
+        return allPoints;
+
+    }
+
     public static ArrayList<String> performDistinctStringQuery(String sql) {
 
         Connection c = makeConnection();

@@ -144,7 +144,7 @@ public class FilterTest extends TestCase {
     public void testGetAllAirlinePointsfromDB(){
         ArrayList<AirlinePoint> airlinePoints = new ArrayList<>();
         airlinePoints = Filter.getAllAirlinePointsfromDB();
-        assertEquals(airlinePoints.size(), 99);
+        assertEquals(airlinePoints.size(), 98);
     }
 
     public void testGetAllAirportPointsFromDB(){
@@ -163,7 +163,7 @@ public class FilterTest extends TestCase {
 
         selectedFields = new ArrayList<>(Arrays.asList("None", "None"));
         airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);
-        assertEquals(airlinePoints.size(), 99); //Both lines are None
+        assertEquals(airlinePoints.size(), 98); //Both lines are None
 
         selectedFields = new ArrayList<>(Arrays.asList("Russia", "Y"));
         airlinePoints = Filter.filterAirlinesBySelections(selectedFields, search);

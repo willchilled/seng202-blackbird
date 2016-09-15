@@ -48,13 +48,6 @@ public class Exporter {
         }
 
 
-       /* try(FileWriter fw = new FileWriter(chooser.getSelectedFile()+".txt")){
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
     }
 
 

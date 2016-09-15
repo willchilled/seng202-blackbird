@@ -1005,6 +1005,16 @@ public class GUIController {
         Exporter.exportData(myPoints);
 
     }
+    @FXML
+    private void exportFlightData(){
+        //Giver user a warning that it will only export the currently selected flight (the one in the flightpoint table)
+        //NEED TO LABEL THE FLIGHT TABLES.
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(flightPointTable.getItems());
+        Exporter.exportData(myPoints);
+
+    }
+
 
 
 

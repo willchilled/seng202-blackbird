@@ -31,7 +31,7 @@
                   <Menu mnemonicParsing="false" text="Export Data">
                     <items>
                       <MenuItem disable="false" mnemonicParsing="false" onAction="#exportRouteData" text="Route" visible="true" />
-                        <MenuItem disable="true" mnemonicParsing="false" text="Flight" />
+                        <MenuItem disable="false" mnemonicParsing="false" onAction="#exportFlightData" text="Flight" visible="true"/>
                         <MenuItem mnemonicParsing="false" onAction="#exportAirlineData" text="Airline" />
                         <MenuItem fx:id="exportAirportMenuButton" mnemonicParsing="false" onAction="#exportAirportData" text="Airport" />
                     </items>

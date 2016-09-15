@@ -1,89 +1,87 @@
 package seng202.group2.blackbirdModel;
 
 public class AirlinePoint extends DataPoint {
-	
-	private int airlineID;
-	private String airlineName;
-	private String airlineAlias;
-	private String iata;
-	private String icao;
-	private String callsign;
-	private String country;
-	private String active;
-	//private int correctEntry;
-	
-	
-	public AirlinePoint(int airlineID, String airlineName){
-		
-		this.airlineID = airlineID;
-		this.airlineName = airlineName;
-			
-	}
 
-	
-	public int getAirlineID() {
-		return airlineID;
-	}
+    private int airlineID;
+    private String airlineName;
+    private String airlineAlias;
+    private String iata;
+    private String icao;
+    private String callsign;
+    private String country;
+    private String active;
+    //private int correctEntry;
 
-	public void setAirlineID(int airlineID) {
-		this.airlineID = airlineID;
-	}
 
-	public String getAirlineName() {
-		return airlineName;
-	}
+    public AirlinePoint(int airlineID, String airlineName) {
+        this.airlineID = airlineID;
+        this.airlineName = airlineName;
+    }
 
-	public void setAirlineName(String airlineName) {
-		this.airlineName = airlineName;
-	}
 
-	public String getAirlineAlias() {
-		return airlineAlias;
-	}
+    public int getAirlineID() {
+        return airlineID;
+    }
 
-	public void setAirlineAlias(String airlineAlias) {
-		this.airlineAlias = airlineAlias;
-	}
+    public void setAirlineID(int airlineID) {
+        this.airlineID = airlineID;
+    }
 
-	public String getIata() {
-		return iata;
-	}
+    public String getAirlineName() {
+        return airlineName;
+    }
 
-	public void setIata(String iata) {
-		this.iata = iata;
-	}
+    public void setAirlineName(String airlineName) {
+        this.airlineName = airlineName;
+    }
 
-	public String getIcao() {
-		return icao;
-	}
+    public String getAirlineAlias() {
+        return airlineAlias;
+    }
 
-	public void setIcao(String icao) {
-		this.icao = icao;
-	}
+    public void setAirlineAlias(String airlineAlias) {
+        this.airlineAlias = airlineAlias;
+    }
 
-	public String getCallsign() {
-		return callsign;
-	}
+    public String getIata() {
+        return iata;
+    }
 
-	public void setCallsign(String callsign) {
-		this.callsign = callsign;
-	}
+    public void setIata(String iata) {
+        this.iata = iata;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public String getIcao() {
+        return icao;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public void setIcao(String icao) {
+        this.icao = icao;
+    }
 
-	public String getActive() {
-		return active;
-	}
+    public String getCallsign() {
+        return callsign;
+    }
 
-	public void setActive(String active) {
-		this.active = active;
-	}
+    public void setCallsign(String callsign) {
+        this.callsign = callsign;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
 
 //	public int getCorrectEntry() {
 //		return correctEntry;
@@ -93,18 +91,13 @@ public class AirlinePoint extends DataPoint {
 //		this.correctEntry = correctEntry;
 //	}
 
-
-	@Override
-	public String toString() {
-
-		String returnString = String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
-				airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
-
-		return returnString;
-
-	}
+    @Override
+    public String toString() {
 
 
+        return String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
+                airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
+    }
 
 
 }

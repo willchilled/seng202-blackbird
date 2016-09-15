@@ -87,7 +87,7 @@ public class Parser {
 		return line;
 	}
 
-	private static RoutePoint checkRouteData(String[] routePoint, int count){
+	public static RoutePoint checkRouteData(String[] routePoint, int count){
 		RoutePoint myRoutePoint = new RoutePoint("", 0);
 		myRoutePoint.setRouteID(count);
 		try {
@@ -158,9 +158,9 @@ public class Parser {
 		
 		return myRouteData;
 	}
-	
 
-	private static AirlinePoint checkAirlineData(String[] airlinePoint, int count) {
+    //AIRLINES
+	public static AirlinePoint checkAirlineData(String[] airlinePoint, int count) {
 		AirlinePoint myAirlinePoint = new AirlinePoint(0, "");
 		try {
 			myAirlinePoint.setAirlineID(Integer.parseInt(airlinePoint[0].trim()));	//should not be null
@@ -208,7 +208,6 @@ public class Parser {
 		return myAirlinePoint;
 	}
 
-	//AIRLINES
 	public static ArrayList<AirlinePoint> parseAirlineData(File file){
 		
 		ArrayList<AirlinePoint> myAirlineData = new ArrayList<AirlinePoint>();
@@ -244,8 +243,9 @@ public class Parser {
 	private static boolean checkAlphaNumeric(String s) {
 		return (s.matches("[a-zA-Z0-9]+"));	//does not accept empty spaces atm
 	}
-	
-	private static AirportPoint checkAirportData(String[] airportPoint, int count) {
+
+	//AIRPORTS
+	public static AirportPoint checkAirportData(String[] airportPoint, int count) {
 		AirportPoint myAirportPoint = new AirportPoint(0, "");
 		try {
 			myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0].trim()));	//should not be null
@@ -312,7 +312,6 @@ public class Parser {
 		return myAirportPoint;
 	}
 
-	//AIRPORTS
 	public static ArrayList<AirportPoint> parseAirportData(File file){
 
 		ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();

@@ -20,11 +20,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seng202.group2.blackbirdControl.AirlineAddingPopUpController;
+import seng202.group2.blackbirdControl.AirportAddingPopUpController;
 import seng202.group2.blackbirdControl.Exporter;
 import seng202.group2.blackbirdControl.Filter;
+import seng202.group2.blackbirdControl.RouteAddingPopUpController;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
+import java.io.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -48,7 +52,6 @@ public class GUIController {
     ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
-
 
 
 
@@ -250,6 +253,7 @@ public class GUIController {
      *******************************************************************************************************************
      ******************************************************************************************************************/
 
+    //Adding data via Files
     public void addALLData(){
         //MASTER OVERRIDE FUNCTION DONT SCREW WITH THIS UNLESS YOU ARE A WIZARD
         String cwd = System.getProperty("user.dir");
@@ -378,7 +382,6 @@ public class GUIController {
 
     }
 
-
     public void addFlightData(){
         //adds flight data now using the database
         System.out.println("Add Flight Data");
@@ -396,6 +399,8 @@ public class GUIController {
         }
     }
 
+
+    //Adding data via the add buttons
     public void addSingleRoute() {
         //Brings up popup to insert route values
         try {
@@ -404,12 +409,12 @@ public class GUIController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RouteAddingPopUp.fxml"));
             root = loader.load();
 
-            adderStage.setScene(new Scene(root));
-            adderStage.setTitle("Add Route Information");
-            adderStage.initModality(Modality.NONE);
-            adderStage.initOwner(null);
+            //use controller to control it
+            RouteAddingPopUpController popUpController = loader.getController();
+            popUpController.setAdderStage(adderStage);
+            popUpController.setRoot(root);
+            popUpController.control();
 
-            adderStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -423,12 +428,12 @@ public class GUIController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirlineAddingPopUp.fxml"));
             root = loader.load();
 
-            adderStage.setScene(new Scene(root));
-            adderStage.setTitle("Add Airline Information");
-            adderStage.initModality(Modality.NONE);
-            adderStage.initOwner(null);
+            //use controller to control it
+            AirlineAddingPopUpController popUpController = loader.getController();
+            popUpController.setAdderStage(adderStage);
+            popUpController.setRoot(root);
+            popUpController.control();
 
-            adderStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -442,12 +447,12 @@ public class GUIController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirportAddingPopUp.fxml"));
             root = loader.load();
 
-            adderStage.setScene(new Scene(root));
-            adderStage.setTitle("Add Airport Informationt");
-            adderStage.initModality(Modality.NONE);
-            adderStage.initOwner(null);
+            //use controller to control it
+            AirportAddingPopUpController popUpController = loader.getController();
+            popUpController.setAdderStage(adderStage);
+            popUpController.setRoot(root);
+            popUpController.control();
 
-            adderStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

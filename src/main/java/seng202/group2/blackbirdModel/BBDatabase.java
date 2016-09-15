@@ -1,16 +1,44 @@
 package seng202.group2.blackbirdModel;
+import seng202.group2.blackbirdView.GUIController;
 
-import java.awt.*;
+import javax.swing.*;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sha162 on 10/09/16.
  */
 public class BBDatabase {
 
-    private static String dataBaseName;
+    private static String dataBaseName="jdbc:sqlite:default.db";
+
+
+    public static int getMaxInColumn(String tableName, String columnName){
+        //Returns the highest value in a column for a table
+        int highID = 0;
+        try {
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            String sql = "SELECT " + columnName + ", MAX(" + columnName + ") FROM " + tableName;
+            ResultSet rs = stmt.executeQuery(sql);
+            highID = rs.getInt(columnName);
+            stmt.close();
+            c.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return highID;
+    }
 
     public static String getDatabaseName() {
         return dataBaseName;
@@ -20,7 +48,7 @@ public class BBDatabase {
         BBDatabase.dataBaseName = dataBaseName;
     }
 
-    private static Connection makeConnection() {
+    private static Connection makeConnection(){
         // creates a connection with the data base
 
         Connection c = null;
@@ -37,19 +65,19 @@ public class BBDatabase {
         return c;
     }
 
-    public static void deleteDBFile() {
+    public static void deleteDBFile(){
         //deletes pre existing database file
         String cwd = System.getProperty("user.dir");
 
-        File f = new File(cwd + "/default.db");
+        File f = new File(cwd+"/default.db");
 
-        if (f.exists() && f.isFile()) {
+        if(f.exists() && f.isFile()){
             f.delete();
         }
     }
 
     //#######################MAKING TABLES//
-    private static String createAirportTable() {
+    private static String createAirportTable(){
         //added additional constraints on some of the fields, but i think adding some on parsing as well may simplify things?
         String sql = "CREATE TABLE AIRPORT " +
                         "(ID INTEGER PRIMARY KEY    NOT NULL," +
@@ -69,7 +97,7 @@ public class BBDatabase {
 
     }
 
-    private static String createAirlineTable() {
+    private static String createAirlineTable(){
         String sql = "CREATE TABLE AIRLINE " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
@@ -83,7 +111,7 @@ public class BBDatabase {
         return sql;
     }
 
-    private static String createRouteTable() {
+    private static String createRouteTable(){
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
@@ -98,7 +126,6 @@ public class BBDatabase {
                 "foreign key (Srcid, Dstid) references AIRPORT," +    //foreign key can only be primary key of other table
                 "PRIMARY KEY (IDnum)" +
                 ")";
-        ;
         return sql;
     }
 
@@ -113,17 +140,17 @@ public class BBDatabase {
         return sql;
     }
 
-    private static String createFlightTable() {
+    private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
-                "SrcICAO        VARCHAR(5) NOT NULL /*Source ICAO code*/," +
-                "DstICAO        VARCHAR(5) NOT NULL /*Destination ICAO code*/" +
+                "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
+                "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +       //either the IATA(3) or ICAO(4)
                 ")";
         System.out.println(sql);
         return sql;
     }
 
-    private static String createFlightPointTable() {
+    private static String createFlightPointTable(){
         String sql = "CREATE TABLE FLIGHTPOINT" +
                 "(SeqOrder         INTEGER NOT NULL UNIQUE /*gives the sequence of the flight points*/," +
                 "LocaleID       VARCHAR(5) NOT NULL, "+
@@ -138,8 +165,6 @@ public class BBDatabase {
                 ")";
         return sql;
     }
-
-
 
     public static void createTables() {
         //dropTables();
@@ -232,7 +257,7 @@ public class BBDatabase {
 
         String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
                 "VALUES (" +
-                +id + ", \"" +
+                + id + ", \"" +
                 name + "\", \"" +
                 alias + "\", \"" +
                 iata + "\", \"" +
@@ -293,7 +318,7 @@ public class BBDatabase {
 
         String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
                 "VALUES (" +
-                +airportID + ", \"" +
+                + airportID + ", \"" +
                 airportName + "\", \"" +
                 City + "\", \"" +
                 Country + "\", \"" +
@@ -318,7 +343,7 @@ public class BBDatabase {
     //Route Adding
     public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
         //adds routes into the database
-        try {
+        try{
             //Connect to DB
             Connection c = makeConnection();
             Statement stmt = null;
@@ -343,7 +368,7 @@ public class BBDatabase {
         System.out.println("Records created successfully");
     }
 
-    private static void addSingleRoutetoDB(RoutePoint route, Statement stmt) {
+    private static void addSingleRoutetoDB(RoutePoint route, Statement stmt){
         //get info for route
         int IDnum = route.getRouteID();
         String Airline = route.getAirline();
@@ -532,7 +557,7 @@ public class BBDatabase {
                 myPoint.setIcao(Icao);
                 myPoint.setLatitude(Latitude);
                 myPoint.setLongitude(Longitude);
-                myPoint.setAltitude((int) Altitude);
+                myPoint.setAltitude((int)Altitude);
                 myPoint.setTimeZone(timezone);
                 myPoint.setDst(Dst);
                 myPoint.setTz(tz);

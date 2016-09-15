@@ -2,130 +2,131 @@ package seng202.group2.blackbirdModel;
 
 public class RoutePoint extends DataPoint {
 
-	private int routeID;	//our given id to routes
-	private String airline; //index 0 in input file
-	private int airlineID;
-	private String srcAirport;
-	private int srcAirportID;
-	private String dstAirport;
-	private int dstAirportID;
-	private String codeshare;
-	private int stops;
-	private String equipment;
-	//private int correctEntry;
+    private int routeID;    //our given id to routes
+    private String airline; //index 0 in input file
+    private int airlineID;
+    private String srcAirport;
+    private int srcAirportID;
+    private String dstAirport;
+    private int dstAirportID;
+    private String codeshare;
+    private int stops;
+    private String equipment;
+    //private int correctEntry;
 
-	private AirportPoint source;
-	private AirportPoint destination;
+    private AirportPoint source;
+    private AirportPoint destination;
 
 
-	@Override
-	public boolean equals(Object obj){
-		RoutePoint mypoint = (RoutePoint) obj;
-		if(this.getRouteID() == mypoint.getRouteID()) return true;
-		else return false;
-	}
+    public RoutePoint(String airline, int airlineID) {
 
-	public RoutePoint(String airline, int airlineID){
+        this.airline = airline;
+        this.airlineID = airlineID;
+    }
 
-		this.airline = airline;
-		this.airlineID = airlineID;
-	}
 
-	public int getRouteID() {
-		return routeID;
-	}
 
-	public void setRouteID(int routeID) {
-		this.routeID = routeID;
-	}
-	
-	public String getAirline() {
-		return airline;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        RoutePoint mypoint =  (RoutePoint) obj;
+        return routeID == mypoint.getRouteID();
+    }
 
-	public void setAirline(String airline) {
-		this.airline = airline;
-	}
+    public int getRouteID() {
+        return routeID;
+    }
 
-	public int getAirlineID() {
-		return airlineID;
-	}
+    public void setRouteID(int routeID) {
+        this.routeID = routeID;
+    }
 
-	public void setAirlineID(int airlineID) {
-		this.airlineID = airlineID;
-	}
+    public String getAirline() {
+        return airline;
+    }
 
-	public String getSrcAirport() {
-		return srcAirport;
-	}
+    public void setAirline(String airline) {
+        this.airline = airline;
+    }
 
-	public void setSrcAirport(String srcAirport) {
-		this.srcAirport = srcAirport;
-	}
+    public int getAirlineID() {
+        return airlineID;
+    }
 
-	public int getSrcAirportID() {
-		return srcAirportID;
-	}
+    public void setAirlineID(int airlineID) {
+        this.airlineID = airlineID;
+    }
 
-	public void setSrcAirportID(int srcAirportID) {
-		this.srcAirportID = srcAirportID;
-	}
+    public String getSrcAirport() {
+        return srcAirport;
+    }
 
-	public String getDstAirport() {
-		return dstAirport;
-	}
+    public void setSrcAirport(String srcAirport) {
+        this.srcAirport = srcAirport;
+    }
 
-	public void setDstAirport(String dstAirport) {
-		this.dstAirport = dstAirport;
-	}
+    public int getSrcAirportID() {
+        return srcAirportID;
+    }
 
-	public int getDstAirportID() {
-		return dstAirportID;
-	}
+    public void setSrcAirportID(int srcAirportID) {
+        this.srcAirportID = srcAirportID;
+    }
 
-	public void setDstAirportID(int dstAirportID) {
-		this.dstAirportID = dstAirportID;
-	}
+    public String getDstAirport() {
+        return dstAirport;
+    }
 
-	public String getCodeshare() {
-		return codeshare;
-	}
+    public void setDstAirport(String dstAirport) {
+        this.dstAirport = dstAirport;
+    }
 
-	public void setCodeshare(String codeshare) {
-		this.codeshare = codeshare;
-	}
+    public int getDstAirportID() {
+        return dstAirportID;
+    }
 
-	public int getStops() {
-		return stops;
-	}
+    public void setDstAirportID(int dstAirportID) {
+        this.dstAirportID = dstAirportID;
+    }
 
-	public void setStops(int stops) {
-		this.stops = stops;
-	}
+    public String getCodeshare() {
+        return codeshare;
+    }
 
-	public String getEquipment() {
-		return equipment;
-	}
+    public void setCodeshare(String codeshare) {
+        this.codeshare = codeshare;
+    }
 
-	public void setEquipment(String equipment) {
-		this.equipment = equipment;
-	}
+    public int getStops() {
+        return stops;
+    }
 
-	public AirportPoint getSource() {
-		return source;
-	}
+    public void setStops(int stops) {
+        this.stops = stops;
+    }
 
-	public void setSource(AirportPoint source) {
-		this.source = source;
-	}
+    public String getEquipment() {
+        return equipment;
+    }
 
-	public AirportPoint getDestination() {
-		return destination;
-	}
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
+    }
 
-	public void setDestination(AirportPoint destination) {
-		this.destination = destination;
-	}
+    public AirportPoint getSource() {
+        return source;
+    }
+
+    public void setSource(AirportPoint source) {
+        this.source = source;
+    }
+
+    public AirportPoint getDestination() {
+        return destination;
+    }
+
+    public void setDestination(AirportPoint destination) {
+        this.destination = destination;
+    }
 
 //	public int getCorrectEntry() {
 //		return correctEntry;
@@ -135,17 +136,17 @@ public class RoutePoint extends DataPoint {
 //		this.correctEntry = correctEntry;
 //	}
 
-	@Override
-	public String toString() {
-		//WE HAVE ADDED IN A ROUTE ID...SHOULD I EXPORT THIS? OR WILL IT NOT MATTER BECAUSE IT WILL BE RE-LOADED THE SAME?
-		//WHAT IF USER FILTERS DATA AND EXPORTS, THE IDS WILL BE DIFFERENT WHEN RE-LOADED?
-		//NOT EXPORTING FOR NOW, BUT NEED TO DISCUSS
+    @Override
+    public String toString() {
+        //WE HAVE ADDED IN A ROUTE ID...SHOULD I EXPORT THIS? OR WILL IT NOT MATTER BECAUSE IT WILL BE RE-LOADED THE SAME?
+        //WHAT IF USER FILTERS DATA AND EXPORTS, THE IDS WILL BE DIFFERENT WHEN RE-LOADED?
+        //NOT EXPORTING FOR NOW, BUT NEED TO DISCUSS
 
-		String returnString = String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
-				airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
-		//String, int, string, int, string, int, string, int, string
 
-		return returnString;
+        //String, int, string, int, string, int, string, int, string
 
-	}
+        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
+                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
+
+    }
 }

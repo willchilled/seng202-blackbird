@@ -35,7 +35,7 @@ public class FilterTest extends TestCase {
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
         BBDatabase.addAirlinePointstoDB(airlinePoints);
-        BBDatabase.addAiportPortsToDB(airportPoints);
+        BBDatabase.addAirportPointsToDB(airportPoints);
         BBDatabase.addRoutePointstoDB(routePoints);
         //myAirlineData = Filter.getAllAirlinePointsfromDB();
     }

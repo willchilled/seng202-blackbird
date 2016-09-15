@@ -1,7 +1,6 @@
 package seng202.group2.blackbirdView;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,7 +25,6 @@ import seng202.group2.blackbirdModel.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -195,9 +193,9 @@ public class GUIController {
     @FXML
     private void initialize(){
         //Automatic initialisation when the program starts
-//
-//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+
+        //BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+        //addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -292,7 +290,7 @@ public class GUIController {
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
         BBDatabase.addAirlinePointstoDB(airlinePoints);
-        BBDatabase.addAiportPortsToDB(airportPoints);
+        BBDatabase.addAirportPointsToDB(airportPoints);
         BBDatabase.addRoutePointstoDB(routePoints);
         BBDatabase.addFlighttoDB(flightPoints);
 
@@ -333,13 +331,13 @@ public class GUIController {
         File f;
         f = getFile();
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
-        BBDatabase.addAiportPortsToDB(allairportPoints);
+        BBDatabase.addAirportPointsToDB(allairportPoints);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
-        setAllAirportPoints(allairportPoints); //imports setter, keeps track of all points
+        setAllAirportPoints(allairportPoints); //adding all airport data, including bad data
         updateAirportsTable(allairportPoints);
 
-        airPortCountryList = populateAirportCountryList();
+        airPortCountryList = populateAirportCountryList();  //populating from valid data in database
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
@@ -350,30 +348,22 @@ public class GUIController {
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
 
-       // System.out.println("Add Airline Data");
-
         File f;
         f = getFile();
-        ArrayList<AirlinePoint> myAirlineData = Parser.parseAirlineData(f);
-        BBDatabase.addAirlinePointstoDB(myAirlineData);
+        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+        BBDatabase.addAirlinePointstoDB(allAirlineData);
 
-        myAirlineData = Filter.getAllAirlinePointsfromDB();
+        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
-
-        //System.out.println(myAirlineData);
-       // myAirlineData = Filter.getAllAirlinePointsfromDB();
-        setAllAirlinePoints(myAirlineData);
+        setAllAirlinePoints(allAirlineData);
         setAirlineActiveList(populateAirlineActiveList());
 
         airlineActiveMenu.setItems(getAirlineActiveList());
         airlineActiveMenu.setValue(getAirlineActiveList().get(0));
-        airlineCountryList = populateAirlineCountryList();
+        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
-        updateAirlinesTable(myAirlineData);
-
-
-
+        updateAirlinesTable(allAirlineData);    //update with all airline data, including bad data
     }
 
     public void addRouteData(){
@@ -510,7 +500,7 @@ public class GUIController {
                     }
                 }
             };
-        }); */
+        });
 
 
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
@@ -1014,6 +1004,7 @@ public class GUIController {
         populateRoutesFilterByStopsList();
         populateRoutesFilterByEquipList();
     }
+
 
 
 

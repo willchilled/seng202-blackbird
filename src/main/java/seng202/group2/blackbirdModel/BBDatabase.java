@@ -115,7 +115,7 @@ public class BBDatabase {
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
-                "Airline    VARCHAR(3) NOT NULL /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
+                "Airline    VARCHAR(3) /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
                 "Airlineid  INTEGER /*ID of Airline for route*/," +
                 "Src        VARCHAR(4) NOT NULL /*Source location for route*/," +   //either the IATA(3) or ICAO(4)
                 "Srcid      INTEGER NOT NULL /*ID number for source location location*/," +
@@ -397,7 +397,9 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
-            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+            //bad route data
+            System.out.println("Could not add route: " + IDnum + ", " + codeshare);// + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+            return;
         }
 
 
@@ -423,16 +425,6 @@ public class BBDatabase {
 //                        "Could not add: " + equip + ", with Route: " + IDnum, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-//        try{
-//            stmt.executeUpdate(routeSql);
-//        }catch (SQLException e){
-//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-//            System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
-//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-
     }
 
     //Flight Adding

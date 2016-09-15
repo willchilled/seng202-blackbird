@@ -141,9 +141,9 @@ public class RoutePoint extends DataPoint {
 		//WHAT IF USER FILTERS DATA AND EXPORTS, THE IDS WILL BE DIFFERENT WHEN RE-LOADED?
 		//NOT EXPORTING FOR NOW, BUT NEED TO DISCUSS
 
-		String returnString = String.format("\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\"",
+		String returnString = String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
 				airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
-				//String, int, string, int, string, int, string, int, string
+		//String, int, string, int, string, int, string, int, string
 
 		return returnString;
 

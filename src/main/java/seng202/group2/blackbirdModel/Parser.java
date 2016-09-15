@@ -82,32 +82,40 @@ public class Parser {
 
 	private static String[] removeQuotes(String[] line){
 		for (int i=0; i<line.length; i++){
-			line[i] = line[i].replaceAll("^\"|\"$", "");
+			line[i] = line[i].replaceAll("\"", "");
 		}
 		return line;
 	}
 
 	public static RoutePoint checkRouteData(String[] routePoint, int count){
-		RoutePoint myRoutePoint = new RoutePoint("", -1); 	//Set as -1 to test foreign key constraints
+		RoutePoint myRoutePoint = new RoutePoint("", 0);
 		myRoutePoint.setRouteID(count);
 		try {
 			myRoutePoint.setAirline(routePoint[0]);
-			myRoutePoint.setAirlineID(Integer.parseInt(routePoint[1]));
-			myRoutePoint.setSrcAirport(routePoint[2]);    //cant be null?
+			if (routePoint[1].equals("\\N")) {
+				myRoutePoint.setAirlineID(0);
+			} else {
+				myRoutePoint.setAirlineID(Integer.parseInt(routePoint[1]));
+			}
+			myRoutePoint.setSrcAirport(routePoint[2]);
 
 			if (routePoint[3].equals("\\N") || routePoint[3].isEmpty()) {
-				myRoutePoint.setSrcAirportID(-1);    //accounting for empty, to be consistent with other checks. Set as -1 to test foreign key constraints
+				myRoutePoint.setSrcAirportID(0);	//issues with foreign keys?
 			} else {
 				myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
 			}
 
 			myRoutePoint.setDstAirport(routePoint[4]);
-			if (routePoint[5].equals("\\N") || routePoint[5].isEmpty()) {	//Set as -1 to test foreign key constraints
-				myRoutePoint.setDstAirportID(-1);
+			if (routePoint[5].equals("\\N") || routePoint[5].isEmpty()) {
+				myRoutePoint.setDstAirportID(0);
 			} else {
 				myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
 			}
-			myRoutePoint.setCodeshare(routePoint[6]);
+			if (routePoint[6].isEmpty() || routePoint[6].equals("\\N")) {
+				myRoutePoint.setCodeshare("");
+			} else {
+				myRoutePoint.setCodeshare(routePoint[6]);
+			}
 			myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
 			myRoutePoint.setEquipment(routePoint[8]);
 		} catch (NumberFormatException e) {
@@ -135,12 +143,11 @@ public class Parser {
 
                 if(numberOfCommas(line) == 8) {
                     String[] routePoint = line.split(",", -1);	//-1 seemed to be required for if the very last field is empty
-
 					routePoint = removeQuotes(routePoint);
 					RoutePoint myRoutePoint = checkRouteData(routePoint, count);
 					myRouteData.add(myRoutePoint);
                 } else {
-					RoutePoint myRoutePoint = new RoutePoint("", -1);
+					RoutePoint myRoutePoint = new RoutePoint("", 0);
 					myRoutePoint.setRouteID(count);
 					myRouteData.add(myRoutePoint);
 				}
@@ -156,7 +163,7 @@ public class Parser {
 	public static AirlinePoint checkAirlineData(String[] airlinePoint, int count) {
 		AirlinePoint myAirlinePoint = new AirlinePoint(0, "");
 		try {
-			myAirlinePoint.setAirlineID(Integer.parseInt(airlinePoint[0]));
+			myAirlinePoint.setAirlineID(Integer.parseInt(airlinePoint[0]));	//should not be null
 			myAirlinePoint.setAirlineName(airlinePoint[1]);	//let people name airline whatever they want
 
 			if (airlinePoint[2].equals("\\N")) {
@@ -217,9 +224,8 @@ public class Parser {
 				}
 
                 if(numberOfCommas(line) == 7) {
-					String[] airlinePoint = line.split(",");
+					String[] airlinePoint = line.split(",", -1);
 					airlinePoint = removeQuotes(airlinePoint);
-
 					AirlinePoint myAirlinePoint = checkAirlineData(airlinePoint, count);
 					myAirlineData.add(myAirlinePoint);
                 } else {
@@ -242,7 +248,7 @@ public class Parser {
 	public static AirportPoint checkAirportData(String[] airportPoint, int count) {
 		AirportPoint myAirportPoint = new AirportPoint(0, "");
 		try {
-			myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0]));
+			myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0]));	//should not be null
 			myAirportPoint.setAirportName(airportPoint[1]);	//future: test just for alpha chars + space
 			myAirportPoint.setAirportCity(airportPoint[2]); //test for just alpha chars
 			myAirportPoint.setAirportCountry(airportPoint[3]); //test for just alpha chars
@@ -268,13 +274,34 @@ public class Parser {
 					return myAirportPoint;
 				}
 			}
-			myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
-			myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
-			myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
-			myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
+
+			if (airportPoint[6].isEmpty() || airportPoint[6].equals("\\N")) {
+				myAirportPoint.setLatitude(0);
+			} else {
+				myAirportPoint.setLatitude(Float.parseFloat(airportPoint[6]));
+			}
+
+			if (airportPoint[7].isEmpty() || airportPoint[7].equals("\\N")) {
+				myAirportPoint.setLongitude(0);
+			} else {
+				myAirportPoint.setLongitude(Float.parseFloat(airportPoint[7]));
+			}
+
+			if (airportPoint[8].isEmpty() || airportPoint[8].equals("\\N")) {
+				myAirportPoint.setAltitude(0);
+			} else {
+				myAirportPoint.setAltitude(Integer.parseInt(airportPoint[8]));
+			}
+
+			if (airportPoint[9].isEmpty() || airportPoint[9].equals("\\N")) {
+				myAirportPoint.setTimeZone(0);
+			} else {
+				myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
+			}
+
 			myAirportPoint.setDst(airportPoint[10]);
 			if (airportPoint[11].equals("\\N")) {
-				myAirportPoint.setTz("");		//default to unknown?
+				myAirportPoint.setTz("U");		//default to unknown?
 			} else {
 				myAirportPoint.setTz(airportPoint[11]);
 			}
@@ -301,7 +328,7 @@ public class Parser {
 				}
 
 			    if(numberOfCommas(line) == 11) {
-                    String[] airportPoint = line.split(",");
+                    String[] airportPoint = line.split(",", -1);
 
 					airportPoint = removeQuotes(airportPoint);
 					AirportPoint myAirportPoint = checkAirportData(airportPoint, count);

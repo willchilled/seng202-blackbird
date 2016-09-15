@@ -1,7 +1,6 @@
 package seng202.group2.blackbirdView;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,13 +19,13 @@ import javafx.scene.control.TableCell;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seng202.group2.blackbirdControl.Exporter;
 import seng202.group2.blackbirdControl.Filter;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -100,6 +99,7 @@ public class GUIController {
 
     @FXML
     private MenuItem addDataMenuButton;
+    @FXML private MenuItem exportAirportDataMenuButton;
 
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
@@ -502,6 +502,7 @@ public class GUIController {
         }); */
 
 
+        airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
         airlineIATACol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("iata"));
@@ -979,6 +980,22 @@ public class GUIController {
         populateRoutesFilterbyDestList();
         populateRoutesFilterByStopsList();
         populateRoutesFilterByEquipList();
+    }
+
+    @FXML
+    private void exportAirportData(){
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(airportTable.getItems());
+        Exporter.exportData(myPoints);
+
+    }
+
+    @FXML
+    private void exportAirlineData(){
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(airlineTable.getItems());
+        Exporter.exportData(myPoints);
+
     }
 
 

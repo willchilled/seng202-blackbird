@@ -127,4 +127,15 @@ public class RoutePoint extends DataPoint {
 	public void setCorrectEntry(int correctEntry) {
 		this.correctEntry = correctEntry;
 	}
+/*
+	@Override
+	public String toString() {
+
+		String returnString = String.format("\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\"",
+				airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
+				//String, int, string, int, string, int, string, int, string
+
+		return returnString;
+
+	}*/
 }

@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TableCell;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdControl.Exporter;
@@ -135,6 +136,12 @@ public class GUIController {
     @FXML private ComboBox routesFilterByStopsMenu;
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
+
+    public String getAirportErrorField() {
+        return airportErrorField.getText();
+    }
+
+    @FXML private Text airportErrorField;
 
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
@@ -450,6 +457,10 @@ public class GUIController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setErrorText(String myString) {
+        airportErrorField.setText(myString);
     }
 
 

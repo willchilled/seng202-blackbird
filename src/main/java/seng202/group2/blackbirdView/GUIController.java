@@ -458,7 +458,6 @@ public class GUIController {
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -42,6 +42,7 @@ public class Parser {
                     
                     if(!checkNull(flightPoint)){
 						try {
+							//TO BE TESTED
 							String type = flightPoint[0];
 							String localeID = flightPoint[1];
 							int altitude = Integer.parseInt(flightPoint[2]);
@@ -144,6 +145,7 @@ public class Parser {
                 } else {
 					RoutePoint myRoutePoint = new RoutePoint("", -1);
 					myRoutePoint.setCorrectEntry(0);
+					myRoutePoint.setRouteID(count);
 					myRouteData.add(myRoutePoint);
 				}
 			}

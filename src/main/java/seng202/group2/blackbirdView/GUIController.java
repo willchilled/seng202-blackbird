@@ -19,6 +19,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seng202.group2.blackbirdControl.Exporter;
 import seng202.group2.blackbirdControl.Filter;
 import seng202.group2.blackbirdModel.*;
 
@@ -317,7 +318,6 @@ public class GUIController {
 
     }
 
-
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
         System.out.println("Add Airport Data");
@@ -501,7 +501,8 @@ public class GUIController {
             };
         });
 
-        airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineID"));
+
+        airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
         airlineIATACol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("iata"));
@@ -1003,6 +1004,40 @@ public class GUIController {
         populateRoutesFilterByStopsList();
         populateRoutesFilterByEquipList();
     }
+
+    @FXML
+    private void exportAirportData(){
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(airportTable.getItems());
+        Exporter.exportData(myPoints);
+
+    }
+
+    @FXML
+    private void exportAirlineData(){
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(airlineTable.getItems());
+        Exporter.exportData(myPoints);
+
+    }
+
+    @FXML
+    private void exportRouteData(){
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(routeTable.getItems());
+        Exporter.exportData(myPoints);
+
+    }
+    @FXML
+    private void exportFlightData(){
+        //Giver user a warning that it will only export the currently selected flight (the one in the flightpoint table)
+        //NEED TO LABEL THE FLIGHT TABLES.
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(flightPointTable.getItems());
+        Exporter.exportData(myPoints);
+
+    }
+
 
 
 

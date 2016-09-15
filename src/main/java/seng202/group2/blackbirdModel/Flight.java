@@ -37,4 +37,19 @@ public class Flight extends DataPoint{
         return flightPoints;
     }
 
+/*
+    @Override
+    public String toString() {
+
+        String returnString = String.format("\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\"",
+                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
+        //String, int, string, int, string, int, string, int, string
+
+        return returnString;
+
+    }
+*/
+
 }
+
+

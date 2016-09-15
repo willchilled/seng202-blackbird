@@ -66,5 +66,16 @@ public class FlightPoint extends DataPoint {
 		this.correctEntry = correctEntry;
 	}
 
+	@Override
+	public String toString() {
+
+		String returnString = String.format("\"%s\",%s,%s,%s,%s,",
+				type, localeID, altitude, latitude, longitude);
+		//String, int, int, int, int
+
+		return returnString;
+
+	}
+
 
 }

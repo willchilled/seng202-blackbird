@@ -144,11 +144,13 @@ public class AirportPoint extends DataPoint {
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 
-		//Format of original file is:
-		//ID, Name, City, Country, IATA, ICAO, Latitude, Longitude, Altitude, TimeZone, DST, TZ
-		return airportID + ", " + airportName + ", " + airportCity + ", " + airportCountry + ", " + iata + ", " + icao + ", " + latitude + ", " + longitude + ", " + altitude + ", " + timeZone + ", " + dst + ", " + tz;
+		String returnString = String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%s,%s,%s,%s,\"%s\",\"%s\"",
+				airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
+
+		return returnString;
+
 	}
 
 

@@ -843,7 +843,7 @@ public class GUIController {
 
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list
-        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints(); //airportTable.getItems()
+        ArrayList<AirlinePoint> allPoints = Filter.getAllAirlinePointsfromDB(); //airportTable.getItems()
         updateAirlinesTable(allPoints);
 
         airlineFilterMenu.setValue(airlineCountryList.get(0));

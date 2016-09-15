@@ -1,23 +1,23 @@
 package seng202.group2.blackbirdModel;
 
 public class AirportPoint extends DataPoint {
+	
+	private int airportID;
+	private String airportName;
+	private String airportCity;
+	private String airportCountry;
+	private String iata;
+	private String icao;
+	private float latitude;
+	private float longitude;
+	private int altitude;
+	private float timeZone;
+	private String dst;
+	private String tz;
 
-    private int airportID;
-    private String airportName;
-    private String airportCity;
-    private String airportCountry;
-    private String iata;
-    private String icao;
-    private float latitude;
-    private float longitude;
-    private int altitude;
-    private float timeZone;
-    private String dst;
-    private String tz;
+	//private int correctEntry;
 
-    //private int correctEntry;
-
-    private int numberOfRoutes;
+	private int numberOfRoutes;
 
 //	@Override
 //	public boolean equals(Object obj){
@@ -26,114 +26,114 @@ public class AirportPoint extends DataPoint {
 //		if(this.getAirportID() == mypoint.getAirportID()) return true;
 //		else return false;
 //	}
+	
+	public AirportPoint(int airportID, String airportName){
+		
+		this.airportID = airportID;
+		this.airportName = airportName;
+		
+	}
 
-    public AirportPoint(int airportID, String airportName) {
+	public void incrementRoutes() {
+		numberOfRoutes++;
+	}
+	
+	
+	public int getAirportID() {
+		return airportID;
+	}
 
-        this.airportID = airportID;
-        this.airportName = airportName;
+	public void setAirportID(int airportID) {
+		this.airportID = airportID;
+	}
 
-    }
+	public String getAirportName() {
+		return airportName;
+	}
 
-    public void incrementRoutes() {
-        numberOfRoutes++;
-    }
+	public void setAirportName(String airportName) {
+		this.airportName = airportName;
+	}
 
+	public String getAirportCity() {
+		return airportCity;
+	}
 
-    public int getAirportID() {
-        return airportID;
-    }
+	public void setAirportCity(String airportCity) {
+		this.airportCity = airportCity;
+	}
 
-    public void setAirportID(int airportID) {
-        this.airportID = airportID;
-    }
+	public String getAirportCountry() {
+		return airportCountry;
+	}
 
-    public String getAirportName() {
-        return airportName;
-    }
+	public void setAirportCountry(String airportCountry) {
+		this.airportCountry = airportCountry;
+	}
 
-    public void setAirportName(String airportName) {
-        this.airportName = airportName;
-    }
+	public String getIata() {
+		return iata;
+	}
 
-    public String getAirportCity() {
-        return airportCity;
-    }
+	public void setIata(String iata) {
+		this.iata = iata;
+	}
 
-    public void setAirportCity(String airportCity) {
-        this.airportCity = airportCity;
-    }
+	public String getIcao() {
+		return icao;
+	}
 
-    public String getAirportCountry() {
-        return airportCountry;
-    }
+	public void setIcao(String icao) {
+		this.icao = icao;
+	}
 
-    public void setAirportCountry(String airportCountry) {
-        this.airportCountry = airportCountry;
-    }
+	public float getLatitude() {
+		return latitude;
+	}
 
-    public String getIata() {
-        return iata;
-    }
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
+	}
 
-    public void setIata(String iata) {
-        this.iata = iata;
-    }
+	public float getLongitude() {
+		return longitude;
+	}
 
-    public String getIcao() {
-        return icao;
-    }
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
+	}
 
-    public void setIcao(String icao) {
-        this.icao = icao;
-    }
+	public int getAltitude() {
+		return altitude;
+	}
 
-    public float getLatitude() {
-        return latitude;
-    }
+	public void setAltitude(int altitude) {
+		this.altitude = altitude;
+	}
 
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
+	public float getTimeZone() {
+		return timeZone;
+	}
 
-    public float getLongitude() {
-        return longitude;
-    }
+	public void setTimeZone(float timeZone) {
+		this.timeZone = timeZone;
+	}
 
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
-    }
+	public String getDst() {
+		return dst;
+	}
 
-    public int getAltitude() {
-        return altitude;
-    }
+	public void setDst(String dst) {
+		this.dst = dst;
+	}
 
-    public void setAltitude(int altitude) {
-        this.altitude = altitude;
-    }
+	public String getTz() {
+		return tz;
+	}
 
-    public float getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(float timeZone) {
-        this.timeZone = timeZone;
-    }
-
-    public String getDst() {
-        return dst;
-    }
-
-    public void setDst(String dst) {
-        this.dst = dst;
-    }
-
-    public String getTz() {
-        return tz;
-    }
-
-    public void setTz(String tz) {
-        this.tz = tz;
-    }
+	public void setTz(String tz) {
+		this.tz = tz;
+	}
 
 //	public int getCorrectEntry() {
 //		return correctEntry;
@@ -143,13 +143,15 @@ public class AirportPoint extends DataPoint {
 //		this.correctEntry = correctEntry;
 //	}
 
-    @Override
-    public String toString() {
+	@Override
+	public String toString() {
 
-        return String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%s,%s,%s,%s,\"%s\",\"%s\"",
-                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
+		String returnString = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
+				airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
 
-    }
+		return returnString;
+
+	}
 
 
 }

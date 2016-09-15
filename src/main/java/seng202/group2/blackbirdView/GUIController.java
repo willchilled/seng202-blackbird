@@ -140,12 +140,6 @@ public class GUIController {
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
-    public String getAirportErrorField() {
-        return airportErrorField.getText();
-    }
-
-    @FXML private Text airportErrorField;
-
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
     public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
@@ -458,11 +452,6 @@ public class GUIController {
             e.printStackTrace();
         }
     }
-
-    public void setErrorText(String myString) {
-        airportErrorField.setText(myString);
-    }
-
 
 
     /*******************************************************************************************************************

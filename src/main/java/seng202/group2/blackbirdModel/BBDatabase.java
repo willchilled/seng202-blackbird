@@ -1,16 +1,44 @@
 package seng202.group2.blackbirdModel;
+import seng202.group2.blackbirdView.GUIController;
 
-import java.awt.*;
+import javax.swing.*;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sha162 on 10/09/16.
  */
 public class BBDatabase {
 
-    private static String dataBaseName;
+    private static String dataBaseName="jdbc:sqlite:default.db";
+
+
+    public static int getMaxInColumn(String tableName, String columnName){
+        //Returns the highest value in a column for a table
+        int highID = 0;
+        try {
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            String sql = "SELECT " + columnName + ", MAX(" + columnName + ") FROM " + tableName;
+            ResultSet rs = stmt.executeQuery(sql);
+            highID = rs.getInt(columnName);
+            stmt.close();
+            c.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return highID;
+    }
 
     public static String getDatabaseName() {
         return dataBaseName;
@@ -20,7 +48,7 @@ public class BBDatabase {
         BBDatabase.dataBaseName = dataBaseName;
     }
 
-    private static Connection makeConnection() {
+    private static Connection makeConnection(){
         // creates a connection with the data base
 
         Connection c = null;
@@ -37,39 +65,39 @@ public class BBDatabase {
         return c;
     }
 
-    public static void deleteDBFile() {
+    public static void deleteDBFile(){
         //deletes pre existing database file
         String cwd = System.getProperty("user.dir");
 
-        File f = new File(cwd + "/default.db");
+        File f = new File(cwd+"/default.db");
 
-        if (f.exists() && f.isFile()) {
+        if(f.exists() && f.isFile()){
             f.delete();
         }
     }
 
     //#######################MAKING TABLES//
-    private static String createAirportTable() {
+    private static String createAirportTable(){
         //added additional constraints on some of the fields, but i think adding some on parsing as well may simplify things?
         String sql = "CREATE TABLE AIRPORT " +
-                "(ID INTEGER PRIMARY KEY    NOT NULL," +
-                " NAME           VARCHAR(40)   NOT NULL," +
-                " CITY           VARCHAR(40)   NOT NULL," +
-                " COUNTRY        VARCHAR(40)   NOT NULL," +
-                " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
-                " ICAO           CHAR(4)," +
-                " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
-                " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180')," +
-                " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
-                " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
-                " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U'))," +
-                " TZ             VARCHAR(40))";
-        System.out.println(sql);
+                        "(ID INTEGER PRIMARY KEY    NOT NULL," +
+                        " NAME           VARCHAR(40)   NOT NULL," +
+                        " CITY           VARCHAR(40)   NOT NULL," +
+                        " COUNTRY        VARCHAR(40)   NOT NULL," +
+                        " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
+                        " ICAO           CHAR(4)," +
+                        " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
+                        " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
+                        " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
+                        " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
+                        " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U'))," +
+                        " TZ             VARCHAR(40))";
+       System.out.println(sql);
         return sql;
 
     }
 
-    private static String createAirlineTable() {
+    private static String createAirlineTable(){
         String sql = "CREATE TABLE AIRLINE " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
@@ -83,7 +111,7 @@ public class BBDatabase {
         return sql;
     }
 
-    private static String createRouteTable() {
+    private static String createRouteTable(){
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
@@ -98,39 +126,38 @@ public class BBDatabase {
                 "foreign key (Srcid, Dstid) references AIRPORT," +    //foreign key can only be primary key of other table
                 "PRIMARY KEY (IDnum)" +
                 ")";
-        ;
         return sql;
     }
 
-    private static String createEquipmentTable() {
+    private static String createEquipmentTable(){
         //creates an equipment table for sqlite, is used to give routes the multivalued atribute equipment
         String sql = "CREATE TABLE EQUIPMENT" +
                 "(IDnum          INTEGER NOT NULL /*Comes from route*/, " +
                 "EquipmentName CHAR(3) NOT NULL," +     //can this be null?
-                "PRIMARY KEY (EquipmentName, IDnum), " +
+                "PRIMARY KEY (EquipmentName, IDnum), "+
                 "FOREIGN KEY (IDnum) REFERENCES ROUTE (IDnum)" +
                 ")";
         return sql;
     }
 
-    private static String createFlightTable() {
+    private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
-                "SrcICAO        VARCHAR(5) NOT NULL /*Source ICAO code*/," +
-                "DstICAO        VARCHAR(5) NOT NULL /*Destination ICAO code*/" +
+                "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
+                "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +       //either the IATA(3) or ICAO(4)
                 ")";
         System.out.println(sql);
         return sql;
     }
 
-    private static String createFlightPointTable() {
+    private static String createFlightPointTable(){
         String sql = "CREATE TABLE FLIGHTPOINT" +
                 "(SeqOrder         INTEGER NOT NULL UNIQUE /*gives the sequence of the flight points*/," +
-                "LocaleID       VARCHAR(5) NOT NULL, " +
-                "LocationType   CHAR(3) NOT NULL /*Type of location*/, " +
+                "LocaleID       VARCHAR(5) NOT NULL, "+
+                "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
                 "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
                 "Latitude       FLOAT NOT NULL constraint check_lat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      FLOAT NOT NULL constraint check_long check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, " +
+                "Longitude      FLOAT NOT NULL constraint check_long check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +
@@ -138,7 +165,6 @@ public class BBDatabase {
                 ")";
         return sql;
     }
-
 
     public static void createTables() {
         //dropTables();
@@ -228,9 +254,10 @@ public class BBDatabase {
         String active = airline.getActive();
 
 
+
         String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
                 "VALUES (" +
-                +id + ", \"" +
+                + id + ", \"" +
                 name + "\", \"" +
                 alias + "\", \"" +
                 iata + "\", \"" +
@@ -243,7 +270,7 @@ public class BBDatabase {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country + ", " + active);
+            System.out.println("Could not add: " + airline);
         }
     }
 
@@ -291,7 +318,7 @@ public class BBDatabase {
 
         String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
                 "VALUES (" +
-                +airportID + ", \"" +
+                + airportID + ", \"" +
                 airportName + "\", \"" +
                 City + "\", \"" +
                 Country + "\", \"" +
@@ -308,15 +335,15 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao);
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("Could not add: " + airport);
         }
     }
 
     //Route Adding
     public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
         //adds routes into the database
-        try {
+        try{
             //Connect to DB
             Connection c = makeConnection();
             Statement stmt = null;
@@ -341,7 +368,7 @@ public class BBDatabase {
         System.out.println("Records created successfully");
     }
 
-    private static void addSingleRoutetoDB(RoutePoint route, Statement stmt) {
+    private static void addSingleRoutetoDB(RoutePoint route, Statement stmt){
         //get info for route
         int IDnum = route.getRouteID();
         String Airline = route.getAirline();
@@ -371,9 +398,10 @@ public class BBDatabase {
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
             //bad route data
-            System.out.println("Could not add route: " + IDnum + ", " + codeshare);// + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+            System.out.println("Could not add route: " + route);
             return;
         }
+
 
 
         //equipment is special cos its a dick
@@ -390,11 +418,9 @@ public class BBDatabase {
                     "\"" + equip + "\");";
             try {
                 stmt.executeUpdate(EquipSql);
-            } catch (SQLException e) {
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
-//                JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                        "Could not add: " + equip + ", with Route: " + IDnum, "Error", JOptionPane.ERROR_MESSAGE);
+            }catch  (SQLException e){
+                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                System.out.println("Could not add equipment on: " + route);
             }
         }
     }
@@ -477,7 +503,7 @@ public class BBDatabase {
                 longitude + ", " +
                 flightid + ")";
 
-        //execute route sql
+            //execute route sql
         try {
             stmt.executeUpdate(FlightSql);
         } catch (SQLException e) {
@@ -489,6 +515,8 @@ public class BBDatabase {
 
         //increment order for next point
     }
+
+
 
 
     //######################### FILTER METHODS#################################
@@ -529,7 +557,7 @@ public class BBDatabase {
                 myPoint.setIcao(Icao);
                 myPoint.setLatitude(Latitude);
                 myPoint.setLongitude(Longitude);
-                myPoint.setAltitude((int) Altitude);
+                myPoint.setAltitude((int)Altitude);
                 myPoint.setTimeZone(timezone);
                 myPoint.setDst(Dst);
                 myPoint.setTz(tz);
@@ -598,6 +626,7 @@ public class BBDatabase {
     }
 
 
+
     public static ArrayList<RoutePoint> performRoutesQuery(String sql) {
         Connection c = makeConnection();
         ArrayList<RoutePoint> allPoints = new ArrayList<RoutePoint>();
@@ -609,8 +638,8 @@ public class BBDatabase {
             c.setAutoCommit(false);
             System.out.println("Opened database successfully");
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
+            ResultSet rs = stmt.executeQuery( sql );
+            while ( rs.next() ) {
 
 
                 int routeID = rs.getInt("IDnum");
@@ -639,8 +668,8 @@ public class BBDatabase {
             rs.close();
             stmt.close();
             c.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
         System.out.println("Routes Query done successfully:" + sql);
@@ -696,12 +725,12 @@ public class BBDatabase {
             c.setAutoCommit(false);
             System.out.println("Opened database successfully");
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery( sql );
             rs.close();
             stmt.close();
             c.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
         System.out.println("Disting Query Query done successfully:" + sql);
@@ -721,8 +750,8 @@ public class BBDatabase {
             c.setAutoCommit(false);
             System.out.println("Opened database successfully");
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
+            ResultSet rs = stmt.executeQuery( sql );
+            while ( rs.next() ) {
 
                 //System.out.println(rs.getInt(1) + "NOODLES");
                 int routeID = rs.getInt("IDnum");
@@ -745,6 +774,7 @@ public class BBDatabase {
                 //System.out.println(equipName);
 
 
+
                 // System.out.println(airportName);
                 RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
                 myPoint.setSrcAirport(src);
@@ -764,8 +794,8 @@ public class BBDatabase {
             rs.close();
             stmt.close();
             c.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
         System.out.println("Routes Query done successfully:" + sql);
@@ -777,10 +807,10 @@ public class BBDatabase {
     private static String joinEquipArray(ArrayList<String> equipArray) {
         //This function adds all the strings in the equipment array seperating them by spaces
         String myEquipment = "";
-        for (int i = 0; i < equipArray.size() - 1; i++) {
+        for (int i=0; i<equipArray.size()-1; i++){
             myEquipment += equipArray.get(i) + " ";
         }
-        myEquipment += equipArray.get(equipArray.size() - 1);
+        myEquipment += equipArray.get(equipArray.size()-1);
         return myEquipment;
     }
 }

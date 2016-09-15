@@ -92,7 +92,9 @@ public class Parser {
 		}
 		myRoutePoint.setCodeshare(routePoint[6]);
 		myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
+		//System.out.println(routePoint[8]);
 		myRoutePoint.setEquipment(routePoint[8]);
+
 
 		return myRoutePoint;
 	}
@@ -146,18 +148,56 @@ public class Parser {
 	}
 	
 
-	private static AirlinePoint checkAirlineData(String[] airlinePoint, AirlinePoint myAirlinePoint) {
-		if (airlinePoint[2].equals("\\N")) {
-			myAirlinePoint.setAirlineAlias("");	//set as empty string if null?
-		} else {
-			myAirlinePoint.setAirlineAlias(airlinePoint[2]);
-		}
-		myAirlinePoint.setIata(airlinePoint[3]);	//rest of fields do not have \N values? only empty strings?
-		myAirlinePoint.setIcao(airlinePoint[4]);
-		myAirlinePoint.setCallsign(airlinePoint[5]);
-		myAirlinePoint.setCountry(airlinePoint[6]);	//should not be null
-		myAirlinePoint.setActive(airlinePoint[7]);
+	private static AirlinePoint checkAirlineData(String[] airlinePoint, int count) {
+		AirlinePoint myAirlinePoint = new AirlinePoint(0, "");
+		try {
+			myAirlinePoint.setAirlineID(Integer.parseInt(airlinePoint[0]));
+			myAirlinePoint.setAirlineName(airlinePoint[1]);	//let people name airline whatever they want
 
+			if (airlinePoint[2].equals("\\N")) {
+				myAirlinePoint.setAirlineAlias("");	//set as empty string if null
+			} else {
+				myAirlinePoint.setAirlineAlias(airlinePoint[2]);
+			}
+
+			if (airlinePoint[3].isEmpty() || airlinePoint[3].equals("\\N")) {
+				myAirlinePoint.setIata("");
+			} else {
+				if (checkAlphaNumeric(airlinePoint[3])) {
+					myAirlinePoint.setIata(airlinePoint[3]);
+				} else {
+					myAirlinePoint.setAirlineName("Error on input file line: " + count);
+					myAirlinePoint.setCorrectEntry(0);
+					return myAirlinePoint;
+				}
+			}
+
+			if (airlinePoint[4].isEmpty() || airlinePoint[4].equals("\\N")) {
+				myAirlinePoint.setIcao("");
+			} else {
+				if (checkAlphaNumeric(airlinePoint[4])) {
+					myAirlinePoint.setIcao(airlinePoint[4]);
+				} else {
+					myAirlinePoint.setAirlineName("Error on input file line: " + count);
+					myAirlinePoint.setCorrectEntry(0);
+					return myAirlinePoint;
+				}
+			}
+
+			myAirlinePoint.setCallsign(airlinePoint[5]);
+			if (airlinePoint[6].isEmpty()) {
+				myAirlinePoint.setCountry("");
+			} else {
+				myAirlinePoint.setCountry(airlinePoint[6]);    //should not be null, handle by parser later
+			}
+			myAirlinePoint.setActive(airlinePoint[7]);
+		} catch (NumberFormatException e) {
+			myAirlinePoint.setAirlineName("Error on input file line: " + count);
+			myAirlinePoint.setCorrectEntry(0);
+			return myAirlinePoint;
+		}
+
+		myAirlinePoint.setCorrectEntry(1);
 		return myAirlinePoint;
 	}
 
@@ -173,35 +213,26 @@ public class Parser {
 			while ((line = br.readLine()) != null) {
 				count++;
 			    //Check number of fields is correct
-				String[] airlinePoint = line.split(",");
+				if (line.isEmpty()) {
+					continue;
+				}
+
                 if(numberOfCommas(line) == 7) {
+					String[] airlinePoint = line.split(",");
+					airlinePoint = removeQuotes(airlinePoint);
 
-                    
-                    //if(!checkNull(airlinePoint)) {
-
-						airlinePoint = removeQuotes(airlinePoint);
-
-	                    int airlineID = Integer.parseInt(airlinePoint[0]);	//shouldnt be null
-	                    String airlineName = airlinePoint[1];	//shouldnt be null
-	                    AirlinePoint myAirlinePoint = new AirlinePoint(airlineID, airlineName);
-						myAirlinePoint = checkAirlineData(airlinePoint, myAirlinePoint);
-
-
-	                    myAirlineData.add(myAirlinePoint);
-                    //} else {
-                    	//deal with null data here
-                    	//continue;
-                    //}
+					AirlinePoint myAirlinePoint = checkAirlineData(airlinePoint, count);
+					myAirlineData.add(myAirlinePoint);
                 } else {
                     //TODO
+					AirlinePoint myAirlinePoint = new AirlinePoint(0, "Error on input File line: " + count);
+					myAirlinePoint.setCorrectEntry(0);
+					myAirlineData.add(myAirlinePoint);
                     //DEAL WITH BAD DATA! not correct amount of fields
-					System.err.println("Error: Unexpected comma found on line: " + count);
-					System.err.println("The line: " + line);
+//					System.err.println("Error: Unexpected comma found on line: " + count);
+//					System.err.println("The line: " + line);
                 }
 			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -209,17 +240,16 @@ public class Parser {
 		return myAirlineData;	}
 
 	private static boolean checkAlphaNumeric(String s) {
-		return (s.matches("[a-zA-Z0-9]+"));
+		return (s.matches("[a-zA-Z0-9]+"));	//does not accept empty spaces atm
 	}
 	
 	private static AirportPoint checkAirportData(String[] airportPoint, int count) {
-		AirportPoint myAirportPoint = new AirportPoint(0, "Error on input file line: " + count);
+		AirportPoint myAirportPoint = new AirportPoint(0, "");
 		try {
 			myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0]));
-			myAirportPoint.setAirportName(airportPoint[1]);
-			myAirportPoint.setAirportCity(airportPoint[2]);
-			myAirportPoint.setAirportCountry(airportPoint[3]);
-
+			myAirportPoint.setAirportName(airportPoint[1]);	//future: test just for alpha chars + space
+			myAirportPoint.setAirportCity(airportPoint[2]); //test for just alpha chars
+			myAirportPoint.setAirportCountry(airportPoint[3]); //test for just alpha chars
 
 			if (airportPoint[4].isEmpty() || airportPoint[4].equals("\\N")) {
 				myAirportPoint.setIata("");
@@ -227,8 +257,6 @@ public class Parser {
 				if (checkAlphaNumeric(airportPoint[4])) {
 					myAirportPoint.setIata(airportPoint[4]);
 				} else {
-					myAirportPoint.setAirportID(0);
-					myAirportPoint.setIata("");
 					myAirportPoint.setAirportName("Error on input file line: " + count);
 					myAirportPoint.setCorrectEntry(0);
 					return myAirportPoint;
@@ -241,8 +269,6 @@ public class Parser {
 				if (checkAlphaNumeric(airportPoint[5])) {
 					myAirportPoint.setIcao(airportPoint[5]);
 				} else {
-					myAirportPoint.setAirportID(0);
-					myAirportPoint.setIcao("");
 					myAirportPoint.setAirportName("Error on input file line: " + count);
 					myAirportPoint.setCorrectEntry(0);
 					return myAirportPoint;
@@ -254,16 +280,16 @@ public class Parser {
 			myAirportPoint.setTimeZone(Float.parseFloat(airportPoint[9]));
 			myAirportPoint.setDst(airportPoint[10]);
 			if (airportPoint[11].equals("\\N")) {
-				myAirportPoint.setTz("");		//default to unknown
+				myAirportPoint.setTz("");		//default to unknown?
 			} else {
 				myAirportPoint.setTz(airportPoint[11]);
 			}
 		} catch (NumberFormatException e) {
+			myAirportPoint.setAirportName("Error on input file line: " + count);
 			myAirportPoint.setCorrectEntry(0);
 			return myAirportPoint;
 		}
 		myAirportPoint.setCorrectEntry(1);
-
 		return myAirportPoint;
 	}
 
@@ -294,19 +320,12 @@ public class Parser {
 
 
                 } else {
-					String[] airportPoint = line.split(",");
-					int airportID = Integer.parseInt(airportPoint[0]);
-
 					AirportPoint myAirportPoint = new AirportPoint(0, "Input File line: " + count);
 					myAirportPoint.setCorrectEntry(0);
 					myAirportData.add(myAirportPoint);
 					//System.out.println("Added");
                 }
 			}
-		} catch (NumberFormatException e) {
-			//Need a better way of handling number format exceptions.........
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

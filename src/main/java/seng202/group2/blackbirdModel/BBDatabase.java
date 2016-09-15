@@ -1,11 +1,9 @@
 package seng202.group2.blackbirdModel;
-import seng202.group2.blackbirdView.GUIController;
 
-import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sha162 on 10/09/16.
@@ -246,19 +244,14 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
+            airline.setCorrectEntry(0);
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("Could not add: " + id + " " + name + " " + alias + " " + iata + ", " + icao + ", " + country + ", " + active);
-            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
-            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-            //JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-            //              "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
-            //    "Error", JOptionPane.ERROR_MESSAGE);
-            //System.exit(0);
+            System.out.println("Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country + ", " + active);
         }
     }
 
     //Airport Adding
-    public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
+    public static void addAirportPointsToDB(ArrayList<AirportPoint> airportPoints) {
         //This method adds multiple points to the Database
         try {
             Connection c = makeConnection();
@@ -276,12 +269,10 @@ public class BBDatabase {
             stmt.close();
             c.commit();
             c.close();
-        } catch (Exception e) {   //should this exception be made more specific? Or surrounding a more specific code block?
+        } catch (SQLException e) {  //error in database connection
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-
-            //System.exit(0);
-            //System.out.println("Could not add :");
-
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         System.out.println("Records created successfully");
     }
@@ -322,11 +313,7 @@ public class BBDatabase {
         } catch (SQLException e) {
             airport.setCorrectEntry(0);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
-//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-            //System.exit(0);
+            System.out.println("Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao);
         }
     }
 
@@ -666,6 +653,7 @@ public class BBDatabase {
                 myPoint.setDstAirportID(Integer.parseInt(destID));
                 myPoint.setCodeshare(codeShare);
                 myPoint.setStops(Integer.parseInt(stops));
+                myPoint.setRouteID(routeID);
 
                 allPoints.add(myPoint);
             }
@@ -740,5 +728,81 @@ public class BBDatabase {
 
     }
 
+    public static ArrayList<RoutePoint> performJoinRoutesEquipQuery(String sql) {
+
+        Connection c = makeConnection();
+        ArrayList<RoutePoint> allPoints = new ArrayList<RoutePoint>();
+        String subQuery;
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            System.out.println("Opened database successfully");
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( sql );
+            while ( rs.next() ) {
+
+                //System.out.println(rs.getInt(1) + "NOODLES");
+                int routeID = rs.getInt("IDnum");
+                String airline = rs.getString("Airline");
+                String airlineID = rs.getString("Airlineid");
+                String src = rs.getString("Src");
+                String srcID = rs.getString("Srcid");
+                String dest = rs.getString("Dst");
+                String destID = rs.getString("Dstid");
+                String codeShare = rs.getString("Codeshare");
+                String stops = rs.getString("Stops");
+
+                int equipID = rs.getInt("Idnum");
+                String equipName = rs.getString("equipmentName");
+
+                //System.out.println(equipID + equipName);
+                subQuery = String.format("SELECT EQUIPMENT.Equipmentname FROM EQUIPMENT WHERE equipment.IDnum=\"%s\"", equipID);
+                ArrayList<String> equipArray = performDistinctStringQuery(subQuery);
+                equipName = joinEquipArray(equipArray);
+                //System.out.println(equipName);
+
+
+
+                // System.out.println(airportName);
+                RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
+                myPoint.setSrcAirport(src);
+                myPoint.setSrcAirportID(Integer.parseInt(srcID));
+                myPoint.setDstAirport(dest);
+                myPoint.setDstAirportID(Integer.parseInt(destID));
+                myPoint.setCodeshare(codeShare);
+                myPoint.setStops(Integer.parseInt(stops));
+                myPoint.setRouteID(routeID);
+                myPoint.setEquipment(equipName);
+
+                //System.out.println(myPoint.getRouteID() + " - " + myPoint.getEquipment());
+                if (!allPoints.contains(myPoint)) {
+                    allPoints.add(myPoint);
+                }
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Routes Query done successfully:" + sql);
+
+        return allPoints;
+
+    }
+
+    private static String joinEquipArray(ArrayList<String> equipArray) {
+        //This function adds all the strings in the equipment array seperating them by spaces
+        String myEquipment = "";
+        for (int i=0; i<equipArray.size()-1; i++){
+            myEquipment += equipArray.get(i) + " ";
+        }
+        myEquipment += equipArray.get(equipArray.size()-1);
+        return myEquipment;
+    }
 }
 

@@ -79,10 +79,12 @@ public class AirlinePopUpController {
         airlineICAOTextEdit.setVisible(true);
         airlineCallsignTextEdit.setVisible(true);
         airlineActiveTextEdit.setVisible(true);
+        nameText.setVisible(false);
+
         airlineFinishButton.setVisible(true);
         airlineCancelButton.setVisible(true);
         airlineEditButton.setVisible(false);
-        nameText.setVisible(false);
+
 
         if(nameText.getText() != ""){
             airlineNameTextEdit.setText((nameText.getText()));

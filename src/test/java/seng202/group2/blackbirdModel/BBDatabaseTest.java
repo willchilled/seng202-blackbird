@@ -33,7 +33,7 @@ public class BBDatabaseTest extends TestCase {
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
         BBDatabase.addAirlinePointstoDB(airlinePoints);
-        BBDatabase.addAiportPortsToDB(airportPoints);
+        BBDatabase.addAirportPointsToDB(airportPoints);
         BBDatabase.addRoutePointstoDB(routePoints);
         //myAirlineData = Filter.getAllAirlinePointsfromDB();
 
@@ -53,7 +53,7 @@ public class BBDatabaseTest extends TestCase {
 
     public void testPerformAirlinesQuery() throws Exception {
         ArrayList<AirlinePoint> airlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE");
-        assertEquals(airlinePoints.size(), 99);
+        assertEquals(airlinePoints.size(), 98);
 
     }
 

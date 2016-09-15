@@ -49,10 +49,12 @@ public class GUIController {
 
 
 
+
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
 
     ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
+    ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
@@ -73,6 +75,14 @@ public class GUIController {
 
     public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
     public ObservableList<String> getRoutesFilterbyEquipList(){return routesFilterbyEquipList;}
+
+    public ArrayList<RoutePoint> getAllRoutePoints() {
+        return allRoutePoints;
+    }
+
+    public void setAllRoutePoints(ArrayList<RoutePoint> allRoutePoints){
+        this.allRoutePoints = allRoutePoints;
+    }
 
 
 
@@ -99,7 +109,6 @@ public class GUIController {
 
     @FXML
     private MenuItem addDataMenuButton;
-    @FXML private MenuItem exportAirportDataMenuButton;
 
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
@@ -186,8 +195,8 @@ public class GUIController {
     private void initialize(){
         //Automatic initialisation when the program starts
 
-//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+        //BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+        //addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -282,7 +291,7 @@ public class GUIController {
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
         BBDatabase.addAirlinePointstoDB(airlinePoints);
-        BBDatabase.addAiportPortsToDB(airportPoints);
+        BBDatabase.addAirportPointsToDB(airportPoints);
         BBDatabase.addRoutePointstoDB(routePoints);
         BBDatabase.addFlighttoDB(flightPoints);
 
@@ -323,13 +332,13 @@ public class GUIController {
         File f;
         f = getFile();
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
-        BBDatabase.addAiportPortsToDB(allairportPoints);
+        BBDatabase.addAirportPointsToDB(allairportPoints);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
-        setAllAirportPoints(allairportPoints); //imports setter, keeps track of all points
+        setAllAirportPoints(allairportPoints); //adding all airport data, including bad data
         updateAirportsTable(allairportPoints);
 
-        airPortCountryList = populateAirportCountryList();
+        airPortCountryList = populateAirportCountryList();  //populating from valid data in database
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
@@ -340,30 +349,22 @@ public class GUIController {
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
 
-       // System.out.println("Add Airline Data");
-
         File f;
         f = getFile();
-        ArrayList<AirlinePoint> myAirlineData = Parser.parseAirlineData(f);
-        BBDatabase.addAirlinePointstoDB(myAirlineData);
+        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+        BBDatabase.addAirlinePointstoDB(allAirlineData);
 
-        myAirlineData = Filter.getAllAirlinePointsfromDB();
+        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
-
-        //System.out.println(myAirlineData);
-       // myAirlineData = Filter.getAllAirlinePointsfromDB();
-        setAllAirlinePoints(myAirlineData);
+        setAllAirlinePoints(allAirlineData);
         setAirlineActiveList(populateAirlineActiveList());
 
         airlineActiveMenu.setItems(getAirlineActiveList());
         airlineActiveMenu.setValue(getAirlineActiveList().get(0));
-        airlineCountryList = populateAirlineCountryList();
+        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
-        updateAirlinesTable(myAirlineData);
-
-
-
+        updateAirlinesTable(allAirlineData);    //update with all airline data, including bad data
     }
 
     public void addRouteData(){
@@ -376,6 +377,7 @@ public class GUIController {
          f = getFile();
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
         BBDatabase.addRoutePointstoDB(myRouteData);
+        setAllRoutePoints(myRouteData);
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
 
@@ -468,7 +470,7 @@ public class GUIController {
          * **************** UNCOMMENT THIS WHEN PARSER READY (Updating the correctEntry field for Airline ************************
          * **********************************************************************************************************/
 
-        /*
+
 
         //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
 
@@ -499,7 +501,7 @@ public class GUIController {
                     }
                 }
             };
-        }); */
+        });
 
 
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
@@ -837,11 +839,32 @@ public class GUIController {
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
         String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
+        ArrayList<RoutePoint> routePoints = new ArrayList<>();
+
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-        ArrayList<RoutePoint> routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+        boolean allNone = true;
+
+        for (String menuItem: menusPressed){
+            if (!menuItem.equals("None")){
+                allNone = false;
+            }
+        }
+        if (!searchQuery.equals("")){
+            allNone = false;
+
+        }
+        if (!allNone){
+             routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
+
+        }
+        else{
+            routePoints = getAllRoutePoints();
+        }
 
         updateRoutesTable(routePoints);
+
 
 
     }
@@ -882,7 +905,9 @@ public class GUIController {
 
     }
 
-    public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {}
+    public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
+        updateRoutesTable(getAllRoutePoints());
+    }
 
 
     /*******************************************************************************************************************

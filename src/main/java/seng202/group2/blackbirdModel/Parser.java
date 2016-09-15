@@ -112,7 +112,7 @@ public class Parser {
 			myRoutePoint.setEquipment(routePoint[8]);
 		} catch (NumberFormatException e) {
 			myRoutePoint.setAirline("Error on input file line: " + count);
-			myRoutePoint.setCorrectEntry(-1);
+			myRoutePoint.setCorrectEntry(0);
 			return myRoutePoint;
 		}
 

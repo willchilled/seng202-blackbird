@@ -244,7 +244,6 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            airline.setCorrectEntry(0);
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.out.println("Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country + ", " + active);
         }
@@ -311,7 +310,6 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            airport.setCorrectEntry(0);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.out.println("Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao);
         }
@@ -375,9 +373,6 @@ public class BBDatabase {
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
             System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
-//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                            "Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst,
-//                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
 
@@ -416,7 +411,9 @@ public class BBDatabase {
     }
 
     //Flight Adding
-    public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints) {
+    //I AM NOT SURE IF BAD FLIGHT DATA IS BEING ADDED TO THE DATABASE CURRENTLY
+    //BUT HAVE THROWN AN EXCEPTION TO STOP THE TABLE FROM UPDATING IF ANY EXCEPTION OCCURS.
+    public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints) throws SQLException {
         //Adding flight points into data base
         try {
             //Connect to DB
@@ -441,66 +438,62 @@ public class BBDatabase {
                     "\"" + dstICAO + "\"" +
                     ");";
 
-            try {
-                stmt.executeUpdate(sql);
+            stmt.executeUpdate(sql);
 
-                //get the new flight id
-                sql = "SELECT FlightIDNum, MAX(FlightIDNum) FROM FLIGHT";
-                ResultSet rs = stmt.executeQuery(sql);
-                int flightid = rs.getInt("FlightIDNum");
+            //get the new flight id
+            sql = "SELECT FlightIDNum, MAX(FlightIDNum) FROM FLIGHT";
+            ResultSet rs = stmt.executeQuery(sql);
+            int flightid = rs.getInt("FlightIDNum");
 
-                //initialise order to show the sequence of the flight points
-                int order = 1;
+            //initialise order to show the sequence of the flight points
+            int order = 1;
 
-                //for all flight points
-                for (FlightPoint point : flightPoints) {
-                    addSingleFlighttoDB(point, stmt, flightid, order);
-                    order++;
+            //for all flight points
+            for (FlightPoint point : flightPoints) {
+                addSingleFlighttoDB(point, stmt, flightid, order);
+                order++;
 
-                }
-
-                stmt.close();
-                c.commit();
-                c.close();
-            } catch (SQLException e) {
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
-                System.out.println("Could not add Flight");
-//                JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                                "Could not add Flight \n" + "From: " + srcICAO + "\nTo: " + dstICAO,
-//                        "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
+            stmt.close();
+            c.commit();
+            c.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw e;
             //System.out.println("Could not add :");
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         System.out.println("Records created successfully");
     }
 
-    private static void addSingleFlighttoDB(FlightPoint point, Statement stmt, int flightid, int order) {
+    private static void addSingleFlighttoDB(FlightPoint point, Statement stmt, int flightid, int order) throws SQLException {
         //get info for point
-        try {
-            String locID = point.getLocaleID();
-            String locType = point.getType();
-            int altitude = point.getAltitude();
-            float latitude = point.getLatitude();
-            float longitude = point.getLongitude();
-            System.out.println("not ded3");
-            String FlightSql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
-                    "Values (" +
-                    order + ", " +
-                    "\"" + locID + "\", " +
-                    "\"" + locType + "\", " +
-                    altitude + ", " +
-                    latitude + ", " +
-                    longitude + ", " +
-                    flightid + ")";
+
+        String locID = point.getLocaleID();
+        String locType = point.getType();
+        int altitude = point.getAltitude();
+        float latitude = point.getLatitude();
+        float longitude = point.getLongitude();
+        System.out.println("not ded3");
+        String FlightSql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
+                "Values (" +
+                order + ", " +
+                "\"" + locID + "\", " +
+                "\"" + locType + "\", " +
+                altitude + ", " +
+                latitude + ", " +
+                longitude + ", " +
+                flightid + ")";
 
             //execute route sql
+        try {
             stmt.executeUpdate(FlightSql);
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-
+        } catch (SQLException e) {
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            throw e;
             //System.out.println("Could not add :");
         }
         System.out.println("Records created successfully");
@@ -669,6 +662,7 @@ public class BBDatabase {
         return allPoints;
 
     }
+
 
     public static ArrayList<String> performDistinctStringQuery(String sql) {
 

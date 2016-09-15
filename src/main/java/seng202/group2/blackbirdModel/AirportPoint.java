@@ -15,7 +15,7 @@ public class AirportPoint extends DataPoint {
 	private String dst;
 	private String tz;
 
-	private int correctEntry;
+	//private int correctEntry;
 
 	private int numberOfRoutes;
 
@@ -135,13 +135,13 @@ public class AirportPoint extends DataPoint {
 		this.tz = tz;
 	}
 
-	public int getCorrectEntry() {
-		return correctEntry;
-	}
-
-	public void setCorrectEntry(int correctEntry) {
-		this.correctEntry = correctEntry;
-	}
+//	public int getCorrectEntry() {
+//		return correctEntry;
+//	}
+//
+//	public void setCorrectEntry(int correctEntry) {
+//		this.correctEntry = correctEntry;
+//	}
 
 	@Override
 	public String toString() {

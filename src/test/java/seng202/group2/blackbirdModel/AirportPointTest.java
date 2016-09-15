@@ -32,7 +32,7 @@ public class AirportPointTest extends TestCase {
 
 
        // assertEquals(Boolean.TRUE, testWorking.getCorrectEntry());
-        assertEquals(1, testWorking.getCorrectEntry());
+       // assertEquals(1, testWorking.getCorrectEntry());
         //assertEquals(Boolean.FALSE, testNotWorking.getCorrectEntry());
 
 

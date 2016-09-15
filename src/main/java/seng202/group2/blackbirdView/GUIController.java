@@ -26,6 +26,7 @@ import seng202.group2.blackbirdModel.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -63,62 +64,17 @@ public class GUIController {
 //    public void setAllValidPoints(ArrayList<AirportPoint> allValidPoints) {
 //        this.allValidPoints = allValidPoints;
 //    }
-
-    public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
-    public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
-
-    public void setRoutesFilterbyDestList(ArrayList<String> destList){ this.routesFilterbyDestList = routesFilterbyDestList;}
-    public ObservableList<String> getRoutesFilterbyDestList(){return routesFilterbyDestList;}
-
-    public void SetRoutesFilterByStopsList(ArrayList<String> stopsList){ this.routesFilterByStopsList = routesFilterByStopsList;}
-    public ObservableList<String> getRoutesFilterByStopsList(){return routesFilterByStopsList;}
-
-    public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
-    public ObservableList<String> getRoutesFilterbyEquipList(){return routesFilterbyEquipList;}
-
-    public ArrayList<RoutePoint> getAllRoutePoints() {
-        return allRoutePoints;
-    }
-
-    public void setAllRoutePoints(ArrayList<RoutePoint> allRoutePoints){
-        this.allRoutePoints = allRoutePoints;
-    }
-
-
-
-    public void setAllAirportPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
-
-    public void setAirlineActiveList(ObservableList<String> activeList){this.airlineActiveList = activeList;}
-
-    public ObservableList<String> getAirlineActiveList(){return airlineActiveList;}
-
-    public ArrayList<AirportPoint> getAllAirportPoints(){return allPoints;}
-
-    public void setAllAirlinePoints(ArrayList<AirlinePoint> points){this.allAirlinePoints = points;}
-
-   //public void setAirlineActiveListData(ArrayList<AirlinePoint> points){this.airlineActiveList = points;}
-
-    public ArrayList<AirlinePoint> getAllAirlinePoints(){return allAirlinePoints;}
-
-
     @FXML
     private TabPane mainTabPane;
-
     @FXML
     private javafx.scene.control.MenuItem newProjMenu;
-
     @FXML
     private MenuItem addDataMenuButton;
-
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
     @FXML private TableView<Flight> flightTable;
     @FXML private TableView<FlightPoint> flightPointTable;
-    //@FXML private TableView<AirportPoint> airportTable;
-
-
-
 // AIRPORT Table columns
     @FXML private TableColumn airportIDCol;
     @FXML private TableColumn airportNameCol;
@@ -127,25 +83,25 @@ public class GUIController {
     @FXML private TableColumn airportIATACol;
     @FXML private TableColumn airportICAOCol;
     @FXML private TableColumn airportLatCol;
+
+   //public void setAirlineActiveListData(ArrayList<AirlinePoint> points){this.airlineActiveList = points;}
     @FXML private TableColumn airportLongCol;
     @FXML private TableColumn airportAltCol;
     @FXML private TableColumn airportTimeCol;
     @FXML private TableColumn airportDSTCol;
     @FXML private TableColumn airportTZCol;
     @FXML private TableColumn airportErrorCol;
-
 // AIRLINE Table columns
     @FXML private TableColumn airlineIDCol;
     @FXML private TableColumn airlineNameCol;
     @FXML private TableColumn airlineAliasCol;
+    //@FXML private TableView<AirportPoint> airportTable;
     @FXML private TableColumn airlineIATACol;
     @FXML private TableColumn airlineICAOCol;
     @FXML private TableColumn airlineCallsignCol;
     @FXML private TableColumn airlineCountryCol;
     @FXML private TableColumn airlineActCol;
     @FXML private TableColumn airlineErrorCol;
-
-
 // ROUTE Table columns
     @FXML private TableColumn routeAirlineCol;
     @FXML private TableColumn routeAirlineIDCol;
@@ -157,39 +113,69 @@ public class GUIController {
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
     @FXML private TableColumn routeErrorCol;
-
     // FLIGHT POINT Table columns
     @FXML private TableColumn flightPointTypeCol;
     @FXML private TableColumn flightPointLocaleCol;
     @FXML private TableColumn flightPointAltitudeCol;
     @FXML private TableColumn flightPointLatitudeCol;
     @FXML private TableColumn flightPointLongitudeCol;
-
     //FLIGHT Table columns\
     @FXML private TableColumn flightSourceCol;
     @FXML private TableColumn flightDestCol;
-
-
     // Filter Menu testing
     @FXML private ComboBox airportFilterMenu;
     @FXML private TextField airportSearchQuery;
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
-
-;
     @FXML private ComboBox airlineFilterMenu;
     @FXML private ComboBox airlineActiveMenu;
     @FXML private TextField airlineSearchQuery;
-
     @FXML private ComboBox routesFilterBySourceMenu;
     @FXML private ComboBox routesFilterbyDestMenu;
     @FXML private ComboBox routesFilterByStopsMenu;
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
+    public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
+
+    public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
+
+    public ObservableList<String> getRoutesFilterbyDestList(){return routesFilterbyDestList;}
+
+    public void setRoutesFilterbyDestList(ArrayList<String> destList){ this.routesFilterbyDestList = routesFilterbyDestList;}
+
+    public void SetRoutesFilterByStopsList(ArrayList<String> stopsList){ this.routesFilterByStopsList = routesFilterByStopsList;}
+
+    public ObservableList<String> getRoutesFilterByStopsList(){return routesFilterByStopsList;}
+
+    public ObservableList<String> getRoutesFilterbyEquipList(){return routesFilterbyEquipList;}
+
+    public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
+
+;
+
+    public ArrayList<RoutePoint> getAllRoutePoints() {
+        return allRoutePoints;
+    }
+
+    public void setAllRoutePoints(ArrayList<RoutePoint> allRoutePoints){
+        this.allRoutePoints = allRoutePoints;
+    }
+
+    public ObservableList<String> getAirlineActiveList(){return airlineActiveList;}
+
+    public void setAirlineActiveList(ObservableList<String> activeList){this.airlineActiveList = activeList;}
+
+    public ArrayList<AirportPoint> getAllAirportPoints(){return allPoints;}
+
+    public void setAllAirportPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
+
+    public ArrayList<AirlinePoint> getAllAirlinePoints(){return allAirlinePoints;}
+
+    public void setAllAirlinePoints(ArrayList<AirlinePoint> points){this.allAirlinePoints = points;}
+
     //Airline Popup Info
   //  @FXML private Text nameText;
-
 
     @FXML
     private void initialize(){
@@ -293,7 +279,13 @@ public class GUIController {
         BBDatabase.addAirlinePointstoDB(airlinePoints);
         BBDatabase.addAirportPointsToDB(airportPoints);
         BBDatabase.addRoutePointstoDB(routePoints);
-        BBDatabase.addFlighttoDB(flightPoints);
+        try {
+            BBDatabase.addFlighttoDB(flightPoints);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println("Bad flight data");
+        }
 
         airportPoints = Filter.getAllAirportPointsFromDB();
         setAllAirportPoints(airportPoints); //imports setter, keeps track of all points
@@ -335,8 +327,8 @@ public class GUIController {
         BBDatabase.addAirportPointsToDB(allairportPoints);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
-        setAllAirportPoints(allairportPoints); //adding all airport data, including bad data
-        updateAirportsTable(allairportPoints);
+        setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
+        updateAirportsTable(validairportPoints);
 
         airPortCountryList = populateAirportCountryList();  //populating from valid data in database
         airportFilterMenu.setItems(airPortCountryList);
@@ -356,7 +348,7 @@ public class GUIController {
 
         ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
-        setAllAirlinePoints(allAirlineData);
+        setAllAirlinePoints(validAirlineData);
         setAirlineActiveList(populateAirlineActiveList());
 
         airlineActiveMenu.setItems(getAirlineActiveList());
@@ -364,7 +356,7 @@ public class GUIController {
         airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
-        updateAirlinesTable(allAirlineData);    //update with all airline data, including bad data
+        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
     }
 
     public void addRouteData(){
@@ -377,7 +369,9 @@ public class GUIController {
          f = getFile();
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
         BBDatabase.addRoutePointstoDB(myRouteData);
-        setAllRoutePoints(myRouteData);
+        //WAITING ON METHOD TO GET ROUTES BACK FROM DB
+        //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
+        setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
 
@@ -391,8 +385,14 @@ public class GUIController {
         File f;
         f = getFile();
         ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
-        BBDatabase.addFlighttoDB(myFlightData);
-        updateFlightsTable(myFlightData);
+        try {
+            BBDatabase.addFlighttoDB(myFlightData);
+            updateFlightsTable(myFlightData);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Error in flight, aborted.");
+        }
     }
 
     public void addSingleRoute() {
@@ -464,46 +464,6 @@ public class GUIController {
         //Updates the view with a given set of airline points
         airlineTable.getItems().setAll(points);
 
-        //Changing the colour of row if it is an incorrect entry
-
-        /*************************************************************************************************************
-         * **************** UNCOMMENT THIS WHEN PARSER READY (Updating the correctEntry field for Airline ************************
-         * **********************************************************************************************************/
-
-
-
-        //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-
-        airlineErrorCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("correctEntry"));
-        airlineErrorCol.setCellFactory(column -> {
-            return new TableCell<AirlinePoint, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    TableRow<AirlinePoint> currentRow = getTableRow();
-
-                    if (item == null || empty) {
-                        setText(null);
-                        currentRow.setStyle("");
-                    } else {
-                        // Format date.
-                        setText(String.valueOf(item));
-
-                        // Style all dates in March with a different color.
-                        if (item == 0) {
-
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("-fx-background-color: lightcoral");
-                        } else {
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("");
-                        }
-                    }
-                }
-            };
-        });
-
-
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
@@ -551,45 +511,6 @@ public class GUIController {
     private void updateRoutesTable(ArrayList<RoutePoint> points){
 
         routeTable.getItems().setAll(points);
-
-        //Changing the colour of row if it is an incorrect entry
-
-        /*************************************************************************************************************
-         * **************** UNCOMMENT THIS WHEN PARSER READY (Updating the correctEntry field for Route) ************************
-         * **********************************************************************************************************/
-
-        /*
-
-        //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-
-        routeErrorCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("correctEntry"));
-        routeErrorCol.setCellFactory(column -> {
-            return new TableCell<RoutePoint, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    TableRow<RoutePoint> currentRow = getTableRow();
-
-                    if (item == null || empty) {
-                        setText(null);
-                        currentRow.setStyle("");
-                    } else {
-                        // Format date.
-                        setText(String.valueOf(item));
-
-                        // Style all dates in March with a different color.
-                        if (item == 0) {
-
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("-fx-background-color: lightcoral");
-                        } else {
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("");
-                        }
-                    }
-                }
-            };
-        }); */
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
@@ -641,39 +562,6 @@ public class GUIController {
         //updates airpoirts table with a set of airpoints
         airportTable.getItems().setAll(points);
 
-
-        //Changing the colour of row if it is an incorrect entry
-        //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
-        airportErrorCol.setCellFactory(column -> {
-            return new TableCell<AirportPoint, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    TableRow<AirportPoint> currentRow = getTableRow();
-
-                    if (item == null || empty) {
-                        setText(null);
-                        currentRow.setStyle("");
-                    } else {
-                        // Format date.
-                        setText(String.valueOf(item));
-
-                        // Style all dates in March with a different color.
-                        if (item == 0) {
-
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("-fx-background-color: lightcoral");
-                        } else {
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("");
-                        }
-                    }
-                }
-            };
-        });
-
-
         airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
         airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
@@ -686,7 +574,6 @@ public class GUIController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
-        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
 
 
         airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {

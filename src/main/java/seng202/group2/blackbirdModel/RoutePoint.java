@@ -2,8 +2,8 @@ package seng202.group2.blackbirdModel;
 
 public class RoutePoint extends DataPoint {
 
-	private int routeID;
-	private String airline;
+	private int routeID;	//our given id to routes
+	private String airline; //index 0 in input file
 	private int airlineID;
 	private String srcAirport;
 	private int srcAirportID;
@@ -12,7 +12,7 @@ public class RoutePoint extends DataPoint {
 	private String codeshare;
 	private int stops;
 	private String equipment;
-	private int correctEntry;
+	//private int correctEntry;
 
 	private AirportPoint source;
 	private AirportPoint destination;
@@ -20,15 +20,13 @@ public class RoutePoint extends DataPoint {
 
 	@Override
 	public boolean equals(Object obj){
-		//megan's test for bad data...
 		RoutePoint mypoint = (RoutePoint) obj;
 		if(this.getRouteID() == mypoint.getRouteID()) return true;
 		else return false;
 	}
 
+	public RoutePoint(String airline, int airlineID){
 
-	public RoutePoint(String airline, int airlineID){	
-		
 		this.airline = airline;
 		this.airlineID = airlineID;
 	}
@@ -129,13 +127,13 @@ public class RoutePoint extends DataPoint {
 		this.destination = destination;
 	}
 
-	public int getCorrectEntry() {
-		return correctEntry;
-	}
-
-	public void setCorrectEntry(int correctEntry) {
-		this.correctEntry = correctEntry;
-	}
+//	public int getCorrectEntry() {
+//		return correctEntry;
+//	}
+//
+//	public void setCorrectEntry(int correctEntry) {
+//		this.correctEntry = correctEntry;
+//	}
 
 	@Override
 	public String toString() {

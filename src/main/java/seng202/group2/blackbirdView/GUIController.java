@@ -325,91 +325,6 @@ public class GUIController {
 
     }
 
-    private void updateRoutesTable(ArrayList<RoutePoint> points){
-
-        routeTable.getItems().setAll(points);
-
-        //Changing the colour of row if it is an incorrect entry
-
-        /*************************************************************************************************************
-         * **************** UNCOMMENT THIS WHEN PARSER READY (Updating the correctEntry field for Route) ************************
-         * **********************************************************************************************************/
-
-        /*
-
-        //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-
-        routeErrorCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("correctEntry"));
-        routeErrorCol.setCellFactory(column -> {
-            return new TableCell<RoutePoint, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    TableRow<RoutePoint> currentRow = getTableRow();
-
-                    if (item == null || empty) {
-                        setText(null);
-                        currentRow.setStyle("");
-                    } else {
-                        // Format date.
-                        setText(String.valueOf(item));
-
-                        // Style all dates in March with a different color.
-                        if (item == 0) {
-
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("-fx-background-color: lightcoral");
-                        } else {
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("");
-                        }
-                    }
-                }
-            };
-        }); */
-
-        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
-        routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
-        routeSrcCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirport"));
-        routeSrcIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportID"));
-        routeDestCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirport"));
-        routeDestIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportID"));
-        routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
-        routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
-        routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
-
-        routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event){
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    Stage stage;
-                    Parent root;
-                    stage = new Stage();
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
-                        root = loader.load();
-                        RoutePopUpController popUpController = loader.getController();
-                        popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
-                        popUpController.setUpPopUp();
-
-                        stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
-                        stage.initModality(Modality.NONE);
-                        stage.initOwner(null);
-
-                        stage.show();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        //System.out.println("AH NO!");
-                    }
-
-                }
-            }
-        });
-
-
-    }
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
@@ -555,7 +470,7 @@ public class GUIController {
          * **************** UNCOMMENT THIS WHEN PARSER READY (Updating the correctEntry field for Airline ************************
          * **********************************************************************************************************/
 
-        /*
+
 
         //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
 
@@ -588,7 +503,7 @@ public class GUIController {
             };
         });
 
-
+        airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
         airlineIATACol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("iata"));

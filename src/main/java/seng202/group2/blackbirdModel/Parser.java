@@ -41,22 +41,32 @@ public class Parser {
                     String[] flightPoint = line.split(",");
                     
                     if(!checkNull(flightPoint)){
-                    	String type = flightPoint[0];
-                    	String localeID = flightPoint[1];
-                    	int altitude = Integer.parseInt(flightPoint[2]);
-                    	float latitude = Float.parseFloat(flightPoint[3]);
-                    	float longitude = Float.parseFloat(flightPoint[4]);
-                    	FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
-                                longitude);
-                        myFlightSet.add(myFlightPoint);
+						try {
+							String type = flightPoint[0];
+							String localeID = flightPoint[1];
+							int altitude = Integer.parseInt(flightPoint[2]);
+							float latitude = Float.parseFloat(flightPoint[3]);
+							float longitude = Float.parseFloat(flightPoint[4]);
+							FlightPoint myFlightPoint = new FlightPoint(type, localeID, altitude, latitude,
+									longitude);
+							myFlightSet.add(myFlightPoint);
+						} catch (NumberFormatException e) {
+							JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your file on line: " + count,
+									"Error", JOptionPane.ERROR_MESSAGE);
+							System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+						}
+
                     } else {
+						JOptionPane.showMessageDialog(new JPanel(), "Error on line: " + count + ". Empty data fields are not allowed for flight entries.\n" +
+								"Please review your input file.", "Error", JOptionPane.ERROR_MESSAGE);
                     	System.err.println("Error: Null field in flight data. All fields must be filled");
 						//currently, aborting if any null fields present in flight data.
                     	break;
                     }
                 } else {
 					//will any flight data have extra commas?
-					System.err.println("Error: Unexpected comma found on line: " + count);
+					JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your file on line: " + count,
+							"Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		} catch (NumberFormatException e) {
@@ -76,26 +86,36 @@ public class Parser {
 		return line;
 	}
 
-	private static RoutePoint checkRouteData(String[] routePoint, RoutePoint myRoutePoint){
+	private static RoutePoint checkRouteData(String[] routePoint, int count){
+		RoutePoint myRoutePoint = new RoutePoint("", -1); 	//Set as -1 to test foreign key constraints
+		myRoutePoint.setRouteID(count);
+		try {
+			myRoutePoint.setAirline(routePoint[0]);
+			myRoutePoint.setAirlineID(Integer.parseInt(routePoint[1]));
+			myRoutePoint.setSrcAirport(routePoint[2]);    //cant be null?
 
-		myRoutePoint.setSrcAirport(routePoint[2]);	//cant be null?
-		if (routePoint[3].equals("\\N")) {
-			myRoutePoint.setSrcAirportID(0);	//0 as placeholder null value
-		} else {
-			myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
+			if (routePoint[3].equals("\\N") || routePoint[3].isEmpty()) {
+				myRoutePoint.setSrcAirportID(-1);    //accounting for empty, to be consistent with other checks. Set as -1 to test foreign key constraints
+			} else {
+				myRoutePoint.setSrcAirportID(Integer.parseInt(routePoint[3]));
+			}
+
+			myRoutePoint.setDstAirport(routePoint[4]);
+			if (routePoint[5].equals("\\N") || routePoint[5].isEmpty()) {	//Set as -1 to test foreign key constraints
+				myRoutePoint.setDstAirportID(-1);
+			} else {
+				myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
+			}
+			myRoutePoint.setCodeshare(routePoint[6]);
+			myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
+			myRoutePoint.setEquipment(routePoint[8]);
+		} catch (NumberFormatException e) {
+			myRoutePoint.setAirline("Error on input file line: " + count);
+			myRoutePoint.setCorrectEntry(-1);
+			return myRoutePoint;
 		}
-		myRoutePoint.setDstAirport(routePoint[4]);	//cant be null?
-		if (routePoint[5].equals("\\N")) {
-			myRoutePoint.setDstAirportID(0);
-		} else {
-			myRoutePoint.setDstAirportID(Integer.parseInt(routePoint[5]));
-		}
-		myRoutePoint.setCodeshare(routePoint[6]);
-		myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
-		//System.out.println(routePoint[8]);
-		myRoutePoint.setEquipment(routePoint[8]);
 
-
+		myRoutePoint.setCorrectEntry(1);
 		return myRoutePoint;
 	}
 
@@ -111,35 +131,22 @@ public class Parser {
 			int count = 0;
 			while ((line = br.readLine()) != null) {
 				count++;
+				if (line.isEmpty()) {
+					continue;
+				}
+
                 if(numberOfCommas(line) == 8) {
-                    String[] routePoint = line.split(",", -1);
+                    String[] routePoint = line.split(",", -1);	//-1 seemed to be required for if the very last field is empty
 
-					//routePoint = removeQuotes(routePoint);
-
-					String airline = routePoint[0];
-					int airlineID = 0;	// 0 if airlineID is null
-
-					if (!routePoint[1].equals("\\N")) {
-						airlineID = Integer.parseInt(routePoint[1]);
-					}
-
-					RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
-
-					myRoutePoint = checkRouteData(routePoint, myRoutePoint);
-					myRoutePoint.setRouteID(count);	//set our own routeID
-
+					routePoint = removeQuotes(routePoint);
+					RoutePoint myRoutePoint = checkRouteData(routePoint, count);
 					myRouteData.add(myRoutePoint);
                 } else {
-                    //currently picking up empty lines in text file
-					System.err.println("Error: Unexpected comma found on line: " + count);
-					System.err.println("The line: " + line);
-					//TODO
-                    // HANDLE INCORRECT FIELD DATA
-                }
+					RoutePoint myRoutePoint = new RoutePoint("", -1);
+					myRoutePoint.setCorrectEntry(0);
+					myRouteData.add(myRoutePoint);
+				}
 			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

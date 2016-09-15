@@ -92,7 +92,9 @@ public class Parser {
 		}
 		myRoutePoint.setCodeshare(routePoint[6]);
 		myRoutePoint.setStops(Integer.parseInt(routePoint[7]));
+		//System.out.println(routePoint[8]);
 		myRoutePoint.setEquipment(routePoint[8]);
+
 
 		return myRoutePoint;
 	}

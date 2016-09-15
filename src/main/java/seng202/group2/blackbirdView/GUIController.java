@@ -50,10 +50,12 @@ public class GUIController {
 
 
 
+
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
 
     ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
+    ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
@@ -74,6 +76,14 @@ public class GUIController {
 
     public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
     public ObservableList<String> getRoutesFilterbyEquipList(){return routesFilterbyEquipList;}
+
+    public ArrayList<RoutePoint> getAllRoutePoints() {
+        return allRoutePoints;
+    }
+
+    public void setAllRoutePoints(ArrayList<RoutePoint> allRoutePoints){
+        this.allRoutePoints = allRoutePoints;
+    }
 
 
 
@@ -185,9 +195,9 @@ public class GUIController {
     @FXML
     private void initialize(){
         //Automatic initialisation when the program starts
-
-        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+//
+//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -376,6 +386,7 @@ public class GUIController {
          f = getFile();
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
         BBDatabase.addRoutePointstoDB(myRouteData);
+        setAllRoutePoints(myRouteData);
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
 
@@ -836,11 +847,32 @@ public class GUIController {
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
         String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
+        ArrayList<RoutePoint> routePoints = new ArrayList<>();
+
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-        ArrayList<RoutePoint> routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+        boolean allNone = true;
+
+        for (String menuItem: menusPressed){
+            if (!menuItem.equals("None")){
+                allNone = false;
+            }
+        }
+        if (!searchQuery.equals("")){
+            allNone = false;
+
+        }
+        if (!allNone){
+             routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
+
+        }
+        else{
+            routePoints = getAllRoutePoints();
+        }
 
         updateRoutesTable(routePoints);
+
 
 
     }
@@ -881,7 +913,9 @@ public class GUIController {
 
     }
 
-    public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {}
+    public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
+        updateRoutesTable(getAllRoutePoints());
+    }
 
 
     /*******************************************************************************************************************
@@ -980,7 +1014,6 @@ public class GUIController {
         populateRoutesFilterByStopsList();
         populateRoutesFilterByEquipList();
     }
-
 
 
 

@@ -18,6 +18,15 @@ public class RoutePoint extends DataPoint {
 	private AirportPoint destination;
 
 
+	@Override
+	public boolean equals(Object obj){
+		//megan's test for bad data...
+		RoutePoint mypoint = (RoutePoint) obj;
+		if(this.getRouteID() == mypoint.getRouteID()) return true;
+		else return false;
+	}
+
+
 	public RoutePoint(String airline, int airlineID){	
 		
 		this.airline = airline;

@@ -244,7 +244,6 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            airline.setCorrectEntry(0);
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.out.println("Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country + ", " + active);
         }
@@ -311,7 +310,6 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            airport.setCorrectEntry(0);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.out.println("Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao);
         }
@@ -374,7 +372,6 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
-            route.setCorrectEntry(0);
             System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
         }
 
@@ -496,7 +493,6 @@ public class BBDatabase {
             stmt.executeUpdate(FlightSql);
         } catch (SQLException e) {
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            point.setCorrectEntry(0);
             throw e;
             //System.out.println("Could not add :");
         }

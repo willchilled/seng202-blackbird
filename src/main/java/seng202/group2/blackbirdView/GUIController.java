@@ -464,38 +464,6 @@ public class GUIController {
         //Updates the view with a given set of airline points
         airlineTable.getItems().setAll(points);
 
-        //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-//
-//        airlineErrorCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("correctEntry"));
-//        airlineErrorCol.setCellFactory(column -> {
-//            return new TableCell<AirlinePoint, Integer>() {
-//                @Override
-//                protected void updateItem(Integer item, boolean empty) {
-//                    super.updateItem(item, empty);
-//                    TableRow<AirlinePoint> currentRow = getTableRow();
-//
-//                    if (item == null || empty) {
-//                        setText(null);
-//                        currentRow.setStyle("");
-//                    } else {
-//                        // Format date.
-//                        setText(String.valueOf(item));
-//
-//                        // Style all dates in March with a different color.
-//                        if (item == 0) {
-//
-//                            currentRow.setTextFill(Color.BLACK);
-//                            currentRow.setStyle("-fx-background-color: lightcoral");
-//                        } else {
-//                            currentRow.setTextFill(Color.BLACK);
-//                            currentRow.setStyle("");
-//                        }
-//                    }
-//                }
-//            };
-//        });
-
-
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
@@ -543,37 +511,6 @@ public class GUIController {
     private void updateRoutesTable(ArrayList<RoutePoint> points){
 
         routeTable.getItems().setAll(points);
-
-        //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-
-//        routeErrorCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("correctEntry"));
-//        routeErrorCol.setCellFactory(column -> {
-//            return new TableCell<RoutePoint, Integer>() {
-//                @Override
-//                protected void updateItem(Integer item, boolean empty) {
-//                    super.updateItem(item, empty);
-//                    TableRow<RoutePoint> currentRow = getTableRow();
-//
-//                    if (item == null || empty) {
-//                        setText(null);
-//                        currentRow.setStyle("");
-//                    } else {
-//                        // Format date.
-//                        setText(String.valueOf(item));
-//
-//                        // Style all dates in March with a different color.
-//                        if (item == 0) {
-//
-//                            currentRow.setTextFill(Color.BLACK);
-//                            currentRow.setStyle("-fx-background-color: lightcoral");
-//                        } else {
-//                            currentRow.setTextFill(Color.BLACK);
-//                            currentRow.setStyle("");
-//                        }
-//                    }
-//                }
-//            };
-//        });
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
@@ -625,37 +562,6 @@ public class GUIController {
         //updates airpoirts table with a set of airpoints
         airportTable.getItems().setAll(points);
 
-        //Changing the colour of row if it is an incorrect entry
-        //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-//        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
-//        airportErrorCol.setCellFactory(column -> {
-//            return new TableCell<AirportPoint, Integer>() {
-//                @Override
-//                protected void updateItem(Integer item, boolean empty) {
-//                    super.updateItem(item, empty);
-//                    TableRow<AirportPoint> currentRow = getTableRow();
-//
-//                    if (item == null || empty) {
-//                        setText(null);
-//                        currentRow.setStyle("");
-//                    } else {
-//                        // Format date.
-//                        setText(String.valueOf(item));
-//
-//                        // Style all dates in March with a different color.
-//                        if (item == 0) {
-//
-//                            currentRow.setTextFill(Color.BLACK);
-//                            currentRow.setStyle("-fx-background-color: lightcoral");
-//                        } else {
-//                            currentRow.setTextFill(Color.BLACK);
-//                            currentRow.setStyle("");
-//                        }
-//                    }
-//                }
-//            };
-//        });
-
         airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
         airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
         airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
@@ -668,7 +574,6 @@ public class GUIController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
-        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
 
 
         airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {

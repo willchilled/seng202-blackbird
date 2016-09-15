@@ -12,7 +12,7 @@ public class RoutePoint extends DataPoint {
 	private String codeshare;
 	private int stops;
 	private String equipment;
-	private int correctEntry;
+	//private int correctEntry;
 
 	private AirportPoint source;
 	private AirportPoint destination;
@@ -127,13 +127,13 @@ public class RoutePoint extends DataPoint {
 		this.destination = destination;
 	}
 
-	public int getCorrectEntry() {
-		return correctEntry;
-	}
-
-	public void setCorrectEntry(int correctEntry) {
-		this.correctEntry = correctEntry;
-	}
+//	public int getCorrectEntry() {
+//		return correctEntry;
+//	}
+//
+//	public void setCorrectEntry(int correctEntry) {
+//		this.correctEntry = correctEntry;
+//	}
 
 	@Override
 	public String toString() {

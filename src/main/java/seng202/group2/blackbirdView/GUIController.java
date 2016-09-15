@@ -327,8 +327,8 @@ public class GUIController {
         BBDatabase.addAirportPointsToDB(allairportPoints);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
-        setAllAirportPoints(allairportPoints); //adding all airport data, including bad data
-        updateAirportsTable(allairportPoints);
+        setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
+        updateAirportsTable(validairportPoints);
 
         airPortCountryList = populateAirportCountryList();  //populating from valid data in database
         airportFilterMenu.setItems(airPortCountryList);
@@ -348,7 +348,7 @@ public class GUIController {
 
         ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
-        setAllAirlinePoints(allAirlineData);
+        setAllAirlinePoints(validAirlineData);
         setAirlineActiveList(populateAirlineActiveList());
 
         airlineActiveMenu.setItems(getAirlineActiveList());
@@ -356,7 +356,7 @@ public class GUIController {
         airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
-        updateAirlinesTable(allAirlineData);    //update with all airline data, including bad data
+        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
     }
 
     public void addRouteData(){
@@ -369,6 +369,8 @@ public class GUIController {
          f = getFile();
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
         BBDatabase.addRoutePointstoDB(myRouteData);
+        //WAITING ON METHOD TO GET ROUTES BACK FROM DB
+        //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
         setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
@@ -462,44 +464,36 @@ public class GUIController {
         //Updates the view with a given set of airline points
         airlineTable.getItems().setAll(points);
 
-        //Changing the colour of row if it is an incorrect entry
-
-        /*************************************************************************************************************
-         * **************** UNCOMMENT THIS WHEN PARSER READY (Updating the correctEntry field for Airline ************************
-         * **********************************************************************************************************/
-
-
-
         //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-
-        airlineErrorCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("correctEntry"));
-        airlineErrorCol.setCellFactory(column -> {
-            return new TableCell<AirlinePoint, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    TableRow<AirlinePoint> currentRow = getTableRow();
-
-                    if (item == null || empty) {
-                        setText(null);
-                        currentRow.setStyle("");
-                    } else {
-                        // Format date.
-                        setText(String.valueOf(item));
-
-                        // Style all dates in March with a different color.
-                        if (item == 0) {
-
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("-fx-background-color: lightcoral");
-                        } else {
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("");
-                        }
-                    }
-                }
-            };
-        });
+//
+//        airlineErrorCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("correctEntry"));
+//        airlineErrorCol.setCellFactory(column -> {
+//            return new TableCell<AirlinePoint, Integer>() {
+//                @Override
+//                protected void updateItem(Integer item, boolean empty) {
+//                    super.updateItem(item, empty);
+//                    TableRow<AirlinePoint> currentRow = getTableRow();
+//
+//                    if (item == null || empty) {
+//                        setText(null);
+//                        currentRow.setStyle("");
+//                    } else {
+//                        // Format date.
+//                        setText(String.valueOf(item));
+//
+//                        // Style all dates in March with a different color.
+//                        if (item == 0) {
+//
+//                            currentRow.setTextFill(Color.BLACK);
+//                            currentRow.setStyle("-fx-background-color: lightcoral");
+//                        } else {
+//                            currentRow.setTextFill(Color.BLACK);
+//                            currentRow.setStyle("");
+//                        }
+//                    }
+//                }
+//            };
+//        });
 
 
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
@@ -550,44 +544,36 @@ public class GUIController {
 
         routeTable.getItems().setAll(points);
 
-        //Changing the colour of row if it is an incorrect entry
-
-        /*************************************************************************************************************
-         * **************** UNCOMMENT THIS WHEN PARSER READY (Updating the correctEntry field for Route) ************************
-         * **********************************************************************************************************/
-
-
-
         //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
 
-        routeErrorCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("correctEntry"));
-        routeErrorCol.setCellFactory(column -> {
-            return new TableCell<RoutePoint, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    TableRow<RoutePoint> currentRow = getTableRow();
-
-                    if (item == null || empty) {
-                        setText(null);
-                        currentRow.setStyle("");
-                    } else {
-                        // Format date.
-                        setText(String.valueOf(item));
-
-                        // Style all dates in March with a different color.
-                        if (item == 0) {
-
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("-fx-background-color: lightcoral");
-                        } else {
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("");
-                        }
-                    }
-                }
-            };
-        });
+//        routeErrorCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("correctEntry"));
+//        routeErrorCol.setCellFactory(column -> {
+//            return new TableCell<RoutePoint, Integer>() {
+//                @Override
+//                protected void updateItem(Integer item, boolean empty) {
+//                    super.updateItem(item, empty);
+//                    TableRow<RoutePoint> currentRow = getTableRow();
+//
+//                    if (item == null || empty) {
+//                        setText(null);
+//                        currentRow.setStyle("");
+//                    } else {
+//                        // Format date.
+//                        setText(String.valueOf(item));
+//
+//                        // Style all dates in March with a different color.
+//                        if (item == 0) {
+//
+//                            currentRow.setTextFill(Color.BLACK);
+//                            currentRow.setStyle("-fx-background-color: lightcoral");
+//                        } else {
+//                            currentRow.setTextFill(Color.BLACK);
+//                            currentRow.setStyle("");
+//                        }
+//                    }
+//                }
+//            };
+//        });
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
@@ -639,38 +625,36 @@ public class GUIController {
         //updates airpoirts table with a set of airpoints
         airportTable.getItems().setAll(points);
 
-
         //Changing the colour of row if it is an incorrect entry
         //We need to make sure that when we edit an entry, it's correctEntry value is updated and the table is updated also
-        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
-        airportErrorCol.setCellFactory(column -> {
-            return new TableCell<AirportPoint, Integer>() {
-                @Override
-                protected void updateItem(Integer item, boolean empty) {
-                    super.updateItem(item, empty);
-                    TableRow<AirportPoint> currentRow = getTableRow();
-
-                    if (item == null || empty) {
-                        setText(null);
-                        currentRow.setStyle("");
-                    } else {
-                        // Format date.
-                        setText(String.valueOf(item));
-
-                        // Style all dates in March with a different color.
-                        if (item == 0) {
-
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("-fx-background-color: lightcoral");
-                        } else {
-                            currentRow.setTextFill(Color.BLACK);
-                            currentRow.setStyle("");
-                        }
-                    }
-                }
-            };
-        });
-
+//        airportErrorCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("correctEntry"));
+//        airportErrorCol.setCellFactory(column -> {
+//            return new TableCell<AirportPoint, Integer>() {
+//                @Override
+//                protected void updateItem(Integer item, boolean empty) {
+//                    super.updateItem(item, empty);
+//                    TableRow<AirportPoint> currentRow = getTableRow();
+//
+//                    if (item == null || empty) {
+//                        setText(null);
+//                        currentRow.setStyle("");
+//                    } else {
+//                        // Format date.
+//                        setText(String.valueOf(item));
+//
+//                        // Style all dates in March with a different color.
+//                        if (item == 0) {
+//
+//                            currentRow.setTextFill(Color.BLACK);
+//                            currentRow.setStyle("-fx-background-color: lightcoral");
+//                        } else {
+//                            currentRow.setTextFill(Color.BLACK);
+//                            currentRow.setStyle("");
+//                        }
+//                    }
+//                }
+//            };
+//        });
 
         airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
         airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));

@@ -246,19 +246,14 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
+            airline.setCorrectEntry(0);
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("Could not add: " + id + " " + name + " " + alias + " " + iata + ", " + icao + ", " + country + ", " + active);
-            //Bring up some sort of alert box here?? Need some sort of way of communicating this to user
-            //ISSUE: if there are a lot of errors, you'll be stuck closing each dialog box...... Could we have a separate window or panel for reviewing bad entries?
-            //JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-            //              "Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country,
-            //    "Error", JOptionPane.ERROR_MESSAGE);
-            //System.exit(0);
+            System.out.println("Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country + ", " + active);
         }
     }
 
     //Airport Adding
-    public static void addAiportPortsToDB(ArrayList<AirportPoint> airportPoints) {
+    public static void addAirportPointsToDB(ArrayList<AirportPoint> airportPoints) {
         //This method adds multiple points to the Database
         try {
             Connection c = makeConnection();
@@ -276,12 +271,10 @@ public class BBDatabase {
             stmt.close();
             c.commit();
             c.close();
-        } catch (Exception e) {   //should this exception be made more specific? Or surrounding a more specific code block?
+        } catch (SQLException e) {  //error in database connection
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-
-            //System.exit(0);
-            //System.out.println("Could not add :");
-
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         System.out.println("Records created successfully");
     }
@@ -322,11 +315,7 @@ public class BBDatabase {
         } catch (SQLException e) {
             airport.setCorrectEntry(0);
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not add: " + airportID + " " + airportName + " " + City + " " + Country + ", " + Iata + ", " + Icao);
-//            JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                            "Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao,
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-            //System.exit(0);
+            System.out.println("Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao);
         }
     }
 

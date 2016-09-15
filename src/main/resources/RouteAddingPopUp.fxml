@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.RouteAddingPopUpController">
    <top>
       <GridPane hgap="10.0" prefHeight="452.0" prefWidth="370.0" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -26,7 +26,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Airline IATA" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Airline ID" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Source Airport" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Source Airport ID" GridPane.rowIndex="3" />
@@ -34,24 +34,24 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Airport ID" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.rowIndex="7" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.rowIndex="8" />
-            <TextField text="Enter Name..." GridPane.columnIndex="1" />
-            <TextField text="Enter Airline ID..." GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="AirlineIATA" promptText="Enter Airline IATA..." GridPane.columnIndex="1" />
+            <TextField fx:id="AirlineID" promptText="Enter Airline ID..." GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <TextField text="Enter Source..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField text="Enter Source ID..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField text="Enter Destination..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField text="Enter Destination ID..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField text="Enter Stops..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField text="Enter Equipment..." GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField fx:id="Src" promptText="Enter Source..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="SrcID" promptText="Enter Source ID..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="Dst" promptText="Enter Destination..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="DstID" promptText="Enter Destination ID..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="Stops" promptText="Enter Stops..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="Equipment" promptText="Enter Equipment..." GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="6" />
-            <CheckBox mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <CheckBox fx:id="Codeshare"  mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" />
-                  <Button mnemonicParsing="false" text="Create" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" text="Cancel" onAction="#cancelButtonPressed"/>
+                  <Button mnemonicParsing="false" text="Create" GridPane.columnIndex="1" onAction="#createButtonPressed"/>
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

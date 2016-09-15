@@ -1,11 +1,14 @@
 package seng202.group2.blackbirdView;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
 import seng202.group2.blackbirdModel.AirportPoint;
+
+import java.io.File;
 
 public class AirportPopUpController {
 

@@ -76,7 +76,7 @@ public class Parser {
 		return line;
 	}
 
-	private static RoutePoint checkRouteData(String[] routePoint, RoutePoint myRoutePoint){
+	public static RoutePoint checkRouteData(String[] routePoint, RoutePoint myRoutePoint){
 
 		myRoutePoint.setSrcAirport(routePoint[2]);	//cant be null?
 		if (routePoint[3].equals("\\N")) {
@@ -243,7 +243,7 @@ public class Parser {
 		return (s.matches("[a-zA-Z0-9]+"));	//does not accept empty spaces atm
 	}
 	
-	private static AirportPoint checkAirportData(String[] airportPoint, int count) {
+	public static AirportPoint checkAirportData(String[] airportPoint, int count) {
 		AirportPoint myAirportPoint = new AirportPoint(0, "");
 		try {
 			myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0]));

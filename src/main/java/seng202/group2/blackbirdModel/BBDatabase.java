@@ -439,7 +439,6 @@ public class BBDatabase {
     //I AM NOT SURE IF BAD FLIGHT DATA IS BEING ADDED TO THE DATABASE CURRENTLY
     //BUT HAVE THROWN AN EXCEPTION TO STOP THE TABLE FROM UPDATING IF ANY EXCEPTION OCCURS.
     public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints) throws SQLException {
-    public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints){
         //Adding flight points into data base
         try {
             //Connect to DB

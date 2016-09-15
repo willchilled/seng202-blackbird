@@ -10,6 +10,7 @@ import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdView.GUIController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

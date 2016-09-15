@@ -66,7 +66,6 @@ public class BBDatabase {
                         " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
                         " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U'))," +
                         " TZ             VARCHAR(40))";
-       System.out.println(sql);
         return sql;
 
     }
@@ -100,7 +99,6 @@ public class BBDatabase {
                 "foreign key (Srcid, Dstid) references AIRPORT," +    //foreign key can only be primary key of other table
                 "PRIMARY KEY (IDnum)" +
                 ")";
-        ;
         return sql;
     }
 
@@ -121,7 +119,6 @@ public class BBDatabase {
                 "SrcICAO        VARCHAR(5) NOT NULL /*Source ICAO code*/," +
                 "DstICAO        VARCHAR(5) NOT NULL /*Destination ICAO code*/" +
                 ")";
-        System.out.println(sql);
         return sql;
     }
 
@@ -183,7 +180,6 @@ public class BBDatabase {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
 
     }
 
@@ -718,6 +714,8 @@ public class BBDatabase {
             System.out.println("Opened database successfully");
             stmt = c.createStatement();
             stmt.executeUpdate( sql );
+            stmt.close();
+            c.commit();
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );

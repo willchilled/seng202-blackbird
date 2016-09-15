@@ -127,9 +127,12 @@ public class RoutePoint extends DataPoint {
 	public void setCorrectEntry(int correctEntry) {
 		this.correctEntry = correctEntry;
 	}
-/*
+
 	@Override
 	public String toString() {
+		//WE HAVE ADDED IN A ROUTE ID...SHOULD I EXPORT THIS? OR WILL IT NOT MATTER BECAUSE IT WILL BE RE-LOADED THE SAME?
+		//WHAT IF USER FILTERS DATA AND EXPORTS, THE IDS WILL BE DIFFERENT WHEN RE-LOADED?
+		//NOT EXPORTING FOR NOW, BUT NEED TO DISCUSS
 
 		String returnString = String.format("\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\",%s,\"%s\"",
 				airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
@@ -137,5 +140,5 @@ public class RoutePoint extends DataPoint {
 
 		return returnString;
 
-	}*/
+	}
 }

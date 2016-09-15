@@ -998,6 +998,14 @@ public class GUIController {
 
     }
 
+    @FXML
+    private void exportRouteData(){
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(routeTable.getItems());
+        Exporter.exportData(myPoints);
+
+    }
+
 
 
 

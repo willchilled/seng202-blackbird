@@ -112,7 +112,7 @@ public class Parser {
                 if(numberOfCommas(line) == 8) {
                     String[] routePoint = line.split(",", -1);
 
-					//routePoint = removeQuotes(routePoint);
+					routePoint = removeQuotes(routePoint);
 
 					String airline = routePoint[0];
 					int airlineID = 0;	// 0 if airlineID is null

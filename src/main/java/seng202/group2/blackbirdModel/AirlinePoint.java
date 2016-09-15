@@ -20,7 +20,16 @@ public class AirlinePoint extends DataPoint {
 			
 	}
 
-	
+//		@Override
+//	public boolean equals(Object obj){
+//		//megan's test for bad data...
+//		AirlinePoint mypoint = (AirlinePoint) obj;
+//		if(this.getAirportID
+//
+//				() == mypoint.getAirportID()) return true;
+//		else return false;
+//	}
+
 	public int getAirlineID() {
 		return airlineID;
 	}

@@ -184,8 +184,8 @@ public class GUIController {
     private void initialize(){
         //Automatic initialisation when the program starts
 
-        //BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-        //addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -770,7 +770,7 @@ public class GUIController {
 
     }
 
-    public void airlinefilterButtonPressed(ActionEvent actionEvent) {
+    public void airlinefilterButtonPressed() {
         //Gets airline values from selection and filters based on selection
 
         String countrySelection = airlineFilterMenu.getValue().toString();

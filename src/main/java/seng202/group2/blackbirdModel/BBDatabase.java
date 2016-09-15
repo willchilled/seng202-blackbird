@@ -717,15 +717,13 @@ public class BBDatabase {
             c.setAutoCommit(false);
             System.out.println("Opened database successfully");
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( sql );
-            rs.close();
-            stmt.close();
+            stmt.executeUpdate( sql );
             c.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Disting Query Query done successfully:" + sql);
+        System.out.println("Edited data entry: " + sql);
 
     }
 

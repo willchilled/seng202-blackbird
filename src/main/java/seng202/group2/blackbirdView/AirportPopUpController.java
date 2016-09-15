@@ -77,7 +77,7 @@ public class AirportPopUpController {
 
         airportNameText.setVisible(false);
         airportNameTextEdit.setVisible(true);
-        airportIDTextEdit.setVisible(true);
+        airportIDTextEdit.setVisible(false);
         airportCityTextEdit.setVisible(true);
         airportCountryTextEdit.setVisible(true);
         airportIATATextEdit.setVisible(true);

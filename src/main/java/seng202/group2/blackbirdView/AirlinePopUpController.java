@@ -2,10 +2,15 @@ package seng202.group2.blackbirdView;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import seng202.group2.blackbirdControl.Filter;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdView.GUIController;
@@ -18,6 +23,11 @@ public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
     private GUIController myGUI;
+
+    private Stage stage;
+    private Parent root;
+
+
 
 /**
     public AirlinePopUpController(AirlinePoint airlinePoint) {
@@ -50,6 +60,16 @@ public class AirlinePopUpController {
 
     @FXML
     void setUpPopUp(){
+
+
+        stage.setScene(new Scene(root));
+        stage.setTitle("View/Edit Data");
+        stage.initModality(Modality.NONE);
+        stage.initOwner(null);
+
+        stage.show();
+
+
         System.out.println("here!");
         nameText.setText(airlinePoint.getAirlineName());
         idText.setText(String.valueOf(airlinePoint.getAirlineID()));
@@ -75,7 +95,7 @@ public class AirlinePopUpController {
     public void editAirline(){
 
         airlineNameTextEdit.setVisible(true);
-        airlineIDTextEdit.setVisible(true);
+        airlineIDTextEdit.setVisible(false);
         airlineCountryTextEdit.setVisible(true);
         airlineAliasTextEdit.setVisible(true);
         airlineIATATextEdit.setVisible(true);
@@ -157,13 +177,22 @@ public class AirlinePopUpController {
 
 
             String sql = String.format("UPDATE AIRLINE SET ID='%1$s', NAME='%2$s', COUNTRY='%3$s', ALIAS='%4$s'," +
-                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE NAME='%9$s' AND ID='%10$s'" +
-                    " AND ALIAS='%11$s' AND IATA='%12$s' AND ICAO='%13$s' AND CALLSIGN='%14$s' AND COUNTRY='%15$s' AND ACTIVE='%16$s'",
-                    id, name, country, alias, iata, icao, callsign, active, nameText.getText(), idText.getText(),
-                    aliasText.getText(), iataText.getText(), icaoText.getText(), callsignText.getText(),
-                    countryText.getText(), activeText.getText());
+                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE" +
+                    " ID='%9$s'",
 
-            System.out.println(sql);
+                    id, name, country, alias, iata, icao, callsign, active, idText.getText());
+
+//            String betterSql = "UPDATE AIRLINE SET ID=\"%1$s\" "+
+//                                "NAME=\"%2$s\", ";// +
+////                                "COUNTRY=\"%3$s\" " +
+////                                "ALIAS=\"%4$s\" " +
+////                                "IATA=\"%$5s\" " +
+////                                "ICAO=\"%$6s\" " +
+////                                "CALLSIGN=\"%7$s\" " +
+////                                "ACTIVE=\"%8$s\" ";
+//            betterSql = String.format(betterSql, idText.getText(), nameText.getText());
+//            System.out.println(betterSql);
+                    System.out.println(sql);
 
             nameText.setText(airlineNameTextEdit.getText());
             idText.setText(airlineIDTextEdit.getText());
@@ -176,12 +205,20 @@ public class AirlinePopUpController {
 
             BBDatabase.editAirlineDataEntry(sql);
             //myGUI.airlinefilterButtonPressed();
+           // ArrayList<AirlinePoint> allPoints = new ArrayList<>();
+            //allPoints = Filter.getAllAirlinePointsfromDB();
+           // allPoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE COUNTRY =\"Stefan\" ");
+          //  System.out.println(allPoints);
 
 
+
+
+            //AirlinePopUpController.
 
         }else{
             airlineInvalidDataText.setVisible(true);
         }
+        stage.close();
     }
 
     public void cancelEdit(){
@@ -209,5 +246,13 @@ public class AirlinePopUpController {
 
     }
 
+    public void setPopupControllerRoot(Parent popupControllerRoot) {
+        this.root = popupControllerRoot;
+
+    }
+
+    public void setPopupControllerStage(Stage popupControllerStage) {
+        this.stage = popupControllerStage;
+    }
 }
 

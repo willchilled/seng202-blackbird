@@ -35,6 +35,8 @@ import static javafx.fxml.FXMLLoader.load;
  */
 public class GUIController {
 
+
+
     //ObservableList<String> airPortCountryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
@@ -88,6 +90,8 @@ public class GUIController {
    //public void setAirlineActiveListData(ArrayList<AirlinePoint> points){this.airlineActiveList = points;}
 
     public ArrayList<AirlinePoint> getAllAirlinePoints(){return allAirlinePoints;}
+
+
 
 
     @FXML
@@ -184,8 +188,8 @@ public class GUIController {
     private void initialize(){
         //Automatic initialisation when the program starts
 
-//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -516,14 +520,13 @@ public class GUIController {
                         root = loader.load();
                         AirlinePopUpController popUpController = loader.getController();
                         popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
+
+
+                        popUpController.setPopupControllerStage(stage);
+                        popUpController.setPopupControllerRoot(root);
                         popUpController.setUpPopUp();
 
-                        stage.setScene(new Scene(root));
-                        stage.setTitle("View/Edit Data");
-                        stage.initModality(Modality.NONE);
-                        stage.initOwner(null);
 
-                        stage.show();
 
                     } catch (IOException e) {
                         e.printStackTrace();

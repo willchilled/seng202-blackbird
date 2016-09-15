@@ -53,7 +53,7 @@ public class BBDatabaseTest extends TestCase {
 
     public void testPerformAirlinesQuery() throws Exception {
         ArrayList<AirlinePoint> airlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE");
-        assertEquals(airlinePoints.size(), 99);
+        assertEquals(airlinePoints.size(), 98);
 
     }
 
@@ -65,11 +65,22 @@ public class BBDatabaseTest extends TestCase {
     public void testEditAirlineDataEntry() throws Exception{
         ArrayList<AirlinePoint> airlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
         assertEquals(airlinePoints.size(), 1);
+        assertEquals(airlinePoints.get(0).getCountry(), "Russia");
         String sql = "UPDATE AIRLINE SET ID='6', NAME='223 Flight Unit State Airline', COUNTRY='POOS', ALIAS='', IATA='', ICAO='null', CALLSIGN='CHKALOVSK-AVIA', ACTIVE='N' WHERE ID='6'";
         BBDatabase.editAirlineDataEntry(sql);
+
+
+
         ArrayList<AirlinePoint> newAirlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
         System.out.println(newAirlinePoints.get(0).getCountry());
         assertEquals(newAirlinePoints.get(0).getCountry(), "POOS");
+
+        String query = "UPDATE AIRLINE SET ID='6', NAME='Wees', COUNTRY='Stefan', ALIAS='', IATA='1T', ICAO='null', CALLSIGN='NEXTIME', ACTIVE='Y' WHERE AIRLINE.ID=6";
+
+        BBDatabase.editAirlineDataEntry(query);
+        newAirlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
+        System.out.println(newAirlinePoints.get(0).getCountry());
+        assertEquals(newAirlinePoints.get(0).getAirlineName(), "Wees");
     }
 
 }

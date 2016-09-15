@@ -300,6 +300,12 @@ public class Filter {
         }
         outputString += searchString;
 
+        System.out.println("\n\n");
+        System.out.println(outputString);
+        System.out.println("\n\n");
+
+
+
         System.out.println("Perfomring query:"+ outputString);
 
         ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(outputString);

@@ -88,9 +88,9 @@
             </GridPane>
          </children>
       </Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;">
+      <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label fx:id="nameText" alignment="CENTER" layoutX="3.0" layoutY="16.0" prefHeight="24.0" prefWidth="400.0" text="Airline Name" textFill="WHITE">
+            <Label fx:id="nameText" alignment="CENTER" layoutX="3.0" layoutY="16.0" prefHeight="24.0" prefWidth="400.0" text="Airline Name">
                <font>
                   <Font size="20.0" />
                </font>
@@ -98,7 +98,7 @@
             <TextField fx:id="airlineNameTextEdit" layoutX="118.0" layoutY="16.0" promptText="eg Air Napier" visible="false" />
          </children>
       </Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" GridPane.rowIndex="2">
+      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
          <children>
             <Button fx:id="airlineEditButton" layoutX="181.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
             <Button fx:id="airlineFinishButton" layoutX="322.0" layoutY="13.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />

@@ -1,9 +1,6 @@
 package seng202.group2.blackbirdControl;
 
-import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdModel.RoutePoint;
+import seng202.group2.blackbirdModel.*;
 
 import java.util.*;
 
@@ -145,6 +142,12 @@ public class Filter {
         ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
         return allPoints;
     }
+
+//    public static ArrayList<FlightPoint> getallFlightPoints() {
+//        String sql = " SELECT * FROM FLIGHT;";
+//        ArrayList<FlightPoint> allPoints = BBDatabase.performFlightsQuery(sql);
+//        return allPoints;
+//    }
 
     public static ArrayList<AirportPoint> getAllAirportPointsFromDB() {
         //gets all Aiport Points from the database

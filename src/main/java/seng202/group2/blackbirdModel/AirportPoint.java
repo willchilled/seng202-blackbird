@@ -15,7 +15,7 @@ public class AirportPoint extends DataPoint {
 	private String dst;
 	private String tz;
 
-	private int correctEntry;
+	//private int correctEntry;
 
 	private int numberOfRoutes;
 
@@ -135,20 +135,22 @@ public class AirportPoint extends DataPoint {
 		this.tz = tz;
 	}
 
-	public int getCorrectEntry() {
-		return correctEntry;
-	}
-
-	public void setCorrectEntry(int correctEntry) {
-		this.correctEntry = correctEntry;
-	}
+//	public int getCorrectEntry() {
+//		return correctEntry;
+//	}
+//
+//	public void setCorrectEntry(int correctEntry) {
+//		this.correctEntry = correctEntry;
+//	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 
-		//Format of original file is:
-		//ID, Name, City, Country, IATA, ICAO, Latitude, Longitude, Altitude, TimeZone, DST, TZ
-		return airportID + ", " + airportName + ", " + airportCity + ", " + airportCountry + ", " + iata + ", " + icao + ", " + latitude + ", " + longitude + ", " + altitude + ", " + timeZone + ", " + dst + ", " + tz;
+		String returnString = String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%s,%s,%s,%s,\"%s\",\"%s\"",
+				airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
+
+		return returnString;
+
 	}
 
 

@@ -10,7 +10,7 @@ public class AirlinePoint extends DataPoint {
 	private String callsign;
 	private String country;
 	private String active;
-	private int correctEntry;
+	//private int correctEntry;
 	
 	
 	public AirlinePoint(int airlineID, String airlineName){
@@ -85,13 +85,25 @@ public class AirlinePoint extends DataPoint {
 		this.active = active;
 	}
 
-	public int getCorrectEntry() {
-		return correctEntry;
+//	public int getCorrectEntry() {
+//		return correctEntry;
+//	}
+//
+//	public void setCorrectEntry(int correctEntry) {
+//		this.correctEntry = correctEntry;
+//	}
+
+
+	@Override
+	public String toString() {
+
+		String returnString = String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
+				airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
+
+		return returnString;
+
 	}
 
-	public void setCorrectEntry(int correctEntry) {
-		this.correctEntry = correctEntry;
-	}
 
 
 

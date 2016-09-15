@@ -386,7 +386,6 @@ public class GUIController {
 
     }
 
-
     public void addFlightData(){
         //adds flight data now using the database
         System.out.println("Add Flight Data");

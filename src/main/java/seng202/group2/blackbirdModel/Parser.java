@@ -146,9 +146,9 @@ public class Parser {
 		
 		return myRouteData;
 	}
-	
 
-	private static AirlinePoint checkAirlineData(String[] airlinePoint, int count) {
+    //AIRLINES
+	public static AirlinePoint checkAirlineData(String[] airlinePoint, int count) {
 		AirlinePoint myAirlinePoint = new AirlinePoint(0, "");
 		try {
 			myAirlinePoint.setAirlineID(Integer.parseInt(airlinePoint[0]));
@@ -201,7 +201,6 @@ public class Parser {
 		return myAirlinePoint;
 	}
 
-	//AIRLINES
 	public static ArrayList<AirlinePoint> parseAirlineData(File file){
 		
 		ArrayList<AirlinePoint> myAirlineData = new ArrayList<AirlinePoint>();
@@ -242,7 +241,8 @@ public class Parser {
 	private static boolean checkAlphaNumeric(String s) {
 		return (s.matches("[a-zA-Z0-9]+"));	//does not accept empty spaces atm
 	}
-	
+
+	//AIRPORTS
 	public static AirportPoint checkAirportData(String[] airportPoint, int count) {
 		AirportPoint myAirportPoint = new AirportPoint(0, "");
 		try {
@@ -293,7 +293,6 @@ public class Parser {
 		return myAirportPoint;
 	}
 
-	//AIRPORTS
 	public static ArrayList<AirportPoint> parseAirportData(File file){
 
 		ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();

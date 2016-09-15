@@ -97,7 +97,7 @@ public class AirlinePoint extends DataPoint {
 	@Override
 	public String toString() {
 
-		String returnString = String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
+		String returnString = String.format("%s, %s, %s, %s, %s, %s, %s, %s",
 				airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
 
 		return returnString;

@@ -146,7 +146,7 @@ public class AirportPoint extends DataPoint {
 	@Override
 	public String toString() {
 
-		String returnString = String.format("%s,\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",%s,%s,%s,%s,\"%s\",\"%s\"",
+		String returnString = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
 				airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
 
 		return returnString;

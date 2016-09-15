@@ -245,7 +245,7 @@ public class BBDatabase {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("Could not add: " + id + ", " + name + ", " + alias + ", " + iata + ", " + icao + ", " + country + ", " + active);
+            System.out.println("Could not add: " + airline);
         }
     }
 
@@ -311,7 +311,7 @@ public class BBDatabase {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not add: " + airportID + ", " + airportName + ", " + City + ", " + Country + ", " + Iata + ", " + Icao);
+            System.out.println("Could not add: " + airport);
         }
     }
 
@@ -373,7 +373,7 @@ public class BBDatabase {
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
             //bad route data
-            System.out.println("Could not add route: " + IDnum + ", " + codeshare);// + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
+            System.out.println("Could not add route: " + route);
             return;
         }
 
@@ -395,9 +395,7 @@ public class BBDatabase {
                 stmt.executeUpdate(EquipSql);
             }catch  (SQLException e){
                 System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                System.out.println("Could not add route: " + IDnum + "\nOn airline: " + Airline + ", " + Airlineid + "\nFrom: " + src + "\nTo: " + dst);
-//                JOptionPane.showMessageDialog(new JPanel(), "Error adding data in, please review entry:\n" +
-//                        "Could not add: " + equip + ", with Route: " + IDnum, "Error", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Could not add equipment on: " + route);
             }
         }
     }

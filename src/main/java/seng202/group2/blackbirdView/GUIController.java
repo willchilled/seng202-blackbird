@@ -140,12 +140,6 @@ public class GUIController {
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
-    public String getAirportErrorField() {
-        return airportErrorField.getText();
-    }
-
-    @FXML private Text airportErrorField;
-
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
     public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
@@ -191,8 +185,8 @@ public class GUIController {
     private void initialize(){
         //Automatic initialisation when the program starts
 
-        //BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-        //addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -214,7 +208,7 @@ public class GUIController {
 
     private File getFile() {
         //gets a file of a specified type
-        File f;
+        File myFile;
         String cwd = System.getProperty("user.dir");
 
         JFileChooser jfc = new JFileChooser(cwd);
@@ -222,10 +216,10 @@ public class GUIController {
 
         switch (userChoice) {
             case JFileChooser.APPROVE_OPTION:
-                f = jfc.getSelectedFile();
-                if (f.exists() && f.isFile() && f.canRead()) {
+                myFile = jfc.getSelectedFile();
+                if (myFile.exists() && myFile.isFile() && myFile.canRead()) {
 
-                    return f;
+                    return myFile;
                 }
             case JFileChooser.CANCEL_OPTION:
                 // fall through
@@ -263,15 +257,11 @@ public class GUIController {
     public void addALLData(){
         //MASTER OVERRIDE FUNCTION DONT SCREW WITH THIS UNLESS YOU ARE A WIZARD
         String cwd = System.getProperty("user.dir");
-        String airlinesFileString;
-        String airportsFileString;
-        String routesFileString;
-        String flightsFileString;
+        String airlinesFileString = cwd + "/TestFiles/airlines.txt";;
+        String airportsFileString = cwd + "/TestFiles/airports.txt";
+        String routesFileString = cwd + "/TestFiles/route.txt";
+        String flightsFileString = cwd + "/TestFiles/flight.txt";
 
-        airlinesFileString = cwd + "/TestFiles/airlines.txt";
-        airportsFileString = cwd + "/TestFiles/airports.txt";
-        routesFileString = cwd + "/TestFiles/route.txt";
-        flightsFileString = cwd + "/TestFiles/flight.txt";
 
         File airlinesFile = new File(airlinesFileString);
         File airportsFile = new File(airportsFileString);
@@ -392,10 +382,10 @@ public class GUIController {
         //adds flight data now using the database
         System.out.println("Add Flight Data");
 
-        File f;
-        f = getFile();
-        ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+
         try {
+            File f = getFile();
+            ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {
@@ -462,11 +452,6 @@ public class GUIController {
             e.printStackTrace();
         }
     }
-
-    public void setErrorText(String myString) {
-        airportErrorField.setText(myString);
-    }
-
 
 
     /*******************************************************************************************************************
@@ -685,7 +670,7 @@ public class GUIController {
 
     }
 
-    public void airlinefilterButtonPressed(ActionEvent actionEvent) {
+    public void airlinefilterButtonPressed() {
         //Gets airline values from selection and filters based on selection
 
         String countrySelection = airlineFilterMenu.getValue().toString();
@@ -779,7 +764,7 @@ public class GUIController {
 
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list
-        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints(); //airportTable.getItems()
+        ArrayList<AirlinePoint> allPoints = Filter.getAllAirlinePointsfromDB(); //airportTable.getItems()
         updateAirlinesTable(allPoints);
 
         airlineFilterMenu.setValue(airlineCountryList.get(0));

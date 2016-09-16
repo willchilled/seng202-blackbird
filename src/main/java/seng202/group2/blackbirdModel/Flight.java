@@ -1,21 +1,24 @@
 package seng202.group2.blackbirdModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by emr65 on 12/09/16.
+ *
  */
-public class Flight extends DataPoint{
+public class Flight extends DataPoint {
 
+    private final String srcAirport;
+    private final String destAirport;
+    private final Collection<FlightPoint> flightPoints;
     private int flightID;
-    private String srcAirport;
-    private String destAirport;
-    private ArrayList<FlightPoint> flightPoints;
 
-    public Flight(ArrayList<FlightPoint> flightPoints){
+    public Flight(List<FlightPoint> flightPoints) {
         this.flightPoints = flightPoints;
         FlightPoint source = flightPoints.get(0);
-        FlightPoint dest = flightPoints.get(flightPoints.size()-1);
+        FlightPoint dest = flightPoints.get(flightPoints.size() - 1);
         this.srcAirport = source.getLocaleID();
         this.destAirport = dest.getLocaleID();
 
@@ -33,7 +36,7 @@ public class Flight extends DataPoint{
         return destAirport;
     }
 
-    public ArrayList<FlightPoint> getFlightPoints() {
+    public Collection<FlightPoint> getFlightPoints() {
         return flightPoints;
     }
 

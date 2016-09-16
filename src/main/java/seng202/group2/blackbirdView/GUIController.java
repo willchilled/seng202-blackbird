@@ -44,22 +44,20 @@ public class GUIController {
 
     //ObservableList<String> airPortCountryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
-    ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
 
-    ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
 
-
-
-    ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+    private ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
 
-    ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
-    ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
+    private ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
+    private ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
@@ -218,13 +216,17 @@ public class GUIController {
             case JFileChooser.APPROVE_OPTION:
                 myFile = jfc.getSelectedFile();
                 if (myFile.exists() && myFile.isFile() && myFile.canRead()) {
-
                     return myFile;
+                } else {
+                    JOptionPane.showMessageDialog(new JPanel(), "Invalid file",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    System.err.println("Invalid file given");
                 }
             case JFileChooser.CANCEL_OPTION:
                 // fall through
             case JFileChooser.ERROR_OPTION:
-                System.out.println("ERROR IN FILE");
+                System.out.println("User cancelled choosing file");
+                return null;
         }
         return null;
     }
@@ -324,6 +326,9 @@ public class GUIController {
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
+        if (f == null) {
+            return;
+        }
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
         BBDatabase.addAirportPointsToDB(allairportPoints);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
@@ -344,6 +349,9 @@ public class GUIController {
 
         File f;
         f = getFile();
+        if (f == null) {
+            return;
+        }
         ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
         BBDatabase.addAirlinePointstoDB(allAirlineData);
 
@@ -368,6 +376,9 @@ public class GUIController {
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
          f = getFile();
+        if (f == null) {
+            return;
+        }
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
         BBDatabase.addRoutePointstoDB(myRouteData);
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
@@ -385,6 +396,9 @@ public class GUIController {
 
         try {
             File f = getFile();
+            if (f == null) {
+                return;
+            }
             ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);

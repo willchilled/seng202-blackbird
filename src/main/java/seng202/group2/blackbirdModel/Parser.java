@@ -408,9 +408,9 @@ public class Parser {
                     } else if (s.equals("Route")) {
                         ArrayList<RoutePoint> myRouteData = parseRouteData(f);
                         //equipment filter test
-//						ArrayList<RoutePoint> myRoutes = Filter.routeEquipment(myRouteData, "747 CR2");
+//						ArrayList<RoutePoint> myRoutes = Filter.routeEquipment(myRouteData, "");
 //						for (RoutePoint equip : myRoutes){
-//							System.out.println(equip.getEquipment());
+//							System.out.println(equip);
 //						}
                         System.out.println("Routes successfully added: " + myRouteData.size());
                     } else if (s.equals("Flight")) {

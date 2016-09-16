@@ -62,8 +62,14 @@ public class Filter {
     //filter routes based on equipment (from drop down?)
     public static ArrayList<RoutePoint> routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
         ArrayList<RoutePoint> equipmentRoutes = new ArrayList<>();
-        String[] newString = equipment.split(" ");
-        String patternString = "\\b(" + String.join("|", newString) + ")\\b";
+        String patternString;
+        if (equipment.isEmpty()) {
+            patternString = "^$";
+        } else {
+            String[] newString = equipment.split(" ");
+            patternString = "\\b(" + String.join("|", newString) + ")\\b";
+        }
+
         Pattern pattern = Pattern.compile(patternString);
 
         for (RoutePoint route : routes) {

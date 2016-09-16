@@ -62,18 +62,6 @@ public class AirportAddingPopUpController {
 
         AirportPoint myAirportPoint = Parser.checkAirportData(airportPoint, count);
         ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();
-        System.out.println(myAirportPoint.getAirportID());
-        System.out.println(myAirportPoint.getAirportName());
-        System.out.println(myAirportPoint.getAirportCity());
-        System.out.println(myAirportPoint.getAirportCountry());
-        System.out.println(myAirportPoint.getIata());
-        System.out.println(myAirportPoint.getIcao());
-        System.out.println(myAirportPoint.getLatitude());
-        System.out.println(myAirportPoint.getLongitude());
-        System.out.println(myAirportPoint.getAltitude());
-        System.out.println(myAirportPoint.getTimeZone());
-        System.out.println(myAirportPoint.getDst());
-        System.out.println(myAirportPoint.getTz());
         myAirportData.add(myAirportPoint);
         BBDatabase.addAirportPointsToDB(myAirportData);
         adderStage.close();

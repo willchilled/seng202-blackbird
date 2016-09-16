@@ -47,18 +47,18 @@
             <TextField fx:id="Country" promptText="Enter Country..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="IATA" promptText="Enter IATA/FF..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="ICAO" promptText="Enter ICAO..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="Latitude" promptText="Enter Latitude..." GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <TextField fx:id="Longitude" promptText="Enter Longitude..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <TextField fx:id="Altitude" promptText="Enter Altitude..." GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Latitude" GridPane.rowIndex="6" />
-            <TextField fx:id="Latitude" promptText="Enter Latitude..." GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone" GridPane.rowIndex="9" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daylight Saving Time" GridPane.rowIndex="10" />
             <ComboBox fx:id="tzComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <TextField fx:id="DST" promptText="Enter DST..." GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <ComboBox fx:id="dstCombo" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" onAction="#cancleButtonPressed"/>
-                  <Button mnemonicParsing="false" text="Create" GridPane.columnIndex="1" onAction="#createButtonPressed" />
+                  <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

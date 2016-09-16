@@ -157,11 +157,8 @@ public class AirlinePopUpController {
 
 
             String sql = String.format("UPDATE AIRLINE SET ID='%1$s', NAME='%2$s', COUNTRY='%3$s', ALIAS='%4$s'," +
-                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE NAME='%9$s' AND ID='%10$s'" +
-                    " AND ALIAS='%11$s' AND IATA='%12$s' AND ICAO='%13$s' AND CALLSIGN='%14$s' AND COUNTRY='%15$s' AND ACTIVE='%16$s'",
-                    id, name, country, alias, iata, icao, callsign, active, nameText.getText(), idText.getText(),
-                    aliasText.getText(), iataText.getText(), icaoText.getText(), callsignText.getText(),
-                    countryText.getText(), activeText.getText());
+                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE ID='%9$s'",
+                    id, name, country, alias, iata, icao, callsign, active, idText.getText());
 
             System.out.println(sql);
 

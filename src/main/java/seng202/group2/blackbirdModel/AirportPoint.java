@@ -15,7 +15,7 @@ public class AirportPoint extends DataPoint {
     private String dst;
     private String tz;
 
-    //private int correctEntry;
+    private int correctEntry=1;
 
     private int numberOfRoutes;
 
@@ -33,6 +33,42 @@ public class AirportPoint extends DataPoint {
         this.airportName = airportName;
 
     }
+
+    public AirportPoint(String[] currentLine) {
+        super();
+
+        if (currentLine.length == 12){
+            //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
+            try {
+                this.airportID = Integer.parseInt(currentLine[0]);	//should not be null
+                this.airportName = currentLine[1];	//let people name airline whatever they want
+                this.airportCity = currentLine[2];
+                this.airportCountry= currentLine[3];
+                this.iata =currentLine[4];
+                this.icao = currentLine[5];
+                this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
+                this.longitude = Float.parseFloat(currentLine[7].trim());
+                this.altitude = Integer.parseInt(currentLine[8]);
+                this.timeZone = Float.parseFloat(currentLine[9]);
+                this.dst = currentLine[10];
+                this.tz = currentLine[11];
+                this.correctEntry = 1;
+
+            }
+            catch(NumberFormatException e) {
+                //AirlinePoint myAirlinePoint = new
+                this.airportID = -1;
+                this.airportName = currentLine.toString();
+                this.correctEntry = 0;
+            }
+
+        }
+
+    }
+
+
+
+
 
     public void incrementRoutes() {
         numberOfRoutes++;
@@ -135,13 +171,15 @@ public class AirportPoint extends DataPoint {
         this.tz = tz;
     }
 
-//	public int getCorrectEntry() {
-//		return correctEntry;
-//	}
-//
-//	public void setCorrectEntry(int correctEntry) {
-//		this.correctEntry = correctEntry;
-//	}
+
+    public int getCorrectEntry() {
+        return correctEntry;
+    }
+
+    public void setCorrectEntry(int correctEntry) {
+        this.correctEntry = correctEntry;
+    }
+
 
     @Override
     public String toString() {
@@ -149,6 +187,7 @@ public class AirportPoint extends DataPoint {
                 airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
 
     }
+
 
 
 }

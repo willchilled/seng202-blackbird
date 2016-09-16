@@ -16,18 +16,22 @@ public class BBDatabaseTest extends TestCase {
         String airlinesFileString;
         String airportsFileString;
         String routesFileString;
+        String flightFileString;
 
         airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
         airportsFileString = cwd + "/JUnitTesting/airports.txt";
         routesFileString = cwd + "/JUnitTesting/route.txt";
+        flightFileString = cwd + "/JUnitTesting/flight.txt";
 
         File airlinesFile = new File(airlinesFileString);
         File airportsFile = new File(airportsFileString);
         File routesFile = new File(routesFileString);
+        File flightFile = new File(flightFileString);
 
         ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
         ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
+
 
 
         BBDatabase.deleteDBFile();

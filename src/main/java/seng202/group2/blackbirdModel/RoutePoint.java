@@ -16,6 +16,7 @@ public class RoutePoint extends DataPoint {
 
     private AirportPoint source;
     private AirportPoint destination;
+    private int correctEntry=1;
 
 
     public RoutePoint(String airline, int airlineID) {
@@ -24,6 +25,35 @@ public class RoutePoint extends DataPoint {
         this.airlineID = airlineID;
     }
 
+    public RoutePoint(String[] currentLine) {
+        super();
+
+        if (currentLine.length == 9){
+            //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
+            try {
+                //this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
+                this.airline = currentLine[0];	//let people name airline whatever they want
+                this.airlineID = Integer.parseInt(currentLine[1]);
+                this.srcAirport= currentLine[2];
+                this.srcAirportID = Integer.parseInt(currentLine[3]);
+                this.dstAirport = currentLine[4];
+                this.dstAirportID = Integer.parseInt(currentLine[5]);
+                this.codeshare = currentLine[6];    //should not be null, handle by parser later
+                this.stops = Integer.parseInt(currentLine[7]);
+                this.equipment = currentLine[8];
+
+
+            }
+            catch(NumberFormatException e) {
+                //AirlinePoint myAirlinePoint = new
+                this.routeID = -1;
+                this.airline = currentLine.toString();
+                this.correctEntry = 0;
+            }
+
+        }
+
+    }
 
 
     @Override
@@ -148,5 +178,13 @@ public class RoutePoint extends DataPoint {
         return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
                 airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
 
+    }
+
+    public int getCorrectEntry() {
+        return correctEntry;
+    }
+
+    public void setCorrectEntry(int correctEntry) {
+        this.correctEntry = correctEntry;
     }
 }

@@ -10,7 +10,7 @@ public class AirlinePoint extends DataPoint {
     private String callsign;
     private String country;
     private String active;
-    //private int correctEntry;
+    private int correctEntry=1;
 
 
     public AirlinePoint(int airlineID, String airlineName) {
@@ -18,6 +18,31 @@ public class AirlinePoint extends DataPoint {
         this.airlineID = airlineID;
         this.airlineName = airlineName;
 
+    }
+
+    public AirlinePoint(String[] currentLine) {
+        super();
+        if (currentLine.length == 8){
+            //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
+            try {
+                this.airlineID = Integer.parseInt(currentLine[0]);	//should not be null
+                this.airlineName = currentLine[1];	//let people name airline whatever they want
+                this.airlineAlias = currentLine[2];
+                this.iata= currentLine[3];
+                this.icao =currentLine[4];
+                this.callsign = currentLine[5];
+                this.country = currentLine[6].trim();    //should not be null, handle by parser later
+                this.active = currentLine[7].trim();
+                this.correctEntry = 1;
+            }
+            catch(NumberFormatException e) {
+                //AirlinePoint myAirlinePoint = new
+                this.airlineID = -1;
+                this.airlineName = currentLine.toString();
+                this.correctEntry = 0;
+            }
+
+        }
     }
 
     public int getAirlineID() {
@@ -102,4 +127,11 @@ public class AirlinePoint extends DataPoint {
     }
 
 
+    public int getCorrectEntry() {
+        return correctEntry;
+    }
+
+    public void setCorrectEntry(int correctEntry) {
+        this.correctEntry = correctEntry;
+    }
 }

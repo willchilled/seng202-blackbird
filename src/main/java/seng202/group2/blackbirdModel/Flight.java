@@ -24,6 +24,8 @@ public class Flight extends DataPoint {
 
     }
 
+
+
     public int getFlightID() {
         return flightID;
     }

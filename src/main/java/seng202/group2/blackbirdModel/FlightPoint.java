@@ -2,28 +2,50 @@ package seng202.group2.blackbirdModel;
 
 public class FlightPoint extends DataPoint {
 
-    private String type;
+    private String locaLtype;
     private String localeID;
     private int altitude;
     private float latitude;
     private float longitude;
-    //private int correctEntry;
+    private int correctEntry=1;
 
     public FlightPoint(String type, String localeID, int altitude, float latitude, float longitude) {
 
-        this.type = type;
+        this.locaLtype = type;
         this.localeID = localeID;
         this.altitude = altitude;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public String getType() {
-        return type;
+    public FlightPoint(String[] currentLine) {
+        super();
+
+        //System.out.println(currentLine.toString());
+
+        try {
+            if (currentLine.length == 5) {
+                this.locaLtype = currentLine[0];
+                this.localeID = currentLine[1];
+                this.altitude = Integer.parseInt(currentLine[2]);
+                this.latitude = Float.parseFloat(currentLine[3]);
+                this.longitude = Float.parseFloat(currentLine[4]);
+
+
+            }
+        }
+        catch(NumberFormatException e){
+            this.locaLtype = "I AM INCORRECT";
+        }
+
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getLocalType() {
+        return locaLtype;
+    }
+
+    public void setLocalType(String type) {
+        this.locaLtype = type;
     }
 
     public String getLocaleID() {
@@ -73,9 +95,16 @@ public class FlightPoint extends DataPoint {
         //String, int, int, int, int
 
         return String.format("%s, %s, %s, %s,%s",
-                type, localeID, altitude, latitude, longitude);
+                locaLtype, localeID, altitude, latitude, longitude);
 
     }
 
 
+    public int getCorrectEntry() {
+        return correctEntry;
+    }
+
+    public void setCorrectEntry(int correctEntry) {
+        this.correctEntry = correctEntry;
+    }
 }

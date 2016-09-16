@@ -317,9 +317,6 @@ public class Filter {
             }
 
         }
-
-
-
         return routePointsCP;
     }
 

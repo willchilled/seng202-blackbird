@@ -62,4 +62,14 @@ public class BBDatabaseTest extends TestCase {
 
     }
 
+    public void testEditAirlineDataEntry() throws Exception{
+        ArrayList<AirlinePoint> airlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
+        assertEquals(airlinePoints.size(), 1);
+        String sql = "UPDATE AIRLINE SET ID='6', NAME='223 Flight Unit State Airline', COUNTRY='POOS', ALIAS='', IATA='', ICAO='null', CALLSIGN='CHKALOVSK-AVIA', ACTIVE='N' WHERE ID='6'";
+        BBDatabase.editAirlineDataEntry(sql);
+        ArrayList<AirlinePoint> newAirlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
+        System.out.println(newAirlinePoints.get(0).getCountry());
+        assertEquals(newAirlinePoints.get(0).getCountry(), "POOS");
+    }
+
 }

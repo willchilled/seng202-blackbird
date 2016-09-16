@@ -8,13 +8,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
+import seng202.group2.blackbirdView.GUIController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
+    private GUIController myGUI;
 
 /**
     public AirlinePopUpController(AirlinePoint airlinePoint) {
@@ -162,7 +165,17 @@ public class AirlinePopUpController {
 
             System.out.println(sql);
 
-           // BBDatabase.editAirlineDataEntry(sql);
+            nameText.setText(airlineNameTextEdit.getText());
+            idText.setText(airlineIDTextEdit.getText());
+            countryText.setText(airlineCountryTextEdit.getText());
+            aliasText.setText(airlineAliasTextEdit.getText());
+            iataText.setText(airlineIATATextEdit.getText());
+            icaoText.setText(airlineICAOTextEdit.getText());
+            callsignText.setText(airlineCallsignTextEdit.getText());
+            activeText.setText(airlineActiveTextEdit.getText());
+
+            BBDatabase.editAirlineDataEntry(sql);
+            //myGUI.airlinefilterButtonPressed();
 
 
 

@@ -156,7 +156,7 @@ public class GUIController {
 
     public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
 
-;
+
 
     public ArrayList<RoutePoint> getAllRoutePoints() {
         return allRoutePoints;
@@ -257,7 +257,7 @@ public class GUIController {
     public void addALLData(){
         //MASTER OVERRIDE FUNCTION DONT SCREW WITH THIS UNLESS YOU ARE A WIZARD
         String cwd = System.getProperty("user.dir");
-        String airlinesFileString = cwd + "/TestFiles/airlines.txt";;
+        String airlinesFileString = cwd + "/TestFiles/airlines.txt";
         String airportsFileString = cwd + "/TestFiles/airports.txt";
         String routesFileString = cwd + "/TestFiles/route.txt";
         String flightsFileString = cwd + "/TestFiles/flight.txt";
@@ -823,9 +823,7 @@ public class GUIController {
 
     private ObservableList<String> populateAirlineActiveList(){
         //populates the activr airlines dropdown
-        ObservableList<String> airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
-
-        return airlineActiveList;
+        return FXCollections.observableArrayList("None", "Active", "Inactive");
     }
 
     private ObservableList<String> addNullValue(ObservableList<String> populatedList){

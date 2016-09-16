@@ -139,8 +139,7 @@ public class Filter {
 
     public static ArrayList<AirlinePoint> getAllAirlinePointsfromDB() {
         String sql = " SELECT * FROM AIRLINE;";
-        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
-        return allPoints;
+        return BBDatabase.performAirlinesQuery(sql);
     }
 
 //    public static ArrayList<FlightPoint> getallFlightPoints() {
@@ -244,9 +243,8 @@ public class Filter {
 
         System.out.println("Perfomring query:"+ outputString);
 
-        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(outputString);
 
-        return allPoints;
+        return BBDatabase.performAirlinesQuery(outputString);
     }
 
     public static ArrayList<RoutePoint> filterRoutesBySelections2(ArrayList<String> menusPressed, String searchQuery) {
@@ -483,14 +481,7 @@ public class Filter {
         String sql = "SELECT EquipmentName FROM EQUIPMENT WHERE IDnum=\"%1$s\"";
         String myEquipment = "";
         sql = String.format(sql, id);
-        ArrayList<String> equipment = BBDatabase.performDistinctStringQuery(sql);
-        //System.out.println(equipment);
-
-//        for (String equip: equipment){
-//            myEquipment += equip + " ";
-//        }
-        return equipment;
-
+        return BBDatabase.performDistinctStringQuery(sql);
     }
 
     private static String removeLastAND(String outputString) {

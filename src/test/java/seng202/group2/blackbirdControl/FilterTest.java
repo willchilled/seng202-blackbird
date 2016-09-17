@@ -196,21 +196,25 @@ public class FilterTest extends TestCase {
     }
 
     public void testFilterAiportsBySelections() throws Exception {
-        ArrayList<AirportPoint> allPoints = new ArrayList<>();
-        allPoints = Filter.filterAirportsBySelections("None", "");
+//        ArrayList<AirportPoint> allPoints = new ArrayList<>();
+//        allPoints = Filter.filterAirportsBySelections("None", "");
+//
+//        assertEquals(allPoints.size(), 100);
+//
+//        allPoints = Filter.filterAirportsBySelections("Greenland", "");
+//        assertEquals(allPoints.size(), 4);
+//
+//
+//        allPoints = Filter.filterAirportsBySelections("Greenland", "Sondrestrom");
+//
+//
+//        allPoints = Filter.filterAirportsBySelections("None", "Sondrestrom");
+//        assertEquals(allPoints.size(), 1);
 
-        assertEquals(allPoints.size(), 100);
-
-        allPoints = Filter.filterAirportsBySelections("Greenland", "");
-        assertEquals(allPoints.size(), 4);
-
-
-        allPoints = Filter.filterAirportsBySelections("Greenland", "Sondrestrom");
+        ArrayList<String> country = new ArrayList<>();
+        country.add("Country");
+        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(country, "Sondrestrom", "Airport");
         assertEquals(allPoints.size(), 1);
-
-        allPoints = Filter.filterAirportsBySelections("None", "Sondrestrom");
-        assertEquals(allPoints.size(), 1);
-
 
     }
 

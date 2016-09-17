@@ -640,8 +640,8 @@ public class BBDatabase {
             System.out.println("Opened database successfully");
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( sql );
+            System.out.println("RESULT SET IS: " + rs);
             while ( rs.next() ) {
-
 
                 int routeID = rs.getInt("IDnum");
                 String airline = rs.getString("Airline");

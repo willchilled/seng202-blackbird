@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -102,20 +102,22 @@ public class FilterRefactor {
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){
             sql = generateQueryString(sql, menusPressed, allSelections);
+        } else {
+            sql = removeLastAND(sql);
         }
-        sql = removeLastAND(sql);
-
         String search = "";
         if (searchString.length() >0){
-            search = String.format("WHERE (ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
+            search = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
                     "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", searchString);
         }
 
         sql += search;
+        sql = removeLastAND(sql);
         System.out.println("Performing query:"+ sql);
 
-        //ArrayList<AirlinePoint> allPoints = BBDatabase.performQuery(outputString);    //DB METHOD HERE
-        return null; //return an arraylist
+        ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, "AirlinePoint");    //DB METHOD HERE
+        System.out.println("SIZE: " + allPoints.size());
+        return allPoints; //return an arraylist
     }
 
 

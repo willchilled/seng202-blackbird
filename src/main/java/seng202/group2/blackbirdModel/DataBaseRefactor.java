@@ -361,6 +361,7 @@ public class DataBaseRefactor {
                 System.out.println("---------------");
 
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
+                resultPoints.add(myPoint);
                 System.out.println(myPoint.toString());
 
             }
@@ -650,6 +651,7 @@ public class DataBaseRefactor {
         //System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
 
     }
+
 
 //
 //    //Airport Adding

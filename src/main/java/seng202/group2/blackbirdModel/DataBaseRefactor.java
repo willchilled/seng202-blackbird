@@ -384,11 +384,16 @@ public class DataBaseRefactor {
                 distinctResults.add(rs.getString(1));
                     }
 
+            preparedStatement.close();
+            currentConnection.commit();
+            currentConnection.close();
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
         return distinctResults;
     }

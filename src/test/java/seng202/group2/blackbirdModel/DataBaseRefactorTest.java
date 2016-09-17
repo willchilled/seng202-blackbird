@@ -37,12 +37,26 @@ public class DataBaseRefactorTest extends TestCase {
 
         ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, "RoutePoint");
         ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, "FlightPoint");
+        //ArrayList<Flight>
+
+        Flight flight = new Flight(flightPoints);
+        flight.setType("Flight");
+        DataPoint f = flight;
+        ArrayList<DataPoint> myFlight = new ArrayList<>();
+        myFlight.add(f);
+       // System.out.println(flight.getType() + "--------------------------");
 
 
         DataBaseRefactor.createTables();
         DataBaseRefactor.insertDataPoints(airlinePoints);
         DataBaseRefactor.insertDataPoints(airportPoint);
         DataBaseRefactor.insertDataPoints(routePoints);
+        DataBaseRefactor.insertDataPoints(myFlight);
+
+
+       // ArrayList<Fl> a= flightPoints;
+
+        DataBaseRefactor.insertDataPoints(flightPoints);
 
 
 

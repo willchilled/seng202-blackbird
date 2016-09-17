@@ -37,7 +37,6 @@ public class DataBaseRefactor {
     }
 
     public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
-        System.out.println("HI");
 
         try {
 
@@ -49,6 +48,10 @@ public class DataBaseRefactor {
             stmt = currentConnection.createStatement();
             PreparedStatement preparedStatement = null;
 
+            if (myPoints.get(0).getType().equals("FlightPoint")){
+                addFlight(myPoints, preparedStatement, currentConnection);
+                System.out.println("HERE");
+            }
 
 
             for (DataPoint currentPoint : myPoints) {
@@ -70,7 +73,11 @@ public class DataBaseRefactor {
                     case "RoutePoint":
                             preparedStatement = perpareInsertRouteSql(currentPoint, preparedStatement, currentConnection);
                             break;
-                    case "Flight":
+                    case "FlightPoint":
+
+                            //This behaves differently because the data is ArrayList<DataPoint<FlightPoints>>
+                            FlightPoint myFlight = (FlightPoint) myPoints.get(0);
+
                         break;
 
                 }
@@ -81,7 +88,7 @@ public class DataBaseRefactor {
                 }
                 catch (Exception e){
                    // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    System.out.println("Cant add: " +  currentPoint.toString());
+                   // System.out.println("Cant add: " +  currentPoint.toString());
                 }
 
 
@@ -105,6 +112,49 @@ public class DataBaseRefactor {
 
 
     }
+
+    private static void addFlight(ArrayList<DataPoint> myPoints, PreparedStatement preparedStatement, Connection currentConnection) {
+        //System.out.println(myPoints.size());
+        FlightPoint sourcePoint = (FlightPoint) myPoints.get(0);
+        FlightPoint destPoint = (FlightPoint) myPoints.get(myPoints.size()-1);
+
+        String flightSource  = sourcePoint.getLocaleID();
+        String destSource = destPoint.getLocaleID();
+        System.out.println(flightSource + "==" +  destSource);
+
+
+        preparedStatement = prepareInsertFlightStatement(flightSource, destSource, preparedStatement, currentConnection);
+
+
+        try{
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        }
+        catch (Exception e){
+ ;
+            System.out.println("Cant add: SHIT" +  myPoints.toString());
+        }
+    }
+
+    private static PreparedStatement prepareInsertFlightStatement(String flightSource, String destSource, PreparedStatement preparedStatement, Connection currentConnection) {
+        String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) VALUES (?,?);";
+        System.out.println(sql);
+        try {
+
+            preparedStatement = currentConnection.prepareStatement(sql);
+            preparedStatement.setString(1, flightSource);
+            preparedStatement.setString(2, destSource);
+
+        } catch (SQLException e) {
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("Could no print ");
+            //e.printStackTrace();
+        }
+        return preparedStatement;
+
+    }
+
 
     private static PreparedStatement perpareInsertRouteSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
         RoutePoint route = (RoutePoint) currentPoint;
@@ -385,7 +435,7 @@ public class DataBaseRefactor {
 
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
-                "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
+                "(FlightIDNum   INTEGER PRIMARY KEY AUTOINCREMENT/*incrementing number to identify flight*/," +
                 "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
                 "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +       //either the IATA(3) or ICAO(4)
                 ")";

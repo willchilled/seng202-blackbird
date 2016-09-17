@@ -3,6 +3,8 @@ package seng202.group2.blackbirdControl;
 import seng202.group2.blackbirdModel.*;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by mch230 on 25/08/16.
@@ -92,10 +94,25 @@ public class Filter {
     }
 
     //filter routes based on equipment (from drop down?)
-    public static void routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
-        for (RoutePoint route : routes) {
-            //if (route.getEquipment())
+    public static ArrayList<RoutePoint> routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
+        ArrayList<RoutePoint> equipmentRoutes = new ArrayList<>();
+        String patternString;
+        if (equipment.isEmpty()) {
+            patternString = "^$";
+        } else {
+            String[] newString = equipment.split(" ");
+            patternString = "\\b(" + String.join("|", newString) + ")\\b";
         }
+
+        Pattern pattern = Pattern.compile(patternString);
+
+        for (RoutePoint route : routes) {
+            Matcher matcher = pattern.matcher(route.getEquipment());
+            if (matcher.find()) {
+                equipmentRoutes.add(route);
+            }
+        }
+        return equipmentRoutes;
     }
 
 
@@ -137,11 +154,6 @@ public class Filter {
     }
 
 
-    public static ArrayList<AirlinePoint> getAllAirlinePointsfromDB() {
-        String sql = " SELECT * FROM AIRLINE;";
-        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
-        return allPoints;
-    }
 
 //    public static ArrayList<FlightPoint> getallFlightPoints() {
 //        String sql = " SELECT * FROM FLIGHT;";
@@ -203,7 +215,6 @@ public class Filter {
                     "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
         }
 
-
         ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
         //System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
@@ -216,7 +227,6 @@ public class Filter {
             }
         }
 
-
         if (!allNone){
             outputString += "WHERE ";
             for (int i=0; i<menusPressed.size(); i++){
@@ -225,7 +235,6 @@ public class Filter {
                     outputString += String.format(allSelections.get(i), currentSelection);
                 }
             }
-
         }
 
         //If there are no filters selected, we must begin the statement with WHERE before beginning the search query

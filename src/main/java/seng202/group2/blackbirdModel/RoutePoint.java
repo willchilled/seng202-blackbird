@@ -50,7 +50,7 @@ public class RoutePoint extends DataPoint {
      */
     public RoutePoint(String[] currentLine) {
         super();
-            System.out.print("MY SIZE IS" + currentLine.length + "\n");
+
         if (currentLine.length == 9){
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {

@@ -53,11 +53,15 @@ public class FilterRefactor {
 
 
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
-        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "EQUIPMENT.equipmentName=\"%s\" AND " ));
+        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"% %s%)\" AND " ));
 
-        String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
+        //String sql = "SELECT * FROM ROUTE WHERE SRC=? AND DST=? AND STOP=? AND EQUIPMENT=?;";
+       // System.out.print(allSelections);
+//        String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
+        String sql = "SELECT * FROM ROUTE ";
         sql = generateQueryString(sql, menusPressed, allSelections);
-
+        //String sql = "";
+        //System.out.println(sql);
         String search = "";
         if (searchString.length() >0){
             String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
@@ -68,6 +72,8 @@ public class FilterRefactor {
         } else {
             sql = removeLastAND(sql);
         }
+
+        System.out.println(sql);
 
         //routePoints = BBDatabase.performJoinRoutesEquipQuery(sql);    //DB METHOD HERE
         return sql;

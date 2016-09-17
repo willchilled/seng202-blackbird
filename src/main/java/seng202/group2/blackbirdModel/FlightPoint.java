@@ -1,5 +1,8 @@
 package seng202.group2.blackbirdModel;
 
+/**
+ * A subclass of dataPoint that stores information about a flight point
+ */
 public class FlightPoint extends DataPoint {
 
     private String locaLtype;
@@ -9,6 +12,14 @@ public class FlightPoint extends DataPoint {
     private float longitude;
     private int correctEntry=1;
 
+    /**
+     * Creates a FlightPoint with values given
+     * @param type the locale type
+     * @param localeID the locale ID
+     * @param altitude the altitude
+     * @param latitude the latitude
+     * @param longitude the longitude
+     */
     public FlightPoint(String type, String localeID, int altitude, float latitude, float longitude) {
 
         this.locaLtype = type;
@@ -18,6 +29,17 @@ public class FlightPoint extends DataPoint {
         this.longitude = longitude;
     }
 
+    /**
+     * Attempts to create a FlightPoint from a  string list of length 5.
+     * If successful it creates an FlightPoint with values from list and correctEntry as 1.
+     * If unsuccessful it creates am FlightPoint with locaLtype "I AM INCORRECT".
+     * @param currentLine The string list holding the information for the FlightPoint in index of:
+     *                    0 locaLtype
+     *                    1 localeID
+     *                    2 altitude
+     *                    3 latitude
+     *                    4 longitude
+     */
     public FlightPoint(String[] currentLine) {
         super();
 
@@ -80,14 +102,10 @@ public class FlightPoint extends DataPoint {
         this.longitude = longitude;
     }
 
-//	public int getCorrectEntry() {
-//		return correctEntry;
-//	}
-//
-//	public void setCorrectEntry(int correctEntry) {
-//		this.correctEntry = correctEntry;
-//	}
-
+    /**
+     * Returns the FlightPoint in the form of a string
+     * @return locaLtype, localeID, altitude, latitude, longitude
+     */
     @Override
     public String toString() {
 

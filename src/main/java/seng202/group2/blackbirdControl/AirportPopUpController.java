@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -56,7 +56,7 @@ public class AirportPopUpController {
 
 
     @FXML
-    void setUpPopUp(){
+    public void setUpPopUp(){
         airportNameText.setText(airportPoint.getAirportName());
         airportIdText.setText(String.valueOf(airportPoint.getAirportID()));
         airportCountryText.setText(airportPoint.getAirportCountry());

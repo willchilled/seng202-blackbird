@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 
 import javafx.collections.FXCollections;
@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,25 +16,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.TableCell;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdControl.AirlineAddingPopUpController;
-import seng202.group2.blackbirdControl.AirportAddingPopUpController;
-import seng202.group2.blackbirdControl.Exporter;
-import seng202.group2.blackbirdControl.Filter;
-import seng202.group2.blackbirdControl.RouteAddingPopUpController;
+import seng202.group2.blackbirdControl.*;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
-import java.io.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -68,10 +64,24 @@ public class GUIController {
 //    }
     @FXML
     private TabPane mainTabPane;
+    @FXML private Tab flightTab;
+    @FXML private Tab routeTab;
+    @FXML private Tab airportTab;
+    @FXML private Tab airlineTab;
+
+    @FXML private MenuItem exportFlightMenuButton;
+    @FXML private MenuItem exportAirportMenuButton;
+    @FXML private MenuItem exportAirlineMenuButton;
+    @FXML private MenuItem exportRouteMenuButton;
+
+
+
     @FXML
     private javafx.scene.control.MenuItem newProjMenu;
     @FXML
     private MenuItem addDataMenuButton;
+    @FXML
+    private MenuItem exportDataMenuButton;
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
@@ -154,7 +164,7 @@ public class GUIController {
 
     public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
 
-
+;
 
     public ArrayList<RoutePoint> getAllRoutePoints() {
         return allRoutePoints;
@@ -208,27 +218,30 @@ public class GUIController {
         //gets a file of a specified type
         File myFile;
         String cwd = System.getProperty("user.dir");
+        File userDirectory = new File(cwd);
 
-        JFileChooser jfc = new JFileChooser(cwd);
-        int userChoice = jfc.showOpenDialog(null);
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Select Data File");
 
-        switch (userChoice) {
-            case JFileChooser.APPROVE_OPTION:
-                myFile = jfc.getSelectedFile();
-                if (myFile.exists() && myFile.isFile() && myFile.canRead()) {
-                    return myFile;
-                } else {
-                    JOptionPane.showMessageDialog(new JPanel(), "Invalid file",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                    System.err.println("Invalid file given");
-                }
-            case JFileChooser.CANCEL_OPTION:
-                // fall through
-            case JFileChooser.ERROR_OPTION:
-                System.out.println("User cancelled choosing file");
-                return null;
+        fc.setInitialDirectory(userDirectory);
+
+        if(!userDirectory.canRead()) {
+            userDirectory = new File("c:/");
         }
-        return null;
+        fc.setInitialDirectory(userDirectory);
+
+        //Choose the file
+        myFile = fc.showOpenDialog(null);
+        //Make sure a file was selected, if not return default
+
+        if(myFile != null) {
+            return myFile;
+        }
+        else{
+           System.out.println("wow");
+            return null;
+        }
+
     }
 
     public void show(){
@@ -239,6 +252,7 @@ public class GUIController {
         BBDatabase.createTables();
         //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
+        exportDataMenuButton.setDisable(false);
         //addDataMenuButton.setDisable(true);
 
 
@@ -323,6 +337,7 @@ public class GUIController {
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
+        exportAirportMenuButton.setDisable(false);
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
@@ -340,12 +355,15 @@ public class GUIController {
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
+        mainTabPane.getSelectionModel().select(airportTab);
+
 
 
     }
 
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
+        exportAirlineMenuButton.setDisable(false);
 
         File f;
         f = getFile();
@@ -366,10 +384,15 @@ public class GUIController {
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        mainTabPane.getSelectionModel().select(airlineTab);
+
+
+
     }
 
     public void addRouteData(){
         //adds route data into route list
+        exportRouteMenuButton.setDisable(false);
 
         System.out.println("Add Route Data");
 
@@ -386,6 +409,7 @@ public class GUIController {
         setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
+        mainTabPane.getSelectionModel().select(routeTab);
 
     }
 
@@ -403,10 +427,12 @@ public class GUIController {
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Error in flight, aborted.");
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//            System.out.println("Error in flight, aborted.");
+            //TODO
         }
+        mainTabPane.getSelectionModel().select(flightTab);
     }
 
 
@@ -636,6 +662,7 @@ public class GUIController {
             @Override
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    exportFlightMenuButton.setDisable(false);
 
                     Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
 

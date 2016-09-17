@@ -45,7 +45,7 @@ public class AirlinePopUpController {
 
 
     @FXML
-    void setUpPopUp(){
+    public void setUpPopUp(){
         System.out.println("here!");
         nameText.setText(airlinePoint.getAirlineName());
         idText.setText(String.valueOf(airlinePoint.getAirlineID()));
@@ -161,7 +161,6 @@ public class AirlinePopUpController {
             activeText.setText(airlineActiveTextEdit.getText());
 
             BBDatabase.editDataEntry(sql);
-           // BBDatabase.editAirlineDataEntry(sql);
 
 
 

@@ -615,6 +615,10 @@ public class BBDatabase {
             System.exit(0);
         }
 
+        System.out.println("OMG HERE!!!!!!!!");
+
+//        System.out.println(allPoints.get(1).getCountry());
+
         return allPoints;
 
     }
@@ -728,6 +732,7 @@ public class BBDatabase {
             System.exit(0);
         }
         System.out.println("Edited data entry: " + sql);
+
 
     }
 

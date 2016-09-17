@@ -520,12 +520,6 @@ public class GUIController implements Initializable{
         });
     }
 
-    //CREATING ANOTHER METHOD WOW
-    public void updating(String sql){
-
-        BBDatabase.editAirlineDataEntry(sql);
-
-    }
 
     private void updateRoutesTable(ArrayList<RoutePoint> points){
 

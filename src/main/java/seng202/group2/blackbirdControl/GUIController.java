@@ -214,14 +214,14 @@ public class GUIController {
 
     }
 
-    private File getFile() {
+    private File getFile(String message) {
         //gets a file of a specified type
         File myFile;
         String cwd = System.getProperty("user.dir");
         File userDirectory = new File(cwd);
 
         FileChooser fc = new FileChooser();
-        fc.setTitle("Select Data File");
+        fc.setTitle(message);
 
         fc.setInitialDirectory(userDirectory);
 
@@ -238,7 +238,6 @@ public class GUIController {
             return myFile;
         }
         else{
-           System.out.println("wow");
             return null;
         }
 
@@ -260,6 +259,7 @@ public class GUIController {
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
         airportTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airport"));
         flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
+        flightPointTable.setPlaceholder(new Label("No data in table. To add data load a flight and double click to see flight details"));
 
     }
 
@@ -337,10 +337,9 @@ public class GUIController {
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
-        exportAirportMenuButton.setDisable(false);
-        System.out.println("Add Airport Data");
+
         File f;
-        f = getFile();
+        f = getFile("Add Airport Data");
         if (f == null) {
             return;
         }
@@ -355,6 +354,8 @@ public class GUIController {
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
+        exportAirportMenuButton.setDisable(false);
+
         mainTabPane.getSelectionModel().select(airportTab);
 
 
@@ -363,10 +364,10 @@ public class GUIController {
 
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
-        exportAirlineMenuButton.setDisable(false);
+
 
         File f;
-        f = getFile();
+        f = getFile("Add Airline Data");
         if (f == null) {
             return;
         }
@@ -384,6 +385,7 @@ public class GUIController {
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        exportAirlineMenuButton.setDisable(false);
         mainTabPane.getSelectionModel().select(airlineTab);
 
 
@@ -392,13 +394,9 @@ public class GUIController {
 
     public void addRouteData(){
         //adds route data into route list
-        exportRouteMenuButton.setDisable(false);
-
-        System.out.println("Add Route Data");
-
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
-         f = getFile();
+         f = getFile("Add Route Data");
         if (f == null) {
             return;
         }
@@ -409,17 +407,15 @@ public class GUIController {
         setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
+        exportRouteMenuButton.setDisable(false);
         mainTabPane.getSelectionModel().select(routeTab);
 
     }
 
     public void addFlightData(){
         //adds flight data now using the database
-        System.out.println("Add Flight Data");
-
-
         try {
-            File f = getFile();
+            File f = getFile("Add Flight Data");
             if (f == null) {
                 return;
             }

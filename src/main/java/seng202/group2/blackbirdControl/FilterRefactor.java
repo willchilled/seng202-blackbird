@@ -5,6 +5,9 @@ import seng202.group2.blackbirdModel.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by mch230 on 17/09/16.
@@ -37,6 +40,7 @@ public class FilterRefactor {
         return filtered;
     }
 
+
     private static ArrayList<DataPoint> flightFilter(ArrayList<String> menusPressed, String searchString) {
         //TODO
         //No filters for flights currently
@@ -66,7 +70,6 @@ public class FilterRefactor {
     }
 
 
-
     private static ArrayList<DataPoint> airportFilter(ArrayList<String> menusPressed, String searchString) {
         String sql = "SELECT * FROM AIRPORT ";
 
@@ -89,7 +92,6 @@ public class FilterRefactor {
         //allPoints = BBDatabase.performQuery(sql);     //PERFORM DB QUERY
         return null;
     }
-
 
 
     private static ArrayList<DataPoint> airlineFilter(ArrayList<String> menusPressed, String searchString) {
@@ -117,6 +119,37 @@ public class FilterRefactor {
     }
 
 
+    public static ArrayList<DataPoint> filterRouteEquipment(ArrayList<DataPoint> routes, String equipment) {
+        ArrayList<DataPoint> equipmentRoutes = new ArrayList<>();
+        String patternString;
+        if (equipment.isEmpty()) {
+            patternString = "^$";
+        } else {
+            String[] newString = equipment.split(" ");
+            patternString = "\\b(" + String.join("|", newString) + ")\\b";
+        }
+
+        Pattern pattern = Pattern.compile(patternString);
+
+        for (DataPoint route : routes) {
+            RoutePoint myroute = (RoutePoint) route;    //casting here
+            Matcher matcher = pattern.matcher(myroute.getEquipment());
+            if (matcher.find()) {
+                equipmentRoutes.add(route);
+            }
+        }
+        return equipmentRoutes;
+    }
+
+    private static ArrayList<String> filterUnique(String type, String input) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
+        String sql = "SELECT DISTINCT %s from %s";
+        sql = String.format(sql, input, type);
+        ArrayList<String> menuItems = BBDatabase.performDistinctStringQuery(sql);   //unsure about this
+        Collections.sort(menuItems, String.CASE_INSENSITIVE_ORDER);
+        return menuItems;
+    }
+
+
 
     private static String generateQueryString(String current, ArrayList<String> menusPressed, ArrayList<String> allSelections) {
         current += "WHERE ";
@@ -129,8 +162,6 @@ public class FilterRefactor {
         return current;
     }
 
-
-
     private static boolean checkEmptyMenus(ArrayList<String> menusPressed) {
         boolean allNone = true;
         for (String currentSelection: menusPressed){
@@ -140,8 +171,6 @@ public class FilterRefactor {
         }
         return allNone;
     }
-
-
 
     private static String removeLastAND(String outputString) {
 

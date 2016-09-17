@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdModel;
 
+
 public class AirportPoint extends DataPoint {
 
     private int airportID;
@@ -26,6 +27,7 @@ public class AirportPoint extends DataPoint {
 //		if(this.getAirportID() == mypoint.getAirportID()) return true;
 //		else return false;
 //	}
+
 
     public AirportPoint(int airportID, String airportName) {
 

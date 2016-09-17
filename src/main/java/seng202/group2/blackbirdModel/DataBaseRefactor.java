@@ -52,11 +52,19 @@ public class DataBaseRefactor {
 
                 String dataType = currentPoint.getType();
                 //DataTypes dataType = currentPoint.getType();
+                PreparedStatement preparedStatement = null;
 
                 switch (dataType){
-                    case "AirlinePoint": System.out.println("Hey");
-                            String sql = prepareInsertAirlineSql(currentPoint);
+                    case "AirlinePoint": //System.out.println("Hey");
+                            preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
+
+                           // System.out.println(sql);
+                            //System.out.print(preparedStatement.toString());
+                           // preparedStatement.executeUpdate();
+                            preparedStatement.executeUpdate();
+                            //System.out.println(sql);
                             addAirlinePoint(currentPoint);
+                            System.out.println("HERE");
                         break;
 
 
@@ -82,9 +90,10 @@ public class DataBaseRefactor {
 
     }
 
-    private static String prepareInsertAirlineSql(DataPoint currentPoint) {
+    private static PreparedStatement prepareInsertAirlineSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
 
         AirlinePoint airline = (AirlinePoint) currentPoint; //Casting to make more generic
+
 
 
         int id = airline.getAirlineID();
@@ -97,7 +106,7 @@ public class DataBaseRefactor {
         String country = airline.getCountry();
         String active = airline.getActive();
 
-        String t = "INSERT INTO AIRLINE VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String t = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) VALUES  (?, ?, ?, ?, ?, ?, ?, ?);";
 
         String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
                 "VALUES (" +
@@ -111,8 +120,23 @@ public class DataBaseRefactor {
                 active + "\");";
 
 
-        System.out.println(sql);
-        return t;
+        //System.out.println(sql);
+
+        try {
+            preparedStatement = currentConnection.prepareStatement(t);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, alias);
+            preparedStatement.setString(4, iata);
+            preparedStatement.setString(5, icao);
+            preparedStatement.setString(6, callsign);
+            preparedStatement.setString(7, country);
+            preparedStatement.setString(8, active);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return preparedStatement;
 
     }
 

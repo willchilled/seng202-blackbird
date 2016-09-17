@@ -487,23 +487,24 @@ public class BBDatabase {
     private static void addSingleFlighttoDB(FlightPoint point, Statement stmt, int flightid, int order) throws SQLException {
         //get info for point
 
-        String locID = point.getLocaleID();
-        String locType = point.getType();
-        int altitude = point.getAltitude();
-        float latitude = point.getLatitude();
-        float longitude = point.getLongitude();
-        System.out.println("not ded3");
-        String FlightSql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
-                "Values (" +
-                order + ", " +
-                "\"" + locID + "\", " +
-                "\"" + locType + "\", " +
-                altitude + ", " +
-                latitude + ", " +
-                longitude + ", " +
-                flightid + ")";
+//        String locID = point.getLocaleID();
+//        //String locType = point.getType();
+//        int altitude = point.getAltitude();
+//        float latitude = point.getLatitude();
+//        float longitude = point.getLongitude();
+//        System.out.println("not ded3");
+//        String FlightSql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
+//                "Values (" +
+//                order + ", " +
+//                "\"" + locID + "\", " +
+//                "\"" + locType + "\", " +
+//                altitude + ", " +
+//                latitude + ", " +
+//                longitude + ", " +
+//                flightid + ")";
 
             //execute route sql
+        String FlightSql = "RUBBISH";
         try {
             stmt.executeUpdate(FlightSql);
         } catch (SQLException e) {

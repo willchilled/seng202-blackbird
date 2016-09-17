@@ -4,12 +4,17 @@ import junit.framework.TestCase;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by emr65 on 12/09/16.
  */
 public class FlightTest extends TestCase {
 
+    public void testIDONOTHING() throws Exception{
+        assertEquals("HELLO", "HELLO");
+
+    }
 //    public void testGetSrcAirport() throws Exception {
 //
 //        String cwd = System.getProperty("user.dir");

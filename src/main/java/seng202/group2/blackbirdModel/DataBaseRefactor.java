@@ -51,9 +51,14 @@ public class DataBaseRefactor {
                 System.out.println(currentPoint.getType());
 
                 String dataType = currentPoint.getType();
-                switch (currentPoint.getType()){
+                //DataTypes dataType = currentPoint.getType();
+
+                switch (dataType){
                     case "AirlinePoint": System.out.println("Hey");
+                            String sql = prepareInsertAirlineSql(currentPoint);
                             addAirlinePoint(currentPoint);
+                        break;
+
 
                 }
 
@@ -77,7 +82,42 @@ public class DataBaseRefactor {
 
     }
 
+    private static String prepareInsertAirlineSql(DataPoint currentPoint) {
+
+        AirlinePoint airline = (AirlinePoint) currentPoint; //Casting to make more generic
+
+
+        int id = airline.getAirlineID();
+        String name = airline.getAirlineName();
+        //System.out.println(name);
+        String alias = airline.getAirlineAlias();
+        String iata = airline.getIata();
+        String icao = airline.getIcao();
+        String callsign = airline.getCallsign();
+        String country = airline.getCountry();
+        String active = airline.getActive();
+
+        String t = "INSERT INTO AIRLINE VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+        String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
+                "VALUES (" +
+                + id + ", \"" +
+                name + "\", \"" +
+                alias + "\", \"" +
+                iata + "\", \"" +
+                icao + "\", \"" +
+                callsign + "\", \"" +
+                country + "\", \"" +
+                active + "\");";
+
+
+        System.out.println(sql);
+        return t;
+
+    }
+
     private static void addAirlinePoint(DataPoint currentPoint) {
+
 
     }
 

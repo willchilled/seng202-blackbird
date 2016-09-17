@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static javafx.fxml.FXMLLoader.load;
+import static seng202.group2.blackbirdModel.DataTypes.AIRLINEPOINT;
 
 /**
  * Created by emr65 on 13/08/16.

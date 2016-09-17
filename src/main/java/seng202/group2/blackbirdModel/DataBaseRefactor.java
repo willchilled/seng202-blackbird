@@ -325,17 +325,13 @@ public class DataBaseRefactor {
     public static ArrayList<DataPoint> performGenericQuery(String sql, String dataType) {
 
         ArrayList<DataPoint> resultPoints = new ArrayList<>();
-        System.out.println("HERE");
 
         try {
-            System.out.println("HERE2");
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
             currentConnection = DriverManager.getConnection(getDatabaseName());
             currentConnection.setAutoCommit(false);
-            System.out.println("HERE3");
             PreparedStatement preparedStatement = currentConnection.prepareStatement(sql);
-            System.out.println("HERE4");
             ResultSet rs = preparedStatement.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             String[] attributes = null;

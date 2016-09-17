@@ -62,10 +62,6 @@ public class AirportPoint extends DataPoint {
      */
     public AirportPoint(String[] currentLine) {
         super();
-        System.out.println("\n");
-        System.out.println("MY SIZE IS: " + currentLine.length);
-        System.out.println("currentLine: " + currentLine[0]);
-        System.out.println("\n");
 
         if (currentLine.length == 12){
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");

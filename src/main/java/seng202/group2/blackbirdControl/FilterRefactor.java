@@ -35,7 +35,9 @@ public class FilterRefactor {
                 //filtered = airlineFilter(menusPressed, searchString, type);
                 myQuery = airlineFilter(menusPressed, searchString, type);
                 break;
-            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString, type); break;
+            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString, type);
+               // System.out.println(myQuery);
+                break;
             case "RoutePoint": myQuery = routeFilter(menusPressed, searchString, type); break;
             case "FlightPoint": myQuery = flightFilter(menusPressed, searchString, type); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
@@ -85,7 +87,10 @@ public class FilterRefactor {
         String search = "";
         if (searchString.length() > 0) {
             if (!allNone) {
-                sql += "AND";
+                sql += " AND ";
+            }
+            else{
+                sql += " WHERE ";
             }
             search = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
                     " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR LONGITUDE='%1$s' OR ALTITUDE='%1$s'" +
@@ -124,8 +129,7 @@ public class FilterRefactor {
         }
 
         sql += search;
-        System.out.println("Performing query:"+ sql);
-
+       // System.out.println("Performing query:"+ sql);
         //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
         //System.out.println("SIZE: " + allPoints.size());
         return sql; //return an arraylist

@@ -44,7 +44,6 @@ public class DataPoint {
         /*
         This creates a dataPoint from a string array and sets the type
          */
-        System.out.println("Lets get creatin'");
         for(int i = 0; i < dataArray.length ; i ++){
             System.out.println(i + " " + dataArray[i]);
         }

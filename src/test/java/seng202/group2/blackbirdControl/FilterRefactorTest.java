@@ -44,7 +44,32 @@ public class FilterRefactorTest extends TestCase {
 
     }
 
-    public void testFilterSelections() throws Exception {
+    public void testFilterSelectionsWithAirports() throws Exception {
+
+        String search = "";
+        ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Greenland"));
+        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "AirportPoint");
+        //System.out.println(dataPoints);
+        assertEquals(dataPoints.size(), 4);
+
+        selectedFields = new ArrayList<>(Arrays.asList("None"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, search, "AirportPoint");
+        assertEquals(dataPoints.size(), 100); //Both lines are None
+
+        selectedFields = new ArrayList<>(Arrays.asList("None"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "Greenland", "AirportPoint");
+        assertEquals(dataPoints.size(), 4); //Both lines are None
+//
+        selectedFields = new ArrayList<>(Arrays.asList("Iceland"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "Greenland", "AirportPoint");
+        assertEquals(dataPoints.size(), 0); //Both lines are None
+
+        selectedFields = new ArrayList<>(Arrays.asList("Iceland"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "AEY", "AirportPoint");
+        assertEquals(dataPoints.size(), 1); //Both lines are None
+    }
+
+    public void testFilterSelectionsWithAirlines() throws Exception{
 
         String search = "";
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Russia", "None"));

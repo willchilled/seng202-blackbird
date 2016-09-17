@@ -56,8 +56,8 @@ public class DataBaseRefactor {
             if (myPoints.get(0).getType().equals("FlightPoint")){
                 FlightCount ++;
                 addFlight(myPoints, preparedStatement, currentConnection);
-                System.out.println("HERE");
-                System.out.println(FlightCount);
+                //System.out.println("HERE");
+                //System.out.println(FlightCount);
 
             }
 
@@ -114,7 +114,7 @@ public class DataBaseRefactor {
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
             //System.exit(0);
             System.out.println("Could not add :");
@@ -340,14 +340,14 @@ public class DataBaseRefactor {
 
                 int width = rsmd.getColumnCount();
 
-                System.out.println("---------------");
+                //System.out.println("---------------");
 
                 if(dataType.equals("RoutePoint")){
                     attributes = new String[width-1];
                     for (int i = 1; i < width; i++) {
 
                         attributes[i-1] = rs.getString(i + 1);
-                        System.out.println(i + " " + attributes[i-1]);
+                        //System.out.println(i + " " + attributes[i-1]);
                     }
 
                 } else {
@@ -355,14 +355,14 @@ public class DataBaseRefactor {
                     for (int i = 0; i < width; i++) {
 
                         attributes[i] = rs.getString(i + 1);
-                        System.out.println(i + " " + attributes[i]);
+                       // System.out.println(i + " " + attributes[i]);
                     }
                 }
-                System.out.println("---------------");
+               // System.out.println("---------------");
 
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
                 resultPoints.add(myPoint);
-                System.out.println(myPoint.toString());
+               // System.out.println(myPoint.toString());
 
             }
         } catch (ClassNotFoundException e) {

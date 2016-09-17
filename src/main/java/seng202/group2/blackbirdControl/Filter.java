@@ -3,6 +3,8 @@ package seng202.group2.blackbirdControl;
 import seng202.group2.blackbirdModel.*;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by mch230 on 25/08/16.
@@ -92,11 +94,26 @@ public class Filter {
     }
 
     //filter routes based on equipment (from drop down?)
-    public static void routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
-        for (RoutePoint route : routes) {
-            //if (route.getEquipment())
-        }
-    }
+//    public static ArrayList<RoutePoint> routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
+//        ArrayList<RoutePoint> equipmentRoutes = new ArrayList<>();
+//        String patternString;
+//        if (equipment.isEmpty()) {
+//            patternString = "^$";
+//        } else {
+//            String[] newString = equipment.split(" ");
+//            patternString = "\\b(" + String.join("|", newString) + ")\\b";
+//        }
+//
+//        Pattern pattern = Pattern.compile(patternString);
+//
+//        for (RoutePoint route : routes) {
+//            Matcher matcher = pattern.matcher(route.getEquipment());
+//            if (matcher.find()) {
+//                equipmentRoutes.add(route);
+//            }
+//        }
+//        return equipmentRoutes;
+//    }
 
 
 

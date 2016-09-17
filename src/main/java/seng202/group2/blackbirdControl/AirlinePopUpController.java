@@ -178,7 +178,10 @@ public class AirlinePopUpController {
             callsignText.setText(airlineCallsignTextEdit.getText());
             activeText.setText(airlineActiveTextEdit.getText());
 
-            BBDatabase.editAirlineDataEntry(sql);
+
+            mainController.updating(sql);
+
+            //BBDatabase.editAirlineDataEntry(sql);
 
             //To test, Edit the airline name of the Value with ID = 2, to be "Making Edits Here"
             ArrayList<AirlinePoint> test = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID=2");

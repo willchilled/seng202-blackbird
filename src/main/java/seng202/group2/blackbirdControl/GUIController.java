@@ -42,11 +42,6 @@ public class GUIController implements Initializable{
     GUIController instance;
 
 
-
-
-
-
-
     //ObservableList<String> airPortCountryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
@@ -483,47 +478,8 @@ public class GUIController implements Initializable{
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
         airlineActCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
 
-        //Bradley
-        //This creates the popup when the user double clicks on a table entry.
-        //I think what I have done here is silly- but I can't set the mainController in the initialize method without
-        //An instance of the AirlinePopUpController...but this only gets created in this method once the user has double clicked.
-        //So I have it created both here and in the initialize method which is maybe why it isn't working?
 
 
-
-/*
-            airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event){
-                    if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                        String myText = airlineTable.getSelectionModel().getSelectedItem().getAirlineName();
-                        System.out.println(myText);
-                        Stage stage;
-                        Parent root;
-                        stage = new Stage();
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
-                            root = loader.load();
-                            AirlinePopUpController popUpController = loader.getController();
-                            popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
-                            popUpController.setUpPopUp();
-
-                            stage.setScene(new Scene(root));
-                            stage.setTitle("View/Edit Data");
-                            stage.initModality(Modality.NONE);
-                            stage.initOwner(null);
-
-                            stage.show();
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            //System.out.println("AH NO!");
-                        }
-
-                    }
-                }
-            });
-        }*/
         airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
 
             @Override
@@ -562,6 +518,13 @@ public class GUIController implements Initializable{
                 }
             }
         });
+    }
+
+    //CREATING ANOTHER METHOD WOW
+    public void updating(String sql){
+
+        BBDatabase.editAirlineDataEntry(sql);
+
     }
 
     private void updateRoutesTable(ArrayList<RoutePoint> points){

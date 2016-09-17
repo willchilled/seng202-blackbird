@@ -54,4 +54,10 @@ public class DataBaseRefactorTest extends TestCase {
 
     }
 
+    public void testPerformGenericQuery() throws Exception {
+
+        String sql = "SELECT * FROM FLIGHT";
+        DataBaseRefactor.performGenericQuery(sql, "FlightPoint");
+    }
+
 }

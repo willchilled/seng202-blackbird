@@ -62,14 +62,25 @@ public class BBDatabaseTest extends TestCase {
 
     }
 
-    public void testEditAirlineDataEntry() throws Exception{
+    public void testAirlineEditDataEntry() throws Exception{
         ArrayList<AirlinePoint> airlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
         assertEquals(airlinePoints.size(), 1);
         String sql = "UPDATE AIRLINE SET ID='6', NAME='223 Flight Unit State Airline', COUNTRY='POOS', ALIAS='', IATA='', ICAO='null', CALLSIGN='CHKALOVSK-AVIA', ACTIVE='N' WHERE ID='6'";
-        BBDatabase.editAirlineDataEntry(sql);
+        BBDatabase.editDataEntry(sql);
         ArrayList<AirlinePoint> newAirlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
         System.out.println(newAirlinePoints.get(0).getCountry());
         assertEquals(newAirlinePoints.get(0).getCountry(), "POOS");
+    }
+
+    public void testRouteEditDataEntry() throws Exception{
+        ArrayList<RoutePoint> routePoints = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE WHERE IDnum='1'");
+        assertEquals(routePoints.size(), 1);
+        System.out.println("Previous Codeshare: " + routePoints.get(0).getCodeshare());
+        String sql = "UPDATE ROUTE SET Airline='2B', Airlineid='410', Src='AER', Srcid='2965', Dst='KZN', Dstid='2990', Codeshare='Y', Stops='0' WHERE IDnum='1'";
+        BBDatabase.editDataEntry(sql);
+        ArrayList<RoutePoint> newRoutePoints = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE WHERE IDnum='1'");
+        System.out.println("New Codeshare: " + newRoutePoints.get(0).getCodeshare());
+        assertEquals(newRoutePoints.get(0).getCodeshare(), "Y");
     }
 
 }

@@ -1,6 +1,6 @@
 package seng202.group2.blackbirdModel;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
+
 
 import javax.xml.crypto.Data;
 import java.io.File;
@@ -56,8 +56,8 @@ public class DataBaseRefactor {
             if (myPoints.get(0).getType().equals("FlightPoint")){
                 FlightCount ++;
                 addFlight(myPoints, preparedStatement, currentConnection);
-                System.out.println("HERE");
-                System.out.println(FlightCount);
+                //System.out.println("HERE");
+                //System.out.println(FlightCount);
 
             }
 
@@ -114,7 +114,7 @@ public class DataBaseRefactor {
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
             //System.exit(0);
             System.out.println("Could not add :");
@@ -207,10 +207,11 @@ public class DataBaseRefactor {
         int dstId = route.getDstAirportID();
         String codeshare = route.getCodeshare();
         int stops = route.getStops();
+        String equp = route.getEquipment();
 
         //make route sql text to execute
-        String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops) VALUES (?,?,?,?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        System.out.println(sql);
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
             //System.out.println(preparedStatement + "AAAAH");
@@ -223,6 +224,7 @@ public class DataBaseRefactor {
             preparedStatement.setInt(7, dstId);
             preparedStatement.setString(8, codeshare);
             preparedStatement.setInt(9, stops);
+            preparedStatement.setString(10, equp);
         } catch (SQLException e) {
 
             System.out.println("canont prepare statement");
@@ -340,14 +342,14 @@ public class DataBaseRefactor {
 
                 int width = rsmd.getColumnCount();
 
-                System.out.println("---------------");
+                //System.out.println("---------------");
 
                 if(dataType.equals("RoutePoint")){
                     attributes = new String[width-1];
                     for (int i = 1; i < width; i++) {
 
                         attributes[i-1] = rs.getString(i + 1);
-                        System.out.println(i + " " + attributes[i-1]);
+                        //System.out.println(i + " " + attributes[i-1]);
                     }
 
                 } else {
@@ -355,14 +357,14 @@ public class DataBaseRefactor {
                     for (int i = 0; i < width; i++) {
 
                         attributes[i] = rs.getString(i + 1);
-                        System.out.println(i + " " + attributes[i]);
+                       // System.out.println(i + " " + attributes[i]);
                     }
                 }
-                System.out.println("---------------");
+               // System.out.println("---------------");
 
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
                 resultPoints.add(myPoint);
-                System.out.println(myPoint.toString());
+               // System.out.println(myPoint.toString());
 
             }
         } catch (ClassNotFoundException e) {
@@ -564,6 +566,7 @@ public class DataBaseRefactor {
                 "Equipment  VARCHAR(50), " +
                 "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
+        System.out.println("\n\n" + sql + "\n\n" + "HERE");
         return sql;
     }
 

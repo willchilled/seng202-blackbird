@@ -198,7 +198,7 @@ public class AirportPopUpController {
             airportDstText.setText(airportDstTextEdit.getText());
             airportTzText.setText(airportTZTextEdit.getText());
 
-            BBDatabase.editAirlineDataEntry(sql);
+            BBDatabase.editDataEntry(sql);
 
 
         }else{

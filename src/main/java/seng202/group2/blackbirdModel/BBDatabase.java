@@ -711,7 +711,7 @@ public class BBDatabase {
 
     }
 
-    public static void editAirlineDataEntry(String sql) {
+    public static void editDataEntry(String sql) {
 
         Connection c = makeConnection();
 
@@ -733,6 +733,8 @@ public class BBDatabase {
         System.out.println("Edited data entry: " + sql);
 
     }
+
+
 
     public static ArrayList<RoutePoint> performJoinRoutesEquipQuery(String sql) {
 

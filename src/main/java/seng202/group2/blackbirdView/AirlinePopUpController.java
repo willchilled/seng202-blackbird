@@ -171,7 +171,7 @@ public class AirlinePopUpController {
             callsignText.setText(airlineCallsignTextEdit.getText());
             activeText.setText(airlineActiveTextEdit.getText());
 
-            BBDatabase.editAirlineDataEntry(sql);
+            BBDatabase.editDataEntry(sql);
             //myGUI.airlinefilterButtonPressed();
 
 

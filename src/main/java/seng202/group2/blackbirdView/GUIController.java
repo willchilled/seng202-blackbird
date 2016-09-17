@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 
 import javafx.collections.FXCollections;
@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdControl.*;
@@ -23,12 +25,13 @@ import seng202.group2.blackbirdModel.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 import static javafx.fxml.FXMLLoader.load;
-import static seng202.group2.blackbirdModel.DataTypes.AIRLINEPOINT;
 
 /**
  * Created by emr65 on 13/08/16.
@@ -37,22 +40,20 @@ public class GUIController {
 
     //ObservableList<String> airPortCountryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
-    ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
 
-    ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
 
-
-
-    ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+    private ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
 
-    ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
-    ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
+    private ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
+    private ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
@@ -63,10 +64,24 @@ public class GUIController {
 //    }
     @FXML
     private TabPane mainTabPane;
+    @FXML private Tab flightTab;
+    @FXML private Tab routeTab;
+    @FXML private Tab airportTab;
+    @FXML private Tab airlineTab;
+
+    @FXML private MenuItem exportFlightMenuButton;
+    @FXML private MenuItem exportAirportMenuButton;
+    @FXML private MenuItem exportAirlineMenuButton;
+    @FXML private MenuItem exportRouteMenuButton;
+
+
+
     @FXML
     private javafx.scene.control.MenuItem newProjMenu;
     @FXML
     private MenuItem addDataMenuButton;
+    @FXML
+    private MenuItem exportDataMenuButton;
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
@@ -90,7 +105,6 @@ public class GUIController {
     @FXML private TableColumn airportErrorCol;
 // AIRLINE Table columns
     @FXML private TableColumn airlineIDCol;
-    @FXML private TableColumn airlineIDCol1;
     @FXML private TableColumn airlineNameCol;
     @FXML private TableColumn airlineAliasCol;
     //@FXML private TableView<AirportPoint> airportTable;
@@ -133,22 +147,6 @@ public class GUIController {
     @FXML private ComboBox routesFilterByStopsMenu;
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
-
-    //@FXML private TableColumn airlineIDCol1;
-    //@FXML private TableColumn airlineIDCol1;
-    @FXML private TableColumn airlineNameCol1;
-    @FXML private TableColumn airlineAliasCol1;
-    //@FXML private TableView<AirportPoint> airportTable;
-    @FXML private TableColumn airlineIATACol1;
-    @FXML private TableColumn airlineICAOCol1;
-    @FXML private TableColumn airlineCallsignCol1;
-    @FXML private TableColumn airlineCountryCol1;
-    @FXML private TableColumn airlineActCol1;
-   // @FXML private TableColumn airlineErrorCol;
-
-
-
-    @FXML private TableView<AirlinePoint> airlineTable1;
 
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
@@ -195,8 +193,8 @@ public class GUIController {
     private void initialize(){
         //Automatic initialisation when the program starts
 
-        //BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-        //addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
+//        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
+//        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
         airportFilterMenu.setValue(airPortCountryList.get(0));
         airportFilterMenu.setItems(airPortCountryList);
@@ -220,23 +218,30 @@ public class GUIController {
         //gets a file of a specified type
         File myFile;
         String cwd = System.getProperty("user.dir");
+        File userDirectory = new File(cwd);
 
-        JFileChooser jfc = new JFileChooser(cwd);
-        int userChoice = jfc.showOpenDialog(null);
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Select Data File");
 
-        switch (userChoice) {
-            case JFileChooser.APPROVE_OPTION:
-                myFile = jfc.getSelectedFile();
-                if (myFile.exists() && myFile.isFile() && myFile.canRead()) {
+        fc.setInitialDirectory(userDirectory);
 
-                    return myFile;
-                }
-            case JFileChooser.CANCEL_OPTION:
-                // fall through
-            case JFileChooser.ERROR_OPTION:
-                System.out.println("ERROR IN FILE");
+        if(!userDirectory.canRead()) {
+            userDirectory = new File("c:/");
         }
-        return null;
+        fc.setInitialDirectory(userDirectory);
+
+        //Choose the file
+        myFile = fc.showOpenDialog(null);
+        //Make sure a file was selected, if not return default
+
+        if(myFile != null) {
+            return myFile;
+        }
+        else{
+           System.out.println("wow");
+            return null;
+        }
+
     }
 
     public void show(){
@@ -245,9 +250,10 @@ public class GUIController {
         //SQQliteJDBC myDb = new SQQliteJDBC();
         //SQLiteJDBC.dropTables();
         //BBDatabase.createTables();
-        DataBaseRefactor.createTables();
+
         //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
+        exportDataMenuButton.setDisable(false);
         //addDataMenuButton.setDisable(true);
 
 
@@ -255,9 +261,6 @@ public class GUIController {
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
         airportTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airport"));
         flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
-
-        airlineTable1.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> WORK IN PROGRESS"));
-
 
     }
 
@@ -271,7 +274,7 @@ public class GUIController {
     public void addALLData(){
         //MASTER OVERRIDE FUNCTION DONT SCREW WITH THIS UNLESS YOU ARE A WIZARD
         String cwd = System.getProperty("user.dir");
-        String airlinesFileString = cwd + "/TestFiles/airlines.txt";;
+        String airlinesFileString = cwd + "/TestFiles/airlines.txt";
         String airportsFileString = cwd + "/TestFiles/airports.txt";
         String routesFileString = cwd + "/TestFiles/route.txt";
         String flightsFileString = cwd + "/TestFiles/flight.txt";
@@ -290,6 +293,7 @@ public class GUIController {
 
 
         BBDatabase.deleteDBFile();
+
         BBDatabase.createTables();
         BBDatabase.addAirlinePointstoDB(airlinePoints);
         BBDatabase.addAirportPointsToDB(airportPoints);
@@ -328,16 +332,20 @@ public class GUIController {
         updateRoutesTable(routePoints);
         updateRoutesDropdowns();
 
-        //updateFlightsTable(flightPoints);
+        updateFlightsTable(flightPoints);
 
 
     }
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
+        exportAirportMenuButton.setDisable(false);
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
+        if (f == null) {
+            return;
+        }
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
         BBDatabase.addAirportPointsToDB(allairportPoints);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
@@ -349,115 +357,53 @@ public class GUIController {
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
+        mainTabPane.getSelectionModel().select(airportTab);
+
 
 
     }
 
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
+        exportAirlineMenuButton.setDisable(false);
 
         File f;
         f = getFile();
-
-        //OOH I AM VALID NOW
-        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, "AirlinePoint");
-        //COME BACK HERE
-        DataBaseRefactor.insertDataPoints(myPoints);
-
-//        for (DataPoint point: myPoints){
-//            System.out.println(point);
-//        }
-
-
-//        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
-//        BBDatabase.addAirlinePointstoDB(allAirlineData);
-
-        String search = "";
-        ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("None", "None"));
-        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "AirlinePoint");
-        //System.out.println(dataPoints);
-        //ArrayList<FlightPoint> myPoints2 = dataPoints;
-        ArrayList<AirlinePoint> myAirlinePoints = new ArrayList<AirlinePoint>();
-        for (DataPoint myPoint: dataPoints){
-            AirlinePoint test = (AirlinePoint) myPoint;
-            myAirlinePoints.add(test);
+        if (f == null) {
+            return;
         }
+        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+        BBDatabase.addAirlinePointstoDB(allAirlineData);
 
-        airlineTable1.getItems().setAll(myAirlinePoints);
+        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
-        airlineIDCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
-        airlineNameCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
-        airlineAliasCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
-        airlineIATACol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("iata"));
-        airlineICAOCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("icao"));
-        airlineCallsignCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("callsign"));
-        airlineCountryCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
-        airlineActCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
+        setAllAirlinePoints(validAirlineData);
+        setAirlineActiveList(populateAirlineActiveList());
 
-
-
-//        airlineTable1.setOnMousePressed(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event){
-//                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-//                    FlightPoint myPoint = (FlightPoint) airlineTable1.getSelectionModel().getSelectedItem();
-//                    String myText = myPoint.getLocaleID();   //ge//airlineTable1.getSelectionModel().getSelectedItem().getAirlineName();
-//                    System.out.println(myText);
-//                    Stage stage;
-//                    Parent root;
-//                    stage = new Stage();
-//                    try {
-//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
-//                        root = loader.load();
-//                        AirlinePopUpController popUpController = loader.getController();
-//                        //popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
-//                        //popUpController.setUpPopUp();
-//
-//                        stage.setScene(new Scene(root));
-//                        stage.setTitle("View/Edit Data");
-//                        stage.initModality(Modality.NONE);
-//                        stage.initOwner(null);
-//
-//                        stage.show();
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        //System.out.println("AH NO!");
-//                    }
-//
-//                }
-//            }
-//        });
+        airlineActiveMenu.setItems(getAirlineActiveList());
+        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
+        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
+        airlineFilterMenu.setItems(airlineCountryList);
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        mainTabPane.getSelectionModel().select(airlineTab);
 
 
-        //assertEquals(dataPoints.size(), 5);
 
-
-//        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
-//
-//        setAllAirlinePoints(validAirlineData);
-//        setAirlineActiveList(populateAirlineActiveList());
-//
-//        airlineActiveMenu.setItems(getAirlineActiveList());
-//        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
-//        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
-//        airlineFilterMenu.setItems(airlineCountryList);
-//        airlineFilterMenu.setValue(airlineCountryList.get(0));
-        //updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
     }
 
     public void addRouteData(){
         //adds route data into route list
+        exportRouteMenuButton.setDisable(false);
 
         System.out.println("Add Route Data");
 
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
          f = getFile();
-
-
-
-
+        if (f == null) {
+            return;
+        }
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
         BBDatabase.addRoutePointstoDB(myRouteData);
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
@@ -465,6 +411,7 @@ public class GUIController {
         setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
+        mainTabPane.getSelectionModel().select(routeTab);
 
     }
 
@@ -475,14 +422,19 @@ public class GUIController {
 
         try {
             File f = getFile();
+            if (f == null) {
+                return;
+            }
             ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
             BBDatabase.addFlighttoDB(myFlightData);
-            //updateFlightsTable(myFlightData);
+            updateFlightsTable(myFlightData);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Error in flight, aborted.");
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//            System.out.println("Error in flight, aborted.");
+            //TODO
         }
+        mainTabPane.getSelectionModel().select(flightTab);
     }
 
 
@@ -699,37 +651,36 @@ public class GUIController {
 
     }
 
-    // I HAVE BEEN COMENTED OUT BECAUSE I AM NOT WORKING
+    private void updateFlightsTable(ArrayList<FlightPoint> points){
+        //updates FLIGHTS table with a set of FLIGHT POINTS
+        Flight myFlight = new Flight(points);
 
-//    private void updateFlightsTable(ArrayList<FlightPoint> points){
-//        //updates FLIGHTS table with a set of FLIGHT POINTS
-//        Flight myFlight = new Flight(points);
-//
-//
-//        flightTable.getItems().addAll(myFlight);
-//        flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
-//        flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
-//
-//        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event){
-//                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-//
-//                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
-//
-//                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
-//
-//                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
-//                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
-//                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
-//                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
-//                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
-//                }
-//
-//                }
-//                });
-//
-//    }
+
+        flightTable.getItems().addAll(myFlight);
+        flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
+        flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
+
+        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    exportFlightMenuButton.setDisable(false);
+
+                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
+
+                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
+
+                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
+                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
+                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
+                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
+                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
+                }
+
+                }
+                });
+
+    }
 
 
     /*******************************************************************************************************************
@@ -762,7 +713,7 @@ public class GUIController {
 
     }
 
-    public void airlinefilterButtonPressed(ActionEvent actionEvent) {
+    public void airlinefilterButtonPressed() {
         //Gets airline values from selection and filters based on selection
 
         String countrySelection = airlineFilterMenu.getValue().toString();
@@ -856,7 +807,7 @@ public class GUIController {
 
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list
-        ArrayList<AirlinePoint> allPoints = getAllAirlinePoints(); //airportTable.getItems()
+        ArrayList<AirlinePoint> allPoints = Filter.getAllAirlinePointsfromDB(); //airportTable.getItems()
         updateAirlinesTable(allPoints);
 
         airlineFilterMenu.setValue(airlineCountryList.get(0));
@@ -915,9 +866,7 @@ public class GUIController {
 
     private ObservableList<String> populateAirlineActiveList(){
         //populates the activr airlines dropdown
-        ObservableList<String> airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
-
-        return airlineActiveList;
+        return FXCollections.observableArrayList("None", "Active", "Inactive");
     }
 
     private ObservableList<String> addNullValue(ObservableList<String> populatedList){

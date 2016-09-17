@@ -175,10 +175,11 @@ public class AirlinePopUpController {
             activeText.setText(airlineActiveTextEdit.getText());
 
             BBDatabase.editAirlineDataEntry(sql);
+            System.out.println("WOWOWOWOWO");
 
             //Bradley
             //This is where the error is
-            mainController.airlinefilterButtonPressed();
+            //mainController.airlinefilterButtonPressed();
 
 
         }else{

@@ -37,7 +37,9 @@ import static javafx.fxml.FXMLLoader.load;
 public class GUIController implements Initializable{
     //FOR THE POPUPS
     //Bradley
-    @FXML private AirlinePopUpController airlinePopUpController;
+    //@FXML private AirlinePopUpController airlinePopUpController;
+
+    GUIController instance;
 
 
 
@@ -144,6 +146,7 @@ public class GUIController implements Initializable{
     @FXML private TextField routesSearchMenu;
 
     public GUIController() throws IOException {
+        instance = this;
 
     }
 
@@ -485,6 +488,42 @@ public class GUIController implements Initializable{
         //I think what I have done here is silly- but I can't set the mainController in the initialize method without
         //An instance of the AirlinePopUpController...but this only gets created in this method once the user has double clicked.
         //So I have it created both here and in the initialize method which is maybe why it isn't working?
+
+
+
+/*
+            airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event){
+                    if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                        String myText = airlineTable.getSelectionModel().getSelectedItem().getAirlineName();
+                        System.out.println(myText);
+                        Stage stage;
+                        Parent root;
+                        stage = new Stage();
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
+                            root = loader.load();
+                            AirlinePopUpController popUpController = loader.getController();
+                            popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
+                            popUpController.setUpPopUp();
+
+                            stage.setScene(new Scene(root));
+                            stage.setTitle("View/Edit Data");
+                            stage.initModality(Modality.NONE);
+                            stage.initOwner(null);
+
+                            stage.show();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            //System.out.println("AH NO!");
+                        }
+
+                    }
+                }
+            });
+        }*/
         airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
 
             @Override
@@ -498,15 +537,14 @@ public class GUIController implements Initializable{
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
                         root = loader.load();
-
                         AirlinePopUpController popUpC = loader.getController();
 
-                       // setAirlinePopUpController(popUpController);
+                       // setAirlinePopUpController(popUpC);
                         popUpC.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
                         popUpC.setUpPopUp();
 
-                        //airlinePopUpController.setMainController();
-                        setAirlinePopUpController(popUpC);
+                        popUpC.setMainController(instance);
+                        //setAirlinePopUpController(popUpC);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -948,6 +986,7 @@ public class GUIController implements Initializable{
     //Bradley
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        /*
         Stage stage;
         //Parent root;
         //stage = new Stage();
@@ -959,13 +998,14 @@ public class GUIController implements Initializable{
         }
         airlinePopUpController = loader.getController();
         airlinePopUpController.setMainController(this);
+        */
     }
 
-    public void setAirlinePopUpController(AirlinePopUpController airlinePopUpController) {
+    /*public void setAirlinePopUpController(AirlinePopUpController airlinePopUpController) {
         this.airlinePopUpController = airlinePopUpController;
-    }
+    }*/
 
-    public AirlinePopUpController getAirlinePopUpController(){
-        return airlinePopUpController;
-    }
+    //public AirlinePopUpController getAirlinePopUpController(){
+        //return airlinePopUpController;
+    //}
 }

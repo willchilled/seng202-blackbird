@@ -154,6 +154,11 @@ public class Filter {
     }
 
 
+    public static ArrayList<AirlinePoint> getAllAirlinePointsfromDB() {
+        String sql = " SELECT * FROM AIRLINE;";
+        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
+        return allPoints;
+    }
 
 //    public static ArrayList<FlightPoint> getallFlightPoints() {
 //        String sql = " SELECT * FROM FLIGHT;";
@@ -215,6 +220,7 @@ public class Filter {
                     "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", search);
         }
 
+
         ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
         //System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
@@ -227,6 +233,7 @@ public class Filter {
             }
         }
 
+
         if (!allNone){
             outputString += "WHERE ";
             for (int i=0; i<menusPressed.size(); i++){
@@ -235,6 +242,7 @@ public class Filter {
                     outputString += String.format(allSelections.get(i), currentSelection);
                 }
             }
+
         }
 
         //If there are no filters selected, we must begin the statement with WHERE before beginning the search query

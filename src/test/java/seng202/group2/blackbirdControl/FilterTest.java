@@ -27,16 +27,16 @@ public class FilterTest extends TestCase {
         File airportsFile = new File(airportsFileString);
         File routesFile = new File(routesFileString);
 
-        ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
+        //ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
-        ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
+        //ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
 
 
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
-        BBDatabase.addAirlinePointstoDB(airlinePoints);
+        //BBDatabase.addAirlinePointstoDB(airlinePoints);
         BBDatabase.addAirportPointsToDB(airportPoints);
-        BBDatabase.addRoutePointstoDB(routePoints);
+        //BBDatabase.addRoutePointstoDB(routePoints);
         //myAirlineData = Filter.getAllAirlinePointsfromDB();
     }
 
@@ -196,21 +196,25 @@ public class FilterTest extends TestCase {
     }
 
     public void testFilterAiportsBySelections() throws Exception {
-        ArrayList<AirportPoint> allPoints = new ArrayList<>();
-        allPoints = Filter.filterAirportsBySelections("None", "");
+//        ArrayList<AirportPoint> allPoints = new ArrayList<>();
+//        allPoints = Filter.filterAirportsBySelections("None", "");
+//
+//        assertEquals(allPoints.size(), 100);
+//
+//        allPoints = Filter.filterAirportsBySelections("Greenland", "");
+//        assertEquals(allPoints.size(), 4);
+//
+//
+//        allPoints = Filter.filterAirportsBySelections("Greenland", "Sondrestrom");
+//
+//
+//        allPoints = Filter.filterAirportsBySelections("None", "Sondrestrom");
+//        assertEquals(allPoints.size(), 1);
 
-        assertEquals(allPoints.size(), 100);
-
-        allPoints = Filter.filterAirportsBySelections("Greenland", "");
-        assertEquals(allPoints.size(), 4);
-
-
-        allPoints = Filter.filterAirportsBySelections("Greenland", "Sondrestrom");
+        ArrayList<String> country = new ArrayList<>();
+        country.add("Country");
+        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(country, "Sondrestrom", "Airport");
         assertEquals(allPoints.size(), 1);
-
-        allPoints = Filter.filterAirportsBySelections("None", "Sondrestrom");
-        assertEquals(allPoints.size(), 1);
-
 
     }
 

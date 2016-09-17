@@ -25,7 +25,7 @@ public class FilterRefactor {
     }
 
 
-    public static ArrayList<DataPoint> filterOnSelections(ArrayList<String> menusPressed, String searchString, String type) {
+    public static ArrayList<DataPoint> filterSelections(ArrayList<String> menusPressed, String searchString, String type) {
         ArrayList<DataPoint> filtered;
         switch (type) {
             case "Airline": filtered = airlineFilter(menusPressed, searchString); break;

@@ -33,11 +33,11 @@ public class FilterRefactor {
         switch (type) {
             case "AirlinePoint":
                 //filtered = airlineFilter(menusPressed, searchString, type);
-                myQuery = airlineFilter(menusPressed, searchString, type);
+                myQuery = airlineFilter(menusPressed, searchString);
                 break;
-            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString, type); break;
-            case "RoutePoint": myQuery = routeFilter(menusPressed, searchString, type); break;
-            case "FlightPoint": myQuery = flightFilter(menusPressed, searchString, type); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString); break;
+            case "RoutePoint": myQuery = routeFilter(menusPressed, searchString); break;
+            case "FlightPoint": myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
         filtered =  DataBaseRefactor.performGenericQuery(myQuery, type);
@@ -45,14 +45,14 @@ public class FilterRefactor {
     }
 
 
-    private static String flightFilter(ArrayList<String> menusPressed, String searchString, String type) {
+    private static String flightFilter(ArrayList<String> menusPressed, String searchString) {
         //TODO
         //No filters for flights currently
         return null;
     }
 
 
-    private static String routeFilter(ArrayList<String> menusPressed, String searchString, String type) {
+    private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "EQUIPMENT.equipmentName=\"%s\" AND " ));
 
         String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
@@ -74,7 +74,7 @@ public class FilterRefactor {
     }
 
 
-    private static String airportFilter(ArrayList<String> menusPressed, String searchString, String type) {
+    private static String airportFilter(ArrayList<String> menusPressed, String searchString) {
         String sql = "SELECT * FROM AIRPORT ";
 
         boolean allNone = checkEmptyMenus(menusPressed);
@@ -102,7 +102,7 @@ public class FilterRefactor {
     }
 
 
-    private static String airlineFilter(ArrayList<String> menusPressed, String searchString, String type) {
+    private static String airlineFilter(ArrayList<String> menusPressed, String searchString) {
         String sql = "SELECT * FROM AIRLINE ";
 
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));

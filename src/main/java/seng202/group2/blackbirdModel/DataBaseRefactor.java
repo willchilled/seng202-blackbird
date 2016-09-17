@@ -131,7 +131,7 @@ public class DataBaseRefactor {
             preparedStatement.setFloat(5, flightPoint.getLatitude());
             preparedStatement.setFloat(6, flightPoint.getLongitude());
             preparedStatement.setInt(7, FlightCount);
-            System.out.println(FlightCount);
+           // System.out.println(FlightCount);
 
         } catch (SQLException e) {
             //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -163,7 +163,7 @@ public class DataBaseRefactor {
         }
         catch (Exception e){
  ;
-            System.out.println("Cant add: SHIT" +  myPoints.toString());
+            System.out.println("Cant add " +  myPoints.toString());
         }
     }
 
@@ -202,7 +202,7 @@ public class DataBaseRefactor {
 
         //make route sql text to execute
         String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        System.out.println(sql);
+        //System.out.println(sql);
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
             //System.out.println(preparedStatement + "AAAAH");
@@ -456,7 +456,6 @@ public class DataBaseRefactor {
                 "Equipment  VARCHAR(50), " +
                 "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
-        System.out.println("\n\n" + sql + "\n\n" + "HERE");
         return sql;
     }
 

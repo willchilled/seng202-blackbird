@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 
 import javafx.collections.FXCollections;
@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import seng202.group2.blackbirdControl.*;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
@@ -63,6 +64,12 @@ public class GUIController {
 //    }
     @FXML
     private TabPane mainTabPane;
+    @FXML private Tab flightTab;
+    @FXML private Tab routeTab;
+    @FXML private Tab airportTab;
+    @FXML private Tab airlineTab;
+
+
     @FXML
     private javafx.scene.control.MenuItem newProjMenu;
     @FXML
@@ -338,6 +345,8 @@ public class GUIController {
         airportFilterMenu.setItems(airPortCountryList);
         airportFilterMenu.setValue(airPortCountryList.get(0));
 
+        mainTabPane.getSelectionModel().select(airportTab);
+
 
 
     }
@@ -364,6 +373,10 @@ public class GUIController {
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        mainTabPane.getSelectionModel().select(airlineTab);
+
+
+
     }
 
     public void addRouteData(){
@@ -384,6 +397,7 @@ public class GUIController {
         setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
+        mainTabPane.getSelectionModel().select(routeTab);
 
     }
 
@@ -405,6 +419,7 @@ public class GUIController {
                     "Error", JOptionPane.ERROR_MESSAGE);
             System.out.println("Error in flight, aborted.");
         }
+        mainTabPane.getSelectionModel().select(flightTab);
     }
 
 

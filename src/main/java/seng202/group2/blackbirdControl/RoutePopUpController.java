@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -51,7 +51,7 @@ public class RoutePopUpController {
 
 
     @FXML
-    void setUpPopUp(){
+    public void setUpPopUp(){
         routeIDText.setText(String.valueOf(routePoint.getRouteID()));
         routeStopsText.setText(String.valueOf(routePoint.getStops()));
         routeDestText.setText(routePoint.getDstAirport());

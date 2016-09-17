@@ -49,7 +49,7 @@
    <center>
       <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" visible="false">
         <tabs>
-            <Tab text="Flights">
+            <Tab text="Flights" fx:id="flightTab">
                <content>
                   <GridPane>
                      <children>
@@ -141,7 +141,7 @@
                   </GridPane>
                </content>
             </Tab>
-            <Tab text="Routes">
+            <Tab text="Routes" fx:id="routeTab">
                <content>
                   <GridPane>
                      <columnConstraints>
@@ -216,7 +216,7 @@
                   </GridPane>
                </content>
             </Tab>
-            <Tab text="Airports">
+            <Tab text="Airports" fx:id="airportTab">
                <content>
                   <GridPane>
                      <columnConstraints>
@@ -285,7 +285,7 @@
                   </GridPane>
                </content>
             </Tab>
-            <Tab text="Airlines">
+            <Tab text="Airlines" fx:id="airlineTab">
                <content>
                   <GridPane>
                     <columnConstraints>

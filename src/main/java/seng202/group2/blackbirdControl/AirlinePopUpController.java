@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdView.GUIController;
+import seng202.group2.blackbirdControl.GUIController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +49,7 @@ public class AirlinePopUpController {
 
 
     @FXML
-    void setUpPopUp(){
+    public void setUpPopUp(){
         System.out.println("here!");
         nameText.setText(airlinePoint.getAirlineName());
         idText.setText(String.valueOf(airlinePoint.getAirlineID()));
@@ -172,7 +172,6 @@ public class AirlinePopUpController {
             activeText.setText(airlineActiveTextEdit.getText());
 
             BBDatabase.editDataEntry(sql);
-            //myGUI.airlinefilterButtonPressed();
 
 
 

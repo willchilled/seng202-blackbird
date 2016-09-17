@@ -38,7 +38,6 @@ public class AirportPopUpController {
     @FXML private Label airportTzText;
     @FXML private Text airportInvalidData;
     @FXML private TextField airportNameTextEdit;
-    @FXML private TextField airportIDTextEdit;
     @FXML private TextField airportCityTextEdit;
     @FXML private TextField airportCountryTextEdit;
     @FXML private TextField airportIATATextEdit;
@@ -82,7 +81,6 @@ public class AirportPopUpController {
 
         airportNameText.setVisible(false);
         airportNameTextEdit.setVisible(true);
-        airportIDTextEdit.setVisible(true);
         airportCityTextEdit.setVisible(true);
         airportCountryTextEdit.setVisible(true);
         airportIATATextEdit.setVisible(true);
@@ -100,9 +98,6 @@ public class AirportPopUpController {
 
         if(airportNameText.getText() != ""){
             airportNameTextEdit.setText(airportNameText.getText());
-        }
-        if(airportIdText.getText() != ""){
-            airportIDTextEdit.setText(airportIdText.getText());
         }
         if(airportCityText.getText() != ""){
             airportCityTextEdit.setText(airportCityText.getText());
@@ -142,7 +137,6 @@ public class AirportPopUpController {
     public void commitEdit(){
 
         String name = airportNameTextEdit.getText();
-        String id = airportIDTextEdit.getText();
         String city = airportCityTextEdit.getText();
         String country = airportCountryTextEdit.getText();
         String iata = airportIATATextEdit.getText();
@@ -154,14 +148,13 @@ public class AirportPopUpController {
         String dst = airportDstTextEdit.getText();
         String tz = airportTZTextEdit.getText();
 
-        List<String> attributes = Arrays.asList(name, id, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz);
+        List<String> attributes = Arrays.asList(name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz);
 
 
         if(validEntries(attributes)) {
 
             airportNameText.setVisible(true);
             airportNameTextEdit.setVisible(false);
-            airportIDTextEdit.setVisible(false);
             airportCityTextEdit.setVisible(false);
             airportCountryTextEdit.setVisible(false);
             airportIATATextEdit.setVisible(false);
@@ -178,15 +171,14 @@ public class AirportPopUpController {
             airportFinishButton.setVisible(false);
             airportCancelButton.setVisible(false);
 
-            String sql = String.format("UPDATE AIRPORT SET NAME='%1$s', ID='%2$s', CITY='%3$s', COUNTRY='%4$s'," +
-                            " IATA='%5$s', ICAO='%6$s', LATITUDE='%7$s', LONGITUDE='%8$s', ALTITUDE='%9$s'," +
-                    " TIMEZONE='%10$s', DST='%11$s', TZ='%12$s' WHERE ID='%13$s'",
-                    name, id, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz, airportIdText.getText());
+            String sql = String.format("UPDATE AIRPORT SET NAME='%1$s', CITY='%2$s', COUNTRY='%3$s'," +
+                            " IATA='%4$s', ICAO='%5$s', LATITUDE='%6$s', LONGITUDE='%7$s', ALTITUDE='%8$s'," +
+                    " TIMEZONE='%9$s', DST='%10$s', TZ='%11$s' WHERE ID='%12$s'",
+                    name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz, airportIdText.getText());
 
             System.out.println(sql);
 
             airportNameText.setText(airportNameTextEdit.getText());
-            airportIdText.setText(airportIDTextEdit.getText());
             airportCityText.setText(airportCityTextEdit.getText());
             airportCountryText.setText(airportCountryTextEdit.getText());
             airportIataText.setText(airportIATATextEdit.getText());
@@ -210,8 +202,7 @@ public class AirportPopUpController {
     public void cancelEdit(){
 
         airportNameText.setVisible(true);
-        airportNameTextEdit.setVisible(false);
-        airportIDTextEdit.setVisible(false);
+        airportNameTextEdit.setVisible(false);;
         airportCityTextEdit.setVisible(false);
         airportCountryTextEdit.setVisible(false);
         airportIATATextEdit.setVisible(false);

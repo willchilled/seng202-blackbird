@@ -105,7 +105,6 @@
                   <Label fx:id="airportTimeZoneText" text="timezone" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
                   <Label fx:id="airportDstText" text="dst" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
                   <Label fx:id="airportTzText" text="tz" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
-                  <TextField fx:id="airportIDTextEdit" promptText="eg 2009" visible="false" GridPane.columnIndex="1" />
                   <TextField fx:id="airportCityTextEdit" promptText="eg Chirstchurch" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="airportCountryTextEdit" promptText="eg New Zealand" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="airportIATATextEdit" promptText="eg CHC" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />

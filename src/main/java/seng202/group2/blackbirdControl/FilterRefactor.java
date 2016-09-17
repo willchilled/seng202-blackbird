@@ -144,7 +144,7 @@ public class FilterRefactor {
     private static ArrayList<String> filterUnique(String type, String input) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
         String sql = "SELECT DISTINCT %s from %s";
         sql = String.format(sql, input, type);
-        ArrayList<String> menuItems = BBDatabase.performDistinctStringQuery(sql);   //unsure about this
+        ArrayList<String> menuItems = BBDatabase.performQuery(sql);   //unsure about this
         Collections.sort(menuItems, String.CASE_INSENSITIVE_ORDER);
         return menuItems;
     }

@@ -102,11 +102,12 @@ public class FilterRefactor {
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){
             sql = generateQueryString(sql, menusPressed, allSelections);
-        } else {
-            sql = removeLastAND(sql);
         }
         String search = "";
         if (searchString.length() >0){
+            if(allNone){
+                sql += " WHERE ";
+            }
             search = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
                     "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", searchString);
         }

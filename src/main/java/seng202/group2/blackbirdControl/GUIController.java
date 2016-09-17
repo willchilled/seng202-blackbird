@@ -69,11 +69,19 @@ public class GUIController {
     @FXML private Tab airportTab;
     @FXML private Tab airlineTab;
 
+    @FXML private MenuItem exportFlightMenuButton;
+    @FXML private MenuItem exportAirportMenuButton;
+    @FXML private MenuItem exportAirlineMenuButton;
+    @FXML private MenuItem exportRouteMenuButton;
+
+
 
     @FXML
     private javafx.scene.control.MenuItem newProjMenu;
     @FXML
     private MenuItem addDataMenuButton;
+    @FXML
+    private MenuItem exportDataMenuButton;
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
@@ -244,6 +252,7 @@ public class GUIController {
         BBDatabase.createTables();
         //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
+        exportDataMenuButton.setDisable(false);
         //addDataMenuButton.setDisable(true);
 
 
@@ -328,6 +337,7 @@ public class GUIController {
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
+        exportAirportMenuButton.setDisable(false);
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
@@ -353,6 +363,7 @@ public class GUIController {
 
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
+        exportAirlineMenuButton.setDisable(false);
 
         File f;
         f = getFile();
@@ -381,6 +392,7 @@ public class GUIController {
 
     public void addRouteData(){
         //adds route data into route list
+        exportRouteMenuButton.setDisable(false);
 
         System.out.println("Add Route Data");
 
@@ -415,9 +427,10 @@ public class GUIController {
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Error in flight, aborted.");
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//            System.out.println("Error in flight, aborted.");
+            //TODO
         }
         mainTabPane.getSelectionModel().select(flightTab);
     }
@@ -649,6 +662,7 @@ public class GUIController {
             @Override
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    exportFlightMenuButton.setDisable(false);
 
                     Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
 

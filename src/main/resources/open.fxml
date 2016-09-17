@@ -28,12 +28,12 @@
                         <MenuItem fx:id="airportMenuItem" mnemonicParsing="false" onAction="#addAirportData" text="Airport" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Export Data">
+                  <Menu fx:id="exportDataMenuButton" disable="true" mnemonicParsing="false" text="Export Data">
                     <items>
-                      <MenuItem disable="false" mnemonicParsing="false" onAction="#exportRouteData" text="Route" visible="true" />
-                        <MenuItem disable="false" mnemonicParsing="false" onAction="#exportFlightData" text="Flight" visible="true" />
-                        <MenuItem mnemonicParsing="false" onAction="#exportAirlineData" text="Airline" />
-                        <MenuItem fx:id="exportAirportMenuButton" mnemonicParsing="false" onAction="#exportAirportData" text="Airport" />
+                      <MenuItem fx:id="exportRouteMenuButton" disable="true" mnemonicParsing="false" onAction="#exportRouteData" text="Route" visible="true" />
+                        <MenuItem fx:id="exportFlightMenuButton" disable="true" mnemonicParsing="false" onAction="#exportFlightData" text="Flight" visible="true" />
+                        <MenuItem fx:id="exportAirlineMenuButton" disable="true" mnemonicParsing="false" onAction="#exportAirlineData" text="Airline" />
+                        <MenuItem fx:id="exportAirportMenuButton" disable="true" mnemonicParsing="false" onAction="#exportAirportData" text="Airport" />
                     </items>
                   </Menu>
             </items>
@@ -47,9 +47,9 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" visible="false">
+      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab text="Flights" fx:id="flightTab">
+            <Tab fx:id="flightTab" text="Flights">
                <content>
                   <GridPane>
                      <children>
@@ -79,17 +79,17 @@
                               </AnchorPane>
                            </content>
                         </TitledPane>
-                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                        <GridPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="1016.0" minWidth="10.0" prefWidth="563.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="655.0" minWidth="10.0" prefWidth="565.0" />
                           </columnConstraints>
                           <rowConstraints>
                               <RowConstraints maxHeight="308.0" minHeight="10.0" prefHeight="32.0" vgrow="NEVER" />
                             <RowConstraints maxHeight="632.0" minHeight="10.0" prefHeight="624.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <GridPane prefHeight="613.0" prefWidth="631.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 </columnConstraints>
@@ -97,7 +97,7 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <TableView fx:id="flightPointTable" maxWidth="1.7976931348623157E308" prefHeight="559.0" prefWidth="982.0">
+                                    <TableView fx:id="flightPointTable" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
@@ -106,7 +106,7 @@
                                           <TableColumn fx:id="flightPointLocaleCol" prefWidth="75.0" text="LocaleID" />
                                           <TableColumn fx:id="flightPointAltitudeCol" prefWidth="75.0" text="Altitude" />
                                           <TableColumn fx:id="flightPointLatitudeCol" prefWidth="75.0" text="Latitude" />
-                                          <TableColumn fx:id="flightPointLongitudeCol" prefWidth="75.0" text="Longitude" />
+                                          <TableColumn fx:id="flightPointLongitudeCol" minWidth="0.0" prefWidth="105.0" text="Longitude" />
                                        </columns>
                                        <GridPane.margin>
                                           <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
@@ -114,10 +114,11 @@
                                     </TableView>
                                  </children>
                               </GridPane>
-                              <TableView fx:id="flightTable" prefHeight="585.0" prefWidth="519.0" GridPane.rowIndex="1">
+                              <TableView fx:id="flightTable" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                  <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
                                 <columns>
                                   <TableColumn fx:id="flightSourceCol" prefWidth="246.0" text="Source" />
-                                  <TableColumn fx:id="flightDestCol" prefWidth="272.0" text="Destination" />
+                                  <TableColumn fx:id="flightDestCol" prefWidth="201.0" text="Destination" />
                                 </columns>
                                  <GridPane.margin>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
@@ -141,7 +142,7 @@
                   </GridPane>
                </content>
             </Tab>
-            <Tab text="Routes" fx:id="routeTab">
+            <Tab fx:id="routeTab" text="Routes">
                <content>
                   <GridPane>
                      <columnConstraints>
@@ -216,7 +217,7 @@
                   </GridPane>
                </content>
             </Tab>
-            <Tab text="Airports" fx:id="airportTab">
+            <Tab fx:id="airportTab" text="Airports">
                <content>
                   <GridPane>
                      <columnConstraints>
@@ -285,7 +286,7 @@
                   </GridPane>
                </content>
             </Tab>
-            <Tab text="Airlines" fx:id="airlineTab">
+            <Tab fx:id="airlineTab" text="Airlines">
                <content>
                   <GridPane>
                     <columnConstraints>

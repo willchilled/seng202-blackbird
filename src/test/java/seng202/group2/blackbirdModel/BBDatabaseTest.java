@@ -33,6 +33,7 @@ public class BBDatabaseTest extends TestCase {
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
         BBDatabase.addAirlinePointstoDB(airlinePoints);
+
         BBDatabase.addAirportPointsToDB(airportPoints);
         BBDatabase.addRoutePointstoDB(routePoints);
         //myAirlineData = Filter.getAllAirlinePointsfromDB();

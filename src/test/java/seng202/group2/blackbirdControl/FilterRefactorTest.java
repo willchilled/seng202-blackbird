@@ -94,7 +94,7 @@ public class FilterRefactorTest extends TestCase {
 
         selectedFields = new ArrayList<>(Arrays.asList("None", "None"));
         dataPoints = FilterRefactor.filterSelections(selectedFields, search, "AirlinePoint");
-        assertEquals(dataPoints.size(), 98); //Both lines are None
+        assertEquals(dataPoints.size(), 100); //Both lines are None
 
         selectedFields = new ArrayList<>(Arrays.asList("Russia", "Y"));
         dataPoints = FilterRefactor.filterSelections(selectedFields, search, "AirlinePoint");

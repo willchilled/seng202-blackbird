@@ -18,14 +18,22 @@ import java.util.ArrayList;
  */
 public class AirlineAddingPopUpController {
 
-    @FXML private TextField Name;
-    @FXML private TextField ID;
-    @FXML private TextField Alias;
-    @FXML private TextField IATA;
-    @FXML private TextField ICAO;
-    @FXML private TextField Callsign;
-    @FXML private TextField Country;
-    @FXML private CheckBox Active;
+    @FXML
+    private TextField Name;
+    @FXML
+    private TextField ID;
+    @FXML
+    private TextField Alias;
+    @FXML
+    private TextField IATA;
+    @FXML
+    private TextField ICAO;
+    @FXML
+    private TextField Callsign;
+    @FXML
+    private TextField Country;
+    @FXML
+    private CheckBox Active;
     private Stage adderStage;
     private Parent root;
 
@@ -38,7 +46,7 @@ public class AirlineAddingPopUpController {
         adderStage.show();
     }
 
-    public void createButtonPressed(){;
+    public void createButtonPressed() {
 
         String[] airlinePoint = getValues().split(", ");
         int count = BBDatabase.getMaxInColumn("AIRLINE", "ID");
@@ -51,12 +59,12 @@ public class AirlineAddingPopUpController {
         adderStage.close();
     }
 
-    public void cancleButtonPressed(){
+    public void cancleButtonPressed() {
         //just closes the stage
         adderStage.close();
     }
 
-    private String getValues(){
+    private String getValues() {
         String airlineName = Name.getText().toString();
         String airlineID = ID.getText().toString();
         String airlineAlias = Alias.getText().toString();
@@ -73,10 +81,10 @@ public class AirlineAddingPopUpController {
         values += airlineICAO + ", ";
         values += airlineCallsign + ", ";
         values += airlineCountry + ", ";
-        if (ActiveChecked){
+        if (ActiveChecked) {
             String airlineActive = "Y";
             values += airlineActive;
-        }else{
+        } else {
             String airlineActive = "N";
             values += airlineActive;
         }

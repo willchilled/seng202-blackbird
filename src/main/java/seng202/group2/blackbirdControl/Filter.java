@@ -3,24 +3,13 @@ package seng202.group2.blackbirdControl;
 import seng202.group2.blackbirdModel.*;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by mch230 on 25/08/16.
  */
 public class Filter {
-    //filter airports when given a single country
-    public static ArrayList<AirportPoint> filterAirportCountry(ArrayList<AirportPoint> airports, String country) {
-       // System.out.println(country);
-       // country = "\"" + country + "\""; //THIS WILL NEED TO CHANGE IF WE Change how stuff goes intot he table
-        ArrayList<AirportPoint> filteredAirports = new ArrayList<AirportPoint>();
-        for (AirportPoint airport : airports) {
-           // System.out.println(airport.getAirportName());
-            if (airport.getAirportCountry().equals(country)) {
-                filteredAirports.add(airport);
-            }
-        }
-        return filteredAirports;
-    }
 
     //filter airlines when given a single country
     public static ArrayList<AirlinePoint> filterAirlineCountry(ArrayList<AirlinePoint> airlines, String country) {
@@ -31,27 +20,6 @@ public class Filter {
             }
         }
         return filteredAirlines;
-    }
-
-    //filter active or inactive airlines
-    public static ArrayList<AirlinePoint> activeAirlines(ArrayList<AirlinePoint> airlines, boolean active) {
-        if (active) {
-            ArrayList<AirlinePoint> activeAirlines = new ArrayList<AirlinePoint>();
-            for (AirlinePoint airline : airlines) {
-                if (airline.getActive().equals("Y")) {
-                    activeAirlines.add(airline);
-                }
-            }
-            return activeAirlines;
-        } else {
-            ArrayList<AirlinePoint> inactiveAirlines = new ArrayList<AirlinePoint>();
-            for (AirlinePoint airline : airlines) {
-                if (airline.getActive().equals("N")) {
-                    inactiveAirlines.add(airline);
-                }
-            }
-            return inactiveAirlines;
-        }
     }
 
     //filter routes based on departure location
@@ -92,12 +60,26 @@ public class Filter {
     }
 
     //filter routes based on equipment (from drop down?)
-    public static void routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
-        for (RoutePoint route : routes) {
-            //if (route.getEquipment())
+    public static ArrayList<RoutePoint> routeEquipment(ArrayList<RoutePoint> routes, String equipment) {
+        ArrayList<RoutePoint> equipmentRoutes = new ArrayList<>();
+        String patternString;
+        if (equipment.isEmpty()) {
+            patternString = "^$";
+        } else {
+            String[] newString = equipment.split(" ");
+            patternString = "\\b(" + String.join("|", newString) + ")\\b";
         }
-    }
 
+        Pattern pattern = Pattern.compile(patternString);
+
+        for (RoutePoint route : routes) {
+            Matcher matcher = pattern.matcher(route.getEquipment());
+            if (matcher.find()) {
+                equipmentRoutes.add(route);
+            }
+        }
+        return equipmentRoutes;
+    }
 
 
     public static ArrayList<String> filterUniqueAirportCountries(){
@@ -139,8 +121,7 @@ public class Filter {
 
     public static ArrayList<AirlinePoint> getAllAirlinePointsfromDB() {
         String sql = " SELECT * FROM AIRLINE;";
-        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(sql);
-        return allPoints;
+        return BBDatabase.performAirlinesQuery(sql);
     }
 
 //    public static ArrayList<FlightPoint> getallFlightPoints() {
@@ -244,9 +225,8 @@ public class Filter {
 
         System.out.println("Perfomring query:"+ outputString);
 
-        ArrayList<AirlinePoint> allPoints = BBDatabase.performAirlinesQuery(outputString);
 
-        return allPoints;
+        return BBDatabase.performAirlinesQuery(outputString);
     }
 
     public static ArrayList<RoutePoint> filterRoutesBySelections2(ArrayList<String> menusPressed, String searchQuery) {
@@ -337,9 +317,6 @@ public class Filter {
             }
 
         }
-
-
-
         return routePointsCP;
     }
 
@@ -483,14 +460,7 @@ public class Filter {
         String sql = "SELECT EquipmentName FROM EQUIPMENT WHERE IDnum=\"%1$s\"";
         String myEquipment = "";
         sql = String.format(sql, id);
-        ArrayList<String> equipment = BBDatabase.performDistinctStringQuery(sql);
-        //System.out.println(equipment);
-
-//        for (String equip: equipment){
-//            myEquipment += equip + " ";
-//        }
-        return equipment;
-
+        return BBDatabase.performDistinctStringQuery(sql);
     }
 
     private static String removeLastAND(String outputString) {

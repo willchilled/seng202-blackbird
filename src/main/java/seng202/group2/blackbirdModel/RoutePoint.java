@@ -1,5 +1,9 @@
 package seng202.group2.blackbirdModel;
 
+/**
+ * A subclass of dataPoint that stores information about a route
+ */
+
 public class RoutePoint extends DataPoint {
 
     private int routeID;    //our given id to routes
@@ -18,13 +22,32 @@ public class RoutePoint extends DataPoint {
     private AirportPoint destination;
     private int correctEntry=1;
 
-
+    /**
+     * Creates a RoutePoint with an airline and airlineID
+     * @param airline The airline IATA code for the route
+     * @param airlineID The airlineID for the route
+     */
     public RoutePoint(String airline, int airlineID) {
 
         this.airline = airline;
         this.airlineID = airlineID;
     }
 
+    /**
+     * Attempts to create an RoutePoint with a list of strings of length 9.
+     * If successful it creates an RoutePoint with values from list and correctEntry as 1.
+     * If unsuccessful it creates am RoutePoint with routeID -1, airline as currentLine.toString() and correctEntry 0.
+     * @param currentLine The list of strings holding the information for the RoutePoint in index of:
+     *                    0 airline,
+     *                    1 airlineID,
+     *                    2 scrAirport,
+     *                    3 scrAirportID,
+     *                    4 dstAirport,
+     *                    5 dstAirportID,
+     *                    6 codeshare,
+     *                    7 stops,
+     *                    8 equipment,
+     */
     public RoutePoint(String[] currentLine) {
         super();
 
@@ -55,7 +78,11 @@ public class RoutePoint extends DataPoint {
 
     }
 
-
+    /**
+     * A function to determine if a RoutePoint has the same routeID
+     * @param obj A RoutePoint to check equality of type against
+     * @return  A boolean variable, true if the RoutePoint has the same routeID
+     */
     @Override
     public boolean equals(Object obj) {
         RoutePoint mypoint =  (RoutePoint) obj;
@@ -158,23 +185,12 @@ public class RoutePoint extends DataPoint {
         this.destination = destination;
     }
 
-//	public int getCorrectEntry() {
-//		return correctEntry;
-//	}
-//
-//	public void setCorrectEntry(int correctEntry) {
-//		this.correctEntry = correctEntry;
-//	}
-
+    /**
+     * Returns the RoutePoint in the form of a string
+     * @return airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment
+     */
     @Override
     public String toString() {
-        //WE HAVE ADDED IN A ROUTE ID...SHOULD I EXPORT THIS? OR WILL IT NOT MATTER BECAUSE IT WILL BE RE-LOADED THE SAME?
-        //WHAT IF USER FILTERS DATA AND EXPORTS, THE IDS WILL BE DIFFERENT WHEN RE-LOADED?
-        //NOT EXPORTING FOR NOW, BUT NEED TO DISCUSS
-
-
-        //String, int, string, int, string, int, string, int, string
-
         return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
                 airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
 

@@ -16,11 +16,12 @@ public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
 
-/**
+    /*
     public AirlinePopUpController(AirlinePoint airlinePoint) {
         this.airlinePoint = airlinePoint;
         this.airlineName = airlinePoint.getAirlineName();
-    }**/
+    }
+    */
 
     @FXML private Label nameText;
     @FXML private Label idText;

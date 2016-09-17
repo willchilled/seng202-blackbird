@@ -1,5 +1,8 @@
 package seng202.group2.blackbirdModel;
 
+/**
+ * A super class for the data points held in the program
+ */
 public class DataPoint {
      /* This is a more generic type of Data called a dataPoint
         Its type is defined by a string called type
@@ -58,6 +61,11 @@ public class DataPoint {
         return currentPoint;
     }
 
+    /**
+     * A function to determine if a data point is of the same type
+     * @param obj A data point to check equality of type against
+     * @return A boolean variable, true if the data point is of the same type
+     */
     @Override
     public boolean equals(Object obj) {
         //megan's test for bad data...
@@ -65,11 +73,6 @@ public class DataPoint {
         if (this.getType() == mypoint.getType()) return true;
         else return false;
     }
-
-
-
-
-
 
 
 }

@@ -119,22 +119,22 @@ public class BBDatabase {
                 "Dstid      INTEGER NOT NULL /*ID number for destination location*/," +
                 "Codeshare  CHAR(1) constraint check_codeshare check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
                 "Stops      INTEGER NOT NULL /*Number of stops the route takes*/," +
-                "foreign key (Srcid, Dstid) references AIRPORT," +    //foreign key can only be primary key of other table
-                "PRIMARY KEY (IDnum)" +
+                "Equipment  VARCHAR(50), " +
+                "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
         return sql;
     }
 
-    private static String createEquipmentTable(){
-        //creates an equipment table for sqlite, is used to give routes the multivalued atribute equipment
-        String sql = "CREATE TABLE EQUIPMENT" +
-                "(IDnum          INTEGER NOT NULL /*Comes from route*/, " +
-                "EquipmentName CHAR(3) NOT NULL," +     //can this be null?
-                "PRIMARY KEY (EquipmentName, IDnum), "+
-                "FOREIGN KEY (IDnum) REFERENCES ROUTE (IDnum)" +
-                ")";
-        return sql;
-    }
+//    private static String createEquipmentTable(){
+//        //creates an equipment table for sqlite, is used to give routes the multivalued atribute equipment
+//        String sql = "CREATE TABLE EQUIPMENT" +
+//                "(IDnum          INTEGER NOT NULL /*Comes from route*/, " +
+//                "EquipmentName CHAR(3) NOT NULL," +     //can this be null?
+//                "PRIMARY KEY (EquipmentName, IDnum), "+
+//                "FOREIGN KEY (IDnum) REFERENCES ROUTE (IDnum)" +
+//                ")";
+//        return sql;
+//    }
 
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
@@ -185,8 +185,8 @@ public class BBDatabase {
             sql = createRouteTable();
             stmt.executeUpdate(sql);
 
-            sql = createEquipmentTable();
-            stmt.executeUpdate(sql);
+//            sql = createEquipmentTable();
+//            stmt.executeUpdate(sql);
 
             sql = createFlightTable();
             stmt.executeUpdate(sql);
@@ -373,9 +373,10 @@ public class BBDatabase {
         int dstid = route.getDstAirportID();
         String codeshare = route.getCodeshare();
         int Stops = route.getStops();
+        String equip = route.getEquipment();
 
         //make route sql text to execute
-        String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
+        String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment)" +
                 "VALUES (" +
                 +IDnum + ", " +
                 "\"" + Airline + "\", " +
@@ -385,13 +386,14 @@ public class BBDatabase {
                 "\"" + dst + "\", " +
                 dstid + ", " +
                 "\"" + codeshare + "\", " +
-                Stops + ");";
+                Stops + ", " + "\"" + equip + "\"" + ");";
 
-
+        //System.out.println(routeSql);
         try {
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
             //bad route data
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.out.println("Could not add route: " + route);
             return;
         }
@@ -399,24 +401,23 @@ public class BBDatabase {
 
 
         //equipment is special cos its a dick
-        String strEquipment = route.getEquipment();
-        String[] ListEquipment = strEquipment.split("\\s+");
+//        Strinequip
 
         //make equipment sql
         //for all equipment in route
-        for (String equip : ListEquipment) {
-            //add equipment to equipment table
-            String EquipSql = "INSERT INTO EQUIPMENT (IDnum, EquipmentName)" +
-                    "VALUES(" +
-                    "" + IDnum + ", " +
-                    "\"" + equip + "\");";
-            try {
-                stmt.executeUpdate(EquipSql);
-            }catch  (SQLException e){
-                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                System.out.println("Could not add equipment on: " + route);
-            }
-        }
+//        for (String equip : ListEquipment) {
+//            //add equipment to equipment table
+//            String EquipSql = "INSERT INTO EQUIPMENT (IDnum, EquipmentName)" +
+//                    "VALUES(" +
+//                    "" + IDnum + ", " +
+//                    "\"" + equip + "\");";
+//            try {
+//                stmt.executeUpdate(EquipSql);
+//            }catch  (SQLException e){
+//                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//                System.out.println("Could not add equipment on: " + route);
+//            }
+//        }
     }
 
     //Flight Adding
@@ -645,6 +646,7 @@ public class BBDatabase {
                 String destID = rs.getString("Dstid");
                 String codeShare = rs.getString("Codeshare");
                 String stops = rs.getString("Stops");
+                String equip = rs.getString("Equipment");
 
 
                 // System.out.println(airportName);
@@ -656,6 +658,7 @@ public class BBDatabase {
                 myPoint.setCodeshare(codeShare);
                 myPoint.setStops(Integer.parseInt(stops));
                 myPoint.setRouteID(routeID);
+                myPoint.setEquipment(equip);
 
                 allPoints.add(myPoint);
             }
@@ -734,81 +737,81 @@ public class BBDatabase {
 
 
 
-    public static ArrayList<RoutePoint> performJoinRoutesEquipQuery(String sql) {
+//    public static ArrayList<RoutePoint> performJoinRoutesEquipQuery(String sql) {
+//
+//        Connection c = makeConnection();
+//        ArrayList<RoutePoint> allPoints = new ArrayList<RoutePoint>();
+//        String subQuery;
+//
+//        Statement stmt = null;
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//            c = DriverManager.getConnection(getDatabaseName());
+//            c.setAutoCommit(false);
+//            System.out.println("Opened database successfully");
+//            stmt = c.createStatement();
+//            ResultSet rs = stmt.executeQuery( sql );
+//            while ( rs.next() ) {
+//
+//                //System.out.println(rs.getInt(1) + "NOODLES");
+//                int routeID = rs.getInt("IDnum");
+//                String airline = rs.getString("Airline");
+//                String airlineID = rs.getString("Airlineid");
+//                String src = rs.getString("Src");
+//                String srcID = rs.getString("Srcid");
+//                String dest = rs.getString("Dst");
+//                String destID = rs.getString("Dstid");
+//                String codeShare = rs.getString("Codeshare");
+//                String stops = rs.getString("Stops");
+//
+//                int equipID = rs.getInt("Idnum");
+//                String equipName = rs.getString("equipmentName");
+//
+//                //System.out.println(equipID + equipName);
+//                subQuery = String.format("SELECT EQUIPMENT.Equipmentname FROM EQUIPMENT WHERE equipment.IDnum=\"%s\"", equipID);
+//                ArrayList<String> equipArray = performDistinctStringQuery(subQuery);
+//                equipName = joinEquipArray(equipArray);
+//                //System.out.println(equipName);
+//
+//
+//
+//                // System.out.println(airportName);
+//                RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
+//                myPoint.setSrcAirport(src);
+//                myPoint.setSrcAirportID(Integer.parseInt(srcID));
+//                myPoint.setDstAirport(dest);
+//                myPoint.setDstAirportID(Integer.parseInt(destID));
+//                myPoint.setCodeshare(codeShare);
+//                myPoint.setStops(Integer.parseInt(stops));
+//                myPoint.setRouteID(routeID);
+//                myPoint.setEquipment(equipName);
+//
+//                //System.out.println(myPoint.getRouteID() + " - " + myPoint.getEquipment());
+//                if (!allPoints.contains(myPoint)) {
+//                    allPoints.add(myPoint);
+//                }
+//            }
+//            rs.close();
+//            stmt.close();
+//            c.close();
+//        } catch ( Exception e ) {
+//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//            System.exit(0);
+//        }
+//        System.out.println("Routes Query done successfully:" + sql);
+//
+//        return allPoints;
+//
+//    }
 
-        Connection c = makeConnection();
-        ArrayList<RoutePoint> allPoints = new ArrayList<RoutePoint>();
-        String subQuery;
-
-        Statement stmt = null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( sql );
-            while ( rs.next() ) {
-
-                //System.out.println(rs.getInt(1) + "NOODLES");
-                int routeID = rs.getInt("IDnum");
-                String airline = rs.getString("Airline");
-                String airlineID = rs.getString("Airlineid");
-                String src = rs.getString("Src");
-                String srcID = rs.getString("Srcid");
-                String dest = rs.getString("Dst");
-                String destID = rs.getString("Dstid");
-                String codeShare = rs.getString("Codeshare");
-                String stops = rs.getString("Stops");
-
-                int equipID = rs.getInt("Idnum");
-                String equipName = rs.getString("equipmentName");
-
-                //System.out.println(equipID + equipName);
-                subQuery = String.format("SELECT EQUIPMENT.Equipmentname FROM EQUIPMENT WHERE equipment.IDnum=\"%s\"", equipID);
-                ArrayList<String> equipArray = performDistinctStringQuery(subQuery);
-                equipName = joinEquipArray(equipArray);
-                //System.out.println(equipName);
-
-
-
-                // System.out.println(airportName);
-                RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
-                myPoint.setSrcAirport(src);
-                myPoint.setSrcAirportID(Integer.parseInt(srcID));
-                myPoint.setDstAirport(dest);
-                myPoint.setDstAirportID(Integer.parseInt(destID));
-                myPoint.setCodeshare(codeShare);
-                myPoint.setStops(Integer.parseInt(stops));
-                myPoint.setRouteID(routeID);
-                myPoint.setEquipment(equipName);
-
-                //System.out.println(myPoint.getRouteID() + " - " + myPoint.getEquipment());
-                if (!allPoints.contains(myPoint)) {
-                    allPoints.add(myPoint);
-                }
-            }
-            rs.close();
-            stmt.close();
-            c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-        System.out.println("Routes Query done successfully:" + sql);
-
-        return allPoints;
-
-    }
-
-    private static String joinEquipArray(ArrayList<String> equipArray) {
-        //This function adds all the strings in the equipment array seperating them by spaces
-        String myEquipment = "";
-        for (int i=0; i<equipArray.size()-1; i++){
-            myEquipment += equipArray.get(i) + " ";
-        }
-        myEquipment += equipArray.get(equipArray.size()-1);
-        return myEquipment;
-    }
+//    private static String joinEquipArray(ArrayList<String> equipArray) {
+//        //This function adds all the strings in the equipment array seperating them by spaces
+//        String myEquipment = "";
+//        for (int i=0; i<equipArray.size()-1; i++){
+//            myEquipment += equipArray.get(i) + " ";
+//        }
+//        myEquipment += equipArray.get(equipArray.size()-1);
+//        return myEquipment;
+//    }
 }
 

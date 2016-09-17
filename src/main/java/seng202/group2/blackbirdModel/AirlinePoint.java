@@ -53,7 +53,7 @@ public class AirlinePoint extends DataPoint {
                 this.icao =currentLine[4];
                 this.callsign = currentLine[5];
                 this.country = currentLine[6].trim();    //should not be null, handle by parser later
-                this.active = currentLine[7].trim();
+                this.active = currentLine[7].trim().toUpperCase();
                 this.correctEntry = 1;
             }
             catch(NumberFormatException e) {

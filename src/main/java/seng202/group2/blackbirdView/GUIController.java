@@ -17,11 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdControl.AirlineAddingPopUpController;
-import seng202.group2.blackbirdControl.AirportAddingPopUpController;
-import seng202.group2.blackbirdControl.Exporter;
-import seng202.group2.blackbirdControl.Filter;
-import seng202.group2.blackbirdControl.RouteAddingPopUpController;
+import seng202.group2.blackbirdControl.*;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
@@ -231,7 +227,7 @@ public class GUIController {
         mainTabPane.setVisible(true);
         //SQQliteJDBC myDb = new SQQliteJDBC();
         //SQLiteJDBC.dropTables();
-        BBDatabase.createTables();
+        DataBaseRefactor.createTables();
         //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
         //addDataMenuButton.setDisable(true);
@@ -336,38 +332,28 @@ public class GUIController {
 
     }
 
-    public void addAirlineData(){
-        //Adds airline data into filter menu, updates airline data list
-
-        File f;
-        f = getFile();
-
-        //OOH I AM VALID NOW
-        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, "AirlinePoint");
-        //COME BACK HERE
-        DataBaseRefactor.insertDataPoints(myPoints);
-
-        for (DataPoint point: myPoints){
-            System.out.println(point);
-        }
-
-
-        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
-        BBDatabase.addAirlinePointstoDB(allAirlineData);
-
-
-        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
-
-        setAllAirlinePoints(validAirlineData);
-        setAirlineActiveList(populateAirlineActiveList());
-
-        airlineActiveMenu.setItems(getAirlineActiveList());
-        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
-        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
-        airlineFilterMenu.setItems(airlineCountryList);
-        airlineFilterMenu.setValue(airlineCountryList.get(0));
-        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
-    }
+//    public void addAirlineData(){
+//        //Adds airline data into filter menu, updates airline data list
+//
+//        File f;
+//        f = getFile();
+//
+//
+//        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, "AirlinePoint");
+//        DataBaseRefactor.insertDataPoints(myPoints);
+//
+//        ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints("Airline");
+//
+//        setAllAirlinePoints(validAirlineData);
+//        setAirlineActiveList(populateAirlineActiveList());
+//
+//        airlineActiveMenu.setItems(getAirlineActiveList());
+//        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
+//        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
+//        airlineFilterMenu.setItems(airlineCountryList);
+//        airlineFilterMenu.setValue(airlineCountryList.get(0));
+//        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+//    }
 
     public void addRouteData(){
         //adds route data into route list

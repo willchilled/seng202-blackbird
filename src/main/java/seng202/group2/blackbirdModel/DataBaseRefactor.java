@@ -37,6 +37,8 @@ public class DataBaseRefactor {
     public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
         System.out.println("HI");
 
+
+
         try {
 
             Connection currentConnection = makeConnection();
@@ -45,36 +47,42 @@ public class DataBaseRefactor {
             currentConnection = DriverManager.getConnection(getDatabaseName());
             currentConnection.setAutoCommit(false);
             stmt = currentConnection.createStatement();
+            PreparedStatement preparedStatement = null;
+
+
 
             for (DataPoint currentPoint : myPoints) {
                 //addSingleAirline(airline, stmt);
-                System.out.println(currentPoint.getType());
+                //System.out.println(currentPoint.getType());
 
                 String dataType = currentPoint.getType();
                 //DataTypes dataType = currentPoint.getType();
-                PreparedStatement preparedStatement = null;
+                //PreparedStatement preparedStatement = null;
 
                 switch (dataType){
                     case "AirlinePoint": //System.out.println("Hey");
                             preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
+                            break;
 
-                           // System.out.println(sql);
-                            //System.out.print(preparedStatement.toString());
-                           // preparedStatement.executeUpdate();
-                            preparedStatement.executeUpdate();
-                            //System.out.println(sql);
-                            addAirlinePoint(currentPoint);
-                            System.out.println("HERE");
-                        break;
-
-
+                    case "AirportPoint":
+                            preparedStatement = prepareInserAirportSql(currentPoint, preparedStatement, currentConnection);
                 }
 
+                try{
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+                }
+                catch (Exception e){
+                    System.out.println("Cant add: " +  currentPoint.toString());
+                }
 
 
             }
 
-            stmt.close();
+
+
+                //.close();
+            currentConnection.commit();
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
@@ -86,6 +94,69 @@ public class DataBaseRefactor {
         System.out.println("Records created successfully");
 
 
+
+
+    }
+
+    private static PreparedStatement prepareInserAirportSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
+        AirportPoint airport = (AirportPoint) currentPoint;
+
+
+        int airportID = airport.getAirportID();
+        String airportName = airport.getAirportName();
+        String City = airport.getAirportCity();
+        String Country = airport.getAirportCountry();
+        String Iata = airport.getIata();
+        String Icao = airport.getIcao();
+        float Latitude = airport.getLatitude();
+        float Longitude = airport.getLongitude();
+        float Altitude = airport.getAltitude();
+        float timezone = airport.getTimeZone();
+        String Dst = airport.getDst();
+        String tz = airport.getTz();
+
+        String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, LONGITUDE, ALTITUDE, TIMEZONE, DST, TZ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
+
+        try {
+            preparedStatement = currentConnection.prepareStatement(sql);
+            //System.out.println(preparedStatement + "AAAAH");
+            preparedStatement.setInt(1, airportID);
+            // System.out.println(preparedStatement + "AAAAH");
+            preparedStatement.setString(2, airportName);
+            preparedStatement.setString(3, City);
+            preparedStatement.setString(4, Country);
+            preparedStatement.setString(5, Iata);
+            preparedStatement.setString(6, Icao);
+            preparedStatement.setFloat(7, Latitude);
+            preparedStatement.setFloat(8, Longitude);
+            preparedStatement.setFloat(9, Altitude);
+            preparedStatement.setFloat(10, timezone);
+            preparedStatement.setString(11, Dst);
+            preparedStatement.setString(12, tz);
+        } catch (SQLException e) {
+
+            System.out.println("canont prepare statement");
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return preparedStatement;
+
+//        //System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
+//
+//        String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
+//                "VALUES (" +
+//                + airportID + ", \"" +
+//                airportName + "\", \"" +
+//                City + "\", \"" +
+//                Country + "\", \"" +
+//                Iata + "\", \"" +
+//                Icao + "\", " +
+//                Latitude + ", " +
+//                Longitude + ", " +
+//                Altitude + ", " +
+//                timezone + ", \"" +
+//                Dst + "\", \"" +
+//                tz + "\"); ";
 
 
     }
@@ -105,26 +176,14 @@ public class DataBaseRefactor {
         String callsign = airline.getCallsign();
         String country = airline.getCountry();
         String active = airline.getActive();
+        //System.out.println(active);
 
-        String t = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) VALUES  (?, ?, ?, ?, ?, ?, ?, ?);";
-
-        String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
-                "VALUES (" +
-                + id + ", \"" +
-                name + "\", \"" +
-                alias + "\", \"" +
-                iata + "\", \"" +
-                icao + "\", \"" +
-                callsign + "\", \"" +
-                country + "\", \"" +
-                active + "\");";
-
-
-        //System.out.println(sql);
-
+        String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) VALUES  (?,?,?,?,?,?,?,?);";
         try {
-            preparedStatement = currentConnection.prepareStatement(t);
+            preparedStatement = currentConnection.prepareStatement(sql);
+            //System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setInt(1, id);
+           // System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, alias);
             preparedStatement.setString(4, iata);
@@ -133,7 +192,7 @@ public class DataBaseRefactor {
             preparedStatement.setString(7, country);
             preparedStatement.setString(8, active);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("canont prepare statement");
         }
 
         return preparedStatement;
@@ -143,46 +202,9 @@ public class DataBaseRefactor {
     private static void addAirlinePoint(DataPoint currentPoint) {
 
 
+
     }
 
-
-    //    //Airline Adding
-//    public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
-//        //This method adds multiple points to the Database
-
-//    }
-//
-//    private static void addSingleAirline(AirlinePoint airline, Statement stmt) {
-//        int id = airline.getAirlineID();
-//        String name = airline.getAirlineName();
-//        //System.out.println(name);
-//        String alias = airline.getAirlineAlias();
-//        String iata = airline.getIata();
-//        String icao = airline.getIcao();
-//        String callsign = airline.getCallsign();
-//        String country = airline.getCountry();
-//        String active = airline.getActive();
-//
-//
-//
-//        String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
-//                "VALUES (" +
-//                + id + ", \"" +
-//                name + "\", \"" +
-//                alias + "\", \"" +
-//                iata + "\", \"" +
-//                icao + "\", \"" +
-//                callsign + "\", \"" +
-//                country + "\", \"" +
-//                active + "\");";
-//        // System.out.println(sql);
-//        try {
-//            stmt.executeUpdate(sql);
-//        } catch (SQLException e) {
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.out.println("Could not add: " + airline);
-//        }
-//    }
 
 
 
@@ -389,70 +411,7 @@ public class DataBaseRefactor {
         //System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
 
     }
-//
-//
-//    //##########################Adding  Data#########################################//
-//
-//    //Airline Adding
-//    public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
-//        //This method adds multiple points to the Database
-//        try {
-//
-//            Connection c = makeConnection();
-//            Statement stmt = null;
-//            Class.forName("org.sqlite.JDBC");
-//            c = DriverManager.getConnection(getDatabaseName());
-//            c.setAutoCommit(false);
-//            //System.out.println("Opened database successfully");
-//            stmt = c.createStatement();
-//
-//            for (AirlinePoint airline : airlinePoints) {
-//                addSingleAirline(airline, stmt);
-//            }
-//
-//            stmt.close();
-//            c.commit();
-//            c.close();
-//        } catch (Exception e) {
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//
-//            //System.exit(0);
-//            System.out.println("Could not add :");
-//        }
-//        System.out.println("Records created successfully");
-//    }
-//
-//    private static void addSingleAirline(AirlinePoint airline, Statement stmt) {
-//        int id = airline.getAirlineID();
-//        String name = airline.getAirlineName();
-//        //System.out.println(name);
-//        String alias = airline.getAirlineAlias();
-//        String iata = airline.getIata();
-//        String icao = airline.getIcao();
-//        String callsign = airline.getCallsign();
-//        String country = airline.getCountry();
-//        String active = airline.getActive();
-//
-//
-//
-//        String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) " +
-//                "VALUES (" +
-//                + id + ", \"" +
-//                name + "\", \"" +
-//                alias + "\", \"" +
-//                iata + "\", \"" +
-//                icao + "\", \"" +
-//                callsign + "\", \"" +
-//                country + "\", \"" +
-//                active + "\");";
-//        // System.out.println(sql);
-//        try {
-//            stmt.executeUpdate(sql);
-//        } catch (SQLException e) {
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.out.println("Could not add: " + airline);
-//        }
-//    }
+
 //
 //    //Airport Adding
 //    public static void addAirportPointsToDB(ArrayList<AirportPoint> airportPoints) {

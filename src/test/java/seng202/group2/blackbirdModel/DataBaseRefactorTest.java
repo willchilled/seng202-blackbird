@@ -2,6 +2,7 @@ package seng202.group2.blackbirdModel;
 
 import junit.framework.TestCase;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -40,6 +41,9 @@ public class DataBaseRefactorTest extends TestCase {
 
         DataBaseRefactor.createTables();
         DataBaseRefactor.insertDataPoints(airlinePoints);
+        DataBaseRefactor.insertDataPoints(airportPoint);
+
+
 
 
 

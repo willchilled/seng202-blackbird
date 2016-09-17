@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdView.AirlinePopUpController">
+<GridPane fx:id="airlinePopUp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="339.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.AirlinePopUpController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -84,6 +84,7 @@
                   <TextField fx:id="airlineICAOTextEdit" promptText="eg ANZ" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <TextField fx:id="airlineCallsignTextEdit" promptText="eg NEW ZEALAND" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <TextField fx:id="airlineActiveTextEdit" promptText="eg Y" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
                </children>
             </GridPane>
          </children>

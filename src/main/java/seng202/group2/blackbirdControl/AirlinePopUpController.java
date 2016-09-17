@@ -1,6 +1,5 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,16 +7,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdView.GUIController;
+import seng202.group2.blackbirdControl.GUIController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
-    private GUIController myGUI;
+    private GUIController mainController;
 
 /**
     public AirlinePopUpController(AirlinePoint airlinePoint) {
@@ -121,6 +119,8 @@ public class AirlinePopUpController {
 
     public void commitEdit(){
 
+
+
         String name = airlineNameTextEdit.getText();
         String id = airlineIDTextEdit.getText();
         String country = airlineCountryTextEdit.getText();
@@ -175,8 +175,10 @@ public class AirlinePopUpController {
             activeText.setText(airlineActiveTextEdit.getText());
 
             BBDatabase.editAirlineDataEntry(sql);
-            //myGUI.airlinefilterButtonPressed();
 
+            //Bradley
+            //This is where the error is
+            mainController.airlinefilterButtonPressed();
 
 
         }else{
@@ -208,6 +210,13 @@ public class AirlinePopUpController {
         return true;
 
     }
+
+    //setting up the main controller connection
+    //Bradley
+    public void setMainController(GUIController controller) {
+        this.mainController = controller;
+    }
+
 
 }
 

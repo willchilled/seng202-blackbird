@@ -1,9 +1,8 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.RoutePoint;
 
 public class RoutePopUpController {

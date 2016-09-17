@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 
 import javafx.collections.FXCollections;
@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,32 +16,34 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.TableCell;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdControl.AirlineAddingPopUpController;
-import seng202.group2.blackbirdControl.AirportAddingPopUpController;
-import seng202.group2.blackbirdControl.Exporter;
-import seng202.group2.blackbirdControl.Filter;
-import seng202.group2.blackbirdControl.RouteAddingPopUpController;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
-import java.io.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 import static javafx.fxml.FXMLLoader.load;
 
 /**
  * Created by emr65 on 13/08/16.
  */
-public class GUIController {
+public class GUIController implements Initializable{
+    //FOR THE POPUPS
+    //Bradley
+    @FXML private AirlinePopUpController airlinePopUpController;
+
+
+
+
+
+
 
     //ObservableList<String> airPortCountryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
@@ -140,6 +143,10 @@ public class GUIController {
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
+    public GUIController() throws IOException {
+
+    }
+
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
     public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
@@ -181,7 +188,7 @@ public class GUIController {
     //Airline Popup Info
   //  @FXML private Text nameText;
 
-    @FXML
+/*    @FXML
     private void initialize(){
         //Automatic initialisation when the program starts
 
@@ -204,7 +211,7 @@ public class GUIController {
         routesFilterbyEquipMenu.setValue(getRoutesFilterbyEquipList().get(0));
         routesFilterbyEquipMenu.setItems(getRoutesFilterbyEquipList());
 
-    }
+    }*/
 
     private File getFile() {
         //gets a file of a specified type
@@ -473,9 +480,13 @@ public class GUIController {
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
         airlineActCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
 
-
-
+        //Bradley
+        //This creates the popup when the user double clicks on a table entry.
+        //I think what I have done here is silly- but I can't set the mainController in the initialize method without
+        //An instance of the AirlinePopUpController...but this only gets created in this method once the user has double clicked.
+        //So I have it created both here and in the initialize method which is maybe why it isn't working?
         airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+
             @Override
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
@@ -487,9 +498,15 @@ public class GUIController {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
                         root = loader.load();
-                        AirlinePopUpController popUpController = loader.getController();
-                        popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
-                        popUpController.setUpPopUp();
+
+                        AirlinePopUpController popUpC = loader.getController();
+
+                       // setAirlinePopUpController(popUpController);
+                        popUpC.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
+                        popUpC.setUpPopUp();
+
+                        //airlinePopUpController.setMainController();
+                        setAirlinePopUpController(popUpC);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -927,8 +944,28 @@ public class GUIController {
 
     }
 
+    //This is probably where the issues are coming from
+    //Bradley
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Stage stage;
+        //Parent root;
+        //stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
+        try {
+            Parent root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        airlinePopUpController = loader.getController();
+        airlinePopUpController.setMainController(this);
+    }
 
+    public void setAirlinePopUpController(AirlinePopUpController airlinePopUpController) {
+        this.airlinePopUpController = airlinePopUpController;
+    }
 
-
-
+    public AirlinePopUpController getAirlinePopUpController(){
+        return airlinePopUpController;
+    }
 }

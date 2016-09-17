@@ -3,8 +3,7 @@ package seng202.group2.blackbirdModel;
 import java.util.ArrayList;
 
 /**
- * Created by emr65 on 12/09/16.
- *
+ * A subclass of DataPoint to hold information about a Flight
  */
 public class Flight extends DataPoint {
 
@@ -22,6 +21,10 @@ public class Flight extends DataPoint {
 //
 //    }
 
+    /**
+     * Creates a flight with flight point, srcAirport and destAirport from a list of flight points
+     * @param flightPoints a list of flight points with the first flightPoint giving the localeID for srcAirport and the last flightPoint giving the the localeId for the destAirport
+     */
     public Flight(ArrayList<DataPoint> flightPoints) {
         this.flightPoints = flightPoints;
         FlightPoint source = (FlightPoint) flightPoints.get(0);

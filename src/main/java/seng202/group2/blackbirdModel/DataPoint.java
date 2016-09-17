@@ -9,13 +9,13 @@ public class DataPoint {
         To make a data just go Datapoint myPoint = new FlightPoint
         However You would then have to set the Type using myPoint.setType*/
 
-    private String type;
+    private DataTypes type;
 
-    public String getType() {
+    public DataTypes getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(DataTypes type) {
         this.type = type;
     }
 
@@ -30,7 +30,7 @@ public class DataPoint {
     /**
      * @param type creates a dataPoint with a type
      */
-    public DataPoint(String type) {
+    public DataPoint(DataTypes type) {
         this.type = type;
     }
 
@@ -39,30 +39,26 @@ public class DataPoint {
      * @param type      The input type the Data point should be set to
      * @return A DataPoint with a specificType
      */
-    public static DataPoint createDataPointFromStringArray(String[] dataArray, String type) {
-        //System.out.println(dataArray.toString());
+    public static DataPoint createDataPointFromStringArray(String[] dataArray, DataTypes type) {
+
         /*
         This creates a dataPoint from a string array and sets the type
          */
 
-
-
         DataPoint currentPoint = new DataPoint(type);
-        if ("AirlinePoint".equals(type)) {
+        if (type == DataTypes.AIRLINEPOINT) {
             currentPoint = new AirlinePoint(dataArray);
 
-        } else if ("AirportPoint".equals(type)) {
-            //System.out.println(dataArray[0] + "---------");
+        } else if (type == DataTypes.AIRLINEPOINT) {
             currentPoint = new AirportPoint(dataArray);
 
-        } else if ("RoutePoint".equals(type)) {
+        } else if (type == DataTypes.ROUTEPOINT) {
             currentPoint = new RoutePoint(dataArray);
 
-        } else if ("FlightPoint".equals(type)) {
+        } else if (type == DataTypes.FLIGHTPOINT) {
             currentPoint = new FlightPoint(dataArray);
         }
         currentPoint.type = type;
-        //System.out.println(currentPoint.toString());
         return currentPoint;
     }
 
@@ -78,7 +74,6 @@ public class DataPoint {
         if (this.getType() == mypoint.getType()) return true;
         else return false;
     }
-
 
 
 }

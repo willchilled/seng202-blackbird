@@ -32,15 +32,14 @@ public class DataBaseRefactorTest extends TestCase {
         //ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
 
 
-        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, "AirlinePoint");
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, "AirportPoint");
+        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
+        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
 
-        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, "RoutePoint");
-        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, "FlightPoint");
-        //ArrayList<Flight>
+        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT);
 
         Flight flight = new Flight(flightPoints);
-        flight.setType("Flight");
+        flight.setType(DataTypes.FLIGHT);
         DataPoint f = flight;
         ArrayList<DataPoint> myFlight = new ArrayList<>();
         myFlight.add(f);
@@ -67,7 +66,7 @@ public class DataBaseRefactorTest extends TestCase {
     public void testPerformGenericQuery() throws Exception {
 
         String sql = "SELECT * FROM FLIGHT";
-        DataBaseRefactor.performGenericQuery(sql, "FlightPoint");
+        DataBaseRefactor.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
     }
 
     public void testPerformDistinctQuery() throws Exception {

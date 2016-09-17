@@ -61,7 +61,7 @@ public class DataBaseRefactor {
             currentConnection.setAutoCommit(false);
             PreparedStatement preparedStatement = null;
 
-            if (myPoints.get(0).getType().equals("FlightPoint")){
+            if (myPoints.get(0).getType().equals(DataTypes.FLIGHTPOINT)){
                 FlightCount ++;
                 addFlight(myPoints, preparedStatement, currentConnection);
                 //System.out.println("HERE");
@@ -74,28 +74,27 @@ public class DataBaseRefactor {
 //                System.out.println(currentPoint.getType());
 //                System.out.println(myPoints.toString());
 
-                String dataType = currentPoint.getType();
+                DataTypes dataType = currentPoint.getType();
                 //DataTypes dataType = currentPoint.getType();
                 //PreparedStatement preparedStatement = null;
 
                 switch (dataType){
-                    case "AirlinePoint": //System.out.println("Hey");
+                    case AIRLINEPOINT: //System.out.println("Hey");
                             preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
                             break;
 
-                    case "AirportPoint":
+                    case AIRPORTPOINT:
                             preparedStatement = prepareInsertAirportSql(currentPoint, preparedStatement, currentConnection);
                             break;
-                    case "RoutePoint":
-                            preparedStatement = perpareInsertRouteSql(currentPoint, preparedStatement, currentConnection);
+                    case ROUTEPOINT:
+                            preparedStatement = prepareInsertRouteSql(currentPoint, preparedStatement, currentConnection);
                             break;
-                    case "FlightPoint":
+                    case FLIGHTPOINT:
 
                             //This behaves differently because the data is ArrayList<DataPoint<FlightPoints>>
                             //FlightPoint myFlight = (FlightPoint) myPoints.get(0);
                             preparedStatement = prepareInsertFlightPointStatement(currentPoint, preparedStatement, currentConnection);
                             flightPointCount++;
-                        //System.out.println(preparedStatement.toString());
                             //System.out.println("AHH");
                             break;
                 }
@@ -105,7 +104,7 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 }
                 catch (Exception e){
-                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                     System.out.println("Cant add: " +  currentPoint.toString());
                 }
             }
@@ -135,7 +134,7 @@ public class DataBaseRefactor {
             preparedStatement = currentConnection.prepareStatement(sql);
             preparedStatement.setInt(1, flightPointCount);
             preparedStatement.setString(2, flightPoint.getLocaleID());
-            preparedStatement.setString(3, flightPoint.getType());
+            preparedStatement.setString(3, flightPoint.getLocalType());
             preparedStatement.setFloat(4, flightPoint.getAltitude());
             preparedStatement.setFloat(5, flightPoint.getLatitude());
             preparedStatement.setFloat(6, flightPoint.getLongitude());
@@ -207,7 +206,7 @@ public class DataBaseRefactor {
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement to insert a route into the database.
      */
-    private static PreparedStatement perpareInsertRouteSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
+    private static PreparedStatement prepareInsertRouteSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
         RoutePoint route = (RoutePoint) currentPoint;
 
         int idNum = route.getRouteID();
@@ -257,7 +256,6 @@ public class DataBaseRefactor {
     private static PreparedStatement prepareInsertAirportSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
         AirportPoint airport = (AirportPoint) currentPoint;
 
-
         int airportID = airport.getAirportID();
         String airportName = airport.getAirportName();
         String City = airport.getAirportCity();
@@ -274,7 +272,6 @@ public class DataBaseRefactor {
         String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, LONGITUDE, ALTITUDE, TIMEZONE, DST, TZ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
-
             preparedStatement = currentConnection.prepareStatement(sql);
             //System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setInt(1, airportID);
@@ -363,10 +360,6 @@ public class DataBaseRefactor {
     }
 
 
-    /**
-     * Adds an airline point.
-     * @param currentPoint The airline point we want to add.
-     */
 
     /**
      * Performs a generic query to the database e.g. for filtering and searching. Calls the static method of
@@ -376,8 +369,8 @@ public class DataBaseRefactor {
      * @return The arraylist of DataPoints returned from the database query.
      * @see DataPoint
      */
-    public static ArrayList<DataPoint> performGenericQuery(String sql, String dataType) {
-        //System.out.println(sql);
+    public static ArrayList<DataPoint> performGenericQuery(String sql, DataTypes dataType) {
+
         ArrayList<DataPoint> resultPoints = new ArrayList<>();
 
         try {
@@ -396,7 +389,7 @@ public class DataBaseRefactor {
 
                 //System.out.println("---------------");
 
-                if(dataType.equals("RoutePoint")){
+                if(dataType.equals(DataTypes.ROUTEPOINT)) {
                     attributes = new String[width-1];
                     for (int i = 1; i < width; i++) {
 
@@ -413,7 +406,6 @@ public class DataBaseRefactor {
                     }
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
-                //System.out.println(myPoint.toString() + "HI");
                 resultPoints.add(myPoint);
                // System.out.println(myPoint.toString());
             }

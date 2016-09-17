@@ -426,7 +426,6 @@ public class GUIController {
                 }
             }
         });
-    }
 
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
@@ -435,9 +434,9 @@ public class GUIController {
         // data to populate the GUI.
         File f;
         f = getFile();
-        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, "AirlinePoint");
+        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT);
         DataBaseRefactor.insertDataPoints(myPoints);
-        ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints("AirlinePoint");
+        ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
         System.out.println(validAirlineData.get(0).toString());
 
         //Populates DropDowns according to data

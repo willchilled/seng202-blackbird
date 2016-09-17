@@ -21,8 +21,9 @@ public class ParserRefactor {
      * @see DataPoint
      * @see CSVReader
      */
-    public static ArrayList<DataPoint> parseFile(File file, String pointType){
-        ArrayList<DataPoint> allDataPoints =  new ArrayList<>();
+    public static ArrayList<DataPoint> parseFile(File file, DataTypes pointType){
+        DataPoint currentDataPoint = new DataPoint();
+        ArrayList<DataPoint> allDataPoints =  new ArrayList<DataPoint>();
         try {
             CSVReader reader = new CSVReader(new FileReader(file), ',', '"', '\0');
             String [] currentLine;
@@ -46,7 +47,6 @@ public class ParserRefactor {
      * @return The formatted line, as a string array
      */
     private static String[] formatLine(String[] currentLine) {
-        //
         String[] formattedLine = new String[currentLine.length];
         int lineCount = 0;
         for (String line: currentLine){

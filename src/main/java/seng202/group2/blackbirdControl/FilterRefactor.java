@@ -18,13 +18,13 @@ public class FilterRefactor {
      * @return The arraylist of datapoints returned from the database query.
      * @see DataBaseRefactor
      */
-    public static ArrayList<DataPoint> getAllPoints(String type) {
+    public static ArrayList<DataPoint> getAllPoints(DataTypes type) {
         String sql;
         switch (type) {
-            case "AirlinePoint": sql = "SELECT * FROM AIRLINE;"; break;
-            case "AirportPoint": sql = "SELECT * FROM AIRPORT;"; break;
-            case "RoutePoint": sql = "SELECT * FROM ROUTE;"; break;
-            //case "Flight": sql = "SELECT * FROM AIRLINE;";    //FLIGHTS UNABLE TO BE FILTERED ATM
+            case AIRLINEPOINT: sql = "SELECT * FROM AIRLINE;"; break;
+            case AIRPORTPOINT: sql = "SELECT * FROM AIRPORT;"; break;
+            case ROUTEPOINT: sql = "SELECT * FROM ROUTE;"; break;
+            case FLIGHTPOINT: sql = "SELECT * FROM AIRLINE;"; break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
         return DataBaseRefactor.performGenericQuery(sql, type);
@@ -39,14 +39,14 @@ public class FilterRefactor {
      * @return The arraylist of datapoints returned from the filter query.
      * @see DataBaseRefactor
      */
-    public static ArrayList<DataPoint> filterSelections(ArrayList<String> menusPressed, String searchString, String type) {
+    public static ArrayList<DataPoint> filterSelections(ArrayList<String> menusPressed, String searchString, DataTypes type) {
         ArrayList<DataPoint> filtered;
         String myQuery = "";
         switch (type) {
-            case "AirlinePoint": myQuery = airlineFilter(menusPressed, searchString); break;
-            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString); break;
-            case "RoutePoint": myQuery = routeFilter(menusPressed, searchString); break;
-            case "FlightPoint": myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case AIRLINEPOINT: myQuery = airlineFilter(menusPressed, searchString); break;
+            case AIRPORTPOINT: myQuery = airportFilter(menusPressed, searchString); break;
+            case ROUTEPOINT: myQuery = routeFilter(menusPressed, searchString); break;
+            case FLIGHTPOINT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
         filtered =  DataBaseRefactor.performGenericQuery(myQuery, type);
@@ -148,7 +148,6 @@ public class FilterRefactor {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
 
         boolean allNone = checkEmptyMenus(menusPressed);
-        //System.out.println(allNone + "-----------------------");
         if (!allNone){
             sql = generateQueryString(sql, menusPressed, allSelections);
         }
@@ -166,7 +165,6 @@ public class FilterRefactor {
                 sql += " AND ";
             }
         }
-
 
         sql += search;
         //sql = removeLastWHERE(sql);

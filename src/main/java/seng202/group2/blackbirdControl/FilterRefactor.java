@@ -2,7 +2,6 @@ package seng202.group2.blackbirdControl;
 
 import seng202.group2.blackbirdModel.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,9 +16,9 @@ public class FilterRefactor {
     public static ArrayList<DataPoint> getAllPoints(String type) {
         String sql;
         switch (type) {
-            case "Airline": sql = "SELECT * FROM AIRLINE;"; break;
-            case "Airport": sql = "SELECT * FROM AIRPORT;"; break;
-            case "Route": sql = "SELECT * FROM ROUTE;"; break;
+            case "AirlinePoint": sql = "SELECT * FROM AIRLINE;"; break;
+            case "AirportPoint": sql = "SELECT * FROM AIRPORT;"; break;
+            case "RoutePoint": sql = "SELECT * FROM ROUTE;"; break;
             //case "Flight": sql = "SELECT * FROM AIRLINE;";    //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
@@ -30,25 +29,30 @@ public class FilterRefactor {
 
     public static ArrayList<DataPoint> filterSelections(ArrayList<String> menusPressed, String searchString, String type) {
         ArrayList<DataPoint> filtered;
+        String myQuery = "";
         switch (type) {
-            case "Airline": filtered = airlineFilter(menusPressed, searchString); break;
-            case "Airport": filtered = airportFilter(menusPressed, searchString); break;
-            case "Route": filtered = routeFilter(menusPressed, searchString); break;
-            case "Flight": filtered = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case "AirlinePoint":
+                //filtered = airlineFilter(menusPressed, searchString, type);
+                myQuery = airlineFilter(menusPressed, searchString, type);
+                break;
+            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString, type); break;
+            case "RoutePoint": myQuery = routeFilter(menusPressed, searchString, type); break;
+            case "FlightPoint": myQuery = flightFilter(menusPressed, searchString, type); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
+        filtered =  DataBaseRefactor.performGenericQuery(myQuery, type);
         return filtered;
     }
 
 
-    private static ArrayList<DataPoint> flightFilter(ArrayList<String> menusPressed, String searchString) {
+    private static String flightFilter(ArrayList<String> menusPressed, String searchString, String type) {
         //TODO
         //No filters for flights currently
         return null;
     }
 
 
-    private static ArrayList<DataPoint> routeFilter(ArrayList<String> menusPressed, String searchString) {
+    private static String routeFilter(ArrayList<String> menusPressed, String searchString, String type) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "EQUIPMENT.equipmentName=\"%s\" AND " ));
 
         String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
@@ -66,11 +70,11 @@ public class FilterRefactor {
         }
 
         //routePoints = BBDatabase.performJoinRoutesEquipQuery(sql);    //DB METHOD HERE
-        return null;
+        return sql;
     }
 
 
-    private static ArrayList<DataPoint> airportFilter(ArrayList<String> menusPressed, String searchString) {
+    private static String airportFilter(ArrayList<String> menusPressed, String searchString, String type) {
         String sql = "SELECT * FROM AIRPORT ";
 
         boolean allNone = checkEmptyMenus(menusPressed);
@@ -90,11 +94,12 @@ public class FilterRefactor {
 
         sql += search;
         //allPoints = BBDatabase.performQuery(sql);     //PERFORM DB QUERY
-        return null;
+        //return null;
+        return sql;
     }
 
 
-    private static ArrayList<DataPoint> airlineFilter(ArrayList<String> menusPressed, String searchString) {
+    private static String airlineFilter(ArrayList<String> menusPressed, String searchString, String type) {
         String sql = "SELECT * FROM AIRLINE ";
 
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
@@ -121,9 +126,9 @@ public class FilterRefactor {
         sql += search;
         System.out.println("Performing query:"+ sql);
 
-        ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, "AirlinePoint");    //DB METHOD HERE
-        System.out.println("SIZE: " + allPoints.size());
-        return allPoints; //return an arraylist
+        //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
+        //System.out.println("SIZE: " + allPoints.size());
+        return sql; //return an arraylist
     }
 
 

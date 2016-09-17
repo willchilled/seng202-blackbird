@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdControl.*;
+import seng202.group2.blackbirdView.*;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;

@@ -130,7 +130,7 @@
 
                            </columns>
                         </TableView>
-                        <TitledPane animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
+                        <TitledPane animated="false" collapsible="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="114.0" prefWidth="1114.0">
                                  <children>
@@ -141,10 +141,10 @@
                                           <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
                                           <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
                                           <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                          <ColumnConstraints hgrow="ALWAYS" maxWidth="87.0" minWidth="10.0" prefWidth="58.0" />
+                                          <ColumnConstraints hgrow="NEVER" maxWidth="114.0" minWidth="10.0" prefWidth="78.0" />
+                                          <ColumnConstraints hgrow="NEVER" maxWidth="165.0" minWidth="10.0" prefWidth="135.0" />
+                                          <ColumnConstraints hgrow="NEVER" maxWidth="85.0" minWidth="10.0" prefWidth="71.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -152,7 +152,7 @@
                                        </rowConstraints>
                                        <children>
                                           <Button fx:id="addRouteToTable" layoutX="872.0" layoutY="24.0" mnemonicParsing="false" onAction="#addSingleRoute" text="Add Route" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                                          <Button fx:id="routesFilterButton" layoutX="979.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Filter" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                                          <Button fx:id="routesFilterButton" layoutX="979.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Refresh" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                                           <Button fx:id="routesSeeallDataButton" layoutX="1053.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesSeeAllDataButtonPressed" text="See all" GridPane.columnIndex="8" GridPane.rowIndex="1" />
                                           <TextField fx:id="routesSearchMenu" layoutX="699.0" layoutY="24.0" prefHeight="25.0" prefWidth="157.0" promptText="Search..." GridPane.columnIndex="4" GridPane.rowIndex="1" />
                                           <ComboBox fx:id="routesFilterBySourceMenu" layoutX="26.0" layoutY="26.0" prefWidth="150.0" GridPane.rowIndex="1" />
@@ -207,7 +207,7 @@
                               <TableColumn fx:id="airportErrorCol" prefWidth="75.0" text="Errors" visible="false" />
                            </columns>
                         </TableView>
-                        <TitledPane alignment="TOP_CENTER" animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
+                        <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
                                  <children>
@@ -230,7 +230,7 @@
                                           <Text layoutX="166.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keyword" GridPane.columnIndex="1" />
                                           <ComboBox fx:id="airportFilterMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" prefWidth="150.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                            <TextField fx:id="airportSearchQuery" layoutX="165.39999961853027" layoutY="23.399999618530273" promptText="Search..." GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                                          <Button fx:id="filterButton" layoutX="1002.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Filter" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                          <Button fx:id="filterButton" layoutX="1002.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Refresh" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                           <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
                                        </children>
                                     </GridPane>
@@ -272,7 +272,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <TitledPane alignment="TOP_CENTER" animated="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
+                        <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" prefWidth="712.0" text="Filter" GridPane.columnIndex="1">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="1116.0">
                                  <children>
@@ -293,7 +293,7 @@
                                        <children>
                                           <ComboBox fx:id="airlineFilterMenu" layoutX="215.39999961853027" layoutY="23.399999618530273" prefHeight="25.0" prefWidth="235.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                            <TextField fx:id="airlineSearchQuery" layoutX="420.3999996185303" layoutY="23.399999618530273" prefHeight="25.0" prefWidth="235.0" promptText="Search..." GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                                          <Button fx:id="airlineFilterButton" layoutX="998.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlinefilterButtonPressed" text="Filter" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                          <Button fx:id="airlineFilterButton" layoutX="998.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlinefilterButtonPressed" prefHeight="25.0" prefWidth="148.0" text="Refresh" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                           <Text layoutX="165.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airline" />
                                           <Button fx:id="airlineSeeAllButton" layoutX="1056.3999996185303" layoutY="23.399999618530273" minWidth="-Infinity" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlineSeeAllButtonPressed" text="See all" GridPane.columnIndex="6" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                            <Button fx:id="addAirlineToTable" layoutX="896.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#addSingleAirline" prefHeight="25.0" prefWidth="112.0" text="Add Airline" GridPane.columnIndex="5" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">

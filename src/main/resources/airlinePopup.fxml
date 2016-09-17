@@ -91,7 +91,7 @@
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label fx:id="nameText" alignment="CENTER" layoutX="3.0" layoutY="16.0" prefHeight="24.0" prefWidth="400.0" text="Airline Name">
+            <Label fx:id="nameText" alignment="CENTER" layoutX="3.0" layoutY="14.0" prefHeight="24.0" prefWidth="400.0" text="Airline Name">
                <font>
                   <Font size="20.0" />
                </font>
@@ -105,6 +105,13 @@
             <Button fx:id="airlineFinishButton" layoutX="322.0" layoutY="13.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
             <Button fx:id="airlineCancelButton" layoutX="20.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
             <Text fx:id="airlineInvalidDataText" fill="#c61010" layoutX="154.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INVALID DATA!" visible="false" />
+            <Text layoutX="82.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+            <Pane fx:id="refreshMessage" layoutX="86.0" layoutY="8.0" visible="false">
+               <children>
+                  <Label layoutX="42.0" layoutY="15.0" text="in the main window" />
+                  <Label layoutX="8.0" layoutY="4.0" text="Don't forget to refresh changes" />
+               </children>
+            </Pane>
          </children>
       </Pane>
    </children>

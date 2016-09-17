@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
@@ -45,6 +46,7 @@ public class AirlinePopUpController {
     @FXML private Button airlineFinishButton;
     @FXML private Button airlineEditButton;
     @FXML private Button airlineCancelButton;
+    @FXML private Pane refreshMessage;
 
 
 
@@ -83,6 +85,7 @@ public class AirlinePopUpController {
         airlineCallsignTextEdit.setVisible(true);
         airlineActiveTextEdit.setVisible(true);
         nameText.setVisible(false);
+        refreshMessage.setVisible(true);
 
         airlineFinishButton.setVisible(true);
         airlineCancelButton.setVisible(true);
@@ -121,6 +124,7 @@ public class AirlinePopUpController {
 
     public void commitEdit(){
 
+
         String name = airlineNameTextEdit.getText();
         String id = airlineIDTextEdit.getText();
         String country = airlineCountryTextEdit.getText();
@@ -148,6 +152,7 @@ public class AirlinePopUpController {
             airlineFinishButton.setVisible(false);
             airlineCancelButton.setVisible(false);
             airlineInvalidDataText.setVisible(false);
+            refreshMessage.setVisible(false);
             airlineEditButton.setVisible(true);
             nameText.setVisible(true);
 

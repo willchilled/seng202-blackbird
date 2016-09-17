@@ -35,9 +35,7 @@ public class FilterRefactor {
                 //filtered = airlineFilter(menusPressed, searchString, type);
                 myQuery = airlineFilter(menusPressed, searchString, type);
                 break;
-            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString, type);
-               // System.out.println(myQuery);
-                break;
+            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString, type); break;
             case "RoutePoint": myQuery = routeFilter(menusPressed, searchString, type); break;
             case "FlightPoint": myQuery = flightFilter(menusPressed, searchString, type); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;

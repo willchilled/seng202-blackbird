@@ -66,29 +66,29 @@ public class AirportPoint extends DataPoint {
         if (currentLine.length == 12){
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {
-                System.out.println("Int AID: " + currentLine[0]);
+               // System.out.println("Int AID: " + currentLine[0]);
                 this.airportID = Integer.parseInt(currentLine[0]);	//should not be null
-                System.out.println("STRING ANAME: " + currentLine[1]);
+                //System.out.println("STRING ANAME: " + currentLine[1]);
                 this.airportName = currentLine[1];	//let people name airline whatever they want
-                System.out.println("STRING ACITY: " + currentLine[2]);
+                //System.out.println("STRING ACITY: " + currentLine[2]);
                 this.airportCity = currentLine[2];
-                System.out.println("STRING ACOUNTRY: " + currentLine[3]);
+                //System.out.println("STRING ACOUNTRY: " + currentLine[3]);
                 this.airportCountry= currentLine[3];
-                System.out.println("STRING IATA: " + currentLine[4]);
+                //System.out.println("STRING IATA: " + currentLine[4]);
                 this.iata =currentLine[4];
-                System.out.println("STRING ICAO: " + currentLine[5]);
+                //System.out.println("STRING ICAO: " + currentLine[5]);
                 this.icao = currentLine[5];
-                System.out.println("FLOAT LAT: " + currentLine[6]);
+                //System.out.println("FLOAT LAT: " + currentLine[6]);
                 this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
-                System.out.println("FLOAT LONG: " + currentLine[7]);
+                //System.out.println("FLOAT LONG: " + currentLine[7]);
                 this.longitude = Float.parseFloat(currentLine[7].trim());
-                System.out.println("INT ALT: " + currentLine[8]);
+                //System.out.println("INT ALT: " + currentLine[8]);
                 this.altitude = Float.parseFloat(currentLine[8]);
-                System.out.println("FLOAT TIMEZONE: " + currentLine[9]);
+                //System.out.println("FLOAT TIMEZONE: " + currentLine[9]);
                 this.timeZone = Float.parseFloat(currentLine[9]);
-                System.out.println("STRING DST: " + currentLine[10]);
+                //System.out.println("STRING DST: " + currentLine[10]);
                 this.dst = currentLine[10];
-                System.out.println("STRING TZ: " + currentLine[11]);
+                //System.out.println("STRING TZ: " + currentLine[11]);
                 this.tz = currentLine[11];
                 this.correctEntry = 1;
 

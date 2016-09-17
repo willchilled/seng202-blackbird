@@ -207,10 +207,11 @@ public class DataBaseRefactor {
         int dstId = route.getDstAirportID();
         String codeshare = route.getCodeshare();
         int stops = route.getStops();
+        String equp = route.getEquipment();
 
         //make route sql text to execute
-        String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops) VALUES (?,?,?,?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        System.out.println(sql);
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
             //System.out.println(preparedStatement + "AAAAH");
@@ -223,6 +224,7 @@ public class DataBaseRefactor {
             preparedStatement.setInt(7, dstId);
             preparedStatement.setString(8, codeshare);
             preparedStatement.setInt(9, stops);
+            preparedStatement.setString(10, equp);
         } catch (SQLException e) {
 
             System.out.println("canont prepare statement");
@@ -564,6 +566,7 @@ public class DataBaseRefactor {
                 "Equipment  VARCHAR(50), " +
                 "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
+        System.out.println("\n\n" + sql + "\n\n" + "HERE");
         return sql;
     }
 

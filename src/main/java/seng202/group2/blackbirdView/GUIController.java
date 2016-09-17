@@ -17,11 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdControl.AirlineAddingPopUpController;
-import seng202.group2.blackbirdControl.AirportAddingPopUpController;
-import seng202.group2.blackbirdControl.Exporter;
-import seng202.group2.blackbirdControl.Filter;
-import seng202.group2.blackbirdControl.RouteAddingPopUpController;
+import seng202.group2.blackbirdControl.*;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
@@ -94,6 +90,7 @@ public class GUIController {
     @FXML private TableColumn airportErrorCol;
 // AIRLINE Table columns
     @FXML private TableColumn airlineIDCol;
+    @FXML private TableColumn airlineIDCol1;
     @FXML private TableColumn airlineNameCol;
     @FXML private TableColumn airlineAliasCol;
     //@FXML private TableView<AirportPoint> airportTable;
@@ -136,6 +133,22 @@ public class GUIController {
     @FXML private ComboBox routesFilterByStopsMenu;
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
+
+    //@FXML private TableColumn airlineIDCol1;
+    //@FXML private TableColumn airlineIDCol1;
+    @FXML private TableColumn airlineNameCol1;
+    @FXML private TableColumn airlineAliasCol1;
+    //@FXML private TableView<AirportPoint> airportTable;
+    @FXML private TableColumn airlineIATACol1;
+    @FXML private TableColumn airlineICAOCol1;
+    @FXML private TableColumn airlineCallsignCol1;
+    @FXML private TableColumn airlineCountryCol1;
+    @FXML private TableColumn airlineActCol1;
+   // @FXML private TableColumn airlineErrorCol;
+
+
+
+    @FXML private TableView<AirlinePoint> airlineTable1;
 
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
@@ -231,7 +244,8 @@ public class GUIController {
         mainTabPane.setVisible(true);
         //SQQliteJDBC myDb = new SQQliteJDBC();
         //SQLiteJDBC.dropTables();
-        BBDatabase.createTables();
+        //BBDatabase.createTables();
+        DataBaseRefactor.createTables();
         //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
         //addDataMenuButton.setDisable(true);
@@ -241,6 +255,9 @@ public class GUIController {
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
         airportTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airport"));
         flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
+
+        airlineTable1.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> WORK IN PROGRESS"));
+
 
     }
 
@@ -347,26 +364,86 @@ public class GUIController {
         //COME BACK HERE
         DataBaseRefactor.insertDataPoints(myPoints);
 
-        for (DataPoint point: myPoints){
-            System.out.println(point);
+//        for (DataPoint point: myPoints){
+//            System.out.println(point);
+//        }
+
+
+//        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+//        BBDatabase.addAirlinePointstoDB(allAirlineData);
+
+        String search = "";
+        ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("None", "None"));
+        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "AirlinePoint");
+        //System.out.println(dataPoints);
+        //ArrayList<FlightPoint> myPoints2 = dataPoints;
+        ArrayList<AirlinePoint> myAirlinePoints = new ArrayList<AirlinePoint>();
+        for (DataPoint myPoint: dataPoints){
+            AirlinePoint test = (AirlinePoint) myPoint;
+            myAirlinePoints.add(test);
         }
 
+        airlineTable1.getItems().setAll(myAirlinePoints);
 
-        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
-        BBDatabase.addAirlinePointstoDB(allAirlineData);
+        airlineIDCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
+        airlineNameCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
+        airlineAliasCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineAlias"));
+        airlineIATACol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("iata"));
+        airlineICAOCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("icao"));
+        airlineCallsignCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("callsign"));
+        airlineCountryCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
+        airlineActCol1.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
 
 
-        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
-        setAllAirlinePoints(validAirlineData);
-        setAirlineActiveList(populateAirlineActiveList());
+//        airlineTable1.setOnMousePressed(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event){
+//                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+//                    FlightPoint myPoint = (FlightPoint) airlineTable1.getSelectionModel().getSelectedItem();
+//                    String myText = myPoint.getLocaleID();   //ge//airlineTable1.getSelectionModel().getSelectedItem().getAirlineName();
+//                    System.out.println(myText);
+//                    Stage stage;
+//                    Parent root;
+//                    stage = new Stage();
+//                    try {
+//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
+//                        root = loader.load();
+//                        AirlinePopUpController popUpController = loader.getController();
+//                        //popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
+//                        //popUpController.setUpPopUp();
+//
+//                        stage.setScene(new Scene(root));
+//                        stage.setTitle("View/Edit Data");
+//                        stage.initModality(Modality.NONE);
+//                        stage.initOwner(null);
+//
+//                        stage.show();
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        //System.out.println("AH NO!");
+//                    }
+//
+//                }
+//            }
+//        });
 
-        airlineActiveMenu.setItems(getAirlineActiveList());
-        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
-        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
-        airlineFilterMenu.setItems(airlineCountryList);
-        airlineFilterMenu.setValue(airlineCountryList.get(0));
-        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+
+        //assertEquals(dataPoints.size(), 5);
+
+
+//        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
+//
+//        setAllAirlinePoints(validAirlineData);
+//        setAirlineActiveList(populateAirlineActiveList());
+//
+//        airlineActiveMenu.setItems(getAirlineActiveList());
+//        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
+//        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
+//        airlineFilterMenu.setItems(airlineCountryList);
+//        airlineFilterMenu.setValue(airlineCountryList.get(0));
+        //updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
     }
 
     public void addRouteData(){

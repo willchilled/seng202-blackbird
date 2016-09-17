@@ -229,129 +229,8 @@ public class Filter {
         return BBDatabase.performAirlinesQuery(outputString);
     }
 
-    public static ArrayList<RoutePoint> filterRoutesBySelections2(ArrayList<String> menusPressed, String searchQuery) {
-        String searchString = String.format("");
-        String equipmentSelection = menusPressed.get(3);
-        menusPressed.remove(3);
-        System.out.println("EQUIP SELECTION" + equipmentSelection);
-        String equipment;
-        //Source dest stops equip
-        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "Src=\"%s\" AND " ));
-//            "SELECT * from EQUIPMENT, ROUTE\n" +
-//            "WHERE EQUIPMENT.IDnum = ROUTE.IDnum"
-        String outputString = "SELECT * FROM ROUTE ";
-
-        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.IDnum = ROUTE.IDnum AND EQUIPMENT.EquipmentName='CR2'
-
-        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.EquipmentName='CR2'
-
-        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
-        boolean allNone = true;
-
-        for (String currentSelection: menusPressed){
-            if (currentSelection != "None"){
-                allNone = false;
-            }
-        }
-
-        if (!allNone){
-            outputString += "WHERE ";
-            for (int i=0; i<menusPressed.size(); i++){
-                String currentSelection = menusPressed.get(i);
-                if(currentSelection != "None"){
-                    outputString += String.format(allSelections.get(i), currentSelection);
-                }
-            }
-
-        }
-        //If there are no filters selected, we must begin the statement with WHERE before beginning the search query
-        //statement. However if there are filters selected, we must continue the statement with AND before appending
-        // the search query statement.
-        outputString = removeLastAND(outputString);
-        if (searchQuery.length() >0){
-            if(allNone){
-                outputString += " WHERE ";
-            }
-            else{
-                outputString += " AND ";
-            }
-        }
-
-        System.out.println("\n\n");
-        System.out.println(outputString);
-        System.out.println("\n\n");
-        outputString = removeLastAND(outputString);
-
-
-
-        System.out.println("\n\n");
-        System.out.println(outputString);
-        System.out.println("\n\n");
-
-
-
-        System.out.println("Perfomring query:"+ outputString);
-        routePoints = BBDatabase.performRoutesQuery(outputString);
-
-        ArrayList<RoutePoint> routePointsCP = new ArrayList<RoutePoint>();
-        ArrayList<String> equipArray = new ArrayList<>();
-
-        for (RoutePoint currentPoint: routePoints){
-            equipArray = getEquipInfoFromDB(currentPoint);
-            equipment = joinEquipArray(equipArray);
-            currentPoint.setEquipment(equipment);
-            if (equipmentSelection == "None"){
-                routePointsCP.add(currentPoint);
-            }
-            else{
-                System.out.println("Equip:" + equipment + "SELECTION:" + equipmentSelection + "ARRAY" + equipArray);
-                for (String currentEquipment: equipArray){
-
-                    if (currentEquipment.equals(equipmentSelection)){
-                        System.out.println("ADDING" + equipment);
-                        routePointsCP.add(currentPoint);
-                    }
-
-                }
-
-            }
-
-        }
-        return routePointsCP;
-    }
-
-    public static ArrayList<RoutePoint> filterRoutesBySelections(ArrayList<String> menusPressed, String searchQuery) {
-        String searchString = "";
-        if (searchQuery.length() >0){
-            searchString = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
-            + "OR ROUTE.Src=\"%1$s\" OR ROUTE.SrcID=\"%1$s\" OR ROUTE.Dst=\"%1$s\" OR ROUTE.Dstid=\"%1$s\""
-            + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT.EquipmentName=\"%1$s\" );";
-            searchString = String.format(searchString, searchQuery);
-
-        }
-        //System.out.println(searchString);
-        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
-        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "EQUIPMENT.equipmentName=\"%s\" AND " ));
-
-        String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
-        String currentSelection;
-        for (int i=0; i<menusPressed.size(); i++){
-            currentSelection = menusPressed.get(i);
-            if (!currentSelection.equals("None")){
-                sql += String.format(allSelections.get(i),currentSelection);
-            }
-        }
-        if (searchQuery.length() >0){
-            sql += searchString;
-        }
-        else{
-            sql = removeLastAND(sql);
-        }
-
-
-        System.out.println(sql);
-        routePoints = BBDatabase.performJoinRoutesEquipQuery(sql);
-        //System.out.println(sql);
+//    public static ArrayList<RoutePoint> filterRoutesBySelections2(ArrayList<String> menusPressed, String searchQuery) {
+//        String searchString = String.format("");
 //        String equipmentSelection = menusPressed.get(3);
 //        menusPressed.remove(3);
 //        System.out.println("EQUIP SELECTION" + equipmentSelection);
@@ -414,7 +293,7 @@ public class Filter {
 //        System.out.println("Perfomring query:"+ outputString);
 //        routePoints = BBDatabase.performRoutesQuery(outputString);
 //
-//        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
+//        ArrayList<RoutePoint> routePointsCP = new ArrayList<RoutePoint>();
 //        ArrayList<String> equipArray = new ArrayList<>();
 //
 //        for (RoutePoint currentPoint: routePoints){
@@ -422,7 +301,7 @@ public class Filter {
 //            equipment = joinEquipArray(equipArray);
 //            currentPoint.setEquipment(equipment);
 //            if (equipmentSelection == "None"){
-//                routePoints.add(currentPoint);
+//                routePointsCP.add(currentPoint);
 //            }
 //            else{
 //                System.out.println("Equip:" + equipment + "SELECTION:" + equipmentSelection + "ARRAY" + equipArray);
@@ -430,7 +309,7 @@ public class Filter {
 //
 //                    if (currentEquipment.equals(equipmentSelection)){
 //                        System.out.println("ADDING" + equipment);
-//                        routePoints.add(currentPoint);
+//                        routePointsCP.add(currentPoint);
 //                    }
 //
 //                }
@@ -438,30 +317,69 @@ public class Filter {
 //            }
 //
 //        }
+//        return routePointsCP;
+//    }
+
+    public static ArrayList<RoutePoint> filterRoutesBySelections(ArrayList<String> menusPressed, String searchQuery) {
+        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
+
+        String sql = "SELECT * FROM ROUTE ";
+        boolean allNone = true;
+        for (String currentSelection: menusPressed){    //all none method in refactored filter
+            if (currentSelection != "None"){
+                allNone = false;
+            }
+        }
+        if (!allNone){
+            sql += "WHERE ";
+            for (int i=0; i<menusPressed.size(); i++){
+                String currentSelection = menusPressed.get(i);
+                if(currentSelection != "None"){
+                    sql += String.format(allSelections.get(i), currentSelection);
+                }
+            }
+            sql = removeLastAND(sql);
+        }
+
+        String search = "";
+        if (searchQuery.length() >0){
+            String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
+                    + "OR ROUTE.Src=\"%1$s\" OR ROUTE.SrcID=\"%1$s\" OR ROUTE.Dst=\"%1$s\" OR ROUTE.Dstid=\"%1$s\""
+                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
+            search = String.format(searchStatement, searchQuery);
+            if(allNone){
+                sql += " WHERE ";
+            }
+            else{
+                sql += " AND ";
+            }
+        }
 
 
+        sql += search;
+        ArrayList<RoutePoint> routePoints = BBDatabase.performRoutesQuery(sql);
 
         return routePoints;
     }
 
-    private static String joinEquipArray(ArrayList<String> equipArray) {
-        //This function adds all the strings in the equipment array seperating them by spaces
-        String myEquipment = "";
-        for (int i=0; i<equipArray.size()-1; i++){
-            myEquipment += equipArray.get(i) + " ";
-        }
-        myEquipment += equipArray.get(equipArray.size()-1);
-        return myEquipment;
-    }
+//    private static String joinEquipArray(ArrayList<String> equipArray) {
+//        //This function adds all the strings in the equipment array seperating them by spaces
+//        String myEquipment = "";
+//        for (int i=0; i<equipArray.size()-1; i++){
+//            myEquipment += equipArray.get(i) + " ";
+//        }
+//        myEquipment += equipArray.get(equipArray.size()-1);
+//        return myEquipment;
+//    }
 
 
-    private static ArrayList<String> getEquipInfoFromDB(RoutePoint currentPoint) {
-        int id = currentPoint.getRouteID();
-        String sql = "SELECT EquipmentName FROM EQUIPMENT WHERE IDnum=\"%1$s\"";
-        String myEquipment = "";
-        sql = String.format(sql, id);
-        return BBDatabase.performDistinctStringQuery(sql);
-    }
+//    private static ArrayList<String> getEquipInfoFromDB(RoutePoint currentPoint) {
+//        int id = currentPoint.getRouteID();
+//        String sql = "SELECT EquipmentName FROM EQUIPMENT WHERE IDnum=\"%1$s\"";
+//        String myEquipment = "";
+//        sql = String.format(sql, id);
+//        return BBDatabase.performDistinctStringQuery(sql);
+//    }
 
     private static String removeLastAND(String outputString) {
 

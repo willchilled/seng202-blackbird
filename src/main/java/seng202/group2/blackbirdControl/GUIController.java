@@ -911,8 +911,8 @@ public class GUIController {
 
     private void populateRoutesFilterByEquipList(){
         ArrayList<String> uniqueSources = new ArrayList<String>();
-        String sql = "EquipmentName";
-        uniqueSources = Filter.findDistinctStringFromTable(sql, "EQUIPMENT");
+        String sql = "Equipment";
+        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = addNullValue(uniqueObservableSources);
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);

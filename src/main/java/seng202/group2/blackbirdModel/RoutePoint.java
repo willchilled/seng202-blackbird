@@ -34,19 +34,19 @@ public class RoutePoint extends DataPoint {
     }
 
     /**
-     * Attempts to create an RoutePoint with a string list of length 9.
+     * Attempts to create an RoutePoint with a list of strings of length 9.
      * If successful it creates an RoutePoint with values from list and correctEntry as 1.
-     * If unsuccessful it creates am RoutePoint with routeID -1, airline as currentLine.toString() & correctEntry 0.
-     * @param currentLine The string list holding the information for the RoutePoint in index of:
-     *                    0 airline
-     *                    1 airlineID
-     *                    2 scrAirport
-     *                    3 scrAirportID
-     *                    4 dstAirport
-     *                    5 dstAirportID
-     *                    6 codeshare
-     *                    7 stops
-     *                    8 equipment
+     * If unsuccessful it creates am RoutePoint with routeID -1, airline as currentLine.toString() and correctEntry 0.
+     * @param currentLine The list of strings holding the information for the RoutePoint in index of:
+     *                    0 airline,
+     *                    1 airlineID,
+     *                    2 scrAirport,
+     *                    3 scrAirportID,
+     *                    4 dstAirport,
+     *                    5 dstAirportID,
+     *                    6 codeshare,
+     *                    7 stops,
+     *                    8 equipment,
      */
     public RoutePoint(String[] currentLine) {
         super();

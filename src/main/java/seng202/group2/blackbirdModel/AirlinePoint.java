@@ -28,18 +28,18 @@ public class AirlinePoint extends DataPoint {
     }
 
     /**
-     * Attempts to create an airlinePoint from a string list with length 8.
+     * Attempts to create an airlinePoint from a list of strings with length 8.
      * If successful it creates an airline with values from list and correctEntry as 1.
-     * If unsuccessful it creates am airline with airlineID -1, airlineName as currentLine.toString() & correctEntry 0.
-     * @param currentLine   The string list holding the information for the airline in index of:
-     *                      0 airlineID
-     *                      1 airlineName
-     *                      2 airlineAlias
-     *                      3 iata
-     *                      4 icao
-     *                      5 callsign
-     *                      6 country
-     *                      7 active
+     * If unsuccessful it creates am airline with airlineID -1, airlineName as currentLine.toString() and correctEntry 0.
+     * @param currentLine   The list of strings holding the information for the airline in index of:
+     *                      0 airlineID,
+     *                      1 airlineName,
+     *                      2 airlineAlias,
+     *                      3 iata,
+     *                      4 icao,
+     *                      5 callsign,
+     *                      6 country,
+     *                      7 active,
      */
     public AirlinePoint(String[] currentLine) {
         super();

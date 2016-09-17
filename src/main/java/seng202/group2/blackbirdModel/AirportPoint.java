@@ -43,22 +43,22 @@ public class AirportPoint extends DataPoint {
     }
 
     /**
-     * Attempts to create an AirportPoint with a string list of length 12.
+     * Attempts to create an AirportPoint with a list of strings of length 12.
      * If successful it creates an AirportPoint with values from list and correctEntry as 1.
-     * If unsuccessful it creates am AirportPoint with airportID -1, airportName as currentLine.toString() & correctEntry 0.
-     * @param currentLine The string list holding the information for the airport in index of:
-     *                    0 airportID
-     *                    1 airportName
-     *                    2 airportCity
-     *                    3 airportCountry
-     *                    4 iata
-     *                    5 icao
-     *                    6 latitude
-     *                    7 longitude
-     *                    8 altitude
-     *                    9 timeZone
-     *                    10 dst
-     *                    11 tz
+     * If unsuccessful it creates am AirportPoint with airportID -1, airportName as currentLine.toString() and correctEntry 0.
+     * @param currentLine The list of strings holding the information for the airport in index of:
+     *                    0 airportID,
+     *                    1 airportName,
+     *                    2 airportCity,
+     *                    3 airportCountry,
+     *                    4 iata,
+     *                    5 icao,
+     *                    6 latitude,
+     *                    7 longitude,
+     *                    8 altitude,
+     *                    9 timeZone,
+     *                    10 dst,
+     *                    11 tz,
      */
     public AirportPoint(String[] currentLine) {
         super();

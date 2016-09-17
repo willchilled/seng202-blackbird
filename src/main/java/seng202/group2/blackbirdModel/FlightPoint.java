@@ -30,15 +30,15 @@ public class FlightPoint extends DataPoint {
     }
 
     /**
-     * Attempts to create a FlightPoint from a  string list of length 5.
+     * Attempts to create a FlightPoint from a  list of strings of length 5.
      * If successful it creates an FlightPoint with values from list and correctEntry as 1.
      * If unsuccessful it creates am FlightPoint with locaLtype "I AM INCORRECT".
-     * @param currentLine The string list holding the information for the FlightPoint in index of:
-     *                    0 locaLtype
-     *                    1 localeID
-     *                    2 altitude
-     *                    3 latitude
-     *                    4 longitude
+     * @param currentLine The list of strings holding the information for the FlightPoint in index of:
+     *                    0 locaLtype,
+     *                    1 localeID,
+     *                    2 altitude,
+     *                    3 latitude,
+     *                    4 longitude,
      */
     public FlightPoint(String[] currentLine) {
         super();

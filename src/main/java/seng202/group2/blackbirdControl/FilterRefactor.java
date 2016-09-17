@@ -22,8 +22,7 @@ public class FilterRefactor {
             //case "Flight": sql = "SELECT * FROM AIRLINE;";    //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
-        return null;
-        //return BBDatabase.performQuery(sql, type);      //NEED DB METHOD HERE
+        return DataBaseRefactor.performGenericQuery(sql, type);      //NEED DB METHOD HERE
     }
 
 
@@ -31,10 +30,7 @@ public class FilterRefactor {
         ArrayList<DataPoint> filtered;
         String myQuery = "";
         switch (type) {
-            case "AirlinePoint":
-                //filtered = airlineFilter(menusPressed, searchString, type);
-                myQuery = airlineFilter(menusPressed, searchString);
-                break;
+            case "AirlinePoint": myQuery = airlineFilter(menusPressed, searchString); break;
             case "AirportPoint": myQuery = airportFilter(menusPressed, searchString); break;
             case "RoutePoint": myQuery = routeFilter(menusPressed, searchString); break;
             case "FlightPoint": myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
@@ -53,11 +49,15 @@ public class FilterRefactor {
 
 
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
-        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "EQUIPMENT.equipmentName=\"%s\" AND " ));
+        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"% %s%)\" AND " ));
 
-        String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
+        //String sql = "SELECT * FROM ROUTE WHERE SRC=? AND DST=? AND STOP=? AND EQUIPMENT=?;";
+       // System.out.print(allSelections);
+//        String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
+        String sql = "SELECT * FROM ROUTE ";
         sql = generateQueryString(sql, menusPressed, allSelections);
-
+        //String sql = "";
+        //System.out.println(sql);
         String search = "";
         if (searchString.length() >0){
             String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
@@ -68,6 +68,8 @@ public class FilterRefactor {
         } else {
             sql = removeLastAND(sql);
         }
+
+        System.out.println(sql);
 
         //routePoints = BBDatabase.performJoinRoutesEquipQuery(sql);    //DB METHOD HERE
         return sql;
@@ -162,7 +164,9 @@ public class FilterRefactor {
     private static ArrayList<String> filterUnique(String type, String input) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
         String sql = "SELECT DISTINCT %s from %s";
         sql = String.format(sql, input, type);
-        ArrayList<String> menuItems = BBDatabase.performDistinctStringQuery(sql);   //unsure about this
+        //ArrayList<String> menuItems = DataBaseRefactor.performDistinctQuery(sql, type);   //DB method to grab distinct stuff
+        //UNCOMMENT ABOVE WHEN READY
+        ArrayList<String> menuItems = null;
         Collections.sort(menuItems, String.CASE_INSENSITIVE_ORDER);
         return menuItems;
     }

@@ -121,5 +121,11 @@ public class FilterRefactorTest extends TestCase {
         assertEquals(dataPoints.size(), 5); //One selection and Search
 
     }
+    public void testRouteFilterSelections() throws  Exception{
+        String search = "";
+        ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "None"));
+        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "Poos", "RoutePoint");
+        //assertEquals(dataPoints.size(), 5);
+    }
 
 }

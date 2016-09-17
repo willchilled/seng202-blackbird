@@ -366,6 +366,34 @@ public class DataBaseRefactor {
         return resultPoints;
     }
 
+    public static ArrayList<String>  performDistinctQuery(String sql){
+
+        ArrayList<String> distinctResults = new ArrayList<String>();
+
+        try {
+            Connection currentConnection = makeConnection();
+            Class.forName("org.sqlite.JDBC");
+            currentConnection = DriverManager.getConnection(getDatabaseName());
+            currentConnection.setAutoCommit(false);
+            PreparedStatement preparedStatement = currentConnection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int i = 0;
+
+            while(rs.next()) {
+                distinctResults.add(rs.getString(1));
+                    }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return distinctResults;
+    }
+
+
 //
     public static void deleteDBFile(){
         //deletes pre existing database file

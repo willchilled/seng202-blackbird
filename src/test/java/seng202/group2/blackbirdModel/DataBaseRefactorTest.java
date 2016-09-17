@@ -58,10 +58,6 @@ public class DataBaseRefactorTest extends TestCase {
 
         DataBaseRefactor.insertDataPoints(flightPoints);
 
-
-
-
-
     }
 
     public void testInsertDataPoints() throws Exception {
@@ -72,6 +68,13 @@ public class DataBaseRefactorTest extends TestCase {
 
         String sql = "SELECT * FROM FLIGHT";
         DataBaseRefactor.performGenericQuery(sql, "FlightPoint");
+    }
+
+    public void testPerformDistinctQuery() throws Exception {
+        String sql = "SELECT DISTINCT COUNTRY FROM AIRLINE";
+        ArrayList<String> distinctPoints = DataBaseRefactor.performDistinctQuery(sql);
+        assertEquals(46, distinctPoints.size());
+        System.out.println("My Distinct Countries!");
     }
 
 }

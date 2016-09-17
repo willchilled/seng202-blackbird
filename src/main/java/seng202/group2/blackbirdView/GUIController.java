@@ -551,7 +551,7 @@ public class GUIController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("View/Edit Data");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 
@@ -605,7 +605,7 @@ public class GUIController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("View/Edit Data");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 
@@ -799,7 +799,7 @@ public class GUIController {
 
 
 
-        ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
+        ArrayList<AirportPoint> allPoints = Filter.getAllAirportPointsFromDB(); //airportTable.getItems();
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
         updateAirportsTable(allPoints);
 
@@ -807,7 +807,9 @@ public class GUIController {
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
-        updateRoutesTable(getAllRoutePoints());
+
+        ArrayList<RoutePoint> allPoints = Filter.getAllRoutePointsFromDB();
+        updateRoutesTable(allPoints);
     }
 
 

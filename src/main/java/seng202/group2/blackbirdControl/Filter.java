@@ -2,6 +2,7 @@ package seng202.group2.blackbirdControl;
 
 import seng202.group2.blackbirdModel.*;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,16 +127,17 @@ public class Filter {
 
 //    public static ArrayList<FlightPoint> getallFlightPoints() {
 //        String sql = " SELECT * FROM FLIGHT;";
-//        ArrayList<FlightPoint> allPoints = BBDatabase.performFlightsQuery(sql);
-//        return allPoints;
+//        return BBDatabase.performFlightsQuery(sql);
 //    }
 
     public static ArrayList<AirportPoint> getAllAirportPointsFromDB() {
-        //gets all Aiport Points from the database
         String sql = "SELECT * FROM AIRPORT;";
-        ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
-        allPoints = BBDatabase.performAirportsQuery(sql);
-        return allPoints;
+        return BBDatabase.performAirportsQuery(sql);
+    }
+
+    public static ArrayList<RoutePoint> getAllRoutePointsFromDB() {
+        String sql = "SELECT * FROM ROUTE;";
+        return BBDatabase.performRoutesQuery(sql);
     }
 
     public static ArrayList<AirportPoint> filterAirportsBySelections(String countrySelection, String query) {

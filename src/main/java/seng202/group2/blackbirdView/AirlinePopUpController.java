@@ -8,16 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdView.GUIController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
-    private GUIController myGUI;
 
 /**
     public AirlinePopUpController(AirlinePoint airlinePoint) {
@@ -34,7 +31,6 @@ public class AirlinePopUpController {
     @FXML private Label callsignText;
     @FXML private Label activeText;
     @FXML private TextField airlineNameTextEdit;
-    @FXML private TextField airlineIDTextEdit;
     @FXML private TextField airlineCountryTextEdit;
     @FXML private TextField airlineAliasTextEdit;
     @FXML private TextField airlineIATATextEdit;
@@ -75,7 +71,6 @@ public class AirlinePopUpController {
     public void editAirline(){
 
         airlineNameTextEdit.setVisible(true);
-        airlineIDTextEdit.setVisible(true);
         airlineCountryTextEdit.setVisible(true);
         airlineAliasTextEdit.setVisible(true);
         airlineIATATextEdit.setVisible(true);
@@ -91,9 +86,6 @@ public class AirlinePopUpController {
 
         if(nameText.getText() != ""){
             airlineNameTextEdit.setText((nameText.getText()));
-        }
-        if(idText.getText() != ""){
-            airlineIDTextEdit.setText(idText.getText());
         }
         if(countryText.getText() != ""){
             airlineCountryTextEdit.setText(countryText.getText());
@@ -122,7 +114,6 @@ public class AirlinePopUpController {
     public void commitEdit(){
 
         String name = airlineNameTextEdit.getText();
-        String id = airlineIDTextEdit.getText();
         String country = airlineCountryTextEdit.getText();
         String alias = airlineAliasTextEdit.getText();
         String iata = airlineIATATextEdit.getText();
@@ -130,7 +121,7 @@ public class AirlinePopUpController {
         String callsign = airlineCallsignTextEdit.getText();
         String active = airlineActiveTextEdit.getText();
 
-        List<String> attributes = Arrays.asList(name, id, country, alias, iata, icao, callsign, active);
+        List<String> attributes = Arrays.asList(name, country, alias, iata, icao, callsign, active);
 
         System.out.println("calling valid Entries");
 
@@ -138,7 +129,6 @@ public class AirlinePopUpController {
 
             System.out.println("Lets save this data!");
             airlineNameTextEdit.setVisible(false);
-            airlineIDTextEdit.setVisible(false);
             airlineCountryTextEdit.setVisible(false);
             airlineAliasTextEdit.setVisible(false);
             airlineIATATextEdit.setVisible(false);
@@ -156,14 +146,13 @@ public class AirlinePopUpController {
 
 
 
-            String sql = String.format("UPDATE AIRLINE SET ID='%1$s', NAME='%2$s', COUNTRY='%3$s', ALIAS='%4$s'," +
-                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE ID='%9$s'",
-                    id, name, country, alias, iata, icao, callsign, active, idText.getText());
+            String sql = String.format("UPDATE AIRLINE SET NAME='%1$s', COUNTRY='%2$s', ALIAS='%3$s'," +
+                    " IATA='%4$s', ICAO='%5$s', CALLSIGN='%6$s', ACTIVE='%7$s' WHERE ID='%8$s'",
+                    name, country, alias, iata, icao, callsign, active, idText.getText());
 
             System.out.println(sql);
 
             nameText.setText(airlineNameTextEdit.getText());
-            idText.setText(airlineIDTextEdit.getText());
             countryText.setText(airlineCountryTextEdit.getText());
             aliasText.setText(airlineAliasTextEdit.getText());
             iataText.setText(airlineIATATextEdit.getText());
@@ -172,7 +161,7 @@ public class AirlinePopUpController {
             activeText.setText(airlineActiveTextEdit.getText());
 
             BBDatabase.editDataEntry(sql);
-            //myGUI.airlinefilterButtonPressed();
+           // BBDatabase.editAirlineDataEntry(sql);
 
 
 
@@ -184,8 +173,7 @@ public class AirlinePopUpController {
     public void cancelEdit(){
 
         System.out.println("Nah fuck this!");
-        airlineNameTextEdit.setVisible(false);
-        airlineIDTextEdit.setVisible(false);
+        airlineNameTextEdit.setVisible(false);;
         airlineCountryTextEdit.setVisible(false);
         airlineAliasTextEdit.setVisible(false);
         airlineIATATextEdit.setVisible(false);

@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
@@ -46,6 +47,7 @@ public class RoutePopUpController {
     @FXML private Button routeEditButton;
     @FXML private Button routeFinishButton;
     @FXML private Button routeCancelButton;
+    @FXML private Pane refreshMessage;
 
 
 
@@ -84,6 +86,7 @@ public class RoutePopUpController {
         routeCShareTextEdit.setVisible(true);
         routeStopsTextEdit.setVisible(true);
         routeEquipmentTextEdit.setVisible(true);
+        refreshMessage.setVisible(true);
 
 
         routeEditButton.setVisible(false);
@@ -150,6 +153,7 @@ public class RoutePopUpController {
             routeStopsTextEdit.setVisible(false);
             routeEquipmentTextEdit.setVisible(false);
             routeInvalidData.setVisible(false);
+            refreshMessage.setVisible(false);
 
 
             routeEditButton.setVisible(true);

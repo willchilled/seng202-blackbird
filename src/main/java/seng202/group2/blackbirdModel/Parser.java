@@ -133,12 +133,14 @@ public class Parser {
     //add commas in for route equipment
     public static ArrayList<RoutePoint> parseRouteData(File file) {
 
+
         ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
             String line = "";
             int count = 0;
+
             while ((line = br.readLine()) != null) {
                 count++;
                 if (line.isEmpty()) {

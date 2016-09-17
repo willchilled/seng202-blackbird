@@ -109,14 +109,6 @@ public class AirlinePoint extends DataPoint {
         this.active = active;
     }
 
-//	public int getCorrectEntry() {
-//		return correctEntry;
-//	}
-//
-//	public void setCorrectEntry(int correctEntry) {
-//		this.correctEntry = correctEntry;
-//	}
-
 
     @Override
     public String toString() {

@@ -1,10 +1,7 @@
 package seng202.group2.blackbirdModel;
 
-import com.opencsv.CSVParser;
 import com.opencsv.CSVReader;
 
-import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -22,7 +19,7 @@ public class ParserRefactor {
             String [] currentLine;
             while ((currentLine = reader.readNext()) != null) {
                 String[] formattedLine = formatLine(currentLine);
-                currentDataPoint = DataPoint.createDataPoint(formattedLine, pointType);
+                currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType);
                 allDataPoints.add(currentDataPoint);
             }
         } catch (FileNotFoundException e) {

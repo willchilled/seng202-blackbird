@@ -15,9 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.TableCell;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdControl.AirlineAddingPopUpController;
@@ -28,7 +25,6 @@ import seng202.group2.blackbirdControl.RouteAddingPopUpController;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
-import java.io.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -314,7 +310,7 @@ public class GUIController {
         updateRoutesTable(routePoints);
         updateRoutesDropdowns();
 
-        updateFlightsTable(flightPoints);
+        //updateFlightsTable(flightPoints);
 
 
     }
@@ -344,8 +340,20 @@ public class GUIController {
 
         File f;
         f = getFile();
+
+        //OOH I AM VALID NOW
+        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, "AirlinePoint");
+        //COME BACK HERE
+        DataBaseRefactor.insertDataPoints(myPoints);
+
+        for (DataPoint point: myPoints){
+            System.out.println(point);
+        }
+
+
         ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
         BBDatabase.addAirlinePointstoDB(allAirlineData);
+
 
         ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
@@ -368,6 +376,10 @@ public class GUIController {
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
          f = getFile();
+
+
+
+
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
         BBDatabase.addRoutePointstoDB(myRouteData);
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
@@ -387,7 +399,7 @@ public class GUIController {
             File f = getFile();
             ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
             BBDatabase.addFlighttoDB(myFlightData);
-            updateFlightsTable(myFlightData);
+            //updateFlightsTable(myFlightData);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -609,35 +621,37 @@ public class GUIController {
 
     }
 
-    private void updateFlightsTable(ArrayList<FlightPoint> points){
-        //updates FLIGHTS table with a set of FLIGHT POINTS
-        Flight myFlight = new Flight(points);
+    // I HAVE BEEN COMENTED OUT BECAUSE I AM NOT WORKING
 
-
-        flightTable.getItems().addAll(myFlight);
-        flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
-        flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
-
-        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event){
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-
-                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
-
-                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
-
-                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
-                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
-                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
-                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
-                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
-                }
-
-                }
-                });
-
-    }
+//    private void updateFlightsTable(ArrayList<FlightPoint> points){
+//        //updates FLIGHTS table with a set of FLIGHT POINTS
+//        Flight myFlight = new Flight(points);
+//
+//
+//        flightTable.getItems().addAll(myFlight);
+//        flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
+//        flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
+//
+//        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event){
+//                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+//
+//                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
+//
+//                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
+//
+//                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, Integer>("type"));
+//                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("localeID"));
+//                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("altitude"));
+//                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("latitude"));
+//                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<FlightPoint, String>("longitude"));
+//                }
+//
+//                }
+//                });
+//
+//    }
 
 
     /*******************************************************************************************************************

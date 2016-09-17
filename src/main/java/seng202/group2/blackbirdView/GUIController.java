@@ -718,30 +718,6 @@ public class GUIController {
         ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirlinePoint");
         updateAirlinesTable(allPoints);
 
-//        ArrayList<AirlinePoint> filteredPoints = new ArrayList<AirlinePoint>();
-//
-//        if (countrySelection != "None"){
-//            filteredPoints = Filter.filterAirlineCountry(allPoints, countrySelection);
-//        }
-//        if (activeSelection != "None") {
-//            if (activeSelection != "None") {
-//
-//                if (activeSelection == "Active") {
-//                    filteredPoints = Filter.activeAirlines(filteredPoints, true);
-//
-//                } else {
-//                    filteredPoints = Filter.activeAirlines(filteredPoints, false);
-//                }
-//                // filteredPoints = Filter //add filter method
-//
-//
-//            }
-//        }
-//        updateAirlinesTable(filteredPoints);
-
-
-
-
 
     }
 

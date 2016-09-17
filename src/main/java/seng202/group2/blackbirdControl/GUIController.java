@@ -538,12 +538,13 @@ public class GUIController implements Initializable{
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
                         root = loader.load();
                         AirlinePopUpController popUpC = loader.getController();
+                        popUpC.setMainController(instance);
 
                        // setAirlinePopUpController(popUpC);
                         popUpC.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
                         popUpC.setUpPopUp();
 
-                        popUpC.setMainController(instance);
+
                         //setAirlinePopUpController(popUpC);
 
                         stage.setScene(new Scene(root));
@@ -609,6 +610,7 @@ public class GUIController implements Initializable{
 
 
     }
+
 
     private void updateAirportsTable(ArrayList<AirportPoint> points){
 
@@ -986,26 +988,7 @@ public class GUIController implements Initializable{
     //Bradley
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*
-        Stage stage;
-        //Parent root;
-        //stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
-        try {
-            Parent root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        airlinePopUpController = loader.getController();
-        airlinePopUpController.setMainController(this);
-        */
+
     }
 
-    /*public void setAirlinePopUpController(AirlinePopUpController airlinePopUpController) {
-        this.airlinePopUpController = airlinePopUpController;
-    }*/
-
-    //public AirlinePopUpController getAirlinePopUpController(){
-        //return airlinePopUpController;
-    //}
 }

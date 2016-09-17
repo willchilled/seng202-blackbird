@@ -5,10 +5,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirlinePoint;
+import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdControl.GUIController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +46,7 @@ public class AirlinePopUpController {
     @FXML private Button airlineFinishButton;
     @FXML private Button airlineEditButton;
     @FXML private Button airlineCancelButton;
+    @FXML private Button airlineCloseButton;
 
 
 
@@ -163,7 +167,7 @@ public class AirlinePopUpController {
                     aliasText.getText(), iataText.getText(), icaoText.getText(), callsignText.getText(),
                     countryText.getText(), activeText.getText());
 
-            System.out.println(sql);
+            //System.out.println(sql);
 
             nameText.setText(airlineNameTextEdit.getText());
             idText.setText(airlineIDTextEdit.getText());
@@ -175,7 +179,13 @@ public class AirlinePopUpController {
             activeText.setText(airlineActiveTextEdit.getText());
 
             BBDatabase.editAirlineDataEntry(sql);
-            System.out.println("WOWOWOWOWO");
+
+            //To test, Edit the airline name of the Value with ID = 2, to be "Making Edits Here"
+            ArrayList<AirlinePoint> test = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID=2");
+            String changedName = test.get(0).getAirlineName();
+            //Checking to see if the editing worked
+            System.out.println("\nExpected: Making Edits Here");
+            System.out.println("Got: "+changedName+"\n");
 
             //Bradley
             //This is where the error is
@@ -185,6 +195,17 @@ public class AirlinePopUpController {
         }else{
             airlineInvalidDataText.setVisible(true);
         }
+    }
+
+    public void closeAirline(){
+
+        mainController.airlinefilterButtonPressed();
+        Stage stage = (Stage) airlineCloseButton.getScene().getWindow();
+        stage.close();
+
+       // mainController.airlinefilterButtonPressed();
+
+
     }
 
     public void cancelEdit(){

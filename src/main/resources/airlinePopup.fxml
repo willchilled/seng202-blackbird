@@ -101,10 +101,11 @@
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
          <children>
-            <Button fx:id="airlineEditButton" layoutX="181.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
+            <Button fx:id="airlineEditButton" layoutX="126.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
             <Button fx:id="airlineFinishButton" layoutX="322.0" layoutY="13.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
             <Button fx:id="airlineCancelButton" layoutX="20.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
             <Text fx:id="airlineInvalidDataText" fill="#c61010" layoutX="154.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INVALID DATA!" visible="false" />
+            <Button fx:id="airlineCloseButton" cancelButton="true" layoutX="222.0" layoutY="12.0" mnemonicParsing="false" onAction="#closeAirline" text="Close" />
          </children>
       </Pane>
    </children>

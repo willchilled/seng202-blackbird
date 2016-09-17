@@ -1,5 +1,7 @@
 package seng202.group2.blackbirdModel;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,8 +39,6 @@ public class DataBaseRefactor {
     public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
         System.out.println("HI");
 
-
-
         try {
 
             Connection currentConnection = makeConnection();
@@ -65,7 +65,14 @@ public class DataBaseRefactor {
                             break;
 
                     case "AirportPoint":
-                            preparedStatement = prepareInserAirportSql(currentPoint, preparedStatement, currentConnection);
+                            preparedStatement = prepareInsertAirportSql(currentPoint, preparedStatement, currentConnection);
+                            break;
+                    case "RoutePoint":
+                            preparedStatement = perpareInsertRouteSql(currentPoint, preparedStatement, currentConnection);
+                            break;
+                    case "Flight":
+                        break;
+
                 }
 
                 try{
@@ -73,6 +80,7 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 }
                 catch (Exception e){
+                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                     System.out.println("Cant add: " +  currentPoint.toString());
                 }
 
@@ -98,7 +106,45 @@ public class DataBaseRefactor {
 
     }
 
-    private static PreparedStatement prepareInserAirportSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
+    private static PreparedStatement perpareInsertRouteSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
+        RoutePoint route = (RoutePoint) currentPoint;
+
+        int idNum = route.getRouteID();
+        String airline = route.getAirline();
+        int airlineID = route.getAirlineID();
+        String src = route.getSrcAirport();
+        int srcId = route.getSrcAirportID();
+        String dst = route.getDstAirport();
+        int dstId = route.getDstAirportID();
+        String codeshare = route.getCodeshare();
+        int stops = route.getStops();
+
+        //make route sql text to execute
+        String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops) VALUES (?,?,?,?,?,?,?,?,?)";
+
+        try {
+            preparedStatement = currentConnection.prepareStatement(sql);
+            //System.out.println(preparedStatement + "AAAAH");
+           //preparedStatement.setInt(1, idNum);
+            preparedStatement.setString(2, airline);
+            preparedStatement.setInt(3, airlineID);
+            preparedStatement.setString(4, src);
+            preparedStatement.setInt(5, srcId);
+            preparedStatement.setString(6, dst);
+            preparedStatement.setInt(7, dstId);
+            preparedStatement.setString(8, codeshare);
+            preparedStatement.setInt(9, stops);
+        } catch (SQLException e) {
+
+            System.out.println("canont prepare statement");
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+        return preparedStatement;
+
+    }
+
+    private static PreparedStatement prepareInsertAirportSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
         AirportPoint airport = (AirportPoint) currentPoint;
 
 
@@ -311,7 +357,7 @@ public class DataBaseRefactor {
     private static String createRouteTable(){
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
         String sql = "CREATE TABLE ROUTE" +
-                "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
+                "(IDnum     INTEGER PRIMARY KEY AUTOINCREMENT /*ID number for the route*/," +
                 "Airline    VARCHAR(3) /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
                 "Airlineid  INTEGER /*ID of Airline for route*/," +
                 "Src        VARCHAR(4) NOT NULL /*Source location for route*/," +   //either the IATA(3) or ICAO(4)
@@ -321,8 +367,7 @@ public class DataBaseRefactor {
                 "Codeshare  CHAR(1) constraint check_codeshare check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
                 "Stops      INTEGER NOT NULL /*Number of stops the route takes*/," +
                 "Equipment  VARCHAR(50), " +
-                "foreign key (Srcid, Dstid) references AIRPORT," +    //foreign key can only be primary key of other table
-                "PRIMARY KEY (IDnum)" +
+                "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
         return sql;
     }

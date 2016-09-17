@@ -4,6 +4,7 @@ package seng202.group2.blackbirdControl;
  * Created by emr65 on 15/09/16.
  */
 
+import javafx.stage.FileChooser;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataPoint;
 
@@ -17,26 +18,35 @@ public class Exporter {
 
     public static void exportData(ArrayList<DataPoint> points){
 
-        JFileChooser chooser = new JFileChooser();
-        JPanel mainPanel = new JPanel();
-        chooser.setDialogTitle("Export Data as Text File");
-        int userChoice = chooser.showSaveDialog(mainPanel);
+        File fileToSave;
+        String cwd = System.getProperty("user.dir");
+        File userDirectory = new File(cwd);
 
-        if (userChoice == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = chooser.getSelectedFile();
-            System.out.println(fileToSave);
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Save");
 
+        fc.setInitialDirectory(userDirectory);
+
+        if(!userDirectory.canRead()) {
+            userDirectory = new File("c:/");
+        }
+        fc.setInitialDirectory(userDirectory);
+
+        //Choose the file
+        fileToSave = fc.showSaveDialog(null);
+        if(fileToSave != null) {
+            //Make sure a file was selected, if not return default
 
             try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(fileToSave), "utf-8"))) {
-                
-                for(int i = 0; i < points.size(); i++){
-                    writer.write(points.get(i).toString()+"\n");
-                 //   System.out.println(points.get(i).toString());
+
+                for (int i = 0; i < points.size(); i++) {
+                    writer.write(points.get(i).toString() + "\n");
+                    //   System.out.println(points.get(i).toString());
                 }
                 System.out.println("WOW HERE OMG");
 
-                    //writer.write("something");
+                //writer.write("something");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException e) {
@@ -44,6 +54,7 @@ public class Exporter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
         }
 
@@ -51,4 +62,4 @@ public class Exporter {
     }
 
 
-}
+

@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
@@ -217,23 +218,30 @@ public class GUIController implements Initializable{
         //gets a file of a specified type
         File myFile;
         String cwd = System.getProperty("user.dir");
+        File userDirectory = new File(cwd);
 
-        JFileChooser jfc = new JFileChooser(cwd);
-        int userChoice = jfc.showOpenDialog(null);
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Select Data File");
 
-        switch (userChoice) {
-            case JFileChooser.APPROVE_OPTION:
-                myFile = jfc.getSelectedFile();
-                if (myFile.exists() && myFile.isFile() && myFile.canRead()) {
+        fc.setInitialDirectory(userDirectory);
 
-                    return myFile;
-                }
-            case JFileChooser.CANCEL_OPTION:
-                // fall through
-            case JFileChooser.ERROR_OPTION:
-                System.out.println("ERROR IN FILE");
+        if(!userDirectory.canRead()) {
+            userDirectory = new File("c:/");
         }
-        return null;
+        fc.setInitialDirectory(userDirectory);
+
+        //Choose the file
+        myFile = fc.showOpenDialog(null);
+        //Make sure a file was selected, if not return default
+
+        if(myFile != null) {
+            return myFile;
+        }
+        else{
+           System.out.println("wow");
+            return null;
+        }
+
     }
 
     public void show(){
@@ -331,16 +339,18 @@ public class GUIController implements Initializable{
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
-        ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
-        BBDatabase.addAirportPointsToDB(allairportPoints);
-        ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
+        if(f != null) {
+            ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
+            BBDatabase.addAirportPointsToDB(allairportPoints);
+            ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
-        setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
-        updateAirportsTable(validairportPoints);
+            setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
+            updateAirportsTable(validairportPoints);
 
-        airPortCountryList = populateAirportCountryList();  //populating from valid data in database
-        airportFilterMenu.setItems(airPortCountryList);
-        airportFilterMenu.setValue(airPortCountryList.get(0));
+            airPortCountryList = populateAirportCountryList();  //populating from valid data in database
+            airportFilterMenu.setItems(airPortCountryList);
+            airportFilterMenu.setValue(airPortCountryList.get(0));
+        }
 
 
 
@@ -351,20 +361,22 @@ public class GUIController implements Initializable{
 
         File f;
         f = getFile();
-        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
-        BBDatabase.addAirlinePointstoDB(allAirlineData);
+        if(f != null) {
+            ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+            BBDatabase.addAirlinePointstoDB(allAirlineData);
 
-        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
+            ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
-        setAllAirlinePoints(validAirlineData);
-        setAirlineActiveList(populateAirlineActiveList());
+            setAllAirlinePoints(validAirlineData);
+            setAirlineActiveList(populateAirlineActiveList());
 
-        airlineActiveMenu.setItems(getAirlineActiveList());
-        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
-        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
-        airlineFilterMenu.setItems(airlineCountryList);
-        airlineFilterMenu.setValue(airlineCountryList.get(0));
-        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+            airlineActiveMenu.setItems(getAirlineActiveList());
+            airlineActiveMenu.setValue(getAirlineActiveList().get(0));
+            airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
+            airlineFilterMenu.setItems(airlineCountryList);
+            airlineFilterMenu.setValue(airlineCountryList.get(0));
+            updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        }
     }
 
     public void addRouteData(){
@@ -375,13 +387,15 @@ public class GUIController implements Initializable{
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
          f = getFile();
-         ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-        BBDatabase.addRoutePointstoDB(myRouteData);
-        //WAITING ON METHOD TO GET ROUTES BACK FROM DB
-        //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
-        setAllRoutePoints(myRouteData); //populating local data with all points
-        updateRoutesTable(myRouteData);
-        updateRoutesDropdowns();
+        if(f != null) {
+            ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
+            BBDatabase.addRoutePointstoDB(myRouteData);
+            //WAITING ON METHOD TO GET ROUTES BACK FROM DB
+            //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
+            setAllRoutePoints(myRouteData); //populating local data with all points
+            updateRoutesTable(myRouteData);
+            updateRoutesDropdowns();
+        }
 
     }
 
@@ -392,9 +406,11 @@ public class GUIController implements Initializable{
 
         try {
             File f = getFile();
-            ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
-            BBDatabase.addFlighttoDB(myFlightData);
-            updateFlightsTable(myFlightData);
+            if(f != null) {
+                ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+                BBDatabase.addFlighttoDB(myFlightData);
+                updateFlightsTable(myFlightData);
+            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
                     "Error", JOptionPane.ERROR_MESSAGE);

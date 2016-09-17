@@ -27,16 +27,16 @@ public class FilterTest extends TestCase {
         File airportsFile = new File(airportsFileString);
         File routesFile = new File(routesFileString);
 
-        //ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
+        ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
-        //ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
+        ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
 
 
         BBDatabase.deleteDBFile();
         BBDatabase.createTables();
-        //BBDatabase.addAirlinePointstoDB(airlinePoints);
+        BBDatabase.addAirlinePointstoDB(airlinePoints);
         BBDatabase.addAirportPointsToDB(airportPoints);
-        //BBDatabase.addRoutePointstoDB(routePoints);
+        BBDatabase.addRoutePointstoDB(routePoints);
         //myAirlineData = Filter.getAllAirlinePointsfromDB();
     }
 

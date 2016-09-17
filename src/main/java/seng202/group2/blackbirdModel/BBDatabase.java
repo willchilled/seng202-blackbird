@@ -400,7 +400,7 @@ public class BBDatabase {
 
         //equipment is special cos its a dick
         String strEquipment = route.getEquipment();
-        String[] ListEquipment = strEquipment.split(" ");
+        String[] ListEquipment = strEquipment.split("\\s+");
 
         //make equipment sql
         //for all equipment in route
@@ -675,6 +675,7 @@ public class BBDatabase {
 
     public static ArrayList<String> performDistinctStringQuery(String sql) {
 
+        //System.out.println(sql);
         Connection c = makeConnection();
         ArrayList<AirlinePoint> allPoints = new ArrayList<AirlinePoint>();
 
@@ -685,7 +686,7 @@ public class BBDatabase {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
-            System.out.println("Opened database successfully");
+            //System.out.println("Opened database successfully");
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -702,13 +703,13 @@ public class BBDatabase {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Disting Query Query done successfully:" + sql);
+        //System.out.println("Disting Query Query done successfully:" + sql);
 
         return uniqueEntities;
 
     }
 
-    public static void editAirlineDataEntry(String sql) {
+    public static void editDataEntry(String sql) {
 
         Connection c = makeConnection();
 
@@ -730,6 +731,8 @@ public class BBDatabase {
         System.out.println("Edited data entry: " + sql);
 
     }
+
+
 
     public static ArrayList<RoutePoint> performJoinRoutesEquipQuery(String sql) {
 

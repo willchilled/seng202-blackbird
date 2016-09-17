@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdControl;
+package seng202.group2.blackbirdView;
 
 
 import javafx.collections.FXCollections;
@@ -35,35 +35,24 @@ import static javafx.fxml.FXMLLoader.load;
 /**
  * Created by emr65 on 13/08/16.
  */
-public class GUIController implements Initializable{
-    //FOR THE POPUPS
-    //Bradley
-    @FXML private AirlinePopUpController airlinePopUpController;
-
-
-
-
-
-
+public class GUIController {
 
     //ObservableList<String> airPortCountryList = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
     //ObservableList<String> copy = FXCollections.observableArrayList("Australia", "New Zealand", "Canada"); //maybe need this?
-    ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airPortCountryList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
 
-    ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
 
-
-
-    ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+    private ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
 
-    ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
-    ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
+    private ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
+    private ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
@@ -144,10 +133,6 @@ public class GUIController implements Initializable{
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
-    public GUIController() throws IOException {
-
-    }
-
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
     public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
@@ -189,7 +174,7 @@ public class GUIController implements Initializable{
     //Airline Popup Info
   //  @FXML private Text nameText;
 
-/*    @FXML
+    @FXML
     private void initialize(){
         //Automatic initialisation when the program starts
 
@@ -212,7 +197,7 @@ public class GUIController implements Initializable{
         routesFilterbyEquipMenu.setValue(getRoutesFilterbyEquipList().get(0));
         routesFilterbyEquipMenu.setItems(getRoutesFilterbyEquipList());
 
-    }*/
+    }
 
     private File getFile() {
         //gets a file of a specified type
@@ -272,7 +257,7 @@ public class GUIController implements Initializable{
     public void addALLData(){
         //MASTER OVERRIDE FUNCTION DONT SCREW WITH THIS UNLESS YOU ARE A WIZARD
         String cwd = System.getProperty("user.dir");
-        String airlinesFileString = cwd + "/TestFiles/airlines.txt";;
+        String airlinesFileString = cwd + "/TestFiles/airlines.txt";
         String airportsFileString = cwd + "/TestFiles/airports.txt";
         String routesFileString = cwd + "/TestFiles/route.txt";
         String flightsFileString = cwd + "/TestFiles/flight.txt";
@@ -339,18 +324,19 @@ public class GUIController implements Initializable{
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
-        if(f != null) {
-            ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
-            BBDatabase.addAirportPointsToDB(allairportPoints);
-            ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
-
-            setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
-            updateAirportsTable(validairportPoints);
-
-            airPortCountryList = populateAirportCountryList();  //populating from valid data in database
-            airportFilterMenu.setItems(airPortCountryList);
-            airportFilterMenu.setValue(airPortCountryList.get(0));
+        if (f == null) {
+            return;
         }
+        ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
+        BBDatabase.addAirportPointsToDB(allairportPoints);
+        ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
+
+        setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
+        updateAirportsTable(validairportPoints);
+
+        airPortCountryList = populateAirportCountryList();  //populating from valid data in database
+        airportFilterMenu.setItems(airPortCountryList);
+        airportFilterMenu.setValue(airPortCountryList.get(0));
 
 
 
@@ -361,22 +347,23 @@ public class GUIController implements Initializable{
 
         File f;
         f = getFile();
-        if(f != null) {
-            ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
-            BBDatabase.addAirlinePointstoDB(allAirlineData);
-
-            ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
-
-            setAllAirlinePoints(validAirlineData);
-            setAirlineActiveList(populateAirlineActiveList());
-
-            airlineActiveMenu.setItems(getAirlineActiveList());
-            airlineActiveMenu.setValue(getAirlineActiveList().get(0));
-            airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
-            airlineFilterMenu.setItems(airlineCountryList);
-            airlineFilterMenu.setValue(airlineCountryList.get(0));
-            updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        if (f == null) {
+            return;
         }
+        ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+        BBDatabase.addAirlinePointstoDB(allAirlineData);
+
+        ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
+
+        setAllAirlinePoints(validAirlineData);
+        setAirlineActiveList(populateAirlineActiveList());
+
+        airlineActiveMenu.setItems(getAirlineActiveList());
+        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
+        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
+        airlineFilterMenu.setItems(airlineCountryList);
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
     }
 
     public void addRouteData(){
@@ -387,15 +374,16 @@ public class GUIController implements Initializable{
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
          f = getFile();
-        if(f != null) {
-            ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-            BBDatabase.addRoutePointstoDB(myRouteData);
-            //WAITING ON METHOD TO GET ROUTES BACK FROM DB
-            //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
-            setAllRoutePoints(myRouteData); //populating local data with all points
-            updateRoutesTable(myRouteData);
-            updateRoutesDropdowns();
+        if (f == null) {
+            return;
         }
+         ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
+        BBDatabase.addRoutePointstoDB(myRouteData);
+        //WAITING ON METHOD TO GET ROUTES BACK FROM DB
+        //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
+        setAllRoutePoints(myRouteData); //populating local data with all points
+        updateRoutesTable(myRouteData);
+        updateRoutesDropdowns();
 
     }
 
@@ -406,11 +394,12 @@ public class GUIController implements Initializable{
 
         try {
             File f = getFile();
-            if(f != null) {
-                ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
-                BBDatabase.addFlighttoDB(myFlightData);
-                updateFlightsTable(myFlightData);
+            if (f == null) {
+                return;
             }
+            ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+            BBDatabase.addFlighttoDB(myFlightData);
+            updateFlightsTable(myFlightData);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -496,13 +485,9 @@ public class GUIController implements Initializable{
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("country"));
         airlineActCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("active"));
 
-        //Bradley
-        //This creates the popup when the user double clicks on a table entry.
-        //I think what I have done here is silly- but I can't set the mainController in the initialize method without
-        //An instance of the AirlinePopUpController...but this only gets created in this method once the user has double clicked.
-        //So I have it created both here and in the initialize method which is maybe why it isn't working?
-        airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
 
+
+        airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
@@ -514,15 +499,9 @@ public class GUIController implements Initializable{
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
                         root = loader.load();
-
-                        AirlinePopUpController popUpC = loader.getController();
-
-                       // setAirlinePopUpController(popUpController);
-                        popUpC.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
-                        popUpC.setUpPopUp();
-
-                        //airlinePopUpController.setMainController();
-                        setAirlinePopUpController(popUpC);
+                        AirlinePopUpController popUpController = loader.getController();
+                        popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -856,9 +835,7 @@ public class GUIController implements Initializable{
 
     private ObservableList<String> populateAirlineActiveList(){
         //populates the activr airlines dropdown
-        ObservableList<String> airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
-
-        return airlineActiveList;
+        return FXCollections.observableArrayList("None", "Active", "Inactive");
     }
 
     private ObservableList<String> addNullValue(ObservableList<String> populatedList){
@@ -960,28 +937,8 @@ public class GUIController implements Initializable{
 
     }
 
-    //This is probably where the issues are coming from
-    //Bradley
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        Stage stage;
-        //Parent root;
-        //stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
-        try {
-            Parent root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        airlinePopUpController = loader.getController();
-        airlinePopUpController.setMainController(this);
-    }
 
-    public void setAirlinePopUpController(AirlinePopUpController airlinePopUpController) {
-        this.airlinePopUpController = airlinePopUpController;
-    }
 
-    public AirlinePopUpController getAirlinePopUpController(){
-        return airlinePopUpController;
-    }
+
+
 }

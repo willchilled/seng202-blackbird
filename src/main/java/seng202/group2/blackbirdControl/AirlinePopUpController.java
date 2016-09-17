@@ -1,5 +1,6 @@
-package seng202.group2.blackbirdControl;
+package seng202.group2.blackbirdView;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,15 +8,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdControl.GUIController;
+import seng202.group2.blackbirdView.GUIController;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
-    private GUIController mainController;
+    private GUIController myGUI;
 
 /**
     public AirlinePopUpController(AirlinePoint airlinePoint) {
@@ -119,8 +121,6 @@ public class AirlinePopUpController {
 
     public void commitEdit(){
 
-
-
         String name = airlineNameTextEdit.getText();
         String id = airlineIDTextEdit.getText();
         String country = airlineCountryTextEdit.getText();
@@ -157,11 +157,8 @@ public class AirlinePopUpController {
 
 
             String sql = String.format("UPDATE AIRLINE SET ID='%1$s', NAME='%2$s', COUNTRY='%3$s', ALIAS='%4$s'," +
-                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE NAME='%9$s' AND ID='%10$s'" +
-                    " AND ALIAS='%11$s' AND IATA='%12$s' AND ICAO='%13$s' AND CALLSIGN='%14$s' AND COUNTRY='%15$s' AND ACTIVE='%16$s'",
-                    id, name, country, alias, iata, icao, callsign, active, nameText.getText(), idText.getText(),
-                    aliasText.getText(), iataText.getText(), icaoText.getText(), callsignText.getText(),
-                    countryText.getText(), activeText.getText());
+                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE ID='%9$s'",
+                    id, name, country, alias, iata, icao, callsign, active, idText.getText());
 
             System.out.println(sql);
 
@@ -174,11 +171,9 @@ public class AirlinePopUpController {
             callsignText.setText(airlineCallsignTextEdit.getText());
             activeText.setText(airlineActiveTextEdit.getText());
 
-            BBDatabase.editAirlineDataEntry(sql);
+            BBDatabase.editDataEntry(sql);
+            //myGUI.airlinefilterButtonPressed();
 
-            //Bradley
-            //This is where the error is
-            mainController.airlinefilterButtonPressed();
 
 
         }else{
@@ -210,13 +205,6 @@ public class AirlinePopUpController {
         return true;
 
     }
-
-    //setting up the main controller connection
-    //Bradley
-    public void setMainController(GUIController controller) {
-        this.mainController = controller;
-    }
-
 
 }
 

@@ -51,7 +51,7 @@ public class GUIController {
     ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
 
-    ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
+    ArrayList<DataPoint> allAirlinePoints = new ArrayList<>();
     ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
@@ -167,9 +167,9 @@ public class GUIController {
 
     public void setAllAirportPoints(ArrayList<AirportPoint> points){this.allPoints = points;}
 
-    public ArrayList<AirlinePoint> getAllAirlinePoints(){return allAirlinePoints;}
+    public ArrayList<DataPoint> getAllAirlinePoints(){return allAirlinePoints;}
 
-    public void setAllAirlinePoints(ArrayList<AirlinePoint> points){this.allAirlinePoints = points;}
+    public void setAllAirlinePoints(ArrayList<DataPoint> points){this.allAirlinePoints = points;}
 
     //Airline Popup Info
   //  @FXML private Text nameText;
@@ -485,7 +485,7 @@ public class GUIController {
         //Updates the view with a given set of airline points
         airlineTable.getItems().setAll(points);
 
-        airlineIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("airlineID"));
+        airlineIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airlineName"));
         airlineAliasCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airlineAlias"));
         airlineIATACol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("iata"));

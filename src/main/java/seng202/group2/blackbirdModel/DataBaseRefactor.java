@@ -1,5 +1,8 @@
 package seng202.group2.blackbirdModel;
 
+
+
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,8 +56,8 @@ public class DataBaseRefactor {
             if (myPoints.get(0).getType().equals("FlightPoint")){
                 FlightCount ++;
                 addFlight(myPoints, preparedStatement, currentConnection);
-                System.out.println("HERE");
-                System.out.println(FlightCount);
+                //System.out.println("HERE");
+                //System.out.println(FlightCount);
 
             }
 
@@ -98,7 +101,7 @@ public class DataBaseRefactor {
                 }
                 catch (Exception e){
                    // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                   // System.out.println("Cant add: " +  currentPoint.toString());
+                    System.out.println("Cant add: " +  currentPoint.toString());
                 }
 
 
@@ -111,7 +114,7 @@ public class DataBaseRefactor {
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
             //System.exit(0);
             System.out.println("Could not add :");
@@ -204,10 +207,11 @@ public class DataBaseRefactor {
         int dstId = route.getDstAirportID();
         String codeshare = route.getCodeshare();
         int stops = route.getStops();
+        String equp = route.getEquipment();
 
         //make route sql text to execute
-        String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops) VALUES (?,?,?,?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        System.out.println(sql);
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
             //System.out.println(preparedStatement + "AAAAH");
@@ -220,6 +224,7 @@ public class DataBaseRefactor {
             preparedStatement.setInt(7, dstId);
             preparedStatement.setString(8, codeshare);
             preparedStatement.setInt(9, stops);
+            preparedStatement.setString(10, equp);
         } catch (SQLException e) {
 
             System.out.println("canont prepare statement");
@@ -273,24 +278,6 @@ public class DataBaseRefactor {
 
         return preparedStatement;
 
-//        //System.out.println(airportID + airportName + City + Country + Iata + Icao + Latitude + Longitude + Altitude + timezone + Dst + tz);
-//
-//        String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, Longitude ,ALTITUDE, TIMEZONE, DST, TZ) " +
-//                "VALUES (" +
-//                + airportID + ", \"" +
-//                airportName + "\", \"" +
-//                City + "\", \"" +
-//                Country + "\", \"" +
-//                Iata + "\", \"" +
-//                Icao + "\", " +
-//                Latitude + ", " +
-//                Longitude + ", " +
-//                Altitude + ", " +
-//                timezone + ", \"" +
-//                Dst + "\", \"" +
-//                tz + "\"); ";
-
-
     }
 
     private static PreparedStatement prepareInsertAirlineSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
@@ -336,6 +323,130 @@ public class DataBaseRefactor {
 
 
     }
+
+    public static ArrayList<DataPoint> performGenericQuery(String sql, String dataType) {
+
+        ArrayList<DataPoint> resultPoints = new ArrayList<>();
+
+        try {
+            Connection currentConnection = makeConnection();
+            Class.forName("org.sqlite.JDBC");
+            currentConnection = DriverManager.getConnection(getDatabaseName());
+            currentConnection.setAutoCommit(false);
+            PreparedStatement preparedStatement = currentConnection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            String[] attributes = null;
+
+            while(rs.next()) {
+
+                int width = rsmd.getColumnCount();
+
+                //System.out.println("---------------");
+
+                if(dataType.equals("RoutePoint")){
+                    attributes = new String[width-1];
+                    for (int i = 1; i < width; i++) {
+
+                        attributes[i-1] = rs.getString(i + 1);
+                        //System.out.println(i + " " + attributes[i-1]);
+                    }
+
+                } else {
+                    attributes = new String[width];
+                    for (int i = 0; i < width; i++) {
+
+                        attributes[i] = rs.getString(i + 1);
+                       // System.out.println(i + " " + attributes[i]);
+                    }
+                }
+               // System.out.println("---------------");
+
+                DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
+                resultPoints.add(myPoint);
+               // System.out.println(myPoint.toString());
+
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultPoints;
+    }
+//
+//    public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
+//        System.out.println("HI");
+//
+//        try {
+//
+//            Connection currentConnection = makeConnection();
+//            Statement stmt = null;
+//            Class.forName("org.sqlite.JDBC");
+//            currentConnection = DriverManager.getConnection(getDatabaseName());
+//            currentConnection.setAutoCommit(false);
+//            stmt = currentConnection.createStatement();
+//            PreparedStatement preparedStatement = null;
+//
+//
+//
+//            for (DataPoint currentPoint : myPoints) {
+//                //addSingleAirline(airline, stmt);
+//                //System.out.println(currentPoint.getType());
+//
+//                String dataType = currentPoint.getType();
+//                //DataTypes dataType = currentPoint.getType();
+//                //PreparedStatement preparedStatement = null;
+//
+//                switch (dataType){
+//                    case "AirlinePoint": //System.out.println("Hey");
+//                        preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
+//                        break;
+//
+//                    case "AirportPoint":
+//                        preparedStatement = prepareInsertAirportSql(currentPoint, preparedStatement, currentConnection);
+//                        break;
+//                    case "RoutePoint":
+//                        preparedStatement = perpareInsertRouteSql(currentPoint, preparedStatement, currentConnection);
+//                        break;
+//                    case "Flight":
+//                        break;
+//
+//                }
+//
+//                try{
+//                    preparedStatement.executeUpdate();
+//                    preparedStatement.close();
+//                }
+//                catch (Exception e){
+//                    // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//                    System.out.println("Cant add: " +  currentPoint.toString());
+//                }
+//
+//
+//            }
+//
+//
+//
+//            //.close();
+//            currentConnection.commit();
+//            currentConnection.commit();
+//            currentConnection.close();
+//        } catch (Exception e) {
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//
+//            //System.exit(0);
+//            System.out.println("Could not add :");
+//        }
+//        System.out.println("Records created successfully");
+//
+//
+//
+//
+//    }
+
+
 
 
 
@@ -455,6 +566,7 @@ public class DataBaseRefactor {
                 "Equipment  VARCHAR(50), " +
                 "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
+        System.out.println("\n\n" + sql + "\n\n" + "HERE");
         return sql;
     }
 
@@ -542,6 +654,7 @@ public class DataBaseRefactor {
         //System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
 
     }
+
 
 //
 //    //Airport Adding

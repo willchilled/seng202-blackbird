@@ -1,9 +1,12 @@
 package seng202.group2.blackbirdModel;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by sha162 on 10/09/16.
@@ -127,6 +130,7 @@ public class BBDatabase {
                 "foreign key (Srcid) references AIRPORT," +
                 "foreign key (Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
+        //System.out.print(sql);
         return sql;
     }
 
@@ -323,7 +327,7 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-           // System.out.println("Poos" + sql);
+            //System.out.println("Poos" + sql);
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
@@ -483,27 +487,91 @@ public class BBDatabase {
     }
 
     public static void linkRoutesandAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+        try {
+            BBDatabase.dropRouteTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ArrayList<RoutePoint> updatedPoints = new ArrayList<>();
+        Set<RoutePoint> myRouteSet = new HashSet<>();
         for (RoutePoint route : routes) {
             //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
             int srcAirportId = route.getSrcAirportID();
             int destAirportId = route.getDstAirportID();
-
             for (AirportPoint airport : airports) {
                 if (srcAirportId == airport.getAirportID()) {
                     route.setSrcAirportCountry(airport.getAirportCountry());
                     route.setSrcAirportName(airport.getAirportName());
                     airport.incrementIncRoutes();
+//                    if (!updatedPoints.contains(route)){
+//                        updatedPoints.add(route);
+//                    }
 
-                } else if (destAirportId == airport.getAirportID()) {
+
+                } if (destAirportId == airport.getAirportID()) {
                     route.setDestAirportCountry(airport.getAirportCountry());
                     route.setDestAirportName(airport.getAirportName());
                     airport.incrementOutgoingRoutes();
-                } else {
-                    //TODO
-                    //raise an exception here? a route is using an airport that doesn't exist
+//                    if (!updatedPoints.contains(route)){
+//                        updatedPoints.add(route);
+//                    }
                 }
+
             }
+            //myRouteSet.add(route);
         }
+
+
+        //ArrayList<RoutePoint> myList = (ArrayList<RoutePoint>) myRouteSet;
+        ArrayList<String> test = new ArrayList<>();
+        BBDatabase.addRoutePointstoDB(routes);
+//        for (RoutePoint route: updatedPoints){
+//            //System.out.println(route);
+//           // BBDatabase.editDataEntry(route);
+//            String sql2 = String.format("UPDATE ROUTE SET srcAirportName=\"%s\", " +
+//                    "dstAirportName=\"%s\",  srcAirportCountry=\"%s\", dstAirportCountry=\"%s\" WHERE idnum=\"%s\"",
+//                    route.getSrcAirport(), route.getSrcAirportID(), route.getSrcAirportID(), route.getDstAirport(), route.getRouteID());
+//           //String sql = String.format("UPDATE ROUTE SET Airline='%1$s', Airlineid='%2$s', Src='%3$s', Srcid='%4$s'," +
+//                           // " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s' WHERE IDnum='%9$s'",
+//                    //route.getAirline(), route.getAirlineID(), route.getSource(), route.getSrcAirportID(), route.getDestination(), route.getDstAirportID(), route.getCodeshare(), 1000, route.getRouteID());
+//
+//            test.add(sql2);
+//        }
+//        BBDatabase.editDataEntries(test);
+    }
+
+    private static void dropRouteTable() throws SQLException {
+        Connection c = makeConnection();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+
+            stmt = c.createStatement();
+            //for (String sql: test){
+              //  System.out.println(sql);
+            stmt.executeUpdate("DROP TABLE ROUTE");
+
+            String sql = createRouteTable();
+            stmt.executeUpdate(sql);
+
+            } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        c.commit();
+        c.close();
+        System.out.println("whoops i dropped a table");
+
     }
 
 
@@ -724,6 +792,42 @@ public class BBDatabase {
             //System.exit(0);
         }
 
+    }
+
+
+    private static void editDataEntries(ArrayList<String> test) {
+
+        Connection c = makeConnection();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            int i = 0;
+            stmt = c.createStatement();
+            for (String sql: test){
+                System.out.println(sql);
+                stmt.executeUpdate(sql);
+
+                if (i%10 ==0){
+                    System.out.println("Thinking ..");
+                }
+                i++;
+            }
+            stmt.close();
+
+            c.commit();
+            c.close();
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            JPanel newpanel = new JPanel();
+//            JOptionPane.showMessageDialog(newpanel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            //message pop up here
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error creating database");
+            //System.exit(0);
+        }
     }
 
     public static void performTestQuery(String sql) {

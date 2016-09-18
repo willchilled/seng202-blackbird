@@ -60,8 +60,11 @@ public class AirportAddingPopUpController {
         String line = getValues();
         String[] airportPoint = line.split(", ");
         //System.out.println(shit);
+        for (String point: airportPoint){
+            System.out.println(point);
+        }
         int count = BBDatabase.getMaxInColumn("AIRPORT", "ID");
-        
+        System.out.println(airportPoint.length + "POOS");
         AirportPoint myAirportPoint = Parser.checkAirportData(airportPoint, count);
         ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();
         myAirportData.add(myAirportPoint);

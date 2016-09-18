@@ -34,24 +34,24 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Airport ID" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.rowIndex="7" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.rowIndex="8" />
-            <TextField fx:id="AirlineIATA" promptText="Enter Airline IATA..." GridPane.columnIndex="1" />
-            <TextField fx:id="AirlineID" promptText="Enter Airline ID..." GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="AirlineIATA" promptText="eg AA" GridPane.columnIndex="1" />
+            <TextField fx:id="AirlineID" promptText="eg 24" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="Src" promptText="Enter Source..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="SrcID" promptText="Enter Source ID..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="Dst" promptText="Enter Destination..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="DstID" promptText="Enter Destination ID..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="Stops" promptText="Enter Stops..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="Equipment" promptText="Enter Equipment..." GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField fx:id="Src" promptText="eg CHC" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="SrcID" promptText="eg 2009" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="Dst" promptText="eg SYD" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="DstID" promptText="eg 3361" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="Stops" promptText="eg 0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="Equipment" promptText="eg 737" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="6" />
-            <CheckBox fx:id="Codeshare"  mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <CheckBox fx:id="Codeshare" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" onAction="#cancelButtonPressed"/>
-                  <Button mnemonicParsing="false" text="Create" GridPane.columnIndex="1" onAction="#createButtonPressed"/>
+                  <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

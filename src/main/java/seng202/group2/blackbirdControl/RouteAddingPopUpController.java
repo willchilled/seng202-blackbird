@@ -1,10 +1,13 @@
 package seng202.group2.blackbirdControl;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -13,18 +16,18 @@ import seng202.group2.blackbirdModel.Parser;
 import seng202.group2.blackbirdModel.RoutePoint;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by sbe67 on 15/09/16.
  */
 public class RouteAddingPopUpController {
 
+    ObservableList<String> airports = FXCollections.observableArrayList("No values Loaded");
     @FXML private TextField AirlineIATA;
     @FXML private TextField AirlineID;
-    @FXML private TextField Src;
-    @FXML private TextField SrcID;
-    @FXML private TextField Dst;
-    @FXML private TextField DstID;
+    @FXML private ComboBox srcComboBox;
+    @FXML private ComboBox dstComboBox;
     @FXML private CheckBox Codeshare;
     @FXML private TextField Stops;
     @FXML private TextField Equipment;
@@ -37,7 +40,14 @@ public class RouteAddingPopUpController {
         adderStage.initModality(Modality.NONE);
         adderStage.initOwner(null);
 
+        airports = populateAirports();
+        srcComboBox.setItems(airports);
+        srcComboBox.setValue(airports.get(0));
+        dstComboBox.setItems(airports);
+        dstComboBox.setValue(airports.get(0));
         adderStage.show();
+
+
     }
 
     public void createButtonPressed(){
@@ -82,10 +92,10 @@ public class RouteAddingPopUpController {
     private String getValues() {
         String routeAirlineIATA = AirlineIATA.getText().toString();
         String routeAirlineID = AirlineID.getText().toString();
-        String routeSrc = Src.getText().toString();
-        String routeSrcID = SrcID.getText().toString();
-        String routeDst = Dst.getText().toString();
-        String routeDstID = DstID.getText().toString();
+        String routeSrc = srcComboBox.getValue().toString();
+        int routeSrcID = BBDatabase.getAirportID(routeSrc); //get src airportID via IATA
+        String routeDst = dstComboBox.getValue().toString();
+        int routeDstID = BBDatabase.getAirportID(routeDst); //get src airportID via IATA
         boolean codesharChecked = Codeshare.isSelected();
         String routeStops = Stops.getText().toString();
         String routeEquipment = Equipment.getText().toString();
@@ -107,6 +117,17 @@ public class RouteAddingPopUpController {
         values += ", " + routeEquipment;
 
         return values;
+    }
+
+    /**
+     * A function to get the values needed for the source and destionation combo boxes
+     * @return An Observable list of strings holding the distinct IATA codes for airports
+     */
+    private  ObservableList<String> populateAirports(){
+        ArrayList<String> airports =BBDatabase.performDistinctStringQuery("SELECT DISTINCT IATA FROM AIRPORT");
+        Collections.sort(airports); //sort so it is easier to find wated airport
+        ObservableList<String> airportIATAs = FXCollections.observableArrayList(airports);
+        return airportIATAs;
     }
 
     public void setAdderStage(Stage adderStage) {

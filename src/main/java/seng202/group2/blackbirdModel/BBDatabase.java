@@ -18,6 +18,29 @@ public class BBDatabase {
     private static String dataBaseName = "jdbc:sqlite:default.db";
     private static int flightCount =0;
 
+    public static int getAirportID(String airportIATA){
+        int airportID = 0;
+        try {
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            String sql = "SELECT * FROM AIRPORT WHERE IATA = \"" + airportIATA +"\"";
+            ResultSet rs = stmt.executeQuery(sql);
+            airportID = rs.getInt("ID");
+            stmt.close();
+            c.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return airportID;
+    }
 
     public static int getMaxInColumn(String tableName, String columnName) {
         //Returns the highest value in a column for a table

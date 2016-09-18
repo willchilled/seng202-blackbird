@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdModel;
 
+/** An Airline class used to store Airline information */
 public class AirlinePoint extends DataPoint {
 
     private int airlineID;
@@ -13,6 +14,10 @@ public class AirlinePoint extends DataPoint {
     //private int correctEntry;
 
 
+    /**
+     * @param airlineID the initial airline id
+     * @param airlineName the initial airline name
+     */
     public AirlinePoint(int airlineID, String airlineName) {
 
         this.airlineID = airlineID;
@@ -92,7 +97,10 @@ public class AirlinePoint extends DataPoint {
 //		this.correctEntry = correctEntry;
 //	}
 
-
+    /**
+     * Creates a readable string in the format airlineID, airlineName, airlineAlias, IATA, ICAO, Callsign, Country, Active
+     * @return the airline as a string
+     */
     @Override
     public String toString() {
 

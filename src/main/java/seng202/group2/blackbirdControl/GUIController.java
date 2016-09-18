@@ -594,7 +594,6 @@ public class GUIController {
 
     private void updateAirportsTable(ArrayList<AirportPoint> points){
 
-        System.out.println(points.get(0).toString());
 
         //updates airpoirts table with a set of airpoints
         airportTable.getItems().setAll(points);

@@ -19,12 +19,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import static seng202.group2.blackbirdModel.BBDatabase.getDatabaseName;
 
 /**
  * Created by sbe67 on 15/09/16.
@@ -64,7 +59,6 @@ public class AirportAddingPopUpController {
 
     public void createButtonPressed(){
         String line = getValues();
-        System.out.println(line);
         String[] airportPoint = line.split(", ", -1);
         int count = BBDatabase.getMaxInColumn("AIRPORT", "ID");
         
@@ -81,22 +75,6 @@ public class AirportAddingPopUpController {
         ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();
         myAirportData.add(myAirportPoint);
         BBDatabase.addAirportPointsToDB(myAirportData);
-
-//        try {
-//            Connection c;
-//            Class.forName("org.sqlite.JDBC");
-//            c = DriverManager.getConnection(getDatabaseName());
-//            c.setAutoCommit(false);
-//            Statement stmt = c.createStatement();
-//            BBDatabase.addSingleAirport(myAirportPoint, stmt);
-//        } catch (Exception e) {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Oops!");
-//            alert.setHeaderText("Error in adding data");
-//            alert.setContentText("Please check your input fields. See help for more information");
-//            alert.showAndWait();
-//            return;
-//        }
         adderStage.close();
     }
 

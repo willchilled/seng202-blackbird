@@ -902,12 +902,48 @@ public class GUIController {
         String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<RoutePoint> routePoints = new ArrayList<>();
-
-
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
 
 
         routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
+
+        //This is bad style but you win some and you lose some
+        //(I lost this one)
+        ArrayList<String> uniqueCountries = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Src FROM ROUTE");
+        ObservableList<String> myCountries =  FXCollections.observableArrayList(uniqueCountries);
+        myCountries = addNullValue(myCountries);
+        routesFilterBySourceMenu.setValue(myCountries.get(0));
+        routesFilterBySourceMenu.setItems(myCountries);
+
+        ArrayList<String> dstCodes = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Dst FROM ROUTE");
+        ObservableList<String> myDstCodes =  FXCollections.observableArrayList(dstCodes);
+        myDstCodes = addNullValue(myDstCodes);
+        routesFilterbyDestMenu.setValue(myDstCodes.get(0));
+        routesFilterbyDestMenu.setItems(myDstCodes);
+
+        ArrayList<String> stops = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Stops FROM ROUTE");
+        ObservableList<String> myStops =  FXCollections.observableArrayList(stops);
+        myStops = addNullValue(myStops);
+        routesFilterByStopsMenu.setValue(myStops.get(0));
+        routesFilterByStopsMenu.setItems(myStops);
+
+        ArrayList<String> equip = BBDatabase.performDistinctStringQuery("SELECT DISTINCT equipment FROM ROUTE");
+        ObservableList<String> myEquip =  FXCollections.observableArrayList(equip);
+        myEquip= addNullValue(myEquip);
+        routesFilterbyEquipMenu.setValue(myEquip.get(0));
+        routesFilterbyEquipMenu.setItems(myEquip);
+       // ArrayList<String>
+
+//        private ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
+//        private ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
+//        private ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
+//        private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+
+        //);
+        //System.out.println("FUCK ME");
+        //System.out.println(uniqueCountries);
+
 
 
         updateRoutesTable(routePoints);

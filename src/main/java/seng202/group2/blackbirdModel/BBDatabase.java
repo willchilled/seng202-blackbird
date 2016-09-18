@@ -14,6 +14,7 @@ import java.util.Set;
 public class BBDatabase {
 
     private static String dataBaseName = "jdbc:sqlite:default.db";
+    private static int flightCount =0;
 
     public static int getAirportID(String airportIATA){
         int airportID = 0;
@@ -430,19 +431,25 @@ public class BBDatabase {
         //Adding flight points into data base
         try {
             //Connect to DB
+          //  System.out.println("1");
             Connection c = makeConnection();
             Statement stmt = null;
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
             stmt = c.createStatement();
+            //System.out.println("2");
 
             //first make a flight with start and end
             FlightPoint srcPoint = flightPoints.get(0);
+            //System.out.println("3");
             FlightPoint dstPoint = flightPoints.get(flightPoints.size() - 1);
+            //System.out.println("4");
 
             String srcICAO = srcPoint.getLocaleID();
+            //System.out.println("5");
             String dstICAO = dstPoint.getLocaleID();
+            //System.out.println("6");
 
 
             String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) " +
@@ -450,32 +457,46 @@ public class BBDatabase {
                     "\"" + srcICAO + "\", " +
                     "\"" + dstICAO + "\"" +
                     ");";
+            //System.out.println("7");
 
             stmt.executeUpdate(sql);
+            //System.out.println("8");
 
             //get the new flight id
             sql = "SELECT FlightIDNum, MAX(FlightIDNum) FROM FLIGHT";
+            //System.out.println("9");
             ResultSet rs = stmt.executeQuery(sql);
+            //System.out.println("10");
             int flightid = rs.getInt("FlightIDNum");
+            //System.out.println("11");
 
             //initialise order to show the sequence of the flight points
-            int order = 1;
+            //int order = 1;
+
+            //System.out.println("12");
 
             //for all flight points
             for (FlightPoint point : flightPoints) {
-                addSingleFlighttoDB(point, stmt, flightid, order);
-                order++;
+              //  System.out.println("13");
+                addSingleFlighttoDB(point, stmt, flightid, flightCount);
+                flightCount++;
 
             }
+           // System.out.println("14");
+//            System.out.println(" ");
+//            System.out.println("------------------------");
+//            System.out.println(" ");
 
             stmt.close();
             c.commit();
             c.close();
 
         } catch (SQLException e) {
+            System.out.println("15");
            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw e;
         } catch (ClassNotFoundException e) {
+            System.out.println("16");
            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
@@ -483,11 +504,15 @@ public class BBDatabase {
     private static void addSingleFlighttoDB(FlightPoint point, Statement stmt, int flightid, int order) throws SQLException {
         //get info for point
 
+       // System.out.println("1");
+
         String locID = point.getLocaleID();
+        //System.out.println("1");
         String locType = point.getType();
         int altitude = point.getAltitude();
         float latitude = point.getLatitude();
         float longitude = point.getLongitude();
+        //System.out.println("2");
         String FlightSql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
                 "Values (" +
                 order + ", " +
@@ -497,12 +522,14 @@ public class BBDatabase {
                 latitude + ", " +
                 longitude + ", " +
                 flightid + ")";
-
+        //System.out.println("3");
         //execute route sql
         try {
+           // System.out.println("4");
             stmt.executeUpdate(FlightSql);
         } catch (SQLException e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.out.println("5");
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw e;
         }
 

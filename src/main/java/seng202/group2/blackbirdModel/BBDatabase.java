@@ -125,6 +125,17 @@ public class BBDatabase {
         return sql;
     }
 
+    private static String createAirlineRouteTable(){
+
+        String sql = "CREATE TABLE AIRLINEROUTES" +
+                " (AID   INTEGER PRIMARY KEY NOT NULL /*ID number for airport*/," +
+                " RID      INTEGER PRIMARY KEY NOT NULL /*ID number for route*/," +
+                "foreign key (AID) references AIRPORT" +
+                "foreign key (RID) references ROUTE" +
+                ")";
+        return sql;
+    }
+
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +

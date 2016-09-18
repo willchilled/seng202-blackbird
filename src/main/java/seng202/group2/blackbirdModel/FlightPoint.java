@@ -1,5 +1,8 @@
 package seng202.group2.blackbirdModel;
 
+/**
+ * A subclass of dataPoint that stores information about a flight point
+ */
 public class FlightPoint extends DataPoint {
 
     private String type;
@@ -9,6 +12,14 @@ public class FlightPoint extends DataPoint {
     private float longitude;
     //private int correctEntry;
 
+    /**
+     * Creates a FlightPoint with values given
+     * @param type the locale type
+     * @param localeID the locale ID
+     * @param altitude the altitude
+     * @param latitude the latitude
+     * @param longitude the longitude
+     */
     public FlightPoint(String type, String localeID, int altitude, float latitude, float longitude) {
 
         this.type = type;

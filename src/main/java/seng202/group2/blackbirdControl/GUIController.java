@@ -53,8 +53,13 @@ public class GUIController {
     private ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
     private ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
+
     private boolean routesFilled = false;
     private boolean airportsFilled = false;
+
+    public boolean isAirportsFilled() {
+        return airportsFilled;
+    }
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;

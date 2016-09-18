@@ -15,8 +15,9 @@ public class AirlinePoint extends DataPoint {
 
 
     /**
-     * @param airlineID the initial airline id
-     * @param airlineName the initial airline name
+     * Creates an airlinePoint with an ID and Name
+     * @param airlineID The ID number for the airline
+     * @param airlineName The name of the airline
      */
     public AirlinePoint(int airlineID, String airlineName) {
 

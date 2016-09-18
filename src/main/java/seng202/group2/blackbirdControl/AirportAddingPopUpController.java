@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
@@ -37,6 +38,7 @@ public class AirportAddingPopUpController {
     @FXML private ComboBox tzComboBox;
     @FXML private TextField DST;
     @FXML private TextField tzOlson;
+    @FXML private Pane refreshMessage;
     private Stage adderStage;
     private Parent root;
 

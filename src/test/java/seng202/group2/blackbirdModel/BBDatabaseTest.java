@@ -16,18 +16,22 @@ public class BBDatabaseTest extends TestCase {
         String airlinesFileString;
         String airportsFileString;
         String routesFileString;
+        String flightFileString;
 
         airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
         airportsFileString = cwd + "/JUnitTesting/airports.txt";
         routesFileString = cwd + "/JUnitTesting/route.txt";
+        flightFileString = cwd + "/JUnitTesting/flight.txt";
 
         File airlinesFile = new File(airlinesFileString);
         File airportsFile = new File(airportsFileString);
         File routesFile = new File(routesFileString);
+        File flightFile = new File(flightFileString);
 
         ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
         ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
         ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
+        ArrayList<FlightPoint> flightPoints = Parser.parseFlightData(flightFile);
 
 
         BBDatabase.deleteDBFile();
@@ -35,6 +39,7 @@ public class BBDatabaseTest extends TestCase {
         BBDatabase.addAirlinePointstoDB(airlinePoints);
         BBDatabase.addAirportPointsToDB(airportPoints);
         BBDatabase.addRoutePointstoDB(routePoints);
+        BBDatabase.addFlighttoDB(flightPoints);
         //myAirlineData = Filter.getAllAirlinePointsfromDB();
 
 
@@ -58,8 +63,20 @@ public class BBDatabaseTest extends TestCase {
     }
 
     public void testPerformDistinctRoutesQuery() throws Exception {
-        ArrayList<String> myResult = BBDatabase.performDistinctStringQuery("Select DISTINCT Src from ROUTE");
+        ArrayList<String> routePoints = BBDatabase.performDistinctStringQuery("Select * from ROUTE");
+        assertEquals(routePoints.size(), 100);
+    }
 
+    public void testAirportEditDataEntry() throws Exception {
+        ArrayList<AirportPoint> airportPoints = BBDatabase.performAirportsQuery("SELECT * FROM AIRPORT WHERE ID='1'");
+        assertEquals(airportPoints.size(), 1);
+        System.out.println(airportPoints.get(0).getAirportName());
+        String sql = "UPDATE AIRPORT SET NAME='MINE' WHERE ID='1'";
+        BBDatabase.editDataEntry(sql);
+
+        ArrayList<AirportPoint> newAirportPoints = BBDatabase.performAirportsQuery(("SELECT * FROM AIRLINE WHERE ID='1'"));
+        System.out.println(newAirportPoints.get(0).getAirportName());
+        assertEquals(newAirportPoints.get(0).getAirportName(), "MINE");
     }
 
     public void testAirlineEditDataEntry() throws Exception{
@@ -82,5 +99,4 @@ public class BBDatabaseTest extends TestCase {
         System.out.println("New Codeshare: " + newRoutePoints.get(0).getCodeshare());
         assertEquals(newRoutePoints.get(0).getCodeshare(), "Y");
     }
-
 }

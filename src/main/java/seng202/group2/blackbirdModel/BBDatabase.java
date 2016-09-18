@@ -125,17 +125,6 @@ public class BBDatabase {
         return sql;
     }
 
-//    private static String createEquipmentTable(){
-//        //creates an equipment table for sqlite, is used to give routes the multivalued atribute equipment
-//        String sql = "CREATE TABLE EQUIPMENT" +
-//                "(IDnum          INTEGER NOT NULL /*Comes from route*/, " +
-//                "EquipmentName CHAR(3) NOT NULL," +     //can this be null?
-//                "PRIMARY KEY (EquipmentName, IDnum), "+
-//                "FOREIGN KEY (IDnum) REFERENCES ROUTE (IDnum)" +
-//                ")";
-//        return sql;
-//    }
-
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +

@@ -49,7 +49,7 @@ public class Parser {
             while ((line = br.readLine()) != null) {
                 count++;
                 if (numberOfCommas(line) == 4) {
-                    System.out.println("Got here");
+                    //System.out.println("Got here");
                     String[] flightPoint = line.split(",");
 
                     if (!checkNull(flightPoint)) {

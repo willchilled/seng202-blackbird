@@ -11,7 +11,44 @@ public class RoutePoint extends DataPoint {
     private int dstAirportID;
     private String codeshare;
     private int stops;
+
     private String equipment;
+    private String srcAirportName;
+    private String srcAirportCountry;
+    private String destAirportName;
+    private String destAirportCountry;
+
+    public String getSrcAirportName() {
+        return srcAirportName;
+    }
+
+    public void setSrcAirportName(String srcAirportName) {
+        this.srcAirportName = srcAirportName;
+    }
+
+    public String getSrcAirportCountry() {
+        return srcAirportCountry;
+    }
+
+    public void setSrcAirportCountry(String srcAirportCountry) {
+        this.srcAirportCountry = srcAirportCountry;
+    }
+
+    public String getDestAirportName() {
+        return destAirportName;
+    }
+
+    public void setDestAirportName(String destAirportName) {
+        this.destAirportName = destAirportName;
+    }
+
+    public String getDestAirportCountry() {
+        return destAirportCountry;
+    }
+
+    public void setDestAirportCountry(String destAirportCountry) {
+        this.destAirportCountry = destAirportCountry;
+    }
     //private int correctEntry;
 
     private AirportPoint source;
@@ -145,8 +182,8 @@ public class RoutePoint extends DataPoint {
 
         //String, int, string, int, string, int, string, int, string
 
-        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
-                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
+        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s, %s, %s, %s, %s",
+                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment, srcAirportCountry, destAirportCountry, srcAirportName, destAirportName);
 
     }
 }

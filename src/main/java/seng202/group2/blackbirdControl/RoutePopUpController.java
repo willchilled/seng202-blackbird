@@ -1,10 +1,11 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
@@ -46,12 +47,13 @@ public class RoutePopUpController {
     @FXML private Button routeEditButton;
     @FXML private Button routeFinishButton;
     @FXML private Button routeCancelButton;
+    @FXML private Pane refreshMessage;
 
 
 
 
     @FXML
-    void setUpPopUp(){
+    public void setUpPopUp(){
         routeIDText.setText(String.valueOf(routePoint.getRouteID()));
         routeStopsText.setText(String.valueOf(routePoint.getStops()));
         routeDestText.setText(routePoint.getDstAirport());
@@ -84,6 +86,7 @@ public class RoutePopUpController {
         routeCShareTextEdit.setVisible(true);
         routeStopsTextEdit.setVisible(true);
         routeEquipmentTextEdit.setVisible(true);
+        refreshMessage.setVisible(true);
 
 
         routeEditButton.setVisible(false);
@@ -150,6 +153,7 @@ public class RoutePopUpController {
             routeStopsTextEdit.setVisible(false);
             routeEquipmentTextEdit.setVisible(false);
             routeInvalidData.setVisible(false);
+            refreshMessage.setVisible(false);
 
 
             routeEditButton.setVisible(true);
@@ -161,7 +165,6 @@ public class RoutePopUpController {
                     airline, airlineID, src, srcID, dst, dstID, codeShare, stops, routeIDText.getText());
 
 
-            System.out.println(sql);
 
             routeSrcText.setText(routeSrcTextEdit.getText());
             routeSrcIDText.setText(routeSrcIDTextEdit.getText());
@@ -172,6 +175,8 @@ public class RoutePopUpController {
             routeCSText.setText(routeCShareTextEdit.getText());
             routeStopsText.setText(routeStopsTextEdit.getText());
             routeEquipText.setText(routeEquipmentTextEdit.getText());
+
+            System.out.println("Performing query: " + sql);
 
             BBDatabase.editDataEntry(sql);
 
@@ -202,6 +207,7 @@ public class RoutePopUpController {
         routeEditButton.setVisible(true);
         routeFinishButton.setVisible(false);
         routeCancelButton.setVisible(false);
+        refreshMessage.setVisible(false);
 
 
     }

@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
 
 import javafx.collections.FXCollections;
@@ -15,25 +15,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.TableCell;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdControl.AirlineAddingPopUpController;
-import seng202.group2.blackbirdControl.AirportAddingPopUpController;
-import seng202.group2.blackbirdControl.Exporter;
-import seng202.group2.blackbirdControl.Filter;
-import seng202.group2.blackbirdControl.RouteAddingPopUpController;
 import seng202.group2.blackbirdModel.*;
 
-import javax.swing.*;
-import java.io.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -59,6 +52,9 @@ public class GUIController {
     private ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
     private ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
+    private boolean routesFilled = false;
+    private boolean airportsFilled = false;
+
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
 //    }
@@ -66,17 +62,32 @@ public class GUIController {
 //    public void setAllValidPoints(ArrayList<AirportPoint> allValidPoints) {
 //        this.allValidPoints = allValidPoints;
 //    }
-    @FXML
-    private TabPane mainTabPane;
+    @FXML private TabPane mainTabPane;
+    @FXML private Pane openPane;
+    @FXML private Tab flightTab;
+    @FXML private Tab routeTab;
+    @FXML private Tab airportTab;
+    @FXML private Tab airlineTab;
+
+    @FXML private MenuItem exportFlightMenuButton;
+    @FXML private MenuItem exportAirportMenuButton;
+    @FXML private MenuItem exportAirlineMenuButton;
+    @FXML private MenuItem exportRouteMenuButton;
+
+
+
     @FXML
     private javafx.scene.control.MenuItem newProjMenu;
     @FXML
     private MenuItem addDataMenuButton;
+    @FXML
+    private MenuItem exportDataMenuButton;
     @FXML private TableView<AirportPoint> airportTable;
     @FXML private TableView<AirlinePoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
     @FXML private TableView<Flight> flightTable;
     @FXML private TableView<FlightPoint> flightPointTable;
+
 // AIRPORT Table columns
     @FXML private TableColumn airportIDCol;
     @FXML private TableColumn airportNameCol;
@@ -85,7 +96,8 @@ public class GUIController {
     @FXML private TableColumn airportIATACol;
     @FXML private TableColumn airportICAOCol;
     @FXML private TableColumn airportLatCol;
-
+    @FXML private TableColumn airportIncCol;
+    @FXML private TableColumn airportOutCol;
    //public void setAirlineActiveListData(ArrayList<AirlinePoint> points){this.airlineActiveList = points;}
     @FXML private TableColumn airportLongCol;
     @FXML private TableColumn airportAltCol;
@@ -93,6 +105,7 @@ public class GUIController {
     @FXML private TableColumn airportDSTCol;
     @FXML private TableColumn airportTZCol;
     @FXML private TableColumn airportErrorCol;
+
 // AIRLINE Table columns
     @FXML private TableColumn airlineIDCol;
     @FXML private TableColumn airlineNameCol;
@@ -115,6 +128,10 @@ public class GUIController {
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
     @FXML private TableColumn routeErrorCol;
+    @FXML private TableColumn routeSrcCountryCol;
+    @FXML private TableColumn routeDstCountryCol;
+    @FXML private TableColumn routeSrcNameCol;
+    @FXML private TableColumn routeDstNameCol;
     // FLIGHT POINT Table columns
     @FXML private TableColumn flightPointTypeCol;
     @FXML private TableColumn flightPointLocaleCol;
@@ -125,7 +142,7 @@ public class GUIController {
     @FXML private TableColumn flightSourceCol;
     @FXML private TableColumn flightDestCol;
     // Filter Menu testing
-    @FXML private ComboBox airportFilterMenu;
+    @FXML private ComboBox airportFilterByCountryMenu;
     @FXML private TextField airportSearchQuery;
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
@@ -154,7 +171,7 @@ public class GUIController {
 
     public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
 
-
+;
 
     public ArrayList<RoutePoint> getAllRoutePoints() {
         return allRoutePoints;
@@ -186,8 +203,8 @@ public class GUIController {
 //        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
 //        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
-        airportFilterMenu.setValue(airPortCountryList.get(0));
-        airportFilterMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
+        airportFilterByCountryMenu.setItems(airPortCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         airlineFilterMenu.setItems(airlineCountryList);
         airlineActiveMenu.setItems(airlineActiveList);
@@ -204,41 +221,45 @@ public class GUIController {
 
     }
 
-    private File getFile() {
+    private File getFile(String message) {
         //gets a file of a specified type
         File myFile;
         String cwd = System.getProperty("user.dir");
+        File userDirectory = new File(cwd);
 
-        JFileChooser jfc = new JFileChooser(cwd);
-        int userChoice = jfc.showOpenDialog(null);
+        FileChooser fc = new FileChooser();
+        fc.setTitle(message);
 
-        switch (userChoice) {
-            case JFileChooser.APPROVE_OPTION:
-                myFile = jfc.getSelectedFile();
-                if (myFile.exists() && myFile.isFile() && myFile.canRead()) {
-                    return myFile;
-                } else {
-                    JOptionPane.showMessageDialog(new JPanel(), "Invalid file",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                    System.err.println("Invalid file given");
-                }
-            case JFileChooser.CANCEL_OPTION:
-                // fall through
-            case JFileChooser.ERROR_OPTION:
-                System.out.println("User cancelled choosing file");
-                return null;
+        fc.setInitialDirectory(userDirectory);
+
+        if(!userDirectory.canRead()) {
+            userDirectory = new File("c:/");
         }
-        return null;
+        fc.setInitialDirectory(userDirectory);
+
+        //Choose the file
+        myFile = fc.showOpenDialog(null);
+        //Make sure a file was selected, if not return default
+
+        if(myFile != null) {
+            return myFile;
+        }
+        else{
+            return null;
+        }
+
     }
 
     public void show(){
 
+        openPane.setVisible(false);
         mainTabPane.setVisible(true);
         //SQQliteJDBC myDb = new SQQliteJDBC();
         //SQLiteJDBC.dropTables();
         BBDatabase.createTables();
         //SQQliteJDBC.dropTables();
         addDataMenuButton.setDisable(false);
+        exportDataMenuButton.setDisable(false);
         //addDataMenuButton.setDisable(true);
 
 
@@ -246,6 +267,7 @@ public class GUIController {
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
         airportTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airport"));
         flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
+        flightPointTable.setPlaceholder(new Label("No data in table. To add data load a flight and double click to see flight details"));
 
     }
 
@@ -285,9 +307,9 @@ public class GUIController {
         try {
             BBDatabase.addFlighttoDB(flightPoints);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println("Bad flight data");
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+            //System.err.println("Bad flight data");
         }
 
         airportPoints = Filter.getAllAirportPointsFromDB();
@@ -295,13 +317,12 @@ public class GUIController {
 
         updateAirportsTable(airportPoints);
         airPortCountryList = populateAirportCountryList();
-        airportFilterMenu.setItems(airPortCountryList);
-        airportFilterMenu.setValue(airPortCountryList.get(0));
+        airportFilterByCountryMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
 
         airlinePoints = Filter.getAllAirlinePointsfromDB();
 
 
-        //System.out.println(myAirlineData);
         // myAirlineData = Filter.getAllAirlinePointsfromDB();
         setAllAirlinePoints(airlinePoints);
         setAirlineActiveList(populateAirlineActiveList());
@@ -323,9 +344,10 @@ public class GUIController {
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
-        System.out.println("Add Airport Data");
+
+
         File f;
-        f = getFile();
+        f = getFile("Add Airport Data");
         if (f == null) {
             return;
         }
@@ -337,9 +359,20 @@ public class GUIController {
         updateAirportsTable(validairportPoints);
 
         airPortCountryList = populateAirportCountryList();  //populating from valid data in database
-        airportFilterMenu.setItems(airPortCountryList);
-        airportFilterMenu.setValue(airPortCountryList.get(0));
+        airportFilterByCountryMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
 
+        exportAirportMenuButton.setDisable(false);
+
+        mainTabPane.getSelectionModel().select(airportTab);
+
+        if (routesFilled) {
+            BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+            updateAirportsTable2(allPoints);
+            updateRoutesTable2(allRoutePoints);
+        }
+
+        airportsFilled = true;
 
 
     }
@@ -347,8 +380,9 @@ public class GUIController {
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
 
+
         File f;
-        f = getFile();
+        f = getFile("Add Airline Data");
         if (f == null) {
             return;
         }
@@ -366,16 +400,18 @@ public class GUIController {
         airlineFilterMenu.setItems(airlineCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        exportAirlineMenuButton.setDisable(false);
+        mainTabPane.getSelectionModel().select(airlineTab);
+
+
+
     }
 
     public void addRouteData(){
         //adds route data into route list
-
-        System.out.println("Add Route Data");
-
         // UNCOMMENT THIS WHEN THE PARSER IS FULLY WORKING FOR ROUTES
          File f;
-         f = getFile();
+         f = getFile("Add Route Data");
         if (f == null) {
             return;
         }
@@ -386,27 +422,45 @@ public class GUIController {
         setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
+        exportRouteMenuButton.setDisable(false);
+        mainTabPane.getSelectionModel().select(routeTab);
+
+        if (airportsFilled) {
+            BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+            System.out.println(allRoutePoints.get(2));
+            //System.out.println(allPoints.get(2).getOutgoingRoutes() + " " + allPoints.get(2).getAirportName() + allPoints.get(2));
+            updateAirportsTable2(allPoints);
+            updateRoutesTable2(allRoutePoints);
+        }
+
+        routesFilled = true;
 
     }
 
     public void addFlightData(){
         //adds flight data now using the database
-        System.out.println("Add Flight Data");
-
-
         try {
-            File f = getFile();
+            File f = getFile("Add Flight Data");
             if (f == null) {
                 return;
             }
             ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+            if (myFlightData == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Oops!");
+                alert.setHeaderText("Error in flight file");
+                alert.setContentText("There was an error adding to flights.");
+                alert.showAndWait();
+                return;
+            }
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Error in flight, aborted.");
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+            //TODO
         }
+        mainTabPane.getSelectionModel().select(flightTab);
     }
 
 
@@ -494,7 +548,6 @@ public class GUIController {
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                     String myText = airlineTable.getSelectionModel().getSelectedItem().getAirlineName();
-                    System.out.println(myText);
                     Stage stage;
                     Parent root;
                     stage = new Stage();
@@ -514,7 +567,6 @@ public class GUIController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }
@@ -522,7 +574,7 @@ public class GUIController {
         });
     }
 
-    private void updateRoutesTable(ArrayList<RoutePoint> points){
+    private void updateRoutesTable2(ArrayList<RoutePoint> points){
 
         routeTable.getItems().setAll(points);
 
@@ -535,6 +587,10 @@ public class GUIController {
         routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
         routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+        routeSrcCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportCountry"));
+        routeDstCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("destAirportCountry"));
+        routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
+        routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("destAirportName"));
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -551,7 +607,7 @@ public class GUIController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("View/Edit Data");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 
@@ -559,7 +615,6 @@ public class GUIController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }
@@ -569,9 +624,58 @@ public class GUIController {
 
     }
 
-    private void updateAirportsTable(ArrayList<AirportPoint> points){
+    private void updateRoutesTable(ArrayList<RoutePoint> points){
 
-        System.out.println(points.get(0).toString());
+        routeTable.getItems().setAll(points);
+
+        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
+        routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
+        routeSrcCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirport"));
+        routeSrcIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportID"));
+        routeDestCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirport"));
+        routeDestIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportID"));
+        routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
+        routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
+        routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+//        routeSrcCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportCountry"));
+//        routeDstCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("destAirportCountry"));
+//        routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
+//        routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportName"));
+
+        routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
+                        root = loader.load();
+                        RoutePopUpController popUpController = loader.getController();
+                        popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("View/Edit Data");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+
+    }
+
+    private void updateAirportsTable2(ArrayList<AirportPoint> points){
+
 
         //updates airpoirts table with a set of airpoints
         airportTable.getItems().setAll(points);
@@ -588,6 +692,9 @@ public class GUIController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+        //airportRouteNo.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportIncCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportOutCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("outgoingRoutes"));
 
 
         airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -605,7 +712,7 @@ public class GUIController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("View/Edit Data");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 
@@ -613,7 +720,59 @@ public class GUIController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
+                    }
+
+                }
+            }
+        });
+
+
+    }
+
+    private void updateAirportsTable(ArrayList<AirportPoint> points){
+
+
+        //updates airpoirts table with a set of airpoints
+        airportTable.getItems().setAll(points);
+
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+//        airportRouteNo.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+
+
+        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
+                        root = loader.load();
+                        AirportPopUpController popUpController = loader.getController();
+                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("View/Edit Data");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
                 }
@@ -636,6 +795,7 @@ public class GUIController {
             @Override
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    exportFlightMenuButton.setDisable(false);
 
                     Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
 
@@ -661,17 +821,10 @@ public class GUIController {
      ******************************************************************************************************************/
 
     public void AirportFilterButtonPressed(){
-        //Gets values from selection and filters based on selection
-        /*
-        System.out.println("HERE!");
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("filter button pressed ! " + selection);
-        alert.showAndWait();
-        */ //NEED TO ADD CASE FOR NONE SELECTED
-        String countrySelection = airportFilterMenu.getValue().toString();
+        //NEED TO ADD CASE FOR NONE SELECTED
+        String countrySelection = airportFilterByCountryMenu.getValue().toString();
         String searchQuery = airportSearchQuery.getText();
-        System.out.println(searchQuery);
 
 
         ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
@@ -734,7 +887,6 @@ public class GUIController {
     }
 
     public void routesFilterButtonPressed(ActionEvent actionEvent) {
-        System.out.println("I HAVE BEEN PRESSED");
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
@@ -744,25 +896,10 @@ public class GUIController {
 
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-        boolean allNone = true;
-
-        for (String menuItem: menusPressed){
-            if (!menuItem.equals("None")){
-                allNone = false;
-            }
-        }
-        if (!searchQuery.equals("")){
-            allNone = false;
-
-        }
-        if (!allNone){
-             routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
 
 
-        }
-        else{
-            routePoints = getAllRoutePoints();
-        }
+        routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
 
         updateRoutesTable(routePoints);
 
@@ -792,14 +929,14 @@ public class GUIController {
 
     public void airportSeeAllButtonPressed(ActionEvent actionEvent) {
         //gets all airport points and updates view
-        String selection = airportFilterMenu.getValue().toString();
 //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
 //        alert.setContentText("See All button pressed ! " + selection);
 //        alert.showAndWait();
 
 
-
-        ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
+        airportFilterByCountryMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
+        ArrayList<AirportPoint> allPoints = Filter.getAllAirportPointsFromDB(); //airportTable.getItems();
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
         updateAirportsTable(allPoints);
 
@@ -807,7 +944,9 @@ public class GUIController {
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
-        updateRoutesTable(getAllRoutePoints());
+
+        ArrayList<RoutePoint> allPoints = Filter.getAllRoutePointsFromDB();
+        updateRoutesTable(allPoints);
     }
 
 
@@ -831,7 +970,6 @@ public class GUIController {
         ArrayList<String> countries = Filter.filterUniqueAirLineCountries(Filter.getAllAirlinePointsfromDB());
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = addNullValue(countryList); //we need to add a null value
-        //System.out.println(countryList);
         return countryList;
     }
 
@@ -887,10 +1025,20 @@ public class GUIController {
     }
 
     private void populateRoutesFilterByEquipList(){
-        ArrayList<String> uniqueSources = new ArrayList<String>();
-        String sql = "EquipmentName";
-        uniqueSources = Filter.findDistinctStringFromTable(sql, "EQUIPMENT");
-        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        ArrayList<String> uniqueEquip = new ArrayList<>();
+        String sql = "Equipment";
+        ArrayList<RoutePoint> myRoutes = Filter.getAllRoutePointsFromDB();
+        for (RoutePoint route : myRoutes) {
+            String[] equip = route.getEquipment().split("\\s+");
+            for (String myEquip : equip) {
+                if (!uniqueEquip.contains(myEquip)) {
+                    uniqueEquip.add(myEquip);
+                }
+            }
+        }
+        Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
+//        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
         uniqueObservableSources = addNullValue(uniqueObservableSources);
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);
         routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
@@ -899,7 +1047,6 @@ public class GUIController {
 
 
     private void updateRoutesDropdowns() {
-        System.out.println("Ahoy");
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
         populateRoutesFilterByStopsList();

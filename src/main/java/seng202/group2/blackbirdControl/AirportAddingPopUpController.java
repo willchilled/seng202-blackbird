@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
@@ -38,6 +39,7 @@ public class AirportAddingPopUpController {
     @FXML private ComboBox tzComboBox;
     @FXML private ComboBox dstCombo;
     @FXML private TextField tzOlson;
+    @FXML private Pane refreshMessage;
     private Stage adderStage;
     private Parent root;
 
@@ -59,11 +61,11 @@ public class AirportAddingPopUpController {
     }
 
     public void createButtonPressed(){
-        String shit = getValues();
-        String[] airportPoint = shit.split(", ");
-        System.out.println(shit);
+        String line = getValues();
+        String[] airportPoint = line.split(", ");
+        //System.out.println(shit);
         int count = BBDatabase.getMaxInColumn("AIRPORT", "ID");
-
+        
         AirportPoint myAirportPoint = Parser.checkAirportData(airportPoint, count);
         ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();
         myAirportData.add(myAirportPoint);

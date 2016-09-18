@@ -1,5 +1,7 @@
 package seng202.group2.blackbirdModel;
 
+import javafx.scene.control.Alert;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,6 +49,7 @@ public class Parser {
             while ((line = br.readLine()) != null) {
                 count++;
                 if (numberOfCommas(line) == 4) {
+                    //System.out.println("Got here");
                     String[] flightPoint = line.split(",");
 
                     if (!checkNull(flightPoint)) {
@@ -67,16 +70,10 @@ public class Parser {
                         }
 
                     } else {
-                        JOptionPane.showMessageDialog(new JPanel(), "Error on line: " + count + ". Empty data fields are not allowed for flight entries.\n" +
-                                "Please review your input file.", "Error", JOptionPane.ERROR_MESSAGE);
-                        System.err.println("Error: Null field in flight data. All fields must be filled");
-                        //currently, aborting if any null fields present in flight data.
-                        break;
+                        return null;
                     }
                 } else {
-                    //will any flight data have extra commas?
-                    JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your file on line: " + count,
-                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
                 }
             }
         } catch (NumberFormatException e) {
@@ -123,8 +120,8 @@ public class Parser {
             myRoutePoint.setStops(Integer.parseInt(routePoint[7].trim()));
             myRoutePoint.setEquipment(routePoint[8].trim());
         } catch (NumberFormatException e) {
-            myRoutePoint.setAirline("Error on input file line: " + count);
-            return myRoutePoint;
+            //myRoutePoint.setAirline("Error on input file line: " + count);
+            return null;    ///Return null here?
         }
         return myRoutePoint;
     }
@@ -133,12 +130,14 @@ public class Parser {
     //add commas in for route equipment
     public static ArrayList<RoutePoint> parseRouteData(File file) {
 
+
         ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
             String line = "";
             int count = 0;
+
             while ((line = br.readLine()) != null) {
                 count++;
                 if (line.isEmpty()) {
@@ -300,7 +299,9 @@ public class Parser {
             }
 
             myAirportPoint.setDst(airportPoint[10].trim());
-            if (airportPoint[11].equals("\\N")) {
+
+            if (airportPoint[11].equals("\\N") || airportPoint[11].isEmpty()) {
+                //TODO FOR MEGAN, FIX HERE
                 myAirportPoint.setTz("U");        //default to unknown?
             } else {
                 myAirportPoint.setTz(airportPoint[11].trim());
@@ -350,92 +351,30 @@ public class Parser {
     }
 
     //Currently unused
-    public static void linkRoutesAndAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
-        //function to link routes and airports
-        //called when flags from GUI (airportdataloaded = true, routedataloaded = true)
-        for (RoutePoint route : routes) {
-            //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
-            int srcAirportId = route.getSrcAirportID();
-            int destAirportId = route.getDstAirportID();
+//    public static void linkRoutesAndAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+//        //function to link routes and airports
+//        //called when flags from GUI (airportdataloaded = true, routedataloaded = true)
+//        for (RoutePoint route : routes) {
+//            //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
+//            int srcAirportId = route.getSrcAirportID();
+//            int destAirportId = route.getDstAirportID();
+//
+//            for (AirportPoint airport : airports) {
+//                if (srcAirportId == airport.getAirportID()) {
+//                    route.setSource(airport);
+//                    airport.incrementRoutes();
+//
+//                } else if (destAirportId == airport.getAirportID()) {
+//                    route.setDestination(airport);
+//                    airport.incrementRoutes();
+//                } else {
+//                    //TODO
+//                    //raise an exception here? a route is using an airport that doesn't exist
+//                }
+//            }
+//        }
+//    }
 
-            for (AirportPoint airport : airports) {
-                if (srcAirportId == airport.getAirportID()) {
-                    route.setSource(airport);
-                    airport.incrementRoutes();
-
-                } else if (destAirportId == airport.getAirportID()) {
-                    route.setDestination(airport);
-                    airport.incrementRoutes();
-                } else {
-                    //TODO
-                    //raise an exception here? a route is using an airport that doesn't exist
-                }
-            }
-        }
-    }
-
-
-    public static void main(String[] args) {
-
-        JPanel mainPanel = new JPanel();
-        File f;
-        String cwd = System.getProperty("user.dir");
-
-        JFileChooser jfc = new JFileChooser(cwd);
-        int userChoice = jfc.showOpenDialog(mainPanel);
-
-        switch (userChoice) {
-            case JFileChooser.APPROVE_OPTION:
-                f = jfc.getSelectedFile();
-                if (f.exists() && f.isFile() && f.canRead()) {
-                    Object[] options = {"Airport",
-                            "Airline", "Flight", "Route",
-                            "Cancel"};
-                    String s = (String) JOptionPane.showInputDialog(mainPanel,
-                            "Choose file type",
-                            "Open file",
-                            JOptionPane.PLAIN_MESSAGE,
-                            null,
-                            options,
-                            options[2]);
-
-                    if (s.equals("Airport")) {
-                        ArrayList<AirportPoint> myAirportData = parseAirportData(f);
-                        System.out.println("Airports successfully added: " + myAirportData.size());
-                    } else if (s.equals("Airline")) {
-                        ArrayList<AirlinePoint> myAirlineData = parseAirlineData(f);
-                        System.out.println("Airlines successfully added: " + myAirlineData.size());
-                    } else if (s.equals("Route")) {
-                        ArrayList<RoutePoint> myRouteData = parseRouteData(f);
-                        //equipment filter test
-//						ArrayList<RoutePoint> myRoutes = Filter.routeEquipment(myRouteData, "");
-//						for (RoutePoint equip : myRoutes){
-//							System.out.println(equip);
-//						}
-                        System.out.println("Routes successfully added: " + myRouteData.size());
-                    } else if (s.equals("Flight")) {
-                        ArrayList<FlightPoint> myFlightData = parseFlightData(f);
-                        for (int i = 0; i < myFlightData.size(); i++) {
-                            System.out.println("Test Flight Data Row[" + i + "]");
-                            System.out.println("Type: " + myFlightData.get(i).getType());
-                            System.out.println("LocaleID: " + myFlightData.get(i).getLocaleID());
-                            System.out.println("Altitude: " + myFlightData.get(i).getAltitude());
-                            System.out.println("Latitude: " + myFlightData.get(i).getLatitude());
-                            System.out.println("Longitude: " + myFlightData.get(i).getLongitude());
-                            System.out.println("\n");
-                        }
-                    } else if (s.equals("Cancel")) {
-                        return;
-                    }
-                    return;
-                }
-            case JFileChooser.CANCEL_OPTION:
-                // fall through
-            case JFileChooser.ERROR_OPTION:
-                return;
-        }
-
-    }
 
 }
 

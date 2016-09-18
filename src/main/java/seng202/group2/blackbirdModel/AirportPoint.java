@@ -16,8 +16,8 @@ public class AirportPoint extends DataPoint {
     private String tz;
 
     //private int correctEntry;
-
-    private int numberOfRoutes;
+    private int incomingRoutes;
+    private int outgoingRoutes;
 
 //	@Override
 //	public boolean equals(Object obj){
@@ -34,8 +34,30 @@ public class AirportPoint extends DataPoint {
 
     }
 
-    public void incrementRoutes() {
-        numberOfRoutes++;
+    public void incrementIncRoutes() {
+        incomingRoutes++;
+    }
+
+    public void incrementOutgoingRoutes() {
+        outgoingRoutes++;
+    }
+
+
+    public int getIncomingRoutes() {
+        return incomingRoutes;
+    }
+
+    public void setIncomingRoutes(int incomingRoutes) {
+        this.incomingRoutes = incomingRoutes;
+    }
+
+
+    public int getOutgoingRoutes() {
+        return outgoingRoutes;
+    }
+
+    public void setOutgoingRoutes(int outgoingRoutes) {
+        this.outgoingRoutes = outgoingRoutes;
     }
 
 

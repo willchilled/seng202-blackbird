@@ -37,24 +37,24 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ICAO" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Longitude" GridPane.rowIndex="7" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Altitude" GridPane.rowIndex="8" />
-            <TextField fx:id="Name" promptText="Enter Airport Name..." GridPane.columnIndex="1" />
-            <TextField fx:id="ID" promptText="Enter Airport ID..." GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="Name" promptText="eg Aickland Intl" GridPane.columnIndex="1" />
+            <TextField fx:id="ID" promptText="eg 2006" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="City" promptText="Enter City..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="Country" promptText="Enter Country..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="IATA" promptText="Enter IATA/FF..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="ICAO" promptText="Enter ICAO..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="Latitude" promptText="Enter Latitude..." GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="Longitude" promptText="Enter Longitude..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="Altitude" promptText="Enter Altitude..." GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField fx:id="City" promptText="eg Auckland" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="Country" promptText="eg New Zealand" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="IATA" promptText="eg AKL" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="ICAO" promptText="eg NZAA" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="Longitude" promptText="eg 174.791667" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="Altitude" promptText="eg 12" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Latitude" GridPane.rowIndex="6" />
+            <TextField fx:id="Latitude" promptText="eg -37.008056" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone" GridPane.rowIndex="9" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daylight Saving Time" GridPane.rowIndex="10" />
             <ComboBox fx:id="tzComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <ComboBox fx:id="dstCombo" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <TextField fx:id="DST" promptText="eg Z" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
                <children>
                   <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
@@ -69,7 +69,7 @@
                </rowConstraints>
             </GridPane>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone(Olson Format)" GridPane.rowIndex="11" />
-            <TextField fx:id="tzOlson" promptText="Enter Timzone..." GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <TextField fx:id="tzOlson" promptText="eg Pacific/Auckland" GridPane.columnIndex="1" GridPane.rowIndex="11" />
          </children>
          <BorderPane.margin>
             <Insets />

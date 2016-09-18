@@ -182,6 +182,7 @@ public class AirlinePopUpController {
         airlineInvalidDataText.setVisible(false);
         airlineEditButton.setVisible(true);
         nameText.setVisible(true);
+        refreshMessage.setVisible(false);
     }
 
     //TODO FIX VALID ENTRIES! Currently only returns true does not check anything!

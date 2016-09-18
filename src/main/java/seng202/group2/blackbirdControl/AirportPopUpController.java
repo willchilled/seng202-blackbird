@@ -199,6 +199,7 @@ public class AirportPopUpController {
 
 
         }else{
+            //refreshMessage.setVisible(false);
             airportInvalidData.setVisible(true);
         }
     }
@@ -224,6 +225,7 @@ public class AirportPopUpController {
         airportEditButton.setVisible(true);
         airportFinishButton.setVisible(false);
         airportCancelButton.setVisible(false);
+        refreshMessage.setVisible(false);
 
     }
 

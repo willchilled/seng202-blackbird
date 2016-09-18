@@ -207,6 +207,7 @@ public class RoutePopUpController {
         routeEditButton.setVisible(true);
         routeFinishButton.setVisible(false);
         routeCancelButton.setVisible(false);
+        refreshMessage.setVisible(false);
 
 
     }

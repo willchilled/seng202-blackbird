@@ -90,6 +90,7 @@ public class BBDatabase {
                 " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
                 " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'))," +
                 " TZ             VARCHAR(40))";
+        System.out.println(sql);
         return sql;
 
     }
@@ -120,8 +121,10 @@ public class BBDatabase {
                 "Codeshare  CHAR(1) constraint check_codeshare check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
                 "Stops      INTEGER NOT NULL /*Number of stops the route takes*/," +
                 "Equipment  VARCHAR(50), " +
-                "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
+                "foreign key (Srcid) references AIRPORT," +    //foreign key can only be primary key of other table
+                "foreign key (Dstid) references AIRPORT" +
                 ")";
+        System.out.print(sql);
         return sql;
     }
 
@@ -243,6 +246,7 @@ public class BBDatabase {
                 country + "\", \"" +
                 active + "\");";
         try {
+
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -305,6 +309,7 @@ public class BBDatabase {
         //System.out.println(sql);
 
         try {
+            System.out.println(sql);
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             System.out.println("Poos" + sql);
@@ -365,6 +370,7 @@ public class BBDatabase {
                 Stops + ", " + "\"" + equip + "\"" + ");";
 
         try {
+            System.out.println(routeSql);
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
             //bad route data
@@ -459,6 +465,28 @@ public class BBDatabase {
         }
 
         //increment order for next point
+    }
+
+    public static void linkRoutesandAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+        for (RoutePoint route : routes) {
+            //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
+            int srcAirportId = route.getSrcAirportID();
+            int destAirportId = route.getDstAirportID();
+
+            for (AirportPoint airport : airports) {
+                if (srcAirportId == airport.getAirportID()) {
+                    route.setSource(airport);
+                    airport.incrementRoutes();
+
+                } else if (destAirportId == airport.getAirportID()) {
+                    route.setDestination(airport);
+                    airport.incrementRoutes();
+                } else {
+                    //TODO
+                    //raise an exception here? a route is using an airport that doesn't exist
+                }
+            }
+        }
     }
 
 

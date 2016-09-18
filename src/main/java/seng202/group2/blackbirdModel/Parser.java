@@ -70,10 +70,6 @@ public class Parser {
                         }
 
                     } else {
-//                        JOptionPane.showMessageDialog(new JPanel(), "Error on line: " + count + ". Empty data fields are not allowed for flight entries.\n" +
-//                                "Please review your input file.", "Error", JOptionPane.ERROR_MESSAGE);
-//                        System.err.println("Error: Null field in flight data. All fields must be filled");
-                        //currently, aborting if any null fields present in flight data.
                         return null;
                     }
                 } else {
@@ -124,8 +120,8 @@ public class Parser {
             myRoutePoint.setStops(Integer.parseInt(routePoint[7].trim()));
             myRoutePoint.setEquipment(routePoint[8].trim());
         } catch (NumberFormatException e) {
-            myRoutePoint.setAirline("Error on input file line: " + count);
-            return myRoutePoint;
+            //myRoutePoint.setAirline("Error on input file line: " + count);
+            return null;    ///Return null here?
         }
         return myRoutePoint;
     }
@@ -303,7 +299,7 @@ public class Parser {
             }
 
             myAirportPoint.setDst(airportPoint[10].trim());
-            if (airportPoint[11].equals("\\N")) {
+            if (airportPoint[11].equals("\\N") || airportPoint[11].isEmpty()) {
                 myAirportPoint.setTz("U");        //default to unknown?
             } else {
                 myAirportPoint.setTz(airportPoint[11].trim());

@@ -861,15 +861,16 @@ public class GUIController {
         //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterByCountryMenu.getValue().toString();
         String searchQuery = airportSearchQuery.getText();
+        ArrayList<AirportPoint> filteredPoints;
 
+        if(countrySelection.equals("No values Loaded")){
+            filteredPoints = Filter.getAllAirportPointsFromDB();
+        }
+        else{
+            filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
+        }
 
-        ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
         updateAirportsTable(filteredPoints);
-
-
-        //ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
-        //ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
-        //updateAirportsTable(filteredPoints);
 
     }
 
@@ -879,6 +880,19 @@ public class GUIController {
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
         String searchQuery = airlineSearchQuery.getText().toString();
+        ArrayList<AirlinePoint> allPoints;
+
+        if(countrySelection.equals("No values Loaded") && activeSelection.equals("No values Loaded")){
+            allPoints = Filter.getAllAirlinePointsfromDB();
+        }
+        else{
+            ArrayList<String> menusPressed  = new ArrayList<String>();
+            menusPressed.add(countrySelection);
+            menusPressed.add(activeSelection);
+            allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);
+        }
+
+
 
         if (activeSelection =="Active"){
             activeSelection = "Y";
@@ -887,37 +901,10 @@ public class GUIController {
             activeSelection = "N";
         }
 
-        ArrayList<String> menusPressed  = new ArrayList<String>();
-        menusPressed.add(countrySelection);
-        menusPressed.add(activeSelection);
-        System.out.println("----------------");
-        System.out.println(searchQuery);
-        System.out.println("----------------");
 
-
-        ArrayList<AirlinePoint> allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);
+        //allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);
         updateAirlinesTable(allPoints);
 
-//        ArrayList<AirlinePoint> filteredPoints = new ArrayList<AirlinePoint>();
-//
-//        if (countrySelection != "None"){
-//            filteredPoints = Filter.filterAirlineCountry(allPoints, countrySelection);
-//        }
-//        if (activeSelection != "None") {
-//            if (activeSelection != "None") {
-//
-//                if (activeSelection == "Active") {
-//                    filteredPoints = Filter.activeAirlines(filteredPoints, true);
-//
-//                } else {
-//                    filteredPoints = Filter.activeAirlines(filteredPoints, false);
-//                }
-//                // filteredPoints = Filter //add filter method
-//
-//
-//            }
-//        }
-//        updateAirlinesTable(filteredPoints);
 
 
 

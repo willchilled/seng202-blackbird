@@ -19,8 +19,8 @@ public class BBDatabaseTest extends TestCase {
         String flightFileString;
 
         airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
-        airportsFileString = cwd + "/JUnitTesting/airports.txt";
-        routesFileString = cwd + "/JUnitTesting/route.txt";
+        airportsFileString = cwd + "/TestFiles/airports.txt";
+        routesFileString = cwd + "/TestFiles/route.txt";
         flightFileString = cwd + "/JUnitTesting/flight.txt";
 
         File airlinesFile = new File(airlinesFileString);
@@ -53,7 +53,7 @@ public class BBDatabaseTest extends TestCase {
 
     public void testPerformAirpointsQuery() throws Exception {
         ArrayList<AirportPoint> airportPoints = BBDatabase.performAirportsQuery("SELECT * FROM AIRPORT");
-        assertEquals(airportPoints.size(), 100);
+        assertEquals(airportPoints.size(), 8105);
     }
 
     public void testPerformAirlinesQuery() throws Exception {
@@ -64,7 +64,7 @@ public class BBDatabaseTest extends TestCase {
 
     public void testPerformDistinctRoutesQuery() throws Exception {
         ArrayList<String> routePoints = BBDatabase.performDistinctStringQuery("Select * from ROUTE");
-        assertEquals(routePoints.size(), 100);
+        assertEquals(routePoints.size(), 67664);
     }
 
     public void testAirportEditDataEntry() throws Exception {
@@ -85,18 +85,21 @@ public class BBDatabaseTest extends TestCase {
         String sql = "UPDATE AIRLINE SET ID='6', NAME='223 Flight Unit State Airline', COUNTRY='POOS', ALIAS='', IATA='', ICAO='null', CALLSIGN='CHKALOVSK-AVIA', ACTIVE='N' WHERE ID='6'";
         BBDatabase.editDataEntry(sql);
         ArrayList<AirlinePoint> newAirlinePoints = BBDatabase.performAirlinesQuery("SELECT * FROM AIRLINE WHERE ID='6'");
-        System.out.println(newAirlinePoints.get(0).getCountry());
+        //System.out.println(newAirlinePoints.get(0).getCountry());
         assertEquals(newAirlinePoints.get(0).getCountry(), "POOS");
     }
 
     public void testRouteEditDataEntry() throws Exception{
+        //System.out.println("HERE****************\n\n\n Oh boy");
         ArrayList<RoutePoint> routePoints = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE WHERE IDnum='1'");
+        //System.out.println("HERE****************");
         assertEquals(routePoints.size(), 1);
-        System.out.println("Previous Codeshare: " + routePoints.get(0).getCodeshare());
+        //System.out.println("Previous Codeshare: " + routePoints.get(0).getCodeshare());
         String sql = "UPDATE ROUTE SET Airline='2B', Airlineid='410', Src='AER', Srcid='2965', Dst='KZN', Dstid='2990', Codeshare='Y', Stops='0' WHERE IDnum='1'";
         BBDatabase.editDataEntry(sql);
+
         ArrayList<RoutePoint> newRoutePoints = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE WHERE IDnum='1'");
-        System.out.println("New Codeshare: " + newRoutePoints.get(0).getCodeshare());
+        //System.out.println("New Codeshare: " + newRoutePoints.get(0).getCodeshare());
         assertEquals(newRoutePoints.get(0).getCodeshare(), "Y");
     }
 
@@ -104,10 +107,15 @@ public class BBDatabaseTest extends TestCase {
         String sql = "SELECT DISTINCT COUNTRY FROM AIRLINE";
         ArrayList<String> distinctPoints = BBDatabase.performDistinctStringQuery(sql);
         assertEquals(44, distinctPoints.size());
-        System.out.println("My Distinct Countries!");
+        //System.out.println("My Distinct Countries!");
+
+
     }
 
-    public void addingAirportEntry() throws Exception {
+    public void testaddingAirportEntry() throws Exception {
+
+        //String sql = "SELECT AIRPORT.IATA, ROUTE.Src FROM AIRPORT LEFT JOIN ROUTE WHERE AIRPORT.ID =ROUTE.srcid";
+//
         //TODO
     }
 

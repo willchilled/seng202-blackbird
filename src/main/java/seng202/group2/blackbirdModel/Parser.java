@@ -132,8 +132,6 @@ public class Parser {
     //ROUTES
     //add commas in for route equipment
     public static ArrayList<RoutePoint> parseRouteData(File file) {
-
-
         ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
         BufferedReader br;
         try {
@@ -152,9 +150,9 @@ public class Parser {
                     RoutePoint myRoutePoint = checkRouteData(routePoint, count);
                     myRouteData.add(myRoutePoint);
                 } else {
-                    RoutePoint myRoutePoint = new RoutePoint("", 0);
-                    myRoutePoint.setRouteID(count);
-                    myRouteData.add(myRoutePoint);
+//                    RoutePoint myRoutePoint = new RoutePoint("", 0);
+//                    myRoutePoint.setRouteID(count);
+//                    myRouteData.add(myRoutePoint);
                 }
             }
         } catch (IOException e) {
@@ -233,8 +231,8 @@ public class Parser {
                     myAirlineData.add(myAirlinePoint);
                 } else {
                     //TODO
-                    AirlinePoint myAirlinePoint = new AirlinePoint(0, "Error on input File line: " + count);
-                    myAirlineData.add(myAirlinePoint);
+                    //AirlinePoint myAirlinePoint = new AirlinePoint(0, "Error on input File line: " + count);
+                    //myAirlineData.add(myAirlinePoint);
                 }
             }
         } catch (IOException e) {
@@ -343,8 +341,8 @@ public class Parser {
 
 
                 } else {
-                    AirportPoint myAirportPoint = new AirportPoint(0, "Input File line: " + count);
-                    myAirportData.add(myAirportPoint);
+                    //AirportPoint myAirportPoint = new AirportPoint(0, "Input File line: " + count);
+                    //myAirportData.add(myAirportPoint);
                 }
             }
         } catch (IOException e) {

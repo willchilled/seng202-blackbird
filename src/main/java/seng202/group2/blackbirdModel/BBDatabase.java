@@ -357,6 +357,9 @@ public class BBDatabase {
             //Add all routes
             for (RoutePoint route : routePoints) {
                 //make route in db
+                if (route == null) {
+                    continue;
+                }
                 addSingleRoutetoDB(route, stmt);
             }
             stmt.close();

@@ -90,6 +90,7 @@ public class BBDatabase {
                 " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
                 " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'))," +
                 " TZ             VARCHAR(40))";
+        //System.out.println(sql);
         return sql;
 
     }
@@ -120,13 +121,10 @@ public class BBDatabase {
                 "Codeshare  CHAR(1) constraint check_codeshare check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
                 "Stops      INTEGER NOT NULL /*Number of stops the route takes*/," +
                 "Equipment  VARCHAR(50), " +
-                "srcAirportName VARCHAR(100)," +
-                "dstAirportName VARCHAR(100)," +
-                "srcAirportCountry VARCHAR(100)," +
-                "dstAirportCountry VARCHAR(100)," +
-                "foreign key (Srcid) references AIRPORT," +
-                "foreign key (Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
+                "foreign key (Srcid) references AIRPORT," +    //foreign key can only be primary key of other table
+                "foreign key (Dstid) references AIRPORT" +
                 ")";
+        //System.out.print(sql);
         return sql;
     }
 
@@ -259,6 +257,7 @@ public class BBDatabase {
                 country + "\", \"" +
                 active + "\");";
         try {
+
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -321,9 +320,10 @@ public class BBDatabase {
         //System.out.println(sql);
 
         try {
+            //System.out.println(sql);
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-           // System.out.println("Poos" + sql);
+            System.out.println("Poos" + sql);
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
@@ -366,13 +366,9 @@ public class BBDatabase {
         String codeshare = route.getCodeshare();
         int Stops = route.getStops();
         String equip = route.getEquipment();
-        String srcAiportname = route.getSrcAirportName();
-        String dstAiportName = route.getDestAirportName();
-        String srcAirportCountry = route.getSrcAirportCountry();
-        String dstAirportCountry = route.getDestAirportCountry();
 
         //make route sql text to execute
-        String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment, srcAirportName, dstAirportName, srcAirportCountry, dstAirportCountry)" +
+        String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment)" +
                 "VALUES (" +
                 +IDnum + ", " +
                 "\"" + Airline + "\", " +
@@ -382,8 +378,7 @@ public class BBDatabase {
                 "\"" + dst + "\", " +
                 dstid + ", " +
                 "\"" + codeshare + "\", " +
-                Stops + ", " + "\"" + equip + "\", \"" +
-                srcAiportname + "\", \"" + dstAiportName + "\", \""  + srcAirportCountry + "\", \"" + dstAirportCountry + "\"" + ");";
+                Stops + ", " + "\"" + equip + "\"" + ");";
 
         try {
             stmt.executeUpdate(routeSql);
@@ -633,10 +628,6 @@ public class BBDatabase {
                 String codeShare = rs.getString("Codeshare");
                 String stops = rs.getString("Stops");
                 String equip = rs.getString("Equipment");
-                String srcAirportName = rs.getString("srcAirportName");
-                String dstAirportName  = rs.getString("dstAirportName");
-                String srcAirportCountry =  rs.getString("srcAirportCountry");
-                String dstAirportCountry = rs.getString("dstAirportCountry");
 
 
                 RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
@@ -648,10 +639,6 @@ public class BBDatabase {
                 myPoint.setStops(Integer.parseInt(stops));
                 myPoint.setRouteID(routeID);
                 myPoint.setEquipment(equip);
-                myPoint.setSrcAirportName(srcAirportName);
-                myPoint.setDestAirportName(dstAirportName);
-                myPoint.setSrcAirportCountry(srcAirportCountry);
-                myPoint.setDestAirportCountry(dstAirportCountry);
 
                 allPoints.add(myPoint);
             }
@@ -726,54 +713,5 @@ public class BBDatabase {
 
     }
 
-    public static void performTestQuery(String sql) {
-        Connection c = makeConnection();
-        ArrayList<RoutePoint> allPoints = new ArrayList<RoutePoint>();
-
-        Statement stmt = null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                System.out.println("-------------");
-                System.out.println(rs.getString(1));
-                System.out.println(rs.getString(2));
-                System.out.println("-------------");
-                //System.out.println(rs.getString(2)
-                // );
-//                int routeID = rs.getInt("IDnum");
-//                String airline = rs.getString("Airline");
-//                String airlineID = rs.getString("Airlineid");
-//                String srcID = rs.getString("Srcid");
-//                String dest = rs.getString("Dst");
-//                String destID = rs.getString("Dstid");
-//                String codeShare = rs.getString("Codeshare");
-//                String stops = rs.getString("Stops");
-//                String equip = rs.getString("Equipment");
-//
-//
-//                RoutePoint myPoint = new RoutePoint(airline, Integer.parseInt(airlineID));
-//                myPoint.setSrcAirport(src);
-//                myPoint.setSrcAirportID(Integer.parseInt(srcID));
-//                myPoint.setDstAirport(dest);
-//                myPoint.setDstAirportID(Integer.parseInt(destID));
-//                myPoint.setCodeshare(codeShare);
-//                myPoint.setStops(Integer.parseInt(stops));
-//                myPoint.setRouteID(routeID);
-//                myPoint.setEquipment(equip);
-//
-//                allPoints.add(myPoint);
-            }
-            rs.close();
-            stmt.close();
-            c.close();
-        } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-    }
 }
 

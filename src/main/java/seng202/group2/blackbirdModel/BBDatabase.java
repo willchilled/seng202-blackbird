@@ -231,6 +231,9 @@ public class BBDatabase {
             stmt = c.createStatement();
 
             for (AirlinePoint airline : airlinePoints) {
+                if (airline == null) {
+                    continue;
+                }
                 addSingleAirline(airline, stmt);
             }
 

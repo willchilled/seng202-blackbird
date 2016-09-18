@@ -183,8 +183,8 @@ public class Parser {
                 if (checkAlphaNumeric(airlinePoint[3].trim())) {
                     myAirlinePoint.setIata(airlinePoint[3].trim());
                 } else {
-                    myAirlinePoint.setAirlineName("Error on input file line: " + count);
-                    return myAirlinePoint;
+                    //myAirlinePoint.setAirlineName("Error on input file line: " + count);
+                    return null;
                 }
             }
             if (airlinePoint[4].isEmpty() || airlinePoint[4].equals("\\N")) {
@@ -193,8 +193,8 @@ public class Parser {
                 if (checkAlphaNumeric(airlinePoint[4].trim())) {
                     myAirlinePoint.setIcao(airlinePoint[4].trim());
                 } else {
-                    myAirlinePoint.setAirlineName("Error on input file line: " + count);
-                    return myAirlinePoint;
+                    //myAirlinePoint.setAirlineName("Error on input file line: " + count);
+                    return null;
                 }
             }
             myAirlinePoint.setCallsign(airlinePoint[5].trim());
@@ -205,8 +205,8 @@ public class Parser {
             }
             myAirlinePoint.setActive(airlinePoint[7].trim());
         } catch (NumberFormatException e) {
-            myAirlinePoint.setAirlineName("Error on input file line: " + count);
-            return myAirlinePoint;
+            //myAirlinePoint.setAirlineName("Error on input file line: " + count);
+            return null;
         }
         return myAirlinePoint;
     }

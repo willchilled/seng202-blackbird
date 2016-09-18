@@ -21,6 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -307,6 +308,7 @@ public class GUIController {
         try {
             BBDatabase.addFlighttoDB(flightPoints);
         } catch (SQLException e) {
+
 //            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
 //                    "Error", JOptionPane.ERROR_MESSAGE);
             //System.err.println("Bad flight data");
@@ -440,7 +442,9 @@ public class GUIController {
     public void addFlightData(){
         //adds flight data now using the database
         try {
+
             File f = getFile("Add Flight Data");
+
             if (f == null) {
                 return;
             }
@@ -453,11 +457,13 @@ public class GUIController {
                 alert.showAndWait();
                 return;
             }
+
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-//                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("poopy bum wees");
             //TODO
         }
         mainTabPane.getSelectionModel().select(flightTab);
@@ -854,6 +860,9 @@ public class GUIController {
         ArrayList<String> menusPressed  = new ArrayList<String>();
         menusPressed.add(countrySelection);
         menusPressed.add(activeSelection);
+        System.out.println("----------------");
+        System.out.println(searchQuery);
+        System.out.println("----------------");
 
 
         ArrayList<AirlinePoint> allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);

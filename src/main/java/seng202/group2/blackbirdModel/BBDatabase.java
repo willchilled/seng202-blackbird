@@ -139,7 +139,7 @@ public class BBDatabase {
     private static String createRouteTable() {
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
         String sql = "CREATE TABLE ROUTE" +
-                "(IDnum     INTEGER NOT NULL /*ID number for the route*/," +
+                "(IDnum     INTEGER NOT NULL  /*ID number for the route*/," +
                 "Airline    VARCHAR(3) /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
                 "Airlineid  INTEGER /*ID of Airline for route*/," +
                 "Src        VARCHAR(4) NOT NULL /*Source location for route*/," +   //either the IATA(3) or ICAO(4)
@@ -404,6 +404,7 @@ public class BBDatabase {
                 }
                 boolean added = addSingleRoutetoDB(route, stmt);
                 if (!added) {
+                    //System.out.println("I HAV BEEN ADDED?");
                     correct = false;
                 }
             }
@@ -541,59 +542,7 @@ public class BBDatabase {
         //increment order for next point
     }
 
-    public static void linkRoutesandAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
-        try {
-            BBDatabase.dropRouteTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        ArrayList<RoutePoint> updatedPoints = new ArrayList<>();
-        Set<RoutePoint> myRouteSet = new HashSet<>();
-        for (RoutePoint route : routes) {
-            //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
-            int srcAirportId = route.getSrcAirportID();
-            int destAirportId = route.getDstAirportID();
-            for (AirportPoint airport : airports) {
-                if (srcAirportId == airport.getAirportID()) {
-                    route.setSrcAirportCountry(airport.getAirportCountry());
-                    route.setSrcAirportName(airport.getAirportName());
-                    airport.incrementIncRoutes();
-//                    if (!updatedPoints.contains(route)){
-//                        updatedPoints.add(route);
-//                    }
 
-
-                } if (destAirportId == airport.getAirportID()) {
-                    route.setDestAirportCountry(airport.getAirportCountry());
-                    route.setDestAirportName(airport.getAirportName());
-                    airport.incrementOutgoingRoutes();
-//                    if (!updatedPoints.contains(route)){
-//                        updatedPoints.add(route);
-//                    }
-                }
-
-            }
-            //myRouteSet.add(route);
-        }
-
-
-        //ArrayList<RoutePoint> myList = (ArrayList<RoutePoint>) myRouteSet;
-        ArrayList<String> test = new ArrayList<>();
-        BBDatabase.addRoutePointstoDB(routes);
-//        for (RoutePoint route: updatedPoints){
-//            //System.out.println(route);
-//           // BBDatabase.editDataEntry(route);
-//            String sql2 = String.format("UPDATE ROUTE SET srcAirportName=\"%s\", " +
-//                    "dstAirportName=\"%s\",  srcAirportCountry=\"%s\", dstAirportCountry=\"%s\" WHERE idnum=\"%s\"",
-//                    route.getSrcAirport(), route.getSrcAirportID(), route.getSrcAirportID(), route.getDstAirport(), route.getRouteID());
-//           //String sql = String.format("UPDATE ROUTE SET Airline='%1$s', Airlineid='%2$s', Src='%3$s', Srcid='%4$s'," +
-//                           // " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s' WHERE IDnum='%9$s'",
-//                    //route.getAirline(), route.getAirlineID(), route.getSource(), route.getSrcAirportID(), route.getDestination(), route.getDstAirportID(), route.getCodeshare(), 1000, route.getRouteID());
-//
-//            test.add(sql2);
-//        }
-//        BBDatabase.editDataEntries(test);
-    }
 
     private static void dropRouteTable() throws SQLException {
         Connection c = makeConnection();
@@ -933,6 +882,88 @@ public class BBDatabase {
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+
+    public static void linkRoutesandAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+        try {
+            routes = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE");
+            BBDatabase.dropRouteTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ArrayList<RoutePoint> updatedPoints = new ArrayList<>();
+        Set<RoutePoint> myRouteSet = new HashSet<>();
+        for (RoutePoint route : routes) {
+            //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
+            int srcAirportId = route.getSrcAirportID();
+            int destAirportId = route.getDstAirportID();
+            for (AirportPoint airport : airports) {
+                if (srcAirportId == airport.getAirportID()) {
+                    route.setSrcAirportCountry(airport.getAirportCountry());
+                    route.setSrcAirportName(airport.getAirportName());
+                    airport.incrementIncRoutes();
+//                    if (!updatedPoints.contains(route)){
+//                        updatedPoints.add(route);
+//                    }
+
+
+                } if (destAirportId == airport.getAirportID()) {
+                    route.setDestAirportCountry(airport.getAirportCountry());
+                    route.setDestAirportName(airport.getAirportName());
+                    airport.incrementOutgoingRoutes();
+//                    if (!updatedPoints.contains(route)){
+//                        updatedPoints.add(route);
+//                    }
+                }
+
+            }
+            //myRouteSet.add(route);
+        }
+
+
+        //ArrayList<RoutePoint> myList = (ArrayList<RoutePoint>) myRouteSet;
+        ArrayList<String> test = new ArrayList<>();
+        BBDatabase.addRoutePointstoDB(routes);
+//        for (RoutePoint route: updatedPoints){
+//            //System.out.println(route);
+//           // BBDatabase.editDataEntry(route);
+//            String sql2 = String.format("UPDATE ROUTE SET srcAirportName=\"%s\", " +
+//                    "dstAirportName=\"%s\",  srcAirportCountry=\"%s\", dstAirportCountry=\"%s\" WHERE idnum=\"%s\"",
+//                    route.getSrcAirport(), route.getSrcAirportID(), route.getSrcAirportID(), route.getDstAirport(), route.getRouteID());
+//           //String sql = String.format("UPDATE ROUTE SET Airline='%1$s', Airlineid='%2$s', Src='%3$s', Srcid='%4$s'," +
+//                           // " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s' WHERE IDnum='%9$s'",
+//                    //route.getAirline(), route.getAirlineID(), route.getSource(), route.getSrcAirportID(), route.getDestination(), route.getDstAirportID(), route.getCodeshare(), 1000, route.getRouteID());
+//
+//            test.add(sql2);
+//        }
+//        BBDatabase.editDataEntries(test);
+    }
+
+    public static void linkIndividualRouteAndAirport(RoutePoint myRoutePoint) {
+        //ArrayList<AirportPoint> mypoints = BBDatabase.performAirportsQuery("SELECT * FROM AIRPORT WHERE ");
+
+        String srcCountrySql = String.format("SELECT AIRPORT.country FROM AIRPORT WHERE AIRPORT.ID=\"%s\"", myRoutePoint.getSrcAirportID());
+        String dstCountrySql = String.format("SELECT AIRPORT.country FROM AIRPORT WHERE AIRPORT.ID=\"%s\"", myRoutePoint.getDstAirportID());
+
+        String srcCountryNameSql = String.format("SELECT AIRPORT.Name FROM AIRPORT WHERE AIRPORT.ID=\"%s\"", myRoutePoint.getSrcAirportID());
+        String dstCountryNameSql = String.format("SELECT AIRPORT.Name FROM AIRPORT WHERE AIRPORT.ID=\"%s\"", myRoutePoint.getDstAirportID());
+
+        String srcCountry = BBDatabase.performDistinctStringQuery(srcCountrySql).get(0);
+        String dstCountry = BBDatabase.performDistinctStringQuery(dstCountrySql).get(0);
+        String srcCountryName = BBDatabase.performDistinctStringQuery(srcCountryNameSql).get(0); //gets first item in array ArrayList
+        String dstCountryName = BBDatabase.performDistinctStringQuery(dstCountryNameSql).get(0);
+
+        String sql2 = String.format("UPDATE ROUTE SET srcAirportName=\"%s\", " +
+                    "dstAirportName=\"%s\",  srcAirportCountry=\"%s\", dstAirportCountry=\"%s\" WHERE idnum=\"%s\"",
+                    srcCountryName, dstCountryName, srcCountry, dstCountry, myRoutePoint.getRouteID());
+
+        System.out.println(sql2);
+        BBDatabase.editDataEntry(sql2);
+        //System.out.println(BBDatabase.performRoutesQuery(String.format("SELECT * FROM ROUTE WHERE ID='%s'", myRoutePoint.getRouteID())).get(0).toString());
+
+
+
+
     }
 }
 

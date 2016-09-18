@@ -79,8 +79,12 @@ public class RouteAddingPopUpController {
 
             ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
             myRouteData.add(myRoutePoint);
+            System.out.println(myRoutePoint.toString());
 
             BBDatabase.addRoutePointstoDB(myRouteData);
+            //BBDatabase.
+            BBDatabase.linkIndividualRouteAndAirport(myRoutePoint);
+
             //make so it displays
 
             adderStage.close();

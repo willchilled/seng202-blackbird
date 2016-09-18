@@ -39,6 +39,7 @@ public class Parser {
     //------------------------FLIGHTS-------------------------//
 
     public static ArrayList<FlightPoint> parseFlightData(File file) {
+        System.out.print("pooooooooo");
 
         ArrayList<FlightPoint> myFlightSet = new ArrayList<>();
         BufferedReader br;
@@ -64,19 +65,20 @@ public class Parser {
                                     longitude);
                             myFlightSet.add(myFlightPoint);
                         } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your file on line: " + count,
-                                    "Error", JOptionPane.ERROR_MESSAGE);
-                            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                            System.out.println("Poo 0");
                         }
 
                     } else {
+                        System.out.println("Poo 1");
                         return null;
                     }
                 } else {
+                    System.out.println("Poo 2");
                     return null;
                 }
             }
         } catch (NumberFormatException e) {
+            System.out.println("Poo 3");
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {

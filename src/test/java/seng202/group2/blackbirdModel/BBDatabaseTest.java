@@ -71,10 +71,10 @@ public class BBDatabaseTest extends TestCase {
         ArrayList<AirportPoint> airportPoints = BBDatabase.performAirportsQuery("SELECT * FROM AIRPORT WHERE ID='1'");
         assertEquals(airportPoints.size(), 1);
         System.out.println(airportPoints.get(0).getAirportName());
-        String sql = "UPDATE AIRPORT SET NAME='MINE' WHERE ID='1'";
+        String sql = "UPDATE AIRPORT SET NAME='MINE', CITY='William', COUNTRY='Papua New Guinea', IATA='GKA', ICAO='AYGA', LATITUDE='-6.081689', LONGITUDE='145.39188', ALTITUDE='5282', TIMEZONE='10.0', DST='U', TZ='Pacific/Port_Moresby' WHERE ID='1'";
         BBDatabase.editDataEntry(sql);
-
-        ArrayList<AirportPoint> newAirportPoints = BBDatabase.performAirportsQuery(("SELECT * FROM AIRLINE WHERE ID='1'"));
+        ArrayList<AirportPoint> newAirportPoints = BBDatabase.performAirportsQuery(("SELECT * FROM AIRPORT WHERE ID='1'"));
+        assertEquals(newAirportPoints.size(), 1);
         System.out.println(newAirportPoints.get(0).getAirportName());
         assertEquals(newAirportPoints.get(0).getAirportName(), "MINE");
     }
@@ -98,5 +98,20 @@ public class BBDatabaseTest extends TestCase {
         ArrayList<RoutePoint> newRoutePoints = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE WHERE IDnum='1'");
         System.out.println("New Codeshare: " + newRoutePoints.get(0).getCodeshare());
         assertEquals(newRoutePoints.get(0).getCodeshare(), "Y");
+    }
+
+    public void testDistinctQuery() throws Exception {
+        String sql = "SELECT DISTINCT COUNTRY FROM AIRLINE";
+        ArrayList<String> distinctPoints = BBDatabase.performDistinctStringQuery(sql);
+        assertEquals(44, distinctPoints.size());
+        System.out.println("My Distinct Countries!");
+    }
+
+    public void addingAirportEntry() throws Exception {
+        //TODO
+    }
+
+    public void addingAirlineEntry() throws Exception {
+        //TODO
     }
 }

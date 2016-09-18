@@ -49,7 +49,7 @@
    <center>
       <StackPane>
          <children>
-            <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
+            <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                   <Tab fx:id="flightTab" text="Flights">
                      <content>
@@ -137,6 +137,10 @@
                                     <TableColumn fx:id="routeStopsCol" prefWidth="75.0" text="Stops" />
                                     <TableColumn fx:id="routeEqCol" prefWidth="75.0" text="Equipment" />
                                      <TableColumn fx:id="routeErrorCol" prefWidth="75.0" text="Error" visible="false" />
+                                    <TableColumn fx:id="routeSrcCountryCol" prefWidth="75.0" text="Source Country" />
+                                    <TableColumn fx:id="routeDstCountryCol" prefWidth="75.0" text="Destination country" />
+                                    <TableColumn fx:id="routeSrcNameCol" prefWidth="75.0" text="Source Airport Name" />
+                                    <TableColumn fx:id="routeDstNameCol" prefWidth="75.0" text="Dst Airport Name" />
       
                                        </columns>
                               </TableView>
@@ -245,6 +249,8 @@
                                     <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="DST" visible="false" />
                                     <TableColumn fx:id="airportTZCol" prefWidth="60.3333740234375" text="TZ" />
                                     <TableColumn fx:id="airportErrorCol" prefWidth="75.0" text="Errors" visible="false" />
+                                    <TableColumn fx:id="airportIncCol" prefWidth="75.0" text="Incoming" />
+                                    <TableColumn fx:id="airportOutCol" prefWidth="75.0" text="Outgoing" />
                                  </columns>
                               </TableView>
                               <GridPane hgap="5.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
@@ -423,7 +429,7 @@
                   </Tab>
               </tabs>
             </TabPane>
-            <GridPane fx:id="openPane" StackPane.alignment="CENTER">
+            <GridPane fx:id="openPane" visible="false" StackPane.alignment="CENTER">
               <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" maxWidth="394.0" minWidth="10.0" prefWidth="326.0" />
                 <ColumnConstraints hgrow="NEVER" maxWidth="499.0" minWidth="10.0" prefWidth="499.0" />

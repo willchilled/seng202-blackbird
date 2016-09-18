@@ -352,29 +352,29 @@ public class Parser {
     }
 
     //Currently unused
-    public static void linkRoutesAndAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
-        //function to link routes and airports
-        //called when flags from GUI (airportdataloaded = true, routedataloaded = true)
-        for (RoutePoint route : routes) {
-            //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
-            int srcAirportId = route.getSrcAirportID();
-            int destAirportId = route.getDstAirportID();
-
-            for (AirportPoint airport : airports) {
-                if (srcAirportId == airport.getAirportID()) {
-                    route.setSource(airport);
-                    airport.incrementRoutes();
-
-                } else if (destAirportId == airport.getAirportID()) {
-                    route.setDestination(airport);
-                    airport.incrementRoutes();
-                } else {
-                    //TODO
-                    //raise an exception here? a route is using an airport that doesn't exist
-                }
-            }
-        }
-    }
+//    public static void linkRoutesAndAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+//        //function to link routes and airports
+//        //called when flags from GUI (airportdataloaded = true, routedataloaded = true)
+//        for (RoutePoint route : routes) {
+//            //int operatingAirlineId = route.getAirlineID();	//should routes also link to airlines?
+//            int srcAirportId = route.getSrcAirportID();
+//            int destAirportId = route.getDstAirportID();
+//
+//            for (AirportPoint airport : airports) {
+//                if (srcAirportId == airport.getAirportID()) {
+//                    route.setSource(airport);
+//                    airport.incrementRoutes();
+//
+//                } else if (destAirportId == airport.getAirportID()) {
+//                    route.setDestination(airport);
+//                    airport.incrementRoutes();
+//                } else {
+//                    //TODO
+//                    //raise an exception here? a route is using an airport that doesn't exist
+//                }
+//            }
+//        }
+//    }
 
 
 }

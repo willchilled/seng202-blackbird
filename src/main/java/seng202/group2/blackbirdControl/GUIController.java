@@ -436,7 +436,15 @@ public class GUIController {
             return;
         }
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-        BBDatabase.addRoutePointstoDB(myRouteData);
+        boolean allAdded = BBDatabase.addRoutePointstoDB(myRouteData);
+
+        if (!allAdded) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Some data could not be added");
+            alert.setContentText("Please check your input file");
+            alert.showAndWait();
+        }
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
         //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
         setAllRoutePoints(myRouteData); //populating local data with all points

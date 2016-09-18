@@ -383,9 +383,9 @@ public class BBDatabase {
 
 
     //Route Adding
-    public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
+    public static boolean addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
         //adds routes into the database
-
+        boolean correct = true;
         try {
             //Connect to DB
             Connection c = makeConnection();
@@ -399,9 +399,13 @@ public class BBDatabase {
             for (RoutePoint route : routePoints) {
                 //make route in db
                 if (route == null) {
+                    correct = false;
                     continue;
                 }
-                addSingleRoutetoDB(route, stmt);
+                boolean added = addSingleRoutetoDB(route, stmt);
+                if (!added) {
+                    correct = false;
+                }
             }
             stmt.close();
             c.commit();
@@ -410,9 +414,10 @@ public class BBDatabase {
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
         }
+        return correct;
     }
 
-    private static void addSingleRoutetoDB(RoutePoint route, Statement stmt) {
+    private static boolean addSingleRoutetoDB(RoutePoint route, Statement stmt) {
         //get info for route
         int IDnum = route.getRouteID();
         String Airline = route.getAirline();
@@ -445,10 +450,11 @@ public class BBDatabase {
 
         try {
             stmt.executeUpdate(routeSql);
+            return true;
         } catch (SQLException e) {
             //bad route data
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return;
+            return false;
         }
 
     }

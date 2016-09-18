@@ -346,15 +346,14 @@ public class GUIController {
 
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
-
-
         File f;
         f = getFile("Add Airport Data");
         if (f == null) {
             return;
         }
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
-        BBDatabase.addAirportPointsToDB(allairportPoints);
+        boolean allAdded = BBDatabase.addAirportPointsToDB(allairportPoints);
+        System.out.println(allAdded);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
         setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
@@ -367,6 +366,14 @@ public class GUIController {
         exportAirportMenuButton.setDisable(false);
 
         mainTabPane.getSelectionModel().select(airportTab);
+
+        if(!allAdded) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Error in adding airport data");
+            alert.setContentText("Some airport data was unable to be added");
+            alert.showAndWait();
+        }
 
         if (routesFilled) {
             BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
@@ -389,12 +396,20 @@ public class GUIController {
             return;
         }
         ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
-        BBDatabase.addAirlinePointstoDB(allAirlineData);
+        boolean allAdded = BBDatabase.addAirlinePointstoDB(allAirlineData);
 
         ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
         setAllAirlinePoints(validAirlineData);
         setAirlineActiveList(populateAirlineActiveList());
+
+        if (!allAdded) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Some data could not be added");
+            alert.setContentText("Please check your input file");
+            alert.showAndWait();
+        }
 
         airlineActiveMenu.setItems(getAirlineActiveList());
         airlineActiveMenu.setValue(getAirlineActiveList().get(0));

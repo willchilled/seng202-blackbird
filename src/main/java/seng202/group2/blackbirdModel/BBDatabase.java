@@ -242,10 +242,10 @@ public class BBDatabase {
     //##########################Adding  Data#########################################//
 
     //Airline Adding
-    public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
+    public static boolean addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
         //This method adds multiple points to the Database
+        boolean correct = true;
         try {
-
             Connection c = makeConnection();
             Statement stmt = null;
             Class.forName("org.sqlite.JDBC");
@@ -255,9 +255,13 @@ public class BBDatabase {
 
             for (AirlinePoint airline : airlinePoints) {
                 if (airline == null) {
+                    correct = false;
                     continue;
                 }
-                addSingleAirline(airline, stmt);
+                boolean added = addSingleAirline(airline, stmt);
+                if(!added) {
+                    correct = false;
+                }
             }
 
             stmt.close();
@@ -267,10 +271,12 @@ public class BBDatabase {
            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
             //System.exit(0);
+            return false;
         }
+        return correct;
     }
 
-    private static void addSingleAirline(AirlinePoint airline, Statement stmt) {
+    private static boolean addSingleAirline(AirlinePoint airline, Statement stmt) {
         int id = airline.getAirlineID();
         String name = airline.getAirlineName();
         String alias = airline.getAirlineAlias();
@@ -293,14 +299,17 @@ public class BBDatabase {
                 active + "\");";
         try {
             stmt.executeUpdate(sql);
+            return true;
         } catch (SQLException e) {
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
     }
 
     //Airport Adding
-    public static void addAirportPointsToDB(ArrayList<AirportPoint> airportPoints) {
+    public static boolean addAirportPointsToDB(ArrayList<AirportPoint> airportPoints) {
         //This method adds multiple points to the Database
+        boolean correct = true;
         try {
             Connection c = makeConnection();
             Statement stmt = null;
@@ -311,23 +320,29 @@ public class BBDatabase {
 
             for (AirportPoint airport : airportPoints) {
                 if (airport == null) {
+                    correct = false;
                     continue;
                 }
-                addSingleAirport(airport, stmt);
+                boolean added = addSingleAirport(airport, stmt);
+                if (!added) {
+                    correct = false;
+                }
             }
 
             stmt.close();
             c.commit();
             c.close();
         } catch (SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return;
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            return false;
         }
+        return correct;
     }
 
-    public static void addSingleAirport(AirportPoint airport, Statement stmt) {
+    public static boolean addSingleAirport(AirportPoint airport, Statement stmt) {
         int airportID = airport.getAirportID();
         String airportName = airport.getAirportName();
         String City = airport.getAirportCity();
@@ -359,7 +374,9 @@ public class BBDatabase {
 
         try {
             stmt.executeUpdate(sql);
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -368,6 +385,7 @@ public class BBDatabase {
     //Route Adding
     public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
         //adds routes into the database
+
         try {
             //Connect to DB
             Connection c = makeConnection();

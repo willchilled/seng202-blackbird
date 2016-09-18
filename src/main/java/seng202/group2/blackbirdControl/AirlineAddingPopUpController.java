@@ -49,23 +49,27 @@ public class AirlineAddingPopUpController {
 
     public void createButtonPressed() {
 
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Error in adding data");
+        alert.setContentText("Please check your input fields.");
+
         String[] airlinePoint = getValues().split(", ", -1);
         int count = BBDatabase.getMaxInColumn("AIRLINE", "ID");
         ArrayList<AirlinePoint> myAirlineData = new ArrayList<>();
         AirlinePoint myAirlinePoint = Parser.checkAirlineData(airlinePoint, count);
         if (myAirlinePoint == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Oops!");
-            alert.setHeaderText("Error in adding data");
-            alert.setContentText("Please check your input fields. See help for more information");
             alert.showAndWait();
             return;
         }
         myAirlineData.add(myAirlinePoint);
 
-        BBDatabase.addAirlinePointstoDB(myAirlineData);
-
-        adderStage.close();
+        boolean added = BBDatabase.addAirlinePointstoDB(myAirlineData);
+        if (!added) {
+            alert.showAndWait();
+        } else {
+            adderStage.close();
+        }
     }
 
     public void cancleButtonPressed() {

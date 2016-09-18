@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Parser {
 
@@ -245,6 +246,7 @@ public class Parser {
     //-----------------------------AIRPORTS------------------------------//
 
     public static AirportPoint checkAirportData(String[] airportPoint, int count) {
+        System.out.println(Arrays.toString(airportPoint));
         AirportPoint myAirportPoint = new AirportPoint(0, "");
         try {
             myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0].trim()));    //should not be null
@@ -258,8 +260,8 @@ public class Parser {
                 if (checkAlphaNumeric(airportPoint[4].trim())) {
                     myAirportPoint.setIata(airportPoint[4].trim());
                 } else {
-                    myAirportPoint.setAirportName("Error on input file line: " + count);
-                    return myAirportPoint;
+                    //myAirportPoint.setAirportName("Error on input file line: " + count);
+                    return null;
                 }
             }
 
@@ -269,8 +271,8 @@ public class Parser {
                 if (checkAlphaNumeric(airportPoint[5].trim())) {
                     myAirportPoint.setIcao(airportPoint[5].trim());
                 } else {
-                    myAirportPoint.setAirportName("Error on input file line: " + count);
-                    return myAirportPoint;
+                    //myAirportPoint.setAirportName("Error on input file line: " + count);
+                    return null;
                 }
             }
 
@@ -307,8 +309,8 @@ public class Parser {
                 myAirportPoint.setTz(airportPoint[11].trim());
             }
         } catch (NumberFormatException e) {
-            myAirportPoint.setAirportName("Error on input file line: " + count);
-            return myAirportPoint;
+            //myAirportPoint.setAirportName("Error on input file line: " + count);
+            return null;
         }
         return myAirportPoint;
     }

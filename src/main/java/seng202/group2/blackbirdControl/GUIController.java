@@ -753,25 +753,10 @@ public class GUIController {
 
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-        boolean allNone = true;
-
-        for (String menuItem: menusPressed){
-            if (!menuItem.equals("None")){
-                allNone = false;
-            }
-        }
-        if (!searchQuery.equals("")){
-            allNone = false;
-
-        }
-        if (!allNone){
-             routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
 
 
-        }
-        else{
-            routePoints = getAllRoutePoints();
-        }
+        routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
 
         updateRoutesTable(routePoints);
 

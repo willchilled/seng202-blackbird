@@ -299,7 +299,9 @@ public class Parser {
             }
 
             myAirportPoint.setDst(airportPoint[10].trim());
+
             if (airportPoint[11].equals("\\N") || airportPoint[11].isEmpty()) {
+                //TODO FOR MEGAN, FIX HERE
                 myAirportPoint.setTz("U");        //default to unknown?
             } else {
                 myAirportPoint.setTz(airportPoint[11].trim());

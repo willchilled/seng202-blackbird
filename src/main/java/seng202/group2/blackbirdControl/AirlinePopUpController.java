@@ -142,7 +142,7 @@ public class AirlinePopUpController {
             refreshMessage.setVisible(false);
             airlineEditButton.setVisible(true);
             nameText.setVisible(true);
-            refreshMessage.setVisible(true);
+            //refreshMessage.setVisible(true);
 
 
 

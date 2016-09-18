@@ -52,6 +52,9 @@ public class GUIController {
     private ArrayList<AirlinePoint> allAirlinePoints = new ArrayList<AirlinePoint>();
     private ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
 
+    private boolean routesFilled = false;
+    private boolean airportsFilled = false;
+
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
 //    }
@@ -335,6 +338,7 @@ public class GUIController {
     public void addAirportData(){
         //Adds the aiport data into the filter menu, updates airport Country list
 
+
         File f;
         f = getFile("Add Airport Data");
         if (f == null) {
@@ -355,7 +359,9 @@ public class GUIController {
 
         mainTabPane.getSelectionModel().select(airportTab);
 
-
+        if (routesFilled) {
+            BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+        }
 
     }
 
@@ -406,6 +412,10 @@ public class GUIController {
         updateRoutesDropdowns();
         exportRouteMenuButton.setDisable(false);
         mainTabPane.getSelectionModel().select(routeTab);
+
+        if (airportsFilled) {
+            BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+        }
 
     }
 

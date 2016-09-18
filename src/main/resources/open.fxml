@@ -442,7 +442,7 @@
                               <Font size="25.0" />
                            </font>
                         </Text>
-                        <Text layoutX="31.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To being select File -&gt; New Project">
+                        <Text layoutX="31.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To begin select File -&gt; New Project">
                            <font>
                               <Font size="25.0" />
                            </font>

@@ -51,7 +51,6 @@ public class RouteAddingPopUpController {
 
     public void createButtonPressed(){
         String[] routePoint = getValues().split(", ");
-        System.out.println(routePoint);
         String airline = routePoint[0];
         int airlineID = 0;	// 0 if airlineID is null
 

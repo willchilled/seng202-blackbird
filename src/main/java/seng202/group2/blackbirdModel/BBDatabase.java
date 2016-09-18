@@ -27,7 +27,7 @@ public class BBDatabase {
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
-            String sql = "SELECT * FROM AIRPORT WHERE IATA = 1G4";
+            String sql = "SELECT * FROM AIRPORT WHERE IATA = \"" + airportIATA +"\"";
             ResultSet rs = stmt.executeQuery(sql);
             airportID = rs.getInt("ID");
             stmt.close();

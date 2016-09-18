@@ -661,9 +661,9 @@ public class BBDatabase {
             c.close();
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("Got here");
-            JPanel newpanel = new JPanel();
-            JOptionPane.showMessageDialog(newpanel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//            JPanel newpanel = new JPanel();
+//            JOptionPane.showMessageDialog(newpanel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            //message pop up here
         } catch (ClassNotFoundException e) {
             System.err.println("Error creating database");
             //System.exit(0);

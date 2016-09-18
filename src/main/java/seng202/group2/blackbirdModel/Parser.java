@@ -39,7 +39,7 @@ public class Parser {
     //------------------------FLIGHTS-------------------------//
 
     public static ArrayList<FlightPoint> parseFlightData(File file) {
-        System.out.print("pooooooooo");
+       // System.out.print("pooooooooo");
 
         ArrayList<FlightPoint> myFlightSet = new ArrayList<>();
         BufferedReader br;

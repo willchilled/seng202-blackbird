@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -58,8 +59,8 @@ public class GUIController {
 //    public void setAllValidPoints(ArrayList<AirportPoint> allValidPoints) {
 //        this.allValidPoints = allValidPoints;
 //    }
-    @FXML
-    private TabPane mainTabPane;
+    @FXML private TabPane mainTabPane;
+    @FXML private Pane openPane;
     @FXML private Tab flightTab;
     @FXML private Tab routeTab;
     @FXML private Tab airportTab;
@@ -241,6 +242,7 @@ public class GUIController {
 
     public void show(){
 
+        openPane.setVisible(false);
         mainTabPane.setVisible(true);
         //SQQliteJDBC myDb = new SQQliteJDBC();
         //SQLiteJDBC.dropTables();

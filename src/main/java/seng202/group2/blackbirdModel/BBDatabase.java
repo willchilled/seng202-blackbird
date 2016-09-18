@@ -88,7 +88,7 @@ public class BBDatabase {
                 " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180')," +
                 " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
                 " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
-                " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U'))," +
+                " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'))," +
                 " TZ             VARCHAR(40))";
         return sql;
 
@@ -302,10 +302,12 @@ public class BBDatabase {
                 timezone + ", \"" +
                 Dst + "\", \"" +
                 tz + "\"); ";
+        //System.out.println(sql);
 
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
+            System.out.println("Poos" + sql);
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
@@ -604,7 +606,7 @@ public class BBDatabase {
             stmt.close();
             c.close();
         } catch (Exception e) {
-           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
 

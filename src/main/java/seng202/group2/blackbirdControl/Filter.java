@@ -122,10 +122,6 @@ public class Filter {
         return BBDatabase.performAirlinesQuery(sql);
     }
 
-//    public static ArrayList<FlightPoint> getallFlightPoints() {
-//        String sql = " SELECT * FROM FLIGHT;";
-//        return BBDatabase.performFlightsQuery(sql);
-//    }
 
     public static ArrayList<AirportPoint> getAllAirportPointsFromDB() {
         String sql = "SELECT * FROM AIRPORT;";
@@ -241,9 +237,10 @@ public class Filter {
                 String currentSelection = menusPressed.get(i);
                 if(currentSelection != "None"){
                     sql += String.format(allSelections.get(i), currentSelection);
-                    //sql.replaceAll("%%%%", "");
+
                 }
             }
+            sql = sql.replaceAll("%%", "");
             sql = removeLastAND(sql);
         }
 

@@ -172,12 +172,29 @@ public class FilterTest extends TestCase {
     }
 
     public void testFilterAirportCountries() throws Exception {
+        //ArrayList<String> myCountries = new ArrayList<>(Arrays.asList("New Zealand", "New Zealand", "Japan"));
+        ArrayList<String> filterResult = Filter.filterUniqueAirportCountries();
+        assertEquals(filterResult.size(), 4);
+
+        //Add another point to the database
+        ArrayList<AirportPoint> myPoints =  new ArrayList<AirportPoint>();
+        AirportPoint myPoint = new AirportPoint(101, "test");
+        myPoint.setAirportCountry("New Country");
+        myPoint.setAirportCity("Hello");
+        myPoints.add(myPoint);
+        BBDatabase.addAirportPointsToDB(myPoints);
+
+        filterResult = Filter.filterUniqueAirportCountries();
+        assertEquals(filterResult.size(), 5);
+
 
     }
 
     public void testFilterAirLineCountries() throws Exception {
 
     }
+
+
 
 
 }

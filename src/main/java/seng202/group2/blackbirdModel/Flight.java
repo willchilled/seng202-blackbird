@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class Flight extends DataPoint {
 
-    private final String srcAirport;
-    private final String destAirport;
-    private final Collection<FlightPoint> flightPoints;
+    private String srcAirport;
+    private String destAirport;
+    private Collection<FlightPoint> flightPoints;
     private int flightID;
 
     public Flight(List<FlightPoint> flightPoints) {
@@ -28,13 +28,19 @@ public class Flight extends DataPoint {
         return flightID;
     }
 
+    public void setFlightID(int flightID) { this.flightID = flightID;}
+
     public String getSrcAirport() {
         return srcAirport;
     }
 
+    public void setSrcAirport(String srcAirport) { this.srcAirport = srcAirport;}
+
     public String getDestAirport() {
         return destAirport;
     }
+
+    public void setDestAirport(String destAirport) { this.destAirport = destAirport;}
 
     public Collection<FlightPoint> getFlightPoints() {
         return flightPoints;

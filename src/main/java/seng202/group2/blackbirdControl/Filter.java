@@ -220,6 +220,56 @@ public class Filter {
     }
 
 
+    public static ArrayList<Flight> filterFlightsBySelections(ArrayList<String> menusPressed, String search){
+
+        String searchString = "";
+        if (search.length() >0){
+            searchString = String.format("(FlightIDNum='%1$s' OR SrcICAO='%1$s' OR DstICAO='%1$s');", search);
+        }
+
+
+        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("SrcICAO=\"%s\" AND ", "DstICAO=\"%s\" AND "));
+        String outputString = "SELECT * FROM FLIGHT ";
+
+        boolean allNone = true;
+
+        for (String currentSelection: menusPressed){
+            if (currentSelection != "None"){
+                allNone = false;
+            }
+        }
+
+
+        if (!allNone){
+            outputString += "WHERE ";
+            for (int i=0; i<menusPressed.size(); i++){
+                String currentSelection = menusPressed.get(i);
+                if(currentSelection != "None"){
+                    outputString += String.format(allSelections.get(i), currentSelection);
+                }
+            }
+
+        }
+
+        //If there are no filters selected, we must begin the statement with WHERE before beginning the search query
+        //statement. However if there are filters selected, we must continue the statement with AND before appending
+        // the search query statement.
+        outputString = removeLastAND(outputString);
+        if (search.length() >0){
+            if(allNone){
+                outputString += " WHERE ";
+            }
+            else{
+                outputString += " AND ";
+            }
+        }
+        outputString += searchString;
+
+        System.out.println(outputString);
+        return BBDatabase.performFlightsQuery(outputString);
+    }
+
+
 
     public static ArrayList<RoutePoint> filterRoutesBySelections(ArrayList<String> menusPressed, String searchQuery) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));

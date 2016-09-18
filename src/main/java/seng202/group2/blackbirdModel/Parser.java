@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Parser {
 
@@ -131,8 +132,6 @@ public class Parser {
     //ROUTES
     //add commas in for route equipment
     public static ArrayList<RoutePoint> parseRouteData(File file) {
-
-
         ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
         BufferedReader br;
         try {
@@ -151,9 +150,9 @@ public class Parser {
                     RoutePoint myRoutePoint = checkRouteData(routePoint, count);
                     myRouteData.add(myRoutePoint);
                 } else {
-                    RoutePoint myRoutePoint = new RoutePoint("", 0);
-                    myRoutePoint.setRouteID(count);
-                    myRouteData.add(myRoutePoint);
+//                    RoutePoint myRoutePoint = new RoutePoint("", 0);
+//                    myRoutePoint.setRouteID(count);
+//                    myRouteData.add(myRoutePoint);
                 }
             }
         } catch (IOException e) {
@@ -182,8 +181,8 @@ public class Parser {
                 if (checkAlphaNumeric(airlinePoint[3].trim())) {
                     myAirlinePoint.setIata(airlinePoint[3].trim());
                 } else {
-                    myAirlinePoint.setAirlineName("Error on input file line: " + count);
-                    return myAirlinePoint;
+                    //myAirlinePoint.setAirlineName("Error on input file line: " + count);
+                    return null;
                 }
             }
             if (airlinePoint[4].isEmpty() || airlinePoint[4].equals("\\N")) {
@@ -192,8 +191,8 @@ public class Parser {
                 if (checkAlphaNumeric(airlinePoint[4].trim())) {
                     myAirlinePoint.setIcao(airlinePoint[4].trim());
                 } else {
-                    myAirlinePoint.setAirlineName("Error on input file line: " + count);
-                    return myAirlinePoint;
+                    //myAirlinePoint.setAirlineName("Error on input file line: " + count);
+                    return null;
                 }
             }
             myAirlinePoint.setCallsign(airlinePoint[5].trim());
@@ -204,8 +203,8 @@ public class Parser {
             }
             myAirlinePoint.setActive(airlinePoint[7].trim());
         } catch (NumberFormatException e) {
-            myAirlinePoint.setAirlineName("Error on input file line: " + count);
-            return myAirlinePoint;
+            //myAirlinePoint.setAirlineName("Error on input file line: " + count);
+            return null;
         }
         return myAirlinePoint;
     }
@@ -232,8 +231,8 @@ public class Parser {
                     myAirlineData.add(myAirlinePoint);
                 } else {
                     //TODO
-                    AirlinePoint myAirlinePoint = new AirlinePoint(0, "Error on input File line: " + count);
-                    myAirlineData.add(myAirlinePoint);
+                    //AirlinePoint myAirlinePoint = new AirlinePoint(0, "Error on input File line: " + count);
+                    //myAirlineData.add(myAirlinePoint);
                 }
             }
         } catch (IOException e) {
@@ -260,8 +259,8 @@ public class Parser {
                 if (checkAlphaNumeric(airportPoint[4].trim())) {
                     myAirportPoint.setIata(airportPoint[4].trim());
                 } else {
-                    myAirportPoint.setAirportName("Error on input file line: " + count);
-                    return myAirportPoint;
+                    //myAirportPoint.setAirportName("Error on input file line: " + count);
+                    return null;
                 }
             }
 
@@ -271,8 +270,8 @@ public class Parser {
                 if (checkAlphaNumeric(airportPoint[5].trim())) {
                     myAirportPoint.setIcao(airportPoint[5].trim());
                 } else {
-                    myAirportPoint.setAirportName("Error on input file line: " + count);
-                    return myAirportPoint;
+                    //myAirportPoint.setAirportName("Error on input file line: " + count);
+                    return null;
                 }
             }
 
@@ -309,8 +308,8 @@ public class Parser {
                 myAirportPoint.setTz(airportPoint[11].trim());
             }
         } catch (NumberFormatException e) {
-            myAirportPoint.setAirportName("Error on input file line: " + count);
-            return myAirportPoint;
+            //myAirportPoint.setAirportName("Error on input file line: " + count);
+            return null;
         }
         return myAirportPoint;
     }
@@ -341,8 +340,8 @@ public class Parser {
 
 
                 } else {
-                    AirportPoint myAirportPoint = new AirportPoint(0, "Input File line: " + count);
-                    myAirportData.add(myAirportPoint);
+                    //AirportPoint myAirportPoint = new AirportPoint(0, "Input File line: " + count);
+                    //myAirportData.add(myAirportPoint);
                 }
             }
         } catch (IOException e) {

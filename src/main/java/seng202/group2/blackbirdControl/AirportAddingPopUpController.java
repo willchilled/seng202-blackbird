@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 public class AirportAddingPopUpController {
 
     ObservableList<String> timeZones = FXCollections.observableArrayList("No values Loaded");
+    ObservableList<String> DaylightTimes = FXCollections.observableArrayList("No values Loaded");
     @FXML private TextField Name;
     @FXML private TextField ID;
     @FXML private TextField City;
@@ -36,7 +38,7 @@ public class AirportAddingPopUpController {
     @FXML private TextField Longitude;
     @FXML private TextField Altitude;
     @FXML private ComboBox tzComboBox;
-    @FXML private TextField DST;
+    @FXML private ComboBox dstCombo;
     @FXML private TextField tzOlson;
     @FXML private Pane refreshMessage;
     private Stage adderStage;
@@ -53,20 +55,36 @@ public class AirportAddingPopUpController {
         timeZones = populateTimeZoneMenu();
         tzComboBox.setItems(timeZones);
         tzComboBox.setValue(timeZones.get(0));
+        DaylightTimes = populateDaylightMenu();
+        dstCombo.setItems(DaylightTimes);
+        dstCombo.setValue(DaylightTimes.get(0));
 
     }
 
     public void createButtonPressed(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Error in adding data");
+        alert.setContentText("Please check your input fields.");
+
         String line = getValues();
-        String[] airportPoint = line.split(", ");
-        //System.out.println(shit);
+        String[] airportPoint = line.split(", ", -1);
         int count = BBDatabase.getMaxInColumn("AIRPORT", "ID");
         
         AirportPoint myAirportPoint = Parser.checkAirportData(airportPoint, count);
+        System.out.println(myAirportPoint);
+        if (myAirportPoint == null) {
+            alert.showAndWait();
+            return;
+        }
         ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();
         myAirportData.add(myAirportPoint);
-        BBDatabase.addAirportPointsToDB(myAirportData);
-        adderStage.close();
+        boolean added = BBDatabase.addAirportPointsToDB(myAirportData);
+        if (!added) {
+            alert.showAndWait();
+        } else {
+            adderStage.close();
+        }
     }
 
     public void cancleButtonPressed(){
@@ -86,9 +104,9 @@ public class AirportAddingPopUpController {
         String airportLongitude = Longitude.getText().toString();
         String airportAltitude = Altitude.getText().toString();
         String airportTZ = tzComboBox.getValue().toString().substring(3,9);
-        String airportDST = DST.getText().toString();
+        String airportDST = dstCombo.getValue().toString();
         String airportTZOlson = tzOlson.getText().toString();
-        String values = new String();
+        String values = "";
         values += airportID + ", ";
         values += airportName + ", ";
         values += airportCity + ", ";
@@ -123,6 +141,21 @@ public class AirportAddingPopUpController {
             e.printStackTrace();
         }
         return Timezones;
+    }
+
+    private ObservableList<String> populateDaylightMenu(){
+        //gets list of daylights for combo box
+        ObservableList<String> daylights = FXCollections.observableArrayList();
+        ArrayList<String> dLights = new ArrayList<String>();
+        dLights.add("E");
+        dLights.add("A");
+        dLights.add("S");
+        dLights.add("O");
+        dLights.add("Z");
+        dLights.add("N");
+        dLights.add("U");
+        daylights = FXCollections.observableArrayList(dLights);
+        return daylights;
     }
 
     public void setAdderStage(Stage adderStage) {

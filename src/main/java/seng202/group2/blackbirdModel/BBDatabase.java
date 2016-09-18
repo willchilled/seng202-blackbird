@@ -1,5 +1,7 @@
 package seng202.group2.blackbirdModel;
 
+import javafx.scene.control.Alert;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
@@ -16,6 +18,29 @@ public class BBDatabase {
     private static String dataBaseName = "jdbc:sqlite:default.db";
     private static int flightCount =0;
 
+    public static int getAirportID(String airportIATA){
+        int airportID = 0;
+        try {
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            String sql = "SELECT * FROM AIRPORT WHERE IATA = \"" + airportIATA +"\"";
+            ResultSet rs = stmt.executeQuery(sql);
+            airportID = rs.getInt("ID");
+            stmt.close();
+            c.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return airportID;
+    }
 
     public static int getMaxInColumn(String tableName, String columnName) {
         //Returns the highest value in a column for a table
@@ -84,7 +109,7 @@ public class BBDatabase {
         String sql = "CREATE TABLE AIRPORT " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
-                " CITY           VARCHAR(40)   NOT NULL," +
+                " CITY           VARCHAR(40)," +
                 " COUNTRY        VARCHAR(40)   NOT NULL," +
                 " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                 " ICAO           CHAR(4)," +
@@ -217,10 +242,10 @@ public class BBDatabase {
     //##########################Adding  Data#########################################//
 
     //Airline Adding
-    public static void addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
+    public static boolean addAirlinePointstoDB(ArrayList<AirlinePoint> airlinePoints) {
         //This method adds multiple points to the Database
+        boolean correct = true;
         try {
-
             Connection c = makeConnection();
             Statement stmt = null;
             Class.forName("org.sqlite.JDBC");
@@ -229,7 +254,14 @@ public class BBDatabase {
             stmt = c.createStatement();
 
             for (AirlinePoint airline : airlinePoints) {
-                addSingleAirline(airline, stmt);
+                if (airline == null) {
+                    correct = false;
+                    continue;
+                }
+                boolean added = addSingleAirline(airline, stmt);
+                if(!added) {
+                    correct = false;
+                }
             }
 
             stmt.close();
@@ -239,10 +271,12 @@ public class BBDatabase {
            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
             //System.exit(0);
+            return false;
         }
+        return correct;
     }
 
-    private static void addSingleAirline(AirlinePoint airline, Statement stmt) {
+    private static boolean addSingleAirline(AirlinePoint airline, Statement stmt) {
         int id = airline.getAirlineID();
         String name = airline.getAirlineName();
         String alias = airline.getAirlineAlias();
@@ -265,14 +299,17 @@ public class BBDatabase {
                 active + "\");";
         try {
             stmt.executeUpdate(sql);
+            return true;
         } catch (SQLException e) {
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
     }
 
     //Airport Adding
-    public static void addAirportPointsToDB(ArrayList<AirportPoint> airportPoints) {
+    public static boolean addAirportPointsToDB(ArrayList<AirportPoint> airportPoints) {
         //This method adds multiple points to the Database
+        boolean correct = true;
         try {
             Connection c = makeConnection();
             Statement stmt = null;
@@ -282,20 +319,30 @@ public class BBDatabase {
             stmt = c.createStatement();
 
             for (AirportPoint airport : airportPoints) {
-                addSingleAirport(airport, stmt);
+                if (airport == null) {
+                    correct = false;
+                    continue;
+                }
+                boolean added = addSingleAirport(airport, stmt);
+                if (!added) {
+                    correct = false;
+                }
             }
 
             stmt.close();
             c.commit();
             c.close();
-        } catch (SQLException e) {  //error in database connection
-          //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } catch (SQLException e) {
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            return false;
         }
+        return correct;
     }
 
-    private static void addSingleAirport(AirportPoint airport, Statement stmt) {
+    public static boolean addSingleAirport(AirportPoint airport, Statement stmt) {
         int airportID = airport.getAirportID();
         String airportName = airport.getAirportName();
         String City = airport.getAirportCity();
@@ -327,15 +374,18 @@ public class BBDatabase {
 
         try {
             stmt.executeUpdate(sql);
+            return true;
         } catch (SQLException e) {
-            //System.out.println("Poos" + sql);
-          //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
     }
 
+
+
     //Route Adding
-    public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
+    public static boolean addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
         //adds routes into the database
+        boolean correct = true;
         try {
             //Connect to DB
             Connection c = makeConnection();
@@ -348,7 +398,14 @@ public class BBDatabase {
             //Add all routes
             for (RoutePoint route : routePoints) {
                 //make route in db
-                addSingleRoutetoDB(route, stmt);
+                if (route == null) {
+                    correct = false;
+                    continue;
+                }
+                boolean added = addSingleRoutetoDB(route, stmt);
+                if (!added) {
+                    correct = false;
+                }
             }
             stmt.close();
             c.commit();
@@ -357,9 +414,10 @@ public class BBDatabase {
           //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
         }
+        return correct;
     }
 
-    private static void addSingleRoutetoDB(RoutePoint route, Statement stmt) {
+    private static boolean addSingleRoutetoDB(RoutePoint route, Statement stmt) {
         //get info for route
         int IDnum = route.getRouteID();
         String Airline = route.getAirline();
@@ -392,10 +450,11 @@ public class BBDatabase {
 
         try {
             stmt.executeUpdate(routeSql);
+            return true;
         } catch (SQLException e) {
             //bad route data
             //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return;
+            return false;
         }
 
     }
@@ -407,26 +466,19 @@ public class BBDatabase {
     public static void addFlighttoDB(ArrayList<FlightPoint> flightPoints) throws SQLException {
         //Adding flight points into data base
         try {
-            //Connect to DB
-          //  System.out.println("1");
             Connection c = makeConnection();
             Statement stmt = null;
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
             stmt = c.createStatement();
-            //System.out.println("2");
 
             //first make a flight with start and end
             FlightPoint srcPoint = flightPoints.get(0);
-            //System.out.println("3");
             FlightPoint dstPoint = flightPoints.get(flightPoints.size() - 1);
-            //System.out.println("4");
 
             String srcICAO = srcPoint.getLocaleID();
-            //System.out.println("5");
             String dstICAO = dstPoint.getLocaleID();
-            //System.out.println("6");
 
 
             String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) " +
@@ -434,62 +486,41 @@ public class BBDatabase {
                     "\"" + srcICAO + "\", " +
                     "\"" + dstICAO + "\"" +
                     ");";
-            //System.out.println("7");
 
             stmt.executeUpdate(sql);
-            //System.out.println("8");
 
             //get the new flight id
             sql = "SELECT FlightIDNum, MAX(FlightIDNum) FROM FLIGHT";
-            //System.out.println("9");
             ResultSet rs = stmt.executeQuery(sql);
-            //System.out.println("10");
             int flightid = rs.getInt("FlightIDNum");
-            //System.out.println("11");
 
             //initialise order to show the sequence of the flight points
             //int order = 1;
 
-            //System.out.println("12");
-
             //for all flight points
             for (FlightPoint point : flightPoints) {
-              //  System.out.println("13");
                 addSingleFlighttoDB(point, stmt, flightid, flightCount);
                 flightCount++;
-
             }
-           // System.out.println("14");
-//            System.out.println(" ");
-//            System.out.println("------------------------");
-//            System.out.println(" ");
 
             stmt.close();
             c.commit();
             c.close();
 
         } catch (SQLException e) {
-            System.out.println("15");
            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw e;
         } catch (ClassNotFoundException e) {
-            System.out.println("16");
            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
     private static void addSingleFlighttoDB(FlightPoint point, Statement stmt, int flightid, int order) throws SQLException {
-        //get info for point
-
-       // System.out.println("1");
-
         String locID = point.getLocaleID();
-        //System.out.println("1");
         String locType = point.getType();
         int altitude = point.getAltitude();
         float latitude = point.getLatitude();
         float longitude = point.getLongitude();
-        //System.out.println("2");
         String FlightSql = "INSERT INTO FLIGHTPOINT(SeqOrder, LocaleID, LocationType, Altitude, Latitude, Longitude, FlightIDNum)" +
                 "Values (" +
                 order + ", " +
@@ -499,14 +530,11 @@ public class BBDatabase {
                 latitude + ", " +
                 longitude + ", " +
                 flightid + ")";
-        //System.out.println("3");
         //execute route sql
         try {
-           // System.out.println("4");
             stmt.executeUpdate(FlightSql);
         } catch (SQLException e) {
-            //System.out.println("5");
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw e;
         }
 

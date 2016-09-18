@@ -56,6 +56,10 @@ public class GUIController {
     private boolean routesFilled = false;
     private boolean airportsFilled = false;
 
+    public boolean isAirportsFilled() {
+        return airportsFilled;
+    }
+
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
 //    }
@@ -309,8 +313,7 @@ public class GUIController {
             BBDatabase.addFlighttoDB(flightPoints);
         } catch (SQLException e) {
 
-//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-//                    "Error", JOptionPane.ERROR_MESSAGE);
+
             //System.err.println("Bad flight data");
         }
 
@@ -354,7 +357,8 @@ public class GUIController {
             return;
         }
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
-        BBDatabase.addAirportPointsToDB(allairportPoints);
+        boolean allAdded = BBDatabase.addAirportPointsToDB(allairportPoints);
+        System.out.println(allAdded);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
         setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
@@ -367,6 +371,14 @@ public class GUIController {
         exportAirportMenuButton.setDisable(false);
 
         mainTabPane.getSelectionModel().select(airportTab);
+
+        if(!allAdded) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Error in adding airport data");
+            alert.setContentText("Some airport data was unable to be added");
+            alert.showAndWait();
+        }
 
         if (routesFilled) {
             BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
@@ -389,12 +401,20 @@ public class GUIController {
             return;
         }
         ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
-        BBDatabase.addAirlinePointstoDB(allAirlineData);
+        boolean allAdded = BBDatabase.addAirlinePointstoDB(allAirlineData);
 
         ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
 
         setAllAirlinePoints(validAirlineData);
         setAirlineActiveList(populateAirlineActiveList());
+
+        if (!allAdded) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Some data could not be added");
+            alert.setContentText("Please check your input file");
+            alert.showAndWait();
+        }
 
         airlineActiveMenu.setItems(getAirlineActiveList());
         airlineActiveMenu.setValue(getAirlineActiveList().get(0));
@@ -418,7 +438,15 @@ public class GUIController {
             return;
         }
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-        BBDatabase.addRoutePointstoDB(myRouteData);
+        boolean allAdded = BBDatabase.addRoutePointstoDB(myRouteData);
+
+        if (!allAdded) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Some data could not be added");
+            alert.setContentText("Please check your input file");
+            alert.showAndWait();
+        }
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
         //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
         setAllRoutePoints(myRouteData); //populating local data with all points
@@ -461,9 +489,11 @@ public class GUIController {
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("poopy bum wees");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Error in adding data");
+            alert.setContentText("Please check your input fields.");
+            alert.showAndWait();
             //TODO
         }
         mainTabPane.getSelectionModel().select(flightTab);
@@ -830,9 +860,7 @@ public class GUIController {
 
         //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterByCountryMenu.getValue().toString();
-        System.out.println(countrySelection);
         String searchQuery = airportSearchQuery.getText();
-
 
 
         ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
@@ -913,6 +941,44 @@ public class GUIController {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
         }
+
+
+        //This is bad style but you win some and you lose some
+        //(I lost this one)
+        ArrayList<String> uniqueCountries = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Src FROM ROUTE");
+        ObservableList<String> myCountries =  FXCollections.observableArrayList(uniqueCountries);
+        myCountries = addNullValue(myCountries);
+        routesFilterBySourceMenu.setValue(myCountries.get(0));
+        routesFilterBySourceMenu.setItems(myCountries);
+
+        ArrayList<String> dstCodes = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Dst FROM ROUTE");
+        ObservableList<String> myDstCodes =  FXCollections.observableArrayList(dstCodes);
+        myDstCodes = addNullValue(myDstCodes);
+        routesFilterbyDestMenu.setValue(myDstCodes.get(0));
+        routesFilterbyDestMenu.setItems(myDstCodes);
+
+        ArrayList<String> stops = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Stops FROM ROUTE");
+        ObservableList<String> myStops =  FXCollections.observableArrayList(stops);
+        myStops = addNullValue(myStops);
+        routesFilterByStopsMenu.setValue(myStops.get(0));
+        routesFilterByStopsMenu.setItems(myStops);
+
+        ArrayList<String> equip = BBDatabase.performDistinctStringQuery("SELECT DISTINCT equipment FROM ROUTE");
+        ObservableList<String> myEquip =  FXCollections.observableArrayList(equip);
+        myEquip= addNullValue(myEquip);
+        routesFilterbyEquipMenu.setValue(myEquip.get(0));
+        routesFilterbyEquipMenu.setItems(myEquip);
+       // ArrayList<String>
+
+//        private ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
+//        private ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
+//        private ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
+//        private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+
+        //);
+        //System.out.println("FUCK ME");
+        //System.out.println(uniqueCountries);
+
 
 
         updateRoutesTable(routePoints);

@@ -1,5 +1,7 @@
 package seng202.group2.blackbirdModel;
 
+import javafx.scene.control.Alert;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,6 +49,7 @@ public class Parser {
             while ((line = br.readLine()) != null) {
                 count++;
                 if (numberOfCommas(line) == 4) {
+                    System.out.println("Got here");
                     String[] flightPoint = line.split(",");
 
                     if (!checkNull(flightPoint)) {
@@ -67,16 +70,14 @@ public class Parser {
                         }
 
                     } else {
-                        JOptionPane.showMessageDialog(new JPanel(), "Error on line: " + count + ". Empty data fields are not allowed for flight entries.\n" +
-                                "Please review your input file.", "Error", JOptionPane.ERROR_MESSAGE);
-                        System.err.println("Error: Null field in flight data. All fields must be filled");
+//                        JOptionPane.showMessageDialog(new JPanel(), "Error on line: " + count + ". Empty data fields are not allowed for flight entries.\n" +
+//                                "Please review your input file.", "Error", JOptionPane.ERROR_MESSAGE);
+//                        System.err.println("Error: Null field in flight data. All fields must be filled");
                         //currently, aborting if any null fields present in flight data.
-                        break;
+                        return null;
                     }
                 } else {
-                    //will any flight data have extra commas?
-                    JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your file on line: " + count,
-                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
                 }
             }
         } catch (NumberFormatException e) {

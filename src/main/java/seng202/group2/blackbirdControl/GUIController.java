@@ -445,6 +445,14 @@ public class GUIController {
                 return;
             }
             ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
+            if (myFlightData == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Oops!");
+                alert.setHeaderText("Error in flight file");
+                alert.setContentText("There was an error adding to flights.");
+                alert.showAndWait();
+                return;
+            }
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {

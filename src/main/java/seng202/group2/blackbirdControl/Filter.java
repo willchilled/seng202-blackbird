@@ -241,9 +241,10 @@ public class Filter {
                 String currentSelection = menusPressed.get(i);
                 if(currentSelection != "None"){
                     sql += String.format(allSelections.get(i), currentSelection);
-                    //sql.replaceAll("%%%%", "");
+
                 }
             }
+            sql = sql.replaceAll("%%", "");
             sql = removeLastAND(sql);
         }
 

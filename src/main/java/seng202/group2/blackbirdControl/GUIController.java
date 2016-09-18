@@ -786,13 +786,13 @@ public class GUIController {
 
     public void airportSeeAllButtonPressed(ActionEvent actionEvent) {
         //gets all airport points and updates view
-        String selection = airportFilterMenu.getValue().toString();
 //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
 //        alert.setContentText("See All button pressed ! " + selection);
 //        alert.showAndWait();
 
 
-
+        airportFilterMenu.setItems(airPortCountryList);
+        airportFilterMenu.setValue(airPortCountryList.get(0));
         ArrayList<AirportPoint> allPoints = Filter.getAllAirportPointsFromDB(); //airportTable.getItems();
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
         updateAirportsTable(allPoints);

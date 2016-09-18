@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
@@ -51,6 +52,7 @@ public class AirportPopUpController {
     @FXML private Button airportEditButton;
     @FXML private Button airportFinishButton;
     @FXML private Button airportCancelButton;
+    @FXML private Pane refreshMessage;
 
 
 
@@ -95,6 +97,7 @@ public class AirportPopUpController {
         airportEditButton.setVisible(false);
         airportFinishButton.setVisible(true);
         airportCancelButton.setVisible(true);
+        refreshMessage.setVisible(true);
 
         if(airportNameText.getText() != ""){
             airportNameTextEdit.setText(airportNameText.getText());
@@ -170,6 +173,7 @@ public class AirportPopUpController {
             airportEditButton.setVisible(true);
             airportFinishButton.setVisible(false);
             airportCancelButton.setVisible(false);
+            refreshMessage.setVisible(false);
 
             String sql = String.format("UPDATE AIRPORT SET NAME='%1$s', CITY='%2$s', COUNTRY='%3$s'," +
                             " IATA='%4$s', ICAO='%5$s', LATITUDE='%6$s', LONGITUDE='%7$s', ALTITUDE='%8$s'," +

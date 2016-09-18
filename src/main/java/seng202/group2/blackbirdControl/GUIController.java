@@ -29,6 +29,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import static javafx.fxml.FXMLLoader.load;
@@ -912,10 +913,20 @@ public class GUIController {
     }
 
     private void populateRoutesFilterByEquipList(){
-        ArrayList<String> uniqueSources = new ArrayList<String>();
+        ArrayList<String> uniqueEquip = new ArrayList<>();
         String sql = "Equipment";
-        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
-        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        ArrayList<RoutePoint> myRoutes = Filter.getAllRoutePointsFromDB();
+        for (RoutePoint route : myRoutes) {
+            String[] equip = route.getEquipment().split("\\s+");
+            for (String myEquip : equip) {
+                if (!uniqueEquip.contains(myEquip)) {
+                    uniqueEquip.add(myEquip);
+                }
+            }
+        }
+        Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
+//        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
         uniqueObservableSources = addNullValue(uniqueObservableSources);
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);
         routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));

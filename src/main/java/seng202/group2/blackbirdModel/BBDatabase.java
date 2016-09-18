@@ -490,12 +490,14 @@ public class BBDatabase {
 
             for (AirportPoint airport : airports) {
                 if (srcAirportId == airport.getAirportID()) {
-                    route.setSource(airport);
-                    airport.incrementRoutes();
+                    route.setSrcAirportCountry(airport.getAirportCountry());
+                    route.setSrcAirportName(airport.getAirportName());
+                    airport.incrementIncRoutes();
 
                 } else if (destAirportId == airport.getAirportID()) {
-                    route.setDestination(airport);
-                    airport.incrementRoutes();
+                    route.setDestAirportCountry(airport.getAirportCountry());
+                    route.setDestAirportName(airport.getAirportName());
+                    airport.incrementOutgoingRoutes();
                 } else {
                     //TODO
                     //raise an exception here? a route is using an airport that doesn't exist

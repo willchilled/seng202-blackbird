@@ -87,6 +87,7 @@ public class GUIController {
     @FXML private TableView<RoutePoint> routeTable;
     @FXML private TableView<Flight> flightTable;
     @FXML private TableView<FlightPoint> flightPointTable;
+
 // AIRPORT Table columns
     @FXML private TableColumn airportIDCol;
     @FXML private TableColumn airportNameCol;
@@ -95,7 +96,8 @@ public class GUIController {
     @FXML private TableColumn airportIATACol;
     @FXML private TableColumn airportICAOCol;
     @FXML private TableColumn airportLatCol;
-
+    @FXML private TableColumn airportIncCol;
+    @FXML private TableColumn airportOutCol;
    //public void setAirlineActiveListData(ArrayList<AirlinePoint> points){this.airlineActiveList = points;}
     @FXML private TableColumn airportLongCol;
     @FXML private TableColumn airportAltCol;
@@ -103,6 +105,7 @@ public class GUIController {
     @FXML private TableColumn airportDSTCol;
     @FXML private TableColumn airportTZCol;
     @FXML private TableColumn airportErrorCol;
+
 // AIRLINE Table columns
     @FXML private TableColumn airlineIDCol;
     @FXML private TableColumn airlineNameCol;
@@ -125,6 +128,10 @@ public class GUIController {
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
     @FXML private TableColumn routeErrorCol;
+    @FXML private TableColumn routeSrcCountryCol;
+    @FXML private TableColumn routeDstCountryCol;
+    @FXML private TableColumn routeSrcNameCol;
+    @FXML private TableColumn routeDstNameCol;
     // FLIGHT POINT Table columns
     @FXML private TableColumn flightPointTypeCol;
     @FXML private TableColumn flightPointLocaleCol;
@@ -361,7 +368,12 @@ public class GUIController {
 
         if (routesFilled) {
             BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+            updateAirportsTable2(allPoints);
+            updateRoutesTable2(allRoutePoints);
         }
+
+        airportsFilled = true;
+
 
     }
 
@@ -415,7 +427,13 @@ public class GUIController {
 
         if (airportsFilled) {
             BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+            System.out.println(allRoutePoints.get(2));
+            //System.out.println(allPoints.get(2).getOutgoingRoutes() + " " + allPoints.get(2).getAirportName() + allPoints.get(2));
+            updateAirportsTable2(allPoints);
+            updateRoutesTable2(allRoutePoints);
         }
+
+        routesFilled = true;
 
     }
 
@@ -548,7 +566,7 @@ public class GUIController {
         });
     }
 
-    private void updateRoutesTable(ArrayList<RoutePoint> points){
+    private void updateRoutesTable2(ArrayList<RoutePoint> points){
 
         routeTable.getItems().setAll(points);
 
@@ -561,6 +579,10 @@ public class GUIController {
         routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
         routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+        routeSrcCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportCountry"));
+        routeDstCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("destAirportCountry"));
+        routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
+        routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("destAirportName"));
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -574,6 +596,111 @@ public class GUIController {
                         root = loader.load();
                         RoutePopUpController popUpController = loader.getController();
                         popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("View/Edit Data");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+
+    }
+
+    private void updateRoutesTable(ArrayList<RoutePoint> points){
+
+        routeTable.getItems().setAll(points);
+
+        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
+        routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
+        routeSrcCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirport"));
+        routeSrcIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportID"));
+        routeDestCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirport"));
+        routeDestIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportID"));
+        routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
+        routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
+        routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+//        routeSrcCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportCountry"));
+//        routeDstCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("destAirportCountry"));
+//        routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
+//        routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportName"));
+
+        routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
+                        root = loader.load();
+                        RoutePopUpController popUpController = loader.getController();
+                        popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("View/Edit Data");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+
+    }
+
+    private void updateAirportsTable2(ArrayList<AirportPoint> points){
+
+
+        //updates airpoirts table with a set of airpoints
+        airportTable.getItems().setAll(points);
+
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+        //airportRouteNo.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportIncCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportOutCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("outgoingRoutes"));
+
+
+        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
+                        root = loader.load();
+                        AirportPopUpController popUpController = loader.getController();
+                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
@@ -612,6 +739,7 @@ public class GUIController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+//        airportRouteNo.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
 
 
         airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {

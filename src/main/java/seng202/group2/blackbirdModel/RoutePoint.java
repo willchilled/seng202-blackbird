@@ -182,8 +182,8 @@ public class RoutePoint extends DataPoint {
 
         //String, int, string, int, string, int, string, int, string
 
-        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
-                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
+        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s, %s, %s, %s, %s",
+                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment, srcAirportCountry, destAirportCountry, srcAirportName, destAirportName);
 
     }
 }

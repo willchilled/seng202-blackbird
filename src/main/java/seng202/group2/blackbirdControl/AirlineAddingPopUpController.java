@@ -53,7 +53,7 @@ public class AirlineAddingPopUpController {
         int count = BBDatabase.getMaxInColumn("AIRLINE", "ID");
         ArrayList<AirlinePoint> myAirlineData = new ArrayList<>();
         AirlinePoint myAirlinePoint = Parser.checkAirlineData(airlinePoint, count);
-        if (myAirlineData == null) {
+        if (myAirlinePoint == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Oops!");
             alert.setHeaderText("Error in adding data");

@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdModel;
 
+import javax.swing.*;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -658,9 +659,14 @@ public class BBDatabase {
             stmt.close();
             c.commit();
             c.close();
-        } catch (Exception e) {
-           // System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.out.println("Got here");
+            JPanel newpanel = new JPanel();
+            JOptionPane.showMessageDialog(newpanel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error creating database");
+            //System.exit(0);
         }
 
     }

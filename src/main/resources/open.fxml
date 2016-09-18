@@ -47,7 +47,7 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
         <tabs>
             <Tab fx:id="flightTab" text="Flights">
                <content>

@@ -309,8 +309,6 @@ public class GUIController {
             BBDatabase.addFlighttoDB(flightPoints);
         } catch (SQLException e) {
 
-//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-//                    "Error", JOptionPane.ERROR_MESSAGE);
             //System.err.println("Bad flight data");
         }
 
@@ -476,9 +474,11 @@ public class GUIController {
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("poopy bum wees");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Error in adding data");
+            alert.setContentText("Please check your input fields.");
+            alert.showAndWait();
             //TODO
         }
         mainTabPane.getSelectionModel().select(flightTab);

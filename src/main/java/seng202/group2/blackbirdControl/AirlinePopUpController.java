@@ -48,7 +48,6 @@ public class AirlinePopUpController {
 
     @FXML
     public void setUpPopUp(){
-        System.out.println("here!");
         nameText.setText(airlinePoint.getAirlineName());
         idText.setText(String.valueOf(airlinePoint.getAirlineID()));
         countryText.setText(airlinePoint.getCountry());
@@ -127,11 +126,9 @@ public class AirlinePopUpController {
 
         List<String> attributes = Arrays.asList(name, country, alias, iata, icao, callsign, active);
 
-        System.out.println("calling valid Entries");
 
         if(validEntries(attributes)) {
 
-            System.out.println("Lets save this data!");
             airlineNameTextEdit.setVisible(false);
             airlineCountryTextEdit.setVisible(false);
             airlineAliasTextEdit.setVisible(false);
@@ -146,8 +143,6 @@ public class AirlinePopUpController {
             airlineEditButton.setVisible(true);
             nameText.setVisible(true);
 
-            System.out.println("ICAO: " + icaoText.getText());
-            System.out.println("IATA: " + iataText.getText());
 
 
 
@@ -155,7 +150,6 @@ public class AirlinePopUpController {
                     " IATA='%4$s', ICAO='%5$s', CALLSIGN='%6$s', ACTIVE='%7$s' WHERE ID='%8$s'",
                     name, country, alias, iata, icao, callsign, active, idText.getText());
 
-            System.out.println(sql);
 
             nameText.setText(airlineNameTextEdit.getText());
             countryText.setText(airlineCountryTextEdit.getText());
@@ -176,7 +170,6 @@ public class AirlinePopUpController {
 
     public void cancelEdit(){
 
-        System.out.println("Nah fuck this!");
         airlineNameTextEdit.setVisible(false);;
         airlineCountryTextEdit.setVisible(false);
         airlineAliasTextEdit.setVisible(false);

@@ -176,7 +176,6 @@ public class AirportPopUpController {
                     " TIMEZONE='%9$s', DST='%10$s', TZ='%11$s' WHERE ID='%12$s'",
                     name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz, airportIdText.getText());
 
-            System.out.println(sql);
 
             airportNameText.setText(airportNameTextEdit.getText());
             airportCityText.setText(airportCityTextEdit.getText());

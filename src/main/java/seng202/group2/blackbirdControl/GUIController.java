@@ -316,7 +316,6 @@ public class GUIController {
         airlinePoints = Filter.getAllAirlinePointsfromDB();
 
 
-        //System.out.println(myAirlineData);
         // myAirlineData = Filter.getAllAirlinePointsfromDB();
         setAllAirlinePoints(airlinePoints);
         setAirlineActiveList(populateAirlineActiveList());
@@ -426,7 +425,6 @@ public class GUIController {
         } catch (SQLException e) {
 //            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
 //                    "Error", JOptionPane.ERROR_MESSAGE);
-//            System.out.println("Error in flight, aborted.");
             //TODO
         }
         mainTabPane.getSelectionModel().select(flightTab);
@@ -517,7 +515,6 @@ public class GUIController {
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                     String myText = airlineTable.getSelectionModel().getSelectedItem().getAirlineName();
-                    System.out.println(myText);
                     Stage stage;
                     Parent root;
                     stage = new Stage();
@@ -537,7 +534,6 @@ public class GUIController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }
@@ -582,7 +578,6 @@ public class GUIController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }
@@ -635,7 +630,6 @@ public class GUIController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }
@@ -684,17 +678,10 @@ public class GUIController {
      ******************************************************************************************************************/
 
     public void AirportFilterButtonPressed(){
-        //Gets values from selection and filters based on selection
-        /*
-        System.out.println("HERE!");
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("filter button pressed ! " + selection);
-        alert.showAndWait();
-        */ //NEED TO ADD CASE FOR NONE SELECTED
+        //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();
         String searchQuery = airportSearchQuery.getText();
-        System.out.println(searchQuery);
 
 
         ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
@@ -757,7 +744,6 @@ public class GUIController {
     }
 
     public void routesFilterButtonPressed(ActionEvent actionEvent) {
-        System.out.println("I HAVE BEEN PRESSED");
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
@@ -856,7 +842,6 @@ public class GUIController {
         ArrayList<String> countries = Filter.filterUniqueAirLineCountries(Filter.getAllAirlinePointsfromDB());
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = addNullValue(countryList); //we need to add a null value
-        //System.out.println(countryList);
         return countryList;
     }
 
@@ -934,7 +919,6 @@ public class GUIController {
 
 
     private void updateRoutesDropdowns() {
-        System.out.println("Ahoy");
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
         populateRoutesFilterByStopsList();

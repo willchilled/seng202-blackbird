@@ -165,7 +165,6 @@ public class RoutePopUpController {
                     airline, airlineID, src, srcID, dst, dstID, codeShare, stops, routeIDText.getText());
 
 
-            System.out.println(sql);
 
             routeSrcText.setText(routeSrcTextEdit.getText());
             routeSrcIDText.setText(routeSrcIDTextEdit.getText());

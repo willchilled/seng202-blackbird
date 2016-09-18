@@ -91,7 +91,6 @@ public class Filter {
         for (AirportPoint airport : allPoints) {
             currentCountry = airport.getAirportCountry();
             if (!allCountries.contains(currentCountry)) {
-                //System.out.println(currentCountry);
                 allCountries.add(currentCountry);
             }
 
@@ -107,9 +106,7 @@ public class Filter {
         String currentCountry;
         for (AirlinePoint airline : allPoints) {
             currentCountry = airline.getCountry();
-            //System.out.println(currentCountry);
             if (!allCountries.contains(currentCountry)) {
-                //System.out.println(currentCountry);
                 allCountries.add(currentCountry);
             }
 
@@ -156,13 +153,11 @@ public class Filter {
                 //If there is a search string query
                 sql += " AND " + searchString;
             }
-            System.out.println("Performing Query: " + sql);
             return BBDatabase.performAirportsQuery(sql);
         }else{
             if (query.length() >0) { //If there is a searchString query
                 sql += "WHERE " + searchString;
             }
-            System.out.println("Performing Query: " + sql);
 
             return BBDatabase.performAirportsQuery(sql);
 
@@ -187,7 +182,6 @@ public class Filter {
 
 
         ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
-        //System.out.println(menusPressed.get(1));
         String outputString = "SELECT * FROM AIRLINE ";
 
         boolean allNone = true;
@@ -224,7 +218,6 @@ public class Filter {
         }
         outputString += searchString;
 
-        System.out.println("Perfomring query:"+ outputString);
 
 
         return BBDatabase.performAirlinesQuery(outputString);
@@ -253,7 +246,6 @@ public class Filter {
             }
             sql = removeLastAND(sql);
         }
-        System.out.println(sql);
 
         String search = "";
         if (searchQuery.length() >0){
@@ -313,8 +305,6 @@ public class Filter {
         //ArrayList<String> allPoints = new ArrayList<String>();
         //uniqueSources = Collections.sort(uniqueSources);
         Collections.sort(uniqueSources, String.CASE_INSENSITIVE_ORDER);
-        //System.out.println(uniqueSources);
-        //Hello world
 
         return uniqueSources;
 
@@ -327,8 +317,7 @@ public class Filter {
         //ArrayList<String> allPoints = new ArrayList<String>();
         //uniqueSources = Collections.sort(uniqueSources);
         Collections.sort(uniqueSources, String.CASE_INSENSITIVE_ORDER);
-        //System.out.println(uniqueSources);
-        //Hello world
+
 
         return uniqueSources;
 

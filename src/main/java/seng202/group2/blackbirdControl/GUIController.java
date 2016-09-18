@@ -300,9 +300,9 @@ public class GUIController {
         try {
             BBDatabase.addFlighttoDB(flightPoints);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println("Bad flight data");
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+            //System.err.println("Bad flight data");
         }
 
         airportPoints = Filter.getAllAirportPointsFromDB();
@@ -753,25 +753,10 @@ public class GUIController {
 
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-        boolean allNone = true;
-
-        for (String menuItem: menusPressed){
-            if (!menuItem.equals("None")){
-                allNone = false;
-            }
-        }
-        if (!searchQuery.equals("")){
-            allNone = false;
-
-        }
-        if (!allNone){
-             routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
 
 
-        }
-        else{
-            routePoints = getAllRoutePoints();
-        }
+        routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+
 
         updateRoutesTable(routePoints);
 

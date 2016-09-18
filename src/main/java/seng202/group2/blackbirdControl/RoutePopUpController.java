@@ -54,7 +54,7 @@ public class RoutePopUpController {
 
     @FXML
     public void setUpPopUp(){
-        routeIDText.setText("Route ID: "+String.valueOf(routePoint.getRouteID()));
+        routeIDText.setText(String.valueOf(routePoint.getRouteID()));
         routeStopsText.setText(String.valueOf(routePoint.getStops()));
         routeDestText.setText(routePoint.getDstAirport());
         routeCSText.setText(routePoint.getCodeshare());
@@ -175,6 +175,8 @@ public class RoutePopUpController {
             routeCSText.setText(routeCShareTextEdit.getText());
             routeStopsText.setText(routeStopsTextEdit.getText());
             routeEquipText.setText(routeEquipmentTextEdit.getText());
+
+            System.out.println("Performing query: " + sql);
 
             BBDatabase.editDataEntry(sql);
 

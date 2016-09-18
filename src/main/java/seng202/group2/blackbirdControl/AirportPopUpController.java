@@ -193,6 +193,8 @@ public class AirportPopUpController {
             airportDstText.setText(airportDstTextEdit.getText());
             airportTzText.setText(airportTZTextEdit.getText());
 
+            System.out.println(sql);
+
             BBDatabase.editDataEntry(sql);
 
 

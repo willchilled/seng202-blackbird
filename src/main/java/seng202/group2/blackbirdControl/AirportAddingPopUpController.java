@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -62,11 +63,19 @@ public class AirportAddingPopUpController {
 
     public void createButtonPressed(){
         String line = getValues();
-        String[] airportPoint = line.split(", ");
-        //System.out.println(shit);
+        String[] airportPoint = line.split(", ", -1);
         int count = BBDatabase.getMaxInColumn("AIRPORT", "ID");
         
         AirportPoint myAirportPoint = Parser.checkAirportData(airportPoint, count);
+        System.out.println(myAirportPoint);
+        if (myAirportPoint == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Error in adding data");
+            alert.setContentText("Please check your input fields. See help for more information");
+            alert.showAndWait();
+            return;
+        }
         ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();
         myAirportData.add(myAirportPoint);
         BBDatabase.addAirportPointsToDB(myAirportData);
@@ -92,7 +101,7 @@ public class AirportAddingPopUpController {
         String airportTZ = tzComboBox.getValue().toString().substring(3,9);
         String airportDST = dstCombo.getValue().toString();
         String airportTZOlson = tzOlson.getText().toString();
-        String values = new String();
+        String values = "";
         values += airportID + ", ";
         values += airportName + ", ";
         values += airportCity + ", ";

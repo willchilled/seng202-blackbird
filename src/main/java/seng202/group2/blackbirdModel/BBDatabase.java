@@ -1,5 +1,7 @@
 package seng202.group2.blackbirdModel;
 
+import javafx.scene.control.Alert;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
@@ -107,7 +109,7 @@ public class BBDatabase {
         String sql = "CREATE TABLE AIRPORT " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
-                " CITY           VARCHAR(40)   NOT NULL," +
+                " CITY           VARCHAR(40)," +
                 " COUNTRY        VARCHAR(40)   NOT NULL," +
                 " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                 " ICAO           CHAR(4)," +
@@ -252,6 +254,9 @@ public class BBDatabase {
             stmt = c.createStatement();
 
             for (AirlinePoint airline : airlinePoints) {
+                if (airline == null) {
+                    continue;
+                }
                 addSingleAirline(airline, stmt);
             }
 
@@ -305,20 +310,24 @@ public class BBDatabase {
             stmt = c.createStatement();
 
             for (AirportPoint airport : airportPoints) {
+                if (airport == null) {
+                    continue;
+                }
                 addSingleAirport(airport, stmt);
             }
 
             stmt.close();
             c.commit();
             c.close();
-        } catch (SQLException e) {  //error in database connection
-          //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private static void addSingleAirport(AirportPoint airport, Statement stmt) {
+    public static void addSingleAirport(AirportPoint airport, Statement stmt) {
         int airportID = airport.getAirportID();
         String airportName = airport.getAirportName();
         String City = airport.getAirportCity();
@@ -351,10 +360,10 @@ public class BBDatabase {
         try {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
-            //System.out.println("Poos" + sql);
-          //  System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
+
+
 
     //Route Adding
     public static void addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {

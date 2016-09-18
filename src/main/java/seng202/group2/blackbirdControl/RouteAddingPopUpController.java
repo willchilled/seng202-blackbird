@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -50,27 +51,37 @@ public class RouteAddingPopUpController {
     }
 
     public void createButtonPressed(){
-        String[] routePoint = getValues().split(", ");
+        String[] routePoint = getValues().split(", ", -1);
         String airline = routePoint[0];
         int airlineID = 0;	// 0 if airlineID is null
 
-        if (!routePoint[1].equals("\\N")) {
-            airlineID = Integer.parseInt(routePoint[1]);
+        try {
+
+            if (!routePoint[1].equals("\\N")) {
+                airlineID = Integer.parseInt(routePoint[1]);
+            }
+
+            RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
+            int count = BBDatabase.getMaxInColumn("ROUTE", "IDnum");
+            myRoutePoint = Parser.checkRouteData(routePoint, count);
+
+            myRoutePoint.setRouteID(count);    //set our own routeID
+
+            ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
+            myRouteData.add(myRoutePoint);
+
+            BBDatabase.addRoutePointstoDB(myRouteData);
+            //make so it displays
+
+            adderStage.close();
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Error adding entry database");
+            alert.setContentText("Check your data is valid");
+            alert.showAndWait();
+            return;
         }
-
-        RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
-        int count = BBDatabase.getMaxInColumn("ROUTE", "IDnum");
-        myRoutePoint = Parser.checkRouteData(routePoint, count);
-
-        myRoutePoint.setRouteID(count);	//set our own routeID
-
-        ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
-        myRouteData.add(myRoutePoint);
-
-        BBDatabase.addRoutePointstoDB(myRouteData);
-        //make so it displays
-
-        adderStage.close();
     }
 
     public void cancelButtonPressed(){

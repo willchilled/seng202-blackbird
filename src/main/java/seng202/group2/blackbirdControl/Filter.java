@@ -230,96 +230,7 @@ public class Filter {
         return BBDatabase.performAirlinesQuery(outputString);
     }
 
-//    public static ArrayList<RoutePoint> filterRoutesBySelections2(ArrayList<String> menusPressed, String searchQuery) {
-//        String searchString = String.format("");
-//        String equipmentSelection = menusPressed.get(3);
-//        menusPressed.remove(3);
-//        System.out.println("EQUIP SELECTION" + equipmentSelection);
-//        String equipment;
-//        //Source dest stops equip
-//        ArrayList<String> allSelections = new ArrayList<String>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "Src=\"%s\" AND " ));
-////            "SELECT * from EQUIPMENT, ROUTE\n" +
-////            "WHERE EQUIPMENT.IDnum = ROUTE.IDnum"
-//        String outputString = "SELECT * FROM ROUTE ";
-//
-//        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.IDnum = ROUTE.IDnum AND EQUIPMENT.EquipmentName='CR2'
-//
-//        //SELECT * from EQUIPMENT, ROUTE WHERE EQUIPMENT.EquipmentName='CR2'
-//
-//        ArrayList<RoutePoint> routePoints = new ArrayList<RoutePoint>();
-//        boolean allNone = true;
-//
-//        for (String currentSelection: menusPressed){
-//            if (currentSelection != "None"){
-//                allNone = false;
-//            }
-//        }
-//
-//        if (!allNone){
-//            outputString += "WHERE ";
-//            for (int i=0; i<menusPressed.size(); i++){
-//                String currentSelection = menusPressed.get(i);
-//                if(currentSelection != "None"){
-//                    outputString += String.format(allSelections.get(i), currentSelection);
-//                }
-//            }
-//
-//        }
-//        //If there are no filters selected, we must begin the statement with WHERE before beginning the search query
-//        //statement. However if there are filters selected, we must continue the statement with AND before appending
-//        // the search query statement.
-//        outputString = removeLastAND(outputString);
-//        if (searchQuery.length() >0){
-//            if(allNone){
-//                outputString += " WHERE ";
-//            }
-//            else{
-//                outputString += " AND ";
-//            }
-//        }
-//
-//        System.out.println("\n\n");
-//        System.out.println(outputString);
-//        System.out.println("\n\n");
-//        outputString = removeLastAND(outputString);
-//
-//
-//
-//        System.out.println("\n\n");
-//        System.out.println(outputString);
-//        System.out.println("\n\n");
-//
-//
-//
-//        System.out.println("Perfomring query:"+ outputString);
-//        routePoints = BBDatabase.performRoutesQuery(outputString);
-//
-//        ArrayList<RoutePoint> routePointsCP = new ArrayList<RoutePoint>();
-//        ArrayList<String> equipArray = new ArrayList<>();
-//
-//        for (RoutePoint currentPoint: routePoints){
-//            equipArray = getEquipInfoFromDB(currentPoint);
-//            equipment = joinEquipArray(equipArray);
-//            currentPoint.setEquipment(equipment);
-//            if (equipmentSelection == "None"){
-//                routePointsCP.add(currentPoint);
-//            }
-//            else{
-//                System.out.println("Equip:" + equipment + "SELECTION:" + equipmentSelection + "ARRAY" + equipArray);
-//                for (String currentEquipment: equipArray){
-//
-//                    if (currentEquipment.equals(equipmentSelection)){
-//                        System.out.println("ADDING" + equipment);
-//                        routePointsCP.add(currentPoint);
-//                    }
-//
-//                }
-//
-//            }
-//
-//        }
-//        return routePointsCP;
-//    }
+
 
     public static ArrayList<RoutePoint> filterRoutesBySelections(ArrayList<String> menusPressed, String searchQuery) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
@@ -337,10 +248,12 @@ public class Filter {
                 String currentSelection = menusPressed.get(i);
                 if(currentSelection != "None"){
                     sql += String.format(allSelections.get(i), currentSelection);
+                    //sql.replaceAll("%%%%", "");
                 }
             }
             sql = removeLastAND(sql);
         }
+        System.out.println(sql);
 
         String search = "";
         if (searchQuery.length() >0){

@@ -2,6 +2,7 @@ package seng202.group2.blackbirdControl;
 
 import seng202.group2.blackbirdModel.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,29 +50,34 @@ public class FilterRefactor {
 
 
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
-        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"% %s%)\" AND " ));
+        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
 
-        //String sql = "SELECT * FROM ROUTE WHERE SRC=? AND DST=? AND STOP=? AND EQUIPMENT=?;";
-       // System.out.print(allSelections);
-//        String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
         String sql = "SELECT * FROM ROUTE ";
-        sql = generateQueryString(sql, menusPressed, allSelections);
-        //String sql = "";
-        //System.out.println(sql);
+        boolean allNone = checkEmptyMenus(menusPressed);
+        //System.out.println(allNone + "-----------------------");
+        if (!allNone){
+            sql = generateQueryString(sql, menusPressed, allSelections);
+        }
+
+        sql = removeLastAND(sql);
+
         String search = "";
         if (searchString.length() >0){
             String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
                     + "OR ROUTE.Src=\"%1$s\" OR ROUTE.SrcID=\"%1$s\" OR ROUTE.Dst=\"%1$s\" OR ROUTE.Dstid=\"%1$s\""
-                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT.EquipmentName=\"%1$s\" );";
+                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
             search = String.format(searchStatement, searchString);
-            sql += searchString;
-        } else {
-            sql = removeLastAND(sql);
+            if(allNone){
+                sql += " WHERE ";
+            }
+            else{
+                sql += " AND ";
+            }
         }
 
-        System.out.println(sql);
 
-        //routePoints = BBDatabase.performJoinRoutesEquipQuery(sql);    //DB METHOD HERE
+        sql += search;
+
         return sql;
     }
 
@@ -110,6 +116,7 @@ public class FilterRefactor {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("COUNTRY=\"%s\" AND ", "ACTIVE=\"%s\" AND "));
 
         boolean allNone = checkEmptyMenus(menusPressed);
+        //System.out.println(allNone + "-----------------------");
         if (!allNone){
             sql = generateQueryString(sql, menusPressed, allSelections);
         }
@@ -128,7 +135,11 @@ public class FilterRefactor {
             }
         }
 
+
         sql += search;
+        //sql = removeLastWHERE(sql);
+        System.out.println(sql);
+        //sql = sql.replaceAll()
        // System.out.println("Performing query:"+ sql);
         //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
         //System.out.println("SIZE: " + allPoints.size());
@@ -199,6 +210,20 @@ public class FilterRefactor {
         String substring = outputString.substring(outputString.length()-4, outputString.length()-1);
         if (substring.equals("AND")){
             outputString = outputString.substring(0, outputString.length()-4);
+        }
+
+        return outputString;
+
+    }
+
+    private static String removeLastWHERE(String outputString) {
+
+        //System.out.println("FUCK William ");
+        System.out.println(outputString.substring(outputString.length()-6, outputString.length()-1));
+        String substring = outputString.substring(outputString.length()-6, outputString.length()-1);
+        if (substring.equals("WHERE")){
+           // System.out.println("FUCK");
+            outputString = outputString.substring(0, outputString.length()-6);
         }
 
         return outputString;

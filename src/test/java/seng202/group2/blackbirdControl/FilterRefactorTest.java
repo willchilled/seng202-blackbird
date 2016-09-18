@@ -124,8 +124,21 @@ public class FilterRefactorTest extends TestCase {
     public void testRouteFilterSelections() throws  Exception{
         String search = "";
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "None"));
-        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "Poos", "RoutePoint");
-        //assertEquals(dataPoints.size(), 5);
+        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "RoutePoint");
+        assertEquals(dataPoints.size(), 98);
+
+
+        selectedFields = new ArrayList<>(Arrays.asList("AER", "None", "None", "None"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "", "RoutePoint");
+        assertEquals(dataPoints.size(), 1);
+
+        selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "CR2"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "", "RoutePoint");
+        assertEquals(dataPoints.size(), 40);
+
+        selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "CR2"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "EGO", "RoutePoint");
+        assertEquals(dataPoints.size(), 4);
     }
 
 }

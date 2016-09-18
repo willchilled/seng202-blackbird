@@ -248,7 +248,6 @@ public class Parser {
     //-----------------------------AIRPORTS------------------------------//
 
     public static AirportPoint checkAirportData(String[] airportPoint, int count) {
-        System.out.println(Arrays.toString(airportPoint));
         AirportPoint myAirportPoint = new AirportPoint(0, "");
         try {
             myAirportPoint.setAirportID(Integer.parseInt(airportPoint[0].trim()));    //should not be null

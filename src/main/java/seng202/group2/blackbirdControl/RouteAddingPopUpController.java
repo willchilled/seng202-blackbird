@@ -3,6 +3,7 @@ package seng202.group2.blackbirdControl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +16,7 @@ import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.Parser;
 import seng202.group2.blackbirdModel.RoutePoint;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -40,13 +42,21 @@ public class RouteAddingPopUpController {
         adderStage.initModality(Modality.NONE);
         adderStage.initOwner(null);
 
-        airports = populateAirports();
-        srcComboBox.setItems(airports);
-        srcComboBox.setValue(airports.get(0));
-        dstComboBox.setItems(airports);
-        dstComboBox.setValue(airports.get(0));
-        adderStage.show();
+        try {
+            airports = populateAirports();
+            srcComboBox.setItems(airports);
+            srcComboBox.setValue(airports.get(0));
+            dstComboBox.setItems(airports);
+            dstComboBox.setValue(airports.get(0));
+            adderStage.show();
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("Cannot add routes without airports");
+            alert.setContentText("You must add airport data before route data");
+            alert.showAndWait();
 
+        }
 
     }
 

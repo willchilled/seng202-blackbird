@@ -300,9 +300,9 @@ public class GUIController {
         try {
             BBDatabase.addFlighttoDB(flightPoints);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println("Bad flight data");
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+            //System.err.println("Bad flight data");
         }
 
         airportPoints = Filter.getAllAirportPointsFromDB();

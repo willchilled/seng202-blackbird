@@ -32,12 +32,12 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.rowIndex="6" />
             <TextField fx:id="AirlineIATA" promptText="eg AA" GridPane.columnIndex="1" />
             <TextField fx:id="AirlineID" promptText="eg 24" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <ComboBox fx:id="srcComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="dstComboBox1" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
+            <ComboBox fx:id="srcComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="dstComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="Stops" promptText="eg 0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="Equipment" promptText="eg 737" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="4" />

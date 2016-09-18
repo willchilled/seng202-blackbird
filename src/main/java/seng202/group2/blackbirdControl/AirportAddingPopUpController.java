@@ -142,8 +142,6 @@ public class AirportAddingPopUpController {
         dLights.add("U");
         daylights = FXCollections.observableArrayList(dLights);
         return daylights;
-
-
     }
 
     public void setAdderStage(Stage adderStage) {

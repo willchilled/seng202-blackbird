@@ -205,22 +205,21 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                                  <columns>
-                                    <TableColumn fx:id="routeAirlineCol" prefWidth="75.0" text="Airline" />
+                                     <TableColumn fx:id="routeAirlineCol" prefWidth="75.0" text="Airline" visible="false" />
                                     <TableColumn fx:id="routeAirlineIDCol" prefWidth="75.0" text="Airline ID" visible="false" />
                                     <TableColumn fx:id="routeSrcCol" prefWidth="75.0" text="Source" />
+                                     <TableColumn fx:id="routeSrcNameCol" prefWidth="75.0" text="Source Airport" />
+                                     <TableColumn fx:id="routeSrcCountryCol" prefWidth="75.0" text="Source Country" />
+                                     <TableColumn fx:id="routeDestCol" prefWidth="75.0" text="Dest" />
+                                     <TableColumn fx:id="routeDstNameCol" prefWidth="75.0" text="Destination Airport " />
+                                     <TableColumn fx:id="routeDstCountryCol" prefWidth="75.0" text="Destination country" />
                                     <TableColumn fx:id="routeSrcIDCol" prefWidth="75.0" text="Source ID" visible="false" />
-                                    <TableColumn fx:id="routeDestCol" prefWidth="75.0" text="Dest" />
                                     <TableColumn fx:id="routeDestIDCol" prefWidth="75.0" text="Dest ID" visible="false" />
                                     <TableColumn fx:id="routeCSCol" prefWidth="75.0" text="Codeshare" visible="false" />
                                     <TableColumn fx:id="routeStopsCol" prefWidth="75.0" text="Stops" />
                                     <TableColumn fx:id="routeEqCol" prefWidth="75.0" text="Equipment" />
                                      <TableColumn fx:id="routeErrorCol" prefWidth="75.0" text="Error" visible="false" />
-                                    <TableColumn fx:id="routeSrcCountryCol" prefWidth="75.0" text="Source Country" />
-                                    <TableColumn fx:id="routeDstCountryCol" prefWidth="75.0" text="Destination country" />
-                                    <TableColumn fx:id="routeSrcNameCol" prefWidth="75.0" text="Source Airport Name" />
-                                    <TableColumn fx:id="routeDstNameCol" prefWidth="75.0" text="Dst Airport Name" />
-      
-                                       </columns>
+                               </columns>
                               </TableView>
                               <GridPane hgap="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <columnConstraints>

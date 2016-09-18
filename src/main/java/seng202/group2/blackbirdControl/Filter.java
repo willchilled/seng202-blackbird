@@ -298,7 +298,8 @@ public class Filter {
         if (searchQuery.length() >0){
             String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
                     + "OR ROUTE.Src=\"%1$s\" OR ROUTE.SrcID=\"%1$s\" OR ROUTE.Dst=\"%1$s\" OR ROUTE.Dstid=\"%1$s\""
-                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
+                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" or ROUTE.srcAirportName=\"%1$s\" OR Route.dstAirportName=\"%1$s\""
+                    + " OR ROUTE.srcAirportCountry=\"%1$s\"  OR ROUTE.dstAirportCountry=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
             search = String.format(searchStatement, searchQuery);
             if(allNone){
                 sql += " WHERE ";
@@ -310,6 +311,7 @@ public class Filter {
 
 
         sql += search;
+        //System.out.println(sql);
         ArrayList<RoutePoint> routePoints = BBDatabase.performRoutesQuery(sql);
 
         return routePoints;

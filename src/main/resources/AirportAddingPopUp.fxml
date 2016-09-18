@@ -29,15 +29,15 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Airport ID" GridPane.rowIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="City" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="*Name" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="*Airport ID" GridPane.rowIndex="1" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="*City" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IATA/FF" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ICAO" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Longitude" GridPane.rowIndex="7" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Altitude" GridPane.rowIndex="8" />
-            <TextField fx:id="Name" promptText="eg Aickland Intl" GridPane.columnIndex="1" />
+            <TextField fx:id="Name" promptText="eg Auckland Intl" GridPane.columnIndex="1" />
             <TextField fx:id="ID" promptText="eg 2006" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
@@ -54,7 +54,6 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone" GridPane.rowIndex="9" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daylight Saving Time" GridPane.rowIndex="10" />
             <ComboBox fx:id="tzComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <TextField fx:id="DST" promptText="eg Z" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
                <children>
                   <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
@@ -70,6 +69,7 @@
             </GridPane>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone(Olson Format)" GridPane.rowIndex="11" />
             <TextField fx:id="tzOlson" promptText="eg Pacific/Auckland" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <ComboBox fx:id="dstCombo" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="10" />
          </children>
          <BorderPane.margin>
             <Insets />

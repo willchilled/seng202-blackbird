@@ -3,6 +3,7 @@ package seng202.group2.blackbirdControl;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 /**
  * Created by sbe67 on 15/09/16.
  */
+
+
 public class AirlineAddingPopUpController {
 
     @FXML
@@ -34,6 +37,7 @@ public class AirlineAddingPopUpController {
     private TextField Country;
     @FXML
     private CheckBox Active;
+
     private Stage adderStage;
     private Parent root;
 
@@ -48,15 +52,27 @@ public class AirlineAddingPopUpController {
 
     public void createButtonPressed() {
 
-        String[] airlinePoint = getValues().split(", ");
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Error in adding data");
+        alert.setContentText("Please check your input fields.");
+
+        String[] airlinePoint = getValues().split(", ", -1);
         int count = BBDatabase.getMaxInColumn("AIRLINE", "ID");
-        ArrayList<AirlinePoint> myAirlineData = new ArrayList<AirlinePoint>();
+        ArrayList<AirlinePoint> myAirlineData = new ArrayList<>();
         AirlinePoint myAirlinePoint = Parser.checkAirlineData(airlinePoint, count);
+        if (myAirlinePoint == null) {
+            alert.showAndWait();
+            return;
+        }
         myAirlineData.add(myAirlinePoint);
 
-        BBDatabase.addAirlinePointstoDB(myAirlineData);
-
-        adderStage.close();
+        boolean added = BBDatabase.addAirlinePointstoDB(myAirlineData);
+        if (!added) {
+            alert.showAndWait();
+        } else {
+            adderStage.close();
+        }
     }
 
     public void cancleButtonPressed() {

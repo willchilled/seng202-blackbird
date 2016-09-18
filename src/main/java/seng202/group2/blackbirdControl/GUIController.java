@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,18 +19,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdView.*;
 import seng202.group2.blackbirdModel.*;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.ResourceBundle;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -140,7 +135,7 @@ public class GUIController {
     @FXML private TableColumn flightSourceCol;
     @FXML private TableColumn flightDestCol;
     // Filter Menu testing
-    @FXML private ComboBox airportFilterMenu;
+    @FXML private ComboBox airportFilterByCountryMenu;
     @FXML private TextField airportSearchQuery;
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
@@ -201,8 +196,8 @@ public class GUIController {
 //        BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
 //        addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
 
-        airportFilterMenu.setValue(airPortCountryList.get(0));
-        airportFilterMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
+        airportFilterByCountryMenu.setItems(airPortCountryList);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         airlineFilterMenu.setItems(airlineCountryList);
         airlineActiveMenu.setItems(airlineActiveList);
@@ -315,8 +310,8 @@ public class GUIController {
 
         updateAirportsTable(airportPoints);
         airPortCountryList = populateAirportCountryList();
-        airportFilterMenu.setItems(airPortCountryList);
-        airportFilterMenu.setValue(airPortCountryList.get(0));
+        airportFilterByCountryMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
 
         airlinePoints = Filter.getAllAirlinePointsfromDB();
 
@@ -357,8 +352,8 @@ public class GUIController {
         updateAirportsTable(validairportPoints);
 
         airPortCountryList = populateAirportCountryList();  //populating from valid data in database
-        airportFilterMenu.setItems(airPortCountryList);
-        airportFilterMenu.setValue(airPortCountryList.get(0));
+        airportFilterByCountryMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
 
         exportAirportMenuButton.setDisable(false);
 
@@ -692,7 +687,7 @@ public class GUIController {
     public void AirportFilterButtonPressed(){
 
         //NEED TO ADD CASE FOR NONE SELECTED
-        String countrySelection = airportFilterMenu.getValue().toString();
+        String countrySelection = airportFilterByCountryMenu.getValue().toString();
         String searchQuery = airportSearchQuery.getText();
 
 
@@ -803,8 +798,8 @@ public class GUIController {
 //        alert.showAndWait();
 
 
-        airportFilterMenu.setItems(airPortCountryList);
-        airportFilterMenu.setValue(airPortCountryList.get(0));
+        airportFilterByCountryMenu.setItems(airPortCountryList);
+        airportFilterByCountryMenu.setValue(airPortCountryList.get(0));
         ArrayList<AirportPoint> allPoints = Filter.getAllAirportPointsFromDB(); //airportTable.getItems();
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
         updateAirportsTable(allPoints);

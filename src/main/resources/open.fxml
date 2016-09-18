@@ -275,7 +275,7 @@
                                                    </rowConstraints>
                                                    <children>
                                                       <Text layoutX="166.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keyword" GridPane.columnIndex="1" />
-                                                      <ComboBox fx:id="airportFilterMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                                      <ComboBox fx:id="airportFilterByCountryMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                        <TextField fx:id="airportSearchQuery" layoutX="165.39999961853027" layoutY="23.399999618530273" promptText="Search..." GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                       <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
                                                       <Button fx:id="filterButton1" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" prefHeight="25.0" prefWidth="82.0" text="Filter" GridPane.columnIndex="3" GridPane.rowIndex="1" />

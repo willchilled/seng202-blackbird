@@ -122,10 +122,6 @@ public class Filter {
         return BBDatabase.performAirlinesQuery(sql);
     }
 
-//    public static ArrayList<FlightPoint> getallFlightPoints() {
-//        String sql = " SELECT * FROM FLIGHT;";
-//        return BBDatabase.performFlightsQuery(sql);
-//    }
 
     public static ArrayList<AirportPoint> getAllAirportPointsFromDB() {
         String sql = "SELECT * FROM AIRPORT;";

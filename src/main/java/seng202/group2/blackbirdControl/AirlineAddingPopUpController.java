@@ -20,8 +20,7 @@ import java.util.ArrayList;
 
 public class AirlineAddingPopUpController {
 
-<<<<<<< Updated upstream
-    @FXML
+   @FXML
     private TextField Name;
     @FXML
     private TextField ID;
@@ -37,17 +36,7 @@ public class AirlineAddingPopUpController {
     private TextField Country;
     @FXML
     private CheckBox Active;
-=======
 
-    @FXML private TextField Name;
-    @FXML private TextField ID;
-    @FXML private TextField Alias;
-    @FXML private TextField IATA;
-    @FXML private TextField ICAO;
-    @FXML private TextField Callsign;
-    @FXML private TextField Country;
-    @FXML private CheckBox Active;
->>>>>>> Stashed changes
     private Stage adderStage;
     private Parent root;
 
@@ -60,12 +49,7 @@ public class AirlineAddingPopUpController {
         adderStage.show();
     }
 
-<<<<<<< Updated upstream
     public void createButtonPressed() {
-
-=======
-    public void createButtonPressed(){;
->>>>>>> Stashed changes
         String[] airlinePoint = getValues().split(", ");
         int count = BBDatabase.getMaxInColumn("AIRLINE", "ID");
         ArrayList<AirlinePoint> myAirlineData = new ArrayList<AirlinePoint>();
@@ -100,19 +84,11 @@ public class AirlineAddingPopUpController {
         values += airlineICAO + ", ";
         values += airlineCallsign + ", ";
         values += airlineCountry + ", ";
-<<<<<<< Updated upstream
         if (ActiveChecked) {
             String airlineActive = "Y";
             values += airlineActive;
         } else {
             String airlineActive = "N";
-=======
-        if (ActiveChecked){
-            char airlineActive = 'Y';
-            values += airlineActive;
-        }else{
-            char airlineActive = 'N';
->>>>>>> Stashed changes
             values += airlineActive;
         }
         return values;

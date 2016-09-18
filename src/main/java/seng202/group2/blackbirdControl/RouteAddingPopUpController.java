@@ -21,9 +21,7 @@ public class RouteAddingPopUpController {
     @FXML private TextField AirlineIATA;
     @FXML private TextField AirlineID;
     @FXML private TextField Src;
-    @FXML private TextField SrcID;
     @FXML private TextField Dst;
-    @FXML private TextField DstID;
     @FXML private CheckBox Codeshare;
     @FXML private TextField Stops;
     @FXML private TextField Equipment;
@@ -39,64 +37,64 @@ public class RouteAddingPopUpController {
         adderStage.show();
     }
 
-    public void createButtonPressed(){
-        String[] routePoint = getValues().split(", ");
-        String airline = routePoint[0];
-        int airlineID = 0;	// 0 if airlineID is null
+//    public void createButtonPressed(){
+////        String[] routePoint = getValues().split(", ");
+//        String airline = routePoint[0];
+//        int airlineID = 0;	// 0 if airlineID is null
+//
+//        if (!routePoint[1].equals("\\N")) {
+//            airlineID = Integer.parseInt(routePoint[1]);
+//        }
+//
+//        RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
+//        int count = BBDatabase.getMaxInColumn("ROUTE", "IDnum");
+//        myRoutePoint = Parser.checkRouteData(routePoint, count);
+//
+//        myRoutePoint.setRouteID(count);	//set our own routeID
+//
+//        ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
+//        myRouteData.add(myRoutePoint);
+//
+//        BBDatabase.addRoutePointstoDB(myRouteData);
+//        //make so it displays
+//
+//        adderStage.close();
+//    }
+//
+//    public void cancelButtonPressed(){
+//        //just closes the stage
+//        adderStage.close();
+//    }
 
-        if (!routePoint[1].equals("\\N")) {
-            airlineID = Integer.parseInt(routePoint[1]);
-        }
-
-        RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
-        int count = BBDatabase.getMaxInColumn("ROUTE", "IDnum");
-        myRoutePoint = Parser.checkRouteData(routePoint, count);
-
-        myRoutePoint.setRouteID(count);	//set our own routeID
-
-        ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
-        myRouteData.add(myRoutePoint);
-
-        BBDatabase.addRoutePointstoDB(myRouteData);
-        //make so it displays
-
-        adderStage.close();
-    }
-
-    public void cancelButtonPressed(){
-        //just closes the stage
-        adderStage.close();
-    }
-
-    private String getValues() {
-        String routeAirlineIATA = AirlineIATA.getText().toString();
-        String routeAirlineID = AirlineID.getText().toString();
-        String routeSrc = Src.getText().toString();
-        String routeSrcID = SrcID.getText().toString();
-        String routeDst = Dst.getText().toString();
-        String routeDstID = DstID.getText().toString();
-        boolean codesharChecked = Codeshare.isSelected();
-        String routeStops = Stops.getText().toString();
-        String routeEquipment = Equipment.getText().toString();
-        String values = new String();
-        values += routeAirlineIATA;
-        values += ", " + routeAirlineID;
-        values += ", " + routeSrc;
-        values += ", " + routeSrcID;
-        values += ", " + routeDst;
-        values += ", " + routeDstID;
-        if (codesharChecked){
-            String routeCodeshare = "Y";
-            values += ", " + routeCodeshare;
-        }else{
-            String routeCodeshare = "";
-            values += ", " + routeCodeshare;
-        }
-        values += ", " + routeStops;
-        values += ", " + routeEquipment;
-
-        return values;
-    }
+//    private String getValues() {
+////        String routeAirlineIATA = AirlineIATA.getText().toString();
+////        String routeAirlineID = AirlineID.getText().toString();
+////        String routeSrc = Src.getText().toString();
+////        String routeSrcID = SrcID.getText().toString();
+////        String routeDst = Dst.getText().toString();
+////        String routeDstID = DstID.getText().toString();
+////        boolean codesharChecked = Codeshare.isSelected();
+////        String routeStops = Stops.getText().toString();
+////        String routeEquipment = Equipment.getText().toString();
+////        String values = new String();
+////        values += routeAirlineIATA;
+////        values += ", " + routeAirlineID;
+////        values += ", " + routeSrc;
+////        values += ", " + routeSrcID;
+////        values += ", " + routeDst;
+////        values += ", " + routeDstID;
+////        if (codesharChecked){
+////            String routeCodeshare = "Y";
+////            values += ", " + routeCodeshare;
+////        }else{
+////            String routeCodeshare = "";
+////            values += ", " + routeCodeshare;
+////        }
+////        values += ", " + routeStops;
+////        values += ", " + routeEquipment;
+////
+////        return values;
+//    }
 
     public void setAdderStage(Stage adderStage) {
         this.adderStage = adderStage;

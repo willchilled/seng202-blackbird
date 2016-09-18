@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.RouteAddingPopUpController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.RouteAddingPopUpController">
    <top>
       <GridPane hgap="10.0" prefHeight="452.0" prefWidth="370.0" vgap="10.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -22,33 +22,27 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Airline IATA" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Airline ID" GridPane.rowIndex="1" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Source Airport" GridPane.rowIndex="2" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Source Airport ID" GridPane.rowIndex="3" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Desitnation Airport" GridPane.rowIndex="4" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination Airport ID" GridPane.rowIndex="5" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.rowIndex="7" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.rowIndex="8" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Desitnation Airport" GridPane.rowIndex="3" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.rowIndex="5" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.rowIndex="6" />
             <TextField fx:id="AirlineIATA" promptText="eg AA" GridPane.columnIndex="1" />
             <TextField fx:id="AirlineID" promptText="eg 24" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ComboBox fx:id="srcComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="dstComboBox1" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="Src" promptText="eg CHC" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="SrcID" promptText="eg 2009" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="Dst" promptText="eg SYD" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="DstID" promptText="eg 3361" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="Stops" promptText="eg 0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="Equipment" promptText="eg 737" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="6" />
-            <CheckBox fx:id="Codeshare" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
+            <TextField fx:id="Stops" promptText="eg 0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="Equipment" promptText="eg 737" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="4" />
+            <CheckBox fx:id="Codeshare" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
                   <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
                   <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />

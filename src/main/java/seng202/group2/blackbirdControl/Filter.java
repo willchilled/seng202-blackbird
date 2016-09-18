@@ -142,7 +142,6 @@ public class Filter {
 
     public static ArrayList<AirportPoint> filterAirportsBySelections(String countrySelection, String query) {
         //Filters aiports by country and string query
-        ArrayList<AirportPoint> allPoints;
         String searchString = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
                 " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR LONGITUDE='%1$s' OR ALTITUDE='%1$s'" +
                 " OR TIMEZONE='%1$s' OR DST='%1$s' OR TZ='%1$s');", query);
@@ -157,17 +156,17 @@ public class Filter {
                 //If there is a search string query
                 sql += " AND " + searchString;
             }
-            allPoints = BBDatabase.performAirportsQuery(sql);
+            System.out.println("Performing Query: " + sql);
+            return BBDatabase.performAirportsQuery(sql);
         }else{
             if (query.length() >0) { //If there is a searchString query
                 sql += "WHERE " + searchString;
             }
+            System.out.println("Performing Query: " + sql);
 
-            allPoints = BBDatabase.performAirportsQuery(sql);
+            return BBDatabase.performAirportsQuery(sql);
 
         }
-
-        return allPoints;
     }
 
 

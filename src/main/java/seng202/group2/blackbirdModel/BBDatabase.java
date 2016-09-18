@@ -545,7 +545,9 @@ public class BBDatabase {
                 String tz = rs.getString("TZ");
                 // System.out.println(airportName);
 
+                System.out.println("foo");
                 AirportPoint myPoint = new AirportPoint(airportID, airportName);
+                System.out.println("bar");
                 myPoint.setAirportCity(City);
                 myPoint.setAirportCountry(Country);
                 myPoint.setIata(Iata);

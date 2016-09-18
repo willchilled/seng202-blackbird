@@ -830,7 +830,9 @@ public class GUIController {
 
         //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterByCountryMenu.getValue().toString();
+        System.out.println(countrySelection);
         String searchQuery = airportSearchQuery.getText();
+
 
 
         ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
@@ -901,13 +903,16 @@ public class GUIController {
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
         String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
-        ArrayList<RoutePoint> routePoints = new ArrayList<>();
+        ArrayList<RoutePoint> routePoints;
 
-
-        ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-
-
-        routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+        if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
+            routePoints = Filter.getAllRoutePointsFromDB();
+            updateRoutesTable(routePoints);
+        }
+        else{
+            ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
+            routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+        }
 
 
         updateRoutesTable(routePoints);

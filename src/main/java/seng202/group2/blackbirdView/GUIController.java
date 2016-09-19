@@ -2,6 +2,7 @@ package seng202.group2.blackbirdView;
 
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,6 +22,7 @@ import seng202.group2.blackbirdControl.*;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -67,7 +69,7 @@ public class GUIController {
     private javafx.scene.control.MenuItem newProjMenu;
     @FXML
     private MenuItem addDataMenuButton;
-    @FXML private TableView<AirportPoint> airportTable;
+    @FXML private TableView<DataPoint> airportTable;
     @FXML private TableView<DataPoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
     @FXML private TableView<Flight> flightTable;
@@ -321,19 +323,85 @@ public class GUIController {
         System.out.println("Add Airport Data");
         File f;
         f = getFile();
-        ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
-        BBDatabase.addAirportPointsToDB(allairportPoints);
-        ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
+//        ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
+//        BBDatabase.addAirportPointsToDB(allairportPoints);
+//        ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
+//
+//        setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
+//        updateAirportsTable(validairportPoints);
+//
+//        airPortCountryList = populateAirportCountryList();  //populating from valid data in database
+//        airportFilterMenu.setItems(airPortCountryList);
+//        airportFilterMenu.setValue(airPortCountryList.get(0));
 
-        setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
-        updateAirportsTable(validairportPoints);
-
-        airPortCountryList = populateAirportCountryList();  //populating from valid data in database
-        airportFilterMenu.setItems(airPortCountryList);
-        airportFilterMenu.setValue(airPortCountryList.get(0));
-
+        /* Refactored version */
+        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, "AirportPoint");
+        DataBaseRefactor.insertDataPoints(myAirportPoints);
+        ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints("AirportPoint");
+        updateRefactoredAirportsTable(validAirportPoints);
 
 
+
+
+    }
+
+    private void updateRefactoredAirportsTable(ArrayList<DataPoint> validAirportPoints) {
+
+        airportTable.getItems().setAll(validAirportPoints);
+
+
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("tz"));
+
+        airportTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            //This refreshes the current table
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+                airportTable.getColumns().get(0).setVisible(false);
+                airportTable.getColumns().get(0).setVisible(true);
+            }
+        });
+
+
+//        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event){
+//                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+//                    Stage stage;
+//                    Parent root;
+//                    stage = new Stage();
+//                    try {
+//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
+//                        root = loader.load();
+//                        AirportPopUpController popUpController = loader.getController();
+//                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
+//                        popUpController.setUpPopUp();
+//
+//                        stage.setScene(new Scene(root));
+//                        stage.setTitle("My Popup test");
+//                        stage.initModality(Modality.NONE);
+//                        stage.initOwner(null);
+//
+//                        stage.show();
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        //System.out.println("AH NO!");
+//                    }
+//
+//                }
+//            }
+//        });
     }
 
     public void addAirlineData(){
@@ -494,7 +562,14 @@ public class GUIController {
         airlineCountryCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("country"));
         airlineActCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("active"));
 
-
+        airlineTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            //This refreshes the current table
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+                airlineTable.getColumns().get(0).setVisible(false);
+                airlineTable.getColumns().get(0).setVisible(true);
+            }
+        });
 
         airlineTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -600,35 +675,35 @@ public class GUIController {
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
 
 
-        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event){
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    Stage stage;
-                    Parent root;
-                    stage = new Stage();
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
-                        root = loader.load();
-                        AirportPopUpController popUpController = loader.getController();
-                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
-                        popUpController.setUpPopUp();
-
-                        stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
-                        stage.initModality(Modality.NONE);
-                        stage.initOwner(null);
-
-                        stage.show();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        //System.out.println("AH NO!");
-                    }
-
-                }
-            }
-        });
+//        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event){
+//                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+//                    Stage stage;
+//                    Parent root;
+//                    stage = new Stage();
+//                    try {
+//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
+//                        root = loader.load();
+//                        AirportPopUpController popUpController = loader.getController();
+//                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
+//                        popUpController.setUpPopUp();
+//
+//                        stage.setScene(new Scene(root));
+//                        stage.setTitle("My Popup test");
+//                        stage.initModality(Modality.NONE);
+//                        stage.initOwner(null);
+//
+//                        stage.show();
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        //System.out.println("AH NO!");
+//                    }
+//
+//                }
+//            }
+//        });
 
 
     }
@@ -686,8 +761,12 @@ public class GUIController {
         System.out.println(searchQuery);
 
 
-        ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
-        updateAirportsTable(filteredPoints);
+//        ArrayList<AirportPoint> filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
+//        updateAirportsTable(filteredPoints);
+
+        ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(countrySelection));
+        ArrayList<DataPoint> myFilteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirportPoint");
+        updateRefactoredAirportsTable(myFilteredPoints);
 
 
         //ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
@@ -787,9 +866,9 @@ public class GUIController {
 
 
 
-        ArrayList<AirportPoint> allPoints = getAllAirportPoints(); //airportTable.getItems();
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("AirportPoint"); //airportTable.getItems();
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
-        updateAirportsTable(allPoints);
+        updateRefactoredAirportsTable(allPoints);
 
 
     }

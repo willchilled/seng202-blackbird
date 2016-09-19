@@ -40,7 +40,7 @@ public class DataPoint {
      * @return A DataPoint with a specificType
      */
     public static DataPoint createDataPointFromStringArray(String[] dataArray, String type) {
-
+        //System.out.println(dataArray.toString());
         /*
         This creates a dataPoint from a string array and sets the type
          */

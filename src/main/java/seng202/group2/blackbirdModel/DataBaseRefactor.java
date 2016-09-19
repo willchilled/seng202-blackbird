@@ -64,7 +64,8 @@ public class DataBaseRefactor {
             flightPointCount=0;
             for (DataPoint currentPoint : myPoints) {
                 //addSingleAirline(airline, stmt);
-                //System.out.println(currentPoint.getType());
+//                System.out.println(currentPoint.getType());
+//                System.out.println(myPoints.toString());
 
                 String dataType = currentPoint.getType();
                 //DataTypes dataType = currentPoint.getType();
@@ -246,6 +247,7 @@ public class DataBaseRefactor {
         String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, LONGITUDE, ALTITUDE, TIMEZONE, DST, TZ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
+
             preparedStatement = currentConnection.prepareStatement(sql);
             //System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setInt(1, airportID);

@@ -636,6 +636,7 @@ public class GUIController {
                         AirlinePopUpController popUpController = loader.getController();
                         popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -684,6 +685,7 @@ public class GUIController {
                         RoutePopUpController popUpController = loader.getController();
                         popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -734,6 +736,7 @@ public class GUIController {
                         RoutePopUpController popUpController = loader.getController();
                         popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -789,6 +792,7 @@ public class GUIController {
                         AirportPopUpController popUpController = loader.getController();
                         popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -842,6 +846,7 @@ public class GUIController {
                         AirportPopUpController popUpController = loader.getController();
                         popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -927,6 +932,12 @@ public class GUIController {
         String activeSelection = airlineActiveMenu.getValue().toString();
         String searchQuery = airlineSearchQuery.getText().toString();
         ArrayList<AirlinePoint> allPoints;
+        if (activeSelection =="Active"){
+            activeSelection = "Y";
+        }
+        else if (activeSelection == "Inactive"){
+            activeSelection = "N";
+        }
 
         if(countrySelection.equals("No values Loaded") && activeSelection.equals("No values Loaded")){
             allPoints = Filter.getAllAirlinePointsfromDB();
@@ -940,12 +951,7 @@ public class GUIController {
 
 
 
-        if (activeSelection =="Active"){
-            activeSelection = "Y";
-        }
-        else if (activeSelection == "Inactive"){
-            activeSelection = "N";
-        }
+
 
 
         //allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);
@@ -1029,7 +1035,6 @@ public class GUIController {
 //        private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
 
         //);
-        //System.out.println("FUCK ME");
         //System.out.println(uniqueCountries);
 
 

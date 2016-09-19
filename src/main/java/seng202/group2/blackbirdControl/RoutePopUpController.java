@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.RoutePoint;
@@ -23,7 +24,7 @@ public class RoutePopUpController {
         this.airportPoint = airportPoint;
         this.airlineName = airportPoint.getAirlineName();
     }**/
-
+private Stage stage;
     @FXML private Label routeIDText;
     @FXML private Label routeStopsText;
     @FXML private Label routeDestText;
@@ -179,7 +180,7 @@ public class RoutePopUpController {
             System.out.println("Performing query: " + sql);
 
             BBDatabase.editDataEntry(sql);
-
+            stage.close();
 
         } else {
             routeInvalidData.setVisible(true);
@@ -216,6 +217,10 @@ public class RoutePopUpController {
     public boolean validEntries(List<String> attributes){
 
         return true;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
 

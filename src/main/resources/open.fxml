@@ -281,7 +281,7 @@
                                                   </rowConstraints>
                                                    <children>
                                                       <Button fx:id="addRouteToTable" mnemonicParsing="false" onAction="#addSingleRoute" prefHeight="25.0" prefWidth="95.0" text="Add Route" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                                      <Button fx:id="routesFilterButton" alignment="CENTER" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Update" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                                      <Button fx:id="routesFilterButton" alignment="CENTER" mnemonicParsing="false" onAction="#routesFilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                                                    </children>
                                                 </GridPane>
                                              </children>
@@ -323,11 +323,11 @@
                                     <TableColumn fx:id="airportLongCol" prefWidth="75.0" text="Longitude" visible="false" />
                                     <TableColumn fx:id="airportAltCol" prefWidth="75.0" text="Altitude" visible="false" />
                                     <TableColumn fx:id="airportTimeCol" prefWidth="75.0" text="TimeZone" visible="false" />
-                                    <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="Incoming" visible="false" />
+                                    <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="DST" visible="false" />
                                     <TableColumn fx:id="airportTZCol" prefWidth="60.3333740234375" text="TZ" />
                                     <TableColumn fx:id="airportErrorCol" prefWidth="75.0" text="Errors" visible="false" />
-                                    <TableColumn fx:id="airportIncCol" prefWidth="75.0" text="Outgoing" />
-                                    <TableColumn fx:id="airportOutCol" prefWidth="75.0" text="Incoming" />
+                                    <TableColumn fx:id="airportIncCol" prefWidth="75.0" text="Incoming" />
+                                    <TableColumn fx:id="airportOutCol" prefWidth="75.0" text="Outgoing" />
                                  </columns>
                               </TableView>
                               <GridPane hgap="5.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
@@ -376,7 +376,7 @@
                                                 <GridPane hgap="10.0" layoutX="10.399999618530273" layoutY="7.0" prefHeight="59.0" prefWidth="1132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <children>
                                                       <Button fx:id="addAirportToTable1" layoutX="904.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" onAction="#addSingleAirport" prefHeight="25.0" prefWidth="113.0" text="Add Airport" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                                                      <Button fx:id="filterButton1" layoutX="1002.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" text="Update" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                                      <Button fx:id="filterButton1" layoutX="1002.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                    </children>
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="NEVER" />
@@ -490,7 +490,7 @@
                                                     <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <Button fx:id="airlineFilterButton1" alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlinefilterButtonPressed" text="Update" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                                      <Button fx:id="airlineFilterButton1" alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlinefilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                                                       <Button fx:id="addAirlineToTable" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#addSingleAirline" text="Add Airline" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                                    </children>
                                                 </GridPane>

@@ -153,8 +153,8 @@ public class AirportPopUpController {
 
         List<String> attributes = Arrays.asList(name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz);
 
-
-        if(validEntries(attributes)) {
+        String[] validness =  validEntries(attributes);
+        if(validness[0] == "T") {
 
             airportNameText.setVisible(true);
             airportNameTextEdit.setVisible(false);
@@ -229,11 +229,32 @@ public class AirportPopUpController {
 
     }
 
-    //TODO create method for checking entries
-    public boolean validEntries(List<String> attributes) {
-
-        return true;
-
+    /**
+     * A function to check if the edited data is valid airport data
+     * @param attributes the edited data give
+     * @return a list of string ["T",null] if all entries are valid ["F", name of invalid entry] if an entry is not valid
+     */
+    public static String[] validEntries(List<String> attributes){
+        String[] validness = {"T", null};
+//        String name = attributes.get(0); //Does not need to be checked
+//        String city = attributes.get(1); //Does not need to be checked
+//        String country = attributes.get(2); //Does not need to be checked
+//        String iata = attributes.get(3); //Must be string of length 3 or less
+//        String icao = attributes.get(4); //Must be a string of length 4 or less
+//        String lat = attributes.get(5); //Must be a float
+//        String lon = attributes.get(6); //Must be a float
+//        String alt = attributes.get(7); //Must be a float
+//        String timeZone = attributes.get(8); //Must be a float
+//        String dst = attributes.get(9); //a string in 'E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'
+//        String tz = attributes.get(10);//Does not need to be checked
+//        if (iata.length() > 3){
+//            validness[0] = "F";
+//            validness[1] = "IATA";
+//        }else if(icao.length() > 4) {
+//            validness[0] = "F";
+//            validness[1] = "ICAO";
+//        }else if()
+        return validness;
     }
 }
 

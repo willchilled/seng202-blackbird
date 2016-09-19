@@ -76,13 +76,12 @@ public class FlightPoint extends DataPoint {
 //	public void setCorrectEntry(int correctEntry) {
 //		this.correctEntry = correctEntry;
 //	}
-
+    /**
+     * Returns the FlightPoint in a string with the form locaLtype, localeID, altitude, latitude, longitude
+     * @return FlightPoint as a string
+     */
     @Override
     public String toString() {
-
-
-        //String, int, int, int, int
-
         return String.format("%s, %s, %s, %s,%s",
                 type, localeID, altitude, latitude, longitude);
 

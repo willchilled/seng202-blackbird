@@ -1,5 +1,8 @@
 package seng202.group2.blackbirdModel;
 
+/**
+ *  A subclass of Datapoint that stores information about an airport
+ */
 public class AirportPoint extends DataPoint {
 
     private int airportID;
@@ -26,6 +29,12 @@ public class AirportPoint extends DataPoint {
 //		if(this.getAirportID() == mypoint.getAirportID()) return true;
 //		else return false;
 //	}
+
+    /**
+     * Creates an AirportPoint with an ID and Name
+     * @param airportID The ID number for the airport
+     * @param airportName The Name of the airport
+     */
 
     public AirportPoint(int airportID, String airportName) {
 
@@ -165,6 +174,10 @@ public class AirportPoint extends DataPoint {
 //		this.correctEntry = correctEntry;
 //	}
 
+    /**
+     * Returns the AirportPoint as a string in the form airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz
+     * @return AirportPoint as a string
+     */
     @Override
     public String toString() {
         return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",

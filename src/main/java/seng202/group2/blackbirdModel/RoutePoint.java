@@ -1,5 +1,8 @@
 package seng202.group2.blackbirdModel;
 
+/**
+ * A subclass of dataPoint that stores information about a route
+ */
 public class RoutePoint extends DataPoint {
 
     private int routeID;    //our given id to routes
@@ -54,7 +57,11 @@ public class RoutePoint extends DataPoint {
     private AirportPoint source;
     private AirportPoint destination;
 
-
+    /**
+     * Creates a RoutePoint with an airline and airlineID
+     * @param airline The airline IATA code for the route
+     * @param airlineID The airlineID for the route
+     */
     public RoutePoint(String airline, int airlineID) {
 
         this.airline = airline;
@@ -62,7 +69,11 @@ public class RoutePoint extends DataPoint {
     }
 
 
-
+    /**
+     * A function to determine if a RoutePoint has the same routeID
+     * @param obj A RoutePoint to check equality of type against
+     * @return  A boolean variable, true if the RoutePoint has the same routeID
+     */
     @Override
     public boolean equals(Object obj) {
         RoutePoint mypoint =  (RoutePoint) obj;
@@ -173,6 +184,10 @@ public class RoutePoint extends DataPoint {
 //		this.correctEntry = correctEntry;
 //	}
 
+    /**
+     * Returns the RoutePoint as a string in the form airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment
+     * @return RoutePoint in the form of a string
+     */
     @Override
     public String toString() {
         //WE HAVE ADDED IN A ROUTE ID...SHOULD I EXPORT THIS? OR WILL IT NOT MATTER BECAUSE IT WILL BE RE-LOADED THE SAME?

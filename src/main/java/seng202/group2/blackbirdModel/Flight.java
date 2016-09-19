@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by emr65 on 12/09/16.
- *
+ * A subclass of DataPoint to hold information about a Flight
  */
 public class Flight extends DataPoint {
 
@@ -15,6 +14,10 @@ public class Flight extends DataPoint {
     private Collection<FlightPoint> flightPoints;
     private int flightID;
 
+    /**
+     * Creates a flight from a list of FlightPoints
+     * @param flightPoints a list of flight points with the first flightPoint giving the localeID for srcAirport and the last flightPoint giving the the localeId for the destAirport
+     */
     public Flight(List<FlightPoint> flightPoints) {
         this.flightPoints = flightPoints;
         FlightPoint source = flightPoints.get(0);

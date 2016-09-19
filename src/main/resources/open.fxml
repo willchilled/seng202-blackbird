@@ -141,8 +141,7 @@
                                     <TableColumn fx:id="routeStopsCol" prefWidth="75.0" text="Stops" />
                                     <TableColumn fx:id="routeEqCol" prefWidth="75.0" text="Equipment" />
                                      <TableColumn fx:id="routeErrorCol" prefWidth="75.0" text="Error" visible="false" />
-      
-                                       </columns>
+                               </columns>
                               </TableView>
                               <GridPane hgap="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <columnConstraints>

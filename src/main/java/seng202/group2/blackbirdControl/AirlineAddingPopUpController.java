@@ -17,6 +17,8 @@ import java.util.ArrayList;
 /**
  * Created by sbe67 on 15/09/16.
  */
+
+
 public class AirlineAddingPopUpController {
 
     @FXML
@@ -35,6 +37,7 @@ public class AirlineAddingPopUpController {
     private TextField Country;
     @FXML
     private CheckBox Active;
+
     private Stage adderStage;
     private Parent root;
 

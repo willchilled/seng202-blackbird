@@ -161,8 +161,8 @@ public class RoutePopUpController {
             routeCancelButton.setVisible(false);
 
             String sql = String.format("UPDATE ROUTE SET Airline='%1$s', Airlineid='%2$s', Src='%3$s', Srcid='%4$s'," +
-                            " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s' WHERE IDnum='%9$s'",
-                    airline, airlineID, src, srcID, dst, dstID, codeShare, stops, routeIDText.getText());
+                            " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s', Equipment=\"%9$s\" WHERE IDnum='%10$s'",
+                    airline, airlineID, src, srcID, dst, dstID, codeShare, stops, equipment, routeIDText.getText());
 
 
 

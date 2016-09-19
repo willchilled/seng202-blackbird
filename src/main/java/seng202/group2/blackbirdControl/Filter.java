@@ -251,10 +251,6 @@ public class Filter {
                     + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" or ROUTE.srcAirportName=\"%1$s\" OR Route.dstAirportName=\"%1$s\""
                     + " OR ROUTE.srcAirportCountry=\"%1$s\"  OR ROUTE.dstAirportCountry=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
             search = String.format(searchStatement, searchQuery);
-            //srcAirportName VARCHAR(100)," +
-            //            "dstAirportName VARCHAR(100)," +
-            //                    "srcAirportCountry VARCHAR(100)," +
-            //                    "dstAirportCountry VARCHAR(100)
             if(allNone){
                 sql += " WHERE ";
             }
@@ -265,6 +261,7 @@ public class Filter {
 
 
         sql += search;
+        //System.out.println(sql);
         ArrayList<RoutePoint> routePoints = BBDatabase.performRoutesQuery(sql);
 
         return routePoints;

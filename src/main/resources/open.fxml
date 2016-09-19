@@ -245,11 +245,11 @@
                                     <TableColumn fx:id="airportLongCol" prefWidth="75.0" text="Longitude" visible="false" />
                                     <TableColumn fx:id="airportAltCol" prefWidth="75.0" text="Altitude" visible="false" />
                                     <TableColumn fx:id="airportTimeCol" prefWidth="75.0" text="TimeZone" visible="false" />
-                                    <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="DST" visible="false" />
+                                    <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="Incoming" visible="false" />
                                     <TableColumn fx:id="airportTZCol" prefWidth="60.3333740234375" text="TZ" />
                                     <TableColumn fx:id="airportErrorCol" prefWidth="75.0" text="Errors" visible="false" />
-                                    <TableColumn fx:id="airportIncCol" prefWidth="75.0" text="Incoming" />
-                                    <TableColumn fx:id="airportOutCol" prefWidth="75.0" text="Outgoing" />
+                                    <TableColumn fx:id="airportIncCol" prefWidth="75.0" text="Outgoing" />
+                                    <TableColumn fx:id="airportOutCol" prefWidth="75.0" text="Incoming" />
                                  </columns>
                               </TableView>
                               <GridPane hgap="5.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">

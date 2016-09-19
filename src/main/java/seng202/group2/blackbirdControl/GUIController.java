@@ -896,6 +896,12 @@ public class GUIController {
         String activeSelection = airlineActiveMenu.getValue().toString();
         String searchQuery = airlineSearchQuery.getText().toString();
         ArrayList<AirlinePoint> allPoints;
+        if (activeSelection =="Active"){
+            activeSelection = "Y";
+        }
+        else if (activeSelection == "Inactive"){
+            activeSelection = "N";
+        }
 
         if(countrySelection.equals("No values Loaded") && activeSelection.equals("No values Loaded")){
             allPoints = Filter.getAllAirlinePointsfromDB();
@@ -909,12 +915,7 @@ public class GUIController {
 
 
 
-        if (activeSelection =="Active"){
-            activeSelection = "Y";
-        }
-        else if (activeSelection == "Inactive"){
-            activeSelection = "N";
-        }
+
 
 
         //allPoints = Filter.filterAirlinesBySelections(menusPressed, searchQuery);

@@ -2,6 +2,7 @@ package seng202.group2.blackbirdControl;
 
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -594,6 +595,14 @@ public class GUIController {
     private void updateAirlinesTable(ArrayList<AirlinePoint> points){
         //Updates the view with a given set of airline points
         airlineTable.getItems().setAll(points);
+        airlineTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+
+                airlineTable.getColumns().get(0).setVisible(false);
+                airlineTable.getColumns().get(0).setVisible(true);
+            }
+        });
 
         airlineIDCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, Integer>("airlineID"));
         airlineNameCol.setCellValueFactory(new PropertyValueFactory<AirlinePoint, String>("airlineName"));
@@ -897,7 +906,10 @@ public class GUIController {
             filteredPoints = Filter.filterAirportsBySelections(countrySelection, searchQuery);
         }
 
-        updateAirportsTable(filteredPoints);
+        allPoints  = BBDatabase.linkRoutesandAirports(filteredPoints, allRoutePoints);
+       // updateAirportsTable2(allPoints);
+
+        updateAirportsTable(allPoints);
 
     }
 

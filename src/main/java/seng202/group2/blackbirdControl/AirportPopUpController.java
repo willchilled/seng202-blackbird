@@ -248,33 +248,39 @@ public class AirportPopUpController {
         String dst = attributes.get(9); //a string in 'E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'
         String tz = attributes.get(10);//Does not need to be checked
         String[] validDST = {"E", "A", "S", "O", "Z", "N", "U", null};
-        if (iata.length() > 3){
+        try {
+            if (iata.length() > 3) {
+                validness[0] = "F";
+                validness[1] = "IATA";
+            } else if (icao.length() > 4) {
+                validness[0] = "F";
+                validness[1] = "ICAO";
+            } else if (!(Arrays.asList(validDST).contains(dst))) {
+                validness[0] = "F";
+                validness[1] = "Daylight Savings";
+            } else try {
+                validness[0] = "F";
+                validness[1] = "Latitude";
+                Float.parseFloat(lat);
+                validness[0] = "F";
+                validness[1] = "Longitude";
+                Float.parseFloat(lon);
+                validness[0] = "F";
+                validness[1] = "Altitude";
+                Float.parseFloat(alt);
+                validness[0] = "F";
+                validness[1] = "Timezone";
+                Float.parseFloat(timeZone);
+                validness[0] = "T";
+                validness[1] = null;
+            } catch (NumberFormatException e) {
+            }
+            return validness;
+        }catch (NullPointerException e){
             validness[0] = "F";
-            validness[1] = "IATA";
-        }else if(icao.length() > 4) {
-            validness[0] = "F";
-            validness[1] = "ICAO";
-        }else if(!(Arrays.asList(validDST).contains(dst))){
-            validness[0] = "F";
-            validness[1] = "Daylight Savings";
-        }else try{
-            validness[0] = "F";
-            validness[1] = "Latitude";
-            Float.parseFloat(lat);
-            validness[0] = "F";
-            validness[1] = "Longitude";
-            Float.parseFloat(lon);
-            validness[0] = "F";
-            validness[1] = "Altitude";
-            Float.parseFloat(alt);
-            validness[0] = "F";
-            validness[1] = "Timezone";
-            Float.parseFloat(timeZone);
-            validness[0] = "T";
-            validness[1] = null;
-        }catch (NumberFormatException e) {
+            validness[1] = "Null";
+            return validness;
         }
-        return validness;
     }
 }
 

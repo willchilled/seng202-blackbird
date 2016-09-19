@@ -22,6 +22,11 @@ public class AirportPoint extends DataPoint {
     private int incomingRoutes;
     private int outgoingRoutes;
 
+    public void resetRouteCount(){
+        incomingRoutes = 0;
+        outgoingRoutes = 0;
+    }
+
 //	@Override
 //	public boolean equals(Object obj){
 //		//megan's test for bad data...

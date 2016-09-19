@@ -380,8 +380,9 @@ public class GUIController {
             alert.showAndWait();
         }
 
+        //yeah this is kinda high coupling but will be fixed in the refactor
         if (routesFilled) {
-            BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+            allPoints  = BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
             updateAirportsTable2(allPoints);
             updateRoutesTable2(allRoutePoints);
         }
@@ -457,6 +458,8 @@ public class GUIController {
 
         if (airportsFilled) {
             BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
+
+            allPoints  = BBDatabase.linkRoutesandAirports(allPoints, allRoutePoints);
             System.out.println(allRoutePoints.get(2));
             //System.out.println(allPoints.get(2).getOutgoingRoutes() + " " + allPoints.get(2).getAirportName() + allPoints.get(2));
             updateAirportsTable2(allPoints);

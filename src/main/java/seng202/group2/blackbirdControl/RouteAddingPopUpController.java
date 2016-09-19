@@ -82,6 +82,7 @@ public class RouteAddingPopUpController {
             System.out.println(myRoutePoint.toString());
 
             BBDatabase.addRoutePointstoDB(myRouteData);
+
             //BBDatabase.
             BBDatabase.linkIndividualRouteAndAirport(myRoutePoint);
 

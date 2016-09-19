@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -47,6 +48,10 @@ public class GUIController {
     private ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
     private ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
     private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+
+    private ObservableList<String> flightsDepartList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> flightsDestList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> flightsCountryList = FXCollections.observableArrayList("No values Loaded");
 
     private ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
@@ -148,18 +153,27 @@ public class GUIController {
     @FXML private TableColumn flightSourceCol;
     @FXML private TableColumn flightDestCol;
     // Filter Menu testing
+    //=================AIRPORTS=====================
     @FXML private ComboBox airportFilterByCountryMenu;
     @FXML private TextField airportSearchQuery;
     @FXML private Button filterButton;
     @FXML private Button airportSeeAllButton;
+    //==================AIRLINES=====================
     @FXML private ComboBox airlineFilterMenu;
     @FXML private ComboBox airlineActiveMenu;
     @FXML private TextField airlineSearchQuery;
+    //==================ROUTES=====================
     @FXML private ComboBox routesFilterBySourceMenu;
     @FXML private ComboBox routesFilterbyDestMenu;
     @FXML private ComboBox routesFilterByStopsMenu;
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
+    //=================FLIGHTS======================
+    @FXML private ComboBox flightsFilterByDepartureMenu;
+    @FXML private ComboBox flightsFilterByDestinationMenu;
+    @FXML private ComboBox flightsFilterByCountryMenu;
+    @FXML private TextField flightSearchQuery;
+
 
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
 
@@ -224,6 +238,15 @@ public class GUIController {
         routesFilterByStopsMenu.setItems(getRoutesFilterByStopsList());
         routesFilterbyEquipMenu.setValue(getRoutesFilterbyEquipList().get(0));
         routesFilterbyEquipMenu.setItems(getRoutesFilterbyEquipList());
+
+
+        flightsFilterByDepartureMenu.setItems(flightsDepartList);
+        flightsFilterByDepartureMenu.setValue(flightsDepartList.get(0));
+        flightsFilterByDestinationMenu.setItems(flightsDestList);
+        flightsFilterByDestinationMenu.setValue(flightsDestList.get(0));
+        flightsFilterByCountryMenu.setItems(flightsCountryList);
+        flightsFilterByCountryMenu.setValue(flightsCountryList.get(0));
+
 
     }
 
@@ -357,9 +380,29 @@ public class GUIController {
         if (f == null) {
             return;
         }
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Error in adding airport data");
+        alert.setContentText("Some airport data was unable to be added");
+
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
+        if (allairportPoints == null) {
+            alert.showAndWait();
+            return;
+        } else {
+            boolean allNull = true;
+            for (AirportPoint airport : allairportPoints) {
+                if (airport != null) {
+                    allNull = false;
+                }
+            }
+            if (allNull) {
+                alert.showAndWait();
+                return;
+            }
+        }
+
         boolean allAdded = BBDatabase.addAirportPointsToDB(allairportPoints);
-        System.out.println(allAdded);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
         setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
@@ -374,10 +417,6 @@ public class GUIController {
         mainTabPane.getSelectionModel().select(airportTab);
 
         if(!allAdded) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Oops!");
-            alert.setHeaderText("Error in adding airport data");
-            alert.setContentText("Some airport data was unable to be added");
             alert.showAndWait();
         }
 
@@ -402,7 +441,28 @@ public class GUIController {
         if (f == null) {
             return;
         }
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Some data could not be added");
+        alert.setContentText("Please check your input file");
+
         ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+        if (allAirlineData == null) {
+            alert.showAndWait();
+            return;
+        } else {
+            boolean allNull = true;
+            for (AirlinePoint airline : allAirlineData) {
+                if (airline != null) {
+                    allNull = false;
+                }
+            }
+            if (allNull) {
+                alert.showAndWait();
+                return;
+            }
+        }
+
         boolean allAdded = BBDatabase.addAirlinePointstoDB(allAirlineData);
 
         ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
@@ -411,10 +471,6 @@ public class GUIController {
         setAirlineActiveList(populateAirlineActiveList());
 
         if (!allAdded) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Oops!");
-            alert.setHeaderText("Some data could not be added");
-            alert.setContentText("Please check your input file");
             alert.showAndWait();
         }
 
@@ -439,14 +495,32 @@ public class GUIController {
         if (f == null) {
             return;
         }
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Some data could not be added");
+        alert.setContentText("Please check your input file");
+
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
+        if (myRouteData == null) {
+            alert.showAndWait();
+            return;
+        } else {
+            boolean allNull = true;
+            for (RoutePoint route : myRouteData) {
+                if (route != null) {
+                    allNull = false;
+                }
+            }
+            if (allNull) {
+                alert.showAndWait();
+                return;
+            }
+        }
+
         boolean allAdded = BBDatabase.addRoutePointstoDB(myRouteData);
 
         if (!allAdded) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Oops!");
-            alert.setHeaderText("Some data could not be added");
-            alert.setContentText("Please check your input file");
             alert.showAndWait();
         }
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
@@ -492,6 +566,7 @@ public class GUIController {
 
             BBDatabase.addFlighttoDB(myFlightData);
             updateFlightsTable(myFlightData);
+            updateFlightsDropdowns();
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Oops!");
@@ -933,6 +1008,26 @@ public class GUIController {
 
     }
 
+
+//    public void flightsFilterButtonPressed(ActionEvent actionEvent) {
+//        String departSelection = flightsFilterByDepartureMenu.getValue().toString();
+//        String destSelection = flightsFilterByDestinationMenu.getValue().toString();
+//
+//        // To add country search funtioniallity will have to work out how to integrate countries into flights
+//        //String countrySelection = flightsFilterByCountryMenu.getValue().toString();
+//        String searchQuery = flightSearchQuery.getText().toString();
+//        ArrayList<Flight> flights = new ArrayList<>();
+//
+//
+//        ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(departSelection, destSelection));
+//
+//
+//        flights = Filter.filterFlightsBySelections(menusPressed, searchQuery);
+//
+//        updateFlightsTable(flights);
+//
+//    }
+
     public void routesFilterButtonPressed(ActionEvent actionEvent) {
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();
         String destSelection = routesFilterbyDestMenu.getValue().toString();
@@ -1131,6 +1226,38 @@ public class GUIController {
         routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
     }
 
+    private void populateFlightsFilterbyDepartList(){
+        ArrayList<String> uniqueSources = new ArrayList<String>();
+        String sql = "SrcICAO";
+        uniqueSources = Filter.findDistinctStringFromTable(sql, "FLIGHT");
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        uniqueObservableSources = addNullValue(uniqueObservableSources);
+        flightsFilterByDepartureMenu.setItems(uniqueObservableSources);
+        flightsFilterByDepartureMenu.setValue(uniqueObservableSources.get(0));
+    }
+
+    private void populateFlightsFilterbyDestList(){
+        ArrayList<String> uniqueSources = new ArrayList<String>();
+        String sql = "DstICAO";
+        uniqueSources = Filter.findDistinctStringFromTable(sql, "FLIGHT");
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        uniqueObservableSources = addNullValue(uniqueObservableSources);
+        flightsFilterByDestinationMenu.setItems(uniqueObservableSources);
+        flightsFilterByDestinationMenu.setValue(uniqueObservableSources.get(0));
+    }
+
+    private void populateFlightsFilterbyCountryList(){
+        ArrayList<String> uniqueSources = new ArrayList<String>();
+        String sql = "SrcICAO";
+        uniqueSources = Filter.findDistinctStringFromTable(sql, "FLIGHT");
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
+        uniqueObservableSources = addNullValue(uniqueObservableSources);
+        flightsFilterByDepartureMenu.setItems(uniqueObservableSources);
+        flightsFilterByDepartureMenu.setValue(uniqueObservableSources.get(0));
+    }
+
+
+
 
 
     private void updateRoutesDropdowns() {
@@ -1139,6 +1266,15 @@ public class GUIController {
         populateRoutesFilterByStopsList();
         populateRoutesFilterByEquipList();
     }
+
+    private void updateFlightsDropdowns() {
+        populateFlightsFilterbyDepartList();
+        populateFlightsFilterbyDestList();
+
+        //-----NOT SURE WE CAN REALLY DO THIS YET-----
+        //populateFlightsFilterbyCountryList();
+    }
+
 
     @FXML
     private void exportAirportData(){

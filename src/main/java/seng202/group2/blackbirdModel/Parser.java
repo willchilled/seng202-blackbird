@@ -40,7 +40,6 @@ public class Parser {
     //------------------------FLIGHTS-------------------------//
 
     public static ArrayList<FlightPoint> parseFlightData(File file) {
-       // System.out.print("pooooooooo");
 
         ArrayList<FlightPoint> myFlightSet = new ArrayList<>();
         BufferedReader br;
@@ -66,20 +65,18 @@ public class Parser {
                                     longitude);
                             myFlightSet.add(myFlightPoint);
                         } catch (NumberFormatException e) {
-                            System.out.println("Poo 0");
+                            return null;
+
                         }
 
                     } else {
-                        System.out.println("Poo 1");
                         return null;
                     }
                 } else {
-                    System.out.println("Poo 2");
                     return null;
                 }
             }
         } catch (NumberFormatException e) {
-            System.out.println("Poo 3");
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
@@ -150,9 +147,7 @@ public class Parser {
                     RoutePoint myRoutePoint = checkRouteData(routePoint, count);
                     myRouteData.add(myRoutePoint);
                 } else {
-//                    RoutePoint myRoutePoint = new RoutePoint("", 0);
-//                    myRoutePoint.setRouteID(count);
-//                    myRouteData.add(myRoutePoint);
+//                    return null;
                 }
             }
         } catch (IOException e) {
@@ -230,9 +225,7 @@ public class Parser {
                     AirlinePoint myAirlinePoint = checkAirlineData(airlinePoint, count);
                     myAirlineData.add(myAirlinePoint);
                 } else {
-                    //TODO
-                    //AirlinePoint myAirlinePoint = new AirlinePoint(0, "Error on input File line: " + count);
-                    //myAirlineData.add(myAirlinePoint);
+                    return null;
                 }
             }
         } catch (IOException e) {

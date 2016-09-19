@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.*?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.GUIController">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.GUIController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -55,54 +56,131 @@
                      <content>
                         <GridPane prefWidth="0.0">
                            <children>
-                              <TableView fx:id="flightTable" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-                                <columns>
-                                  <TableColumn fx:id="flightSourceCol" prefWidth="246.0" text="Source" />
-                                  <TableColumn fx:id="flightDestCol" prefWidth="19.0" text="Destination" />
-                                </columns>
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                              </TableView>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Flights" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Text>
-                              <TableView fx:id="flightPointTable" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                                 <columns>
-                                    <TableColumn fx:id="flightPointTypeCol" prefWidth="75.0" text="Type" />
-                                    <TableColumn fx:id="flightPointLocaleCol" prefWidth="75.0" text="LocaleID" />
-                                    <TableColumn fx:id="flightPointAltitudeCol" prefWidth="75.0" text="Altitude" />
-                                    <TableColumn fx:id="flightPointLatitudeCol" prefWidth="75.0" text="Latitude" />
-                                    <TableColumn fx:id="flightPointLongitudeCol" minWidth="0.0" prefWidth="105.0" text="Longitude" />
-                                 </columns>
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </TableView>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Flight Points" GridPane.columnIndex="3" GridPane.halignment="CENTER">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Text>
+                              <GridPane hgap="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="342.0" prefWidth="342.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="775.0" prefWidth="775.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <TableView fx:id="flightTable" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                      <columns>
+                                        <TableColumn fx:id="flightSourceCol" prefWidth="246.0" text="Source" />
+                                        <TableColumn fx:id="flightDestCol" prefWidth="19.0" text="Destination" />
+                                      </columns>
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <TableView fx:id="flightPointTable" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                       <columns>
+                                          <TableColumn fx:id="flightPointTypeCol" prefWidth="75.0" text="Type" />
+                                          <TableColumn fx:id="flightPointLocaleCol" prefWidth="75.0" text="LocaleID" />
+                                          <TableColumn fx:id="flightPointAltitudeCol" prefWidth="75.0" text="Altitude" />
+                                          <TableColumn fx:id="flightPointLatitudeCol" prefWidth="75.0" text="Latitude" />
+                                          <TableColumn fx:id="flightPointLongitudeCol" minWidth="0.0" prefWidth="105.0" text="Longitude" />
+                                       </columns>
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TableView>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Flights" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Way Points" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane hgap="10.0" GridPane.columnIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="776.0" prefWidth="781.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="343.0" prefWidth="343.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <TitledPane animated="false" collapsible="false" prefHeight="85.0" text="Filter">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane hgap="5.0" prefHeight="59.0" prefWidth="776.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <ComboBox fx:id="flightsFilterByDepartureMenu" prefWidth="150.0" GridPane.rowIndex="1" />
+                                                      <ComboBox fx:id="flightsFilterByDestinationMenu" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <ComboBox fx:id="flightsFilterByCountryMenu" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Departure" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" GridPane.columnIndex="1" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country" GridPane.columnIndex="2" />
+                                                      <TextField fx:id="flightSearchQuery" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Keyword" GridPane.columnIndex="3" />
+                                                      <Button fx:id="flightsFilterButton1" mnemonicParsing="false" text="Filter" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <Button fx:id="routesSeeAllFlightButton" mnemonicParsing="false" text="See All" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                    <TitledPane animated="false" collapsible="false" prefHeight="85.0" text="Other" GridPane.columnIndex="1">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane hgap="5.0" layoutX="69.0" layoutY="-15.0" prefHeight="59.0" prefWidth="338.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Button fx:id="addFlightToTable" mnemonicParsing="false" text="Add Flight" GridPane.rowIndex="1" />
+                                                      <Button fx:id="flightsFilterButton2" mnemonicParsing="false" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                 </children>
+                              </GridPane>
                            </children>
                            <columnConstraints>
                               <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
-                              <ColumnConstraints hgrow="ALWAYS" maxWidth="501.0" minWidth="10.0" prefWidth="240.0" />
-                              <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="738.0" />
+                              <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                               <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints maxHeight="612.0" minHeight="36.0" prefHeight="110.0" vgrow="NEVER" />
-                              <RowConstraints minHeight="10.0" prefHeight="709.0" vgrow="ALWAYS" />
+                              <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="110.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" prefHeight="639.0" vgrow="ALWAYS" />
                               <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="NEVER" />
                            </rowConstraints>
                         </GridPane>

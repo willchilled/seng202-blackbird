@@ -2,9 +2,7 @@ package seng202.group2.blackbirdModel;
 
 import java.io.File;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by sha162 on 10/09/16.
@@ -381,6 +379,9 @@ public class BBDatabase {
 
     //Route Adding
     public static boolean addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
+        if (routePoints == null) {
+            return false;
+        }
         //adds routes into the database
         boolean correct = true;
         try {
@@ -733,6 +734,99 @@ public class BBDatabase {
             System.exit(0);
         }
 
+        return allPoints;
+
+    }
+
+
+    public static ArrayList<Flight> performFlightsQuery(String sql) {
+        Connection c = makeConnection();
+        ArrayList<Flight> allPoints = new ArrayList<Flight>();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+
+                System.out.println("Were Searching yo");
+
+
+                int flightID = rs.getInt("FlightIDNum");
+                String departure = rs.getString("SrcICAO");
+                String destination = rs.getString("DstICAO");
+
+                System.out.println("A");
+                List<FlightPoint> flightPoints = performFlightPointQuery(flightID);
+
+                System.out.println("B");
+                Flight myFlight = new Flight(flightPoints);
+                System.out.println("C");
+                myFlight.setFlightID(flightID);
+                System.out.println("D");
+                myFlight.setSrcAirport(departure);
+                System.out.println("E");
+                myFlight.setDestAirport(destination);
+                System.out.println("F");
+
+                allPoints.add(myFlight);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch (Exception e) {
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.out.println("Well were fucked");
+            System.exit(0);
+        }
+        System.out.println("Return YE");
+        return allPoints;
+
+    }
+
+    public static List<FlightPoint> performFlightPointQuery(int flightID) {
+        Connection c = makeConnection();
+        List<FlightPoint> allPoints = null;
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "SELECT * FROM FLIGHTPOINT WHERE FlightIDNum='" + flightID + "';";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+
+                System.out.println("Were getting FlightPoints yo");
+
+
+                int seqOrder = rs.getInt("SeqOrder");
+                String localeID = rs.getString("LocaleID");
+                String locationType = rs.getString("LocationType");
+                int altitude = rs.getInt("Altitude");
+                float latitude = rs.getFloat("Latitude");
+                float longitude = rs.getFloat("Longitude");
+
+
+                System.out.println("Creating flightpoint");
+
+                FlightPoint myFlight = new FlightPoint(locationType, localeID, altitude, latitude, longitude);
+
+                allPoints.add(myFlight);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch (Exception e) {
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.out.println("Well were fucked");
+            System.exit(0);
+        }
+        System.out.println("Return YE");
         return allPoints;
 
     }

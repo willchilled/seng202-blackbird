@@ -605,6 +605,7 @@ public class GUIController {
                         AirlinePopUpController popUpController = loader.getController();
                         popUpController.setAirlinePoint(airlineTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -653,6 +654,7 @@ public class GUIController {
                         RoutePopUpController popUpController = loader.getController();
                         popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -703,6 +705,7 @@ public class GUIController {
                         RoutePopUpController popUpController = loader.getController();
                         popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -758,6 +761,7 @@ public class GUIController {
                         AirportPopUpController popUpController = loader.getController();
                         popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -811,6 +815,7 @@ public class GUIController {
                         AirportPopUpController popUpController = loader.getController();
                         popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("View/Edit Data");
@@ -978,7 +983,6 @@ public class GUIController {
 //        private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
 
         //);
-        //System.out.println("FUCK ME");
         //System.out.println(uniqueCountries);
 
 

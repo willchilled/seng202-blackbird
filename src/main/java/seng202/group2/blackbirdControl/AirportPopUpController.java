@@ -235,7 +235,6 @@ public class AirportPopUpController {
      * @return a list of string ["T",null] if all entries are valid ["F", name of invalid entry] if an entry is not valid
      */
     public static String[] validEntries(List<String> attributes){
-        System.out.println("Im here");
         String[] validness = {"T", null};
         String name = attributes.get(0); //Does not need to be checked
         String city = attributes.get(1); //Does not need to be checked

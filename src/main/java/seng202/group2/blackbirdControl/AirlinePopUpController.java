@@ -2,6 +2,7 @@ package seng202.group2.blackbirdControl;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -10,6 +11,7 @@ import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -126,8 +128,8 @@ public class AirlinePopUpController {
 
         List<String> attributes = Arrays.asList(name, country, alias, iata, icao, callsign, active);
 
-
-        if(validEntries(attributes)) {
+        String[] validness =  validEntries(attributes);
+        if(validness[0] == "T") {
 
             airlineNameTextEdit.setVisible(false);
             airlineCountryTextEdit.setVisible(false);
@@ -165,7 +167,11 @@ public class AirlinePopUpController {
 
 
         }else{
-            airlineInvalidDataText.setVisible(true);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("The " + validness[1] + " entry was invalid");
+            alert.setContentText("Please check your input fields.");
+            alert.showAndWait();
         }
     }
 
@@ -186,11 +192,32 @@ public class AirlinePopUpController {
         refreshMessage.setVisible(false);
     }
 
-    //TODO FIX VALID ENTRIES! Currently only returns true does not check anything!
-    public static boolean validEntries(List<String> attributes){
-
-        return true;
-
+    /**
+     * A function to check if the edited data is valid airline data
+     * @param attributes the edited data give
+     * @return a list of string ["T",null] if all entries are valid ["F", name of invalid entry] if an entry is not valid
+     */
+    public static String[] validEntries(List<String> attributes){
+        String[] validness = {"T", null};
+        String name = attributes.get(0); //does not need to be checked
+        String country= attributes.get(1); //does not need to be checked
+        String alias = attributes.get(2);//does not need to be checked
+        String iata = attributes.get(3); //must be a string of length 2 or less
+        String icao = attributes.get(4); //must be a string of length 3 or less
+        String callsign = attributes.get(5); //does not need to be checked
+        String active = attributes.get(6); // must be a string of either  "Y" or "N"
+        String[] validActives = {"Y", "N"};
+        if (iata.length() > 2){
+            validness[0] = "F";
+            validness[1] = "IATA";
+        }else if(icao.length() > 3){
+            validness[0] = "F";
+            validness[1] = "ICAO";
+        }else if(!(Arrays.asList(validActives).contains(active))){
+            validness[0] = "F";
+            validness[1] = "Active";
+        }
+        return validness;
     }
 
 }

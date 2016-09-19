@@ -207,17 +207,23 @@ public class AirlinePopUpController {
         String callsign = attributes.get(5); //does not need to be checked
         String active = attributes.get(6); // must be a string of either  "Y" or "N"
         String[] validActives = {"Y", "N"};
-        if (iata.length() > 2){
+        try {
+            if (iata.length() > 2) {
+                validness[0] = "F";
+                validness[1] = "IATA";
+            } else if (icao.length() > 3) {
+                validness[0] = "F";
+                validness[1] = "ICAO";
+            } else if (!(Arrays.asList(validActives).contains(active))) {
+                validness[0] = "F";
+                validness[1] = "Active";
+            }
+            return validness;
+        }catch (NullPointerException e){
             validness[0] = "F";
-            validness[1] = "IATA";
-        }else if(icao.length() > 3){
-            validness[0] = "F";
-            validness[1] = "ICAO";
-        }else if(!(Arrays.asList(validActives).contains(active))){
-            validness[0] = "F";
-            validness[1] = "Active";
+            validness[1] = "Null";
+            return validness;
         }
-        return validness;
     }
 
 }

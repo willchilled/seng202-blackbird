@@ -1,9 +1,5 @@
 package seng202.group2.blackbirdModel;
 
-import javafx.scene.control.Alert;
-
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.sql.*;
 import java.util.*;
@@ -15,6 +11,7 @@ public class BBDatabase {
 
     private static String dataBaseName = "jdbc:sqlite:default.db";
     private static int flightCount =0;
+    private static int routeCount = 0;
 
     public static int getAirportID(String airportIATA){
         int airportID = 0;
@@ -432,11 +429,11 @@ public class BBDatabase {
         String dstAiportName = route.getDestAirportName();
         String srcAirportCountry = route.getSrcAirportCountry();
         String dstAirportCountry = route.getDestAirportCountry();
-
+        routeCount++;
         //make route sql text to execute
         String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment, srcAirportName, dstAirportName, srcAirportCountry, dstAirportCountry)" +
                 "VALUES (" +
-                +IDnum + ", " +
+                +routeCount + ", " +
                 "\"" + Airline + "\", " +
                 Airlineid + ", " +
                 "\"" + src + "\", " +
@@ -448,6 +445,7 @@ public class BBDatabase {
                 srcAiportname + "\", \"" + dstAiportName + "\", \""  + srcAirportCountry + "\", \"" + dstAirportCountry + "\"" + ");";
 
         try {
+           // System.out.println(routeSql);
             stmt.executeUpdate(routeSql);
             return true;
         } catch (SQLException e) {
@@ -572,7 +570,7 @@ public class BBDatabase {
 
         c.commit();
         c.close();
-        System.out.println("whoops i dropped a table");
+        //System.out.println("whoops i dropped a table");
 
     }
 
@@ -902,11 +900,11 @@ public class BBDatabase {
             int i = 0;
             stmt = c.createStatement();
             for (String sql: test){
-                System.out.println(sql);
+                //System.out.println(sql);
                 stmt.executeUpdate(sql);
 
                 if (i%10 ==0){
-                    System.out.println("Thinking ..");
+                    //System.out.println("Thinking ..");
                 }
                 i++;
             }
@@ -937,10 +935,10 @@ public class BBDatabase {
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                System.out.println("-------------");
-                System.out.println(rs.getString(1));
-                System.out.println(rs.getString(2));
-                System.out.println("-------------");
+//                System.out.println("-------------");
+//                System.out.println(rs.getString(1));
+//                System.out.println(rs.getString(2));
+//                System.out.println("-------------");
                 //System.out.println(rs.getString(2)
                 // );
 //                int routeID = rs.getInt("IDnum");
@@ -975,7 +973,7 @@ public class BBDatabase {
         }
     }
 
-    public static void linkRoutesandAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
+    public static ArrayList<AirportPoint> linkRoutesandAirports(ArrayList<AirportPoint> airports, ArrayList<RoutePoint> routes) {
         try {
             routes = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE");
             BBDatabase.dropRouteTable();
@@ -1008,6 +1006,7 @@ public class BBDatabase {
                 }
 
             }
+
             //myRouteSet.add(route);
         }
 
@@ -1028,6 +1027,7 @@ public class BBDatabase {
 //            test.add(sql2);
 //        }
 //        BBDatabase.editDataEntries(test);
+        return airports;
     }
 
     public static void linkIndividualRouteAndAirport(RoutePoint myRoutePoint) {
@@ -1048,7 +1048,7 @@ public class BBDatabase {
                     "dstAirportName=\"%s\",  srcAirportCountry=\"%s\", dstAirportCountry=\"%s\" WHERE idnum=\"%s\"",
                     srcCountryName, dstCountryName, srcCountry, dstCountry, myRoutePoint.getRouteID());
 
-        System.out.println(sql2);
+        //System.out.println(sql2);
         BBDatabase.editDataEntry(sql2);
         //System.out.println(BBDatabase.performRoutesQuery(String.format("SELECT * FROM ROUTE WHERE ID='%s'", myRoutePoint.getRouteID())).get(0).toString());
 

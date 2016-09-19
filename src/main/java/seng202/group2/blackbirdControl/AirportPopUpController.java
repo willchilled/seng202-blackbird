@@ -1,11 +1,8 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 //import seng202.group2.blackbirdModel.AirlinePoint;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirportPoint;
@@ -199,8 +196,11 @@ public class AirportPopUpController {
 
 
         }else{
-            //refreshMessage.setVisible(false);
-            airportInvalidData.setVisible(true);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Oops!");
+            alert.setHeaderText("The " + validness[1] + " entry was invalid");
+            alert.setContentText("Please check your input fields.");
+            alert.showAndWait();
         }
     }
 
@@ -236,24 +236,44 @@ public class AirportPopUpController {
      */
     public static String[] validEntries(List<String> attributes){
         String[] validness = {"T", null};
-//        String name = attributes.get(0); //Does not need to be checked
-//        String city = attributes.get(1); //Does not need to be checked
-//        String country = attributes.get(2); //Does not need to be checked
-//        String iata = attributes.get(3); //Must be string of length 3 or less
-//        String icao = attributes.get(4); //Must be a string of length 4 or less
-//        String lat = attributes.get(5); //Must be a float
-//        String lon = attributes.get(6); //Must be a float
-//        String alt = attributes.get(7); //Must be a float
-//        String timeZone = attributes.get(8); //Must be a float
-//        String dst = attributes.get(9); //a string in 'E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'
-//        String tz = attributes.get(10);//Does not need to be checked
-//        if (iata.length() > 3){
-//            validness[0] = "F";
-//            validness[1] = "IATA";
-//        }else if(icao.length() > 4) {
-//            validness[0] = "F";
-//            validness[1] = "ICAO";
-//        }else if()
+        String name = attributes.get(0); //Does not need to be checked
+        String city = attributes.get(1); //Does not need to be checked
+        String country = attributes.get(2); //Does not need to be checked
+        String iata = attributes.get(3); //Must be string of length 3 or less
+        String icao = attributes.get(4); //Must be a string of length 4 or less
+        String lat = attributes.get(5); //Must be a float
+        String lon = attributes.get(6); //Must be a float
+        String alt = attributes.get(7); //Must be a float
+        String timeZone = attributes.get(8); //Must be a float
+        String dst = attributes.get(9); //a string in 'E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'
+        String tz = attributes.get(10);//Does not need to be checked
+        String[] validDST = {"E", "A", "S", "O", "Z", "N", "U", null};
+        if (iata.length() > 3){
+            validness[0] = "F";
+            validness[1] = "IATA";
+        }else if(icao.length() > 4) {
+            validness[0] = "F";
+            validness[1] = "ICAO";
+        }else if(!(Arrays.asList(validDST).contains(dst))){
+            validness[0] = "F";
+            validness[1] = "Daylight Savings";
+        }else try{
+            validness[0] = "F";
+            validness[1] = "Latitude";
+            Float.parseFloat(lat);
+            validness[0] = "F";
+            validness[1] = "Longitude";
+            Float.parseFloat(lon);
+            validness[0] = "F";
+            validness[1] = "Altitude";
+            Float.parseFloat(alt);
+            validness[0] = "F";
+            validness[1] = "Timezone";
+            Float.parseFloat(timeZone);
+            validness[0] = "T";
+            validness[1] = null;
+        }catch (NumberFormatException e) {
+        }
         return validness;
     }
 }

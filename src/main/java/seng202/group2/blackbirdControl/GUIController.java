@@ -380,9 +380,29 @@ public class GUIController {
         if (f == null) {
             return;
         }
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Error in adding airport data");
+        alert.setContentText("Some airport data was unable to be added");
+
         ArrayList<AirportPoint> allairportPoints = Parser.parseAirportData(f);
+        if (allairportPoints == null) {
+            alert.showAndWait();
+            return;
+        } else {
+            boolean allNull = true;
+            for (AirportPoint airport : allairportPoints) {
+                if (airport != null) {
+                    allNull = false;
+                }
+            }
+            if (allNull) {
+                alert.showAndWait();
+                return;
+            }
+        }
+
         boolean allAdded = BBDatabase.addAirportPointsToDB(allairportPoints);
-        System.out.println(allAdded);
         ArrayList<AirportPoint> validairportPoints = Filter.getAllAirportPointsFromDB();
 
         setAllAirportPoints(validairportPoints); //adding all airport data, including bad data
@@ -397,10 +417,6 @@ public class GUIController {
         mainTabPane.getSelectionModel().select(airportTab);
 
         if(!allAdded) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Oops!");
-            alert.setHeaderText("Error in adding airport data");
-            alert.setContentText("Some airport data was unable to be added");
             alert.showAndWait();
         }
 
@@ -425,7 +441,28 @@ public class GUIController {
         if (f == null) {
             return;
         }
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Some data could not be added");
+        alert.setContentText("Please check your input file");
+
         ArrayList<AirlinePoint> allAirlineData = Parser.parseAirlineData(f);
+        if (allAirlineData == null) {
+            alert.showAndWait();
+            return;
+        } else {
+            boolean allNull = true;
+            for (AirlinePoint airline : allAirlineData) {
+                if (airline != null) {
+                    allNull = false;
+                }
+            }
+            if (allNull) {
+                alert.showAndWait();
+                return;
+            }
+        }
+
         boolean allAdded = BBDatabase.addAirlinePointstoDB(allAirlineData);
 
         ArrayList<AirlinePoint> validAirlineData = Filter.getAllAirlinePointsfromDB();
@@ -434,10 +471,6 @@ public class GUIController {
         setAirlineActiveList(populateAirlineActiveList());
 
         if (!allAdded) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Oops!");
-            alert.setHeaderText("Some data could not be added");
-            alert.setContentText("Please check your input file");
             alert.showAndWait();
         }
 
@@ -469,11 +502,22 @@ public class GUIController {
         alert.setContentText("Please check your input file");
 
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-        System.out.println(myRouteData);
-        if (myRouteData.get(0) == null) {
+        if (myRouteData == null) {
             alert.showAndWait();
             return;
+        } else {
+            boolean allNull = true;
+            for (RoutePoint route : myRouteData) {
+                if (route != null) {
+                    allNull = false;
+                }
+            }
+            if (allNull) {
+                alert.showAndWait();
+                return;
+            }
         }
+
         boolean allAdded = BBDatabase.addRoutePointstoDB(myRouteData);
 
         if (!allAdded) {

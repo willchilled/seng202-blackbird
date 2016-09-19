@@ -886,6 +886,9 @@ public class BBDatabase {
         try {
             routes = BBDatabase.performRoutesQuery("SELECT * FROM ROUTE");
             BBDatabase.dropRouteTable();
+            for (AirportPoint airport : airports){
+                airport.resetRouteCount();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -899,6 +902,7 @@ public class BBDatabase {
                 if (srcAirportId == airport.getAirportID()) {
                     route.setSrcAirportCountry(airport.getAirportCountry());
                     route.setSrcAirportName(airport.getAirportName());
+                    System.out.println("HERE");
                     airport.incrementIncRoutes();
 //                    if (!updatedPoints.contains(route)){
 //                        updatedPoints.add(route);

@@ -1,4 +1,4 @@
-package seng202.group2.blackbirdView;
+package seng202.group2;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

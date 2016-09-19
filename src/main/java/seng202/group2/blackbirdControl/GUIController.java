@@ -462,14 +462,21 @@ public class GUIController {
         if (f == null) {
             return;
         }
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Oops!");
+        alert.setHeaderText("Some data could not be added");
+        alert.setContentText("Please check your input file");
+
          ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
+        System.out.println(myRouteData);
+        if (myRouteData.get(0) == null) {
+            alert.showAndWait();
+            return;
+        }
         boolean allAdded = BBDatabase.addRoutePointstoDB(myRouteData);
 
         if (!allAdded) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Oops!");
-            alert.setHeaderText("Some data could not be added");
-            alert.setContentText("Please check your input file");
             alert.showAndWait();
         }
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
@@ -952,24 +959,24 @@ public class GUIController {
     }
 
 
-    public void flightsFilterButtonPressed(ActionEvent actionEvent) {
-        String departSelection = flightsFilterByDepartureMenu.getValue().toString();
-        String destSelection = flightsFilterByDestinationMenu.getValue().toString();
-
-        // To add country search funtioniallity will have to work out how to integrate countries into flights
-        //String countrySelection = flightsFilterByCountryMenu.getValue().toString();
-        String searchQuery = flightSearchQuery.getText().toString();
-        ArrayList<Flight> flights = new ArrayList<>();
-
-
-        ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(departSelection, destSelection));
-
-
-        flights = Filter.filterFlightsBySelections(menusPressed, searchQuery);
-
-        updateFlightsTable(flights);
-
-    }
+//    public void flightsFilterButtonPressed(ActionEvent actionEvent) {
+//        String departSelection = flightsFilterByDepartureMenu.getValue().toString();
+//        String destSelection = flightsFilterByDestinationMenu.getValue().toString();
+//
+//        // To add country search funtioniallity will have to work out how to integrate countries into flights
+//        //String countrySelection = flightsFilterByCountryMenu.getValue().toString();
+//        String searchQuery = flightSearchQuery.getText().toString();
+//        ArrayList<Flight> flights = new ArrayList<>();
+//
+//
+//        ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(departSelection, destSelection));
+//
+//
+//        flights = Filter.filterFlightsBySelections(menusPressed, searchQuery);
+//
+//        updateFlightsTable(flights);
+//
+//    }
 
     public void routesFilterButtonPressed(ActionEvent actionEvent) {
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();

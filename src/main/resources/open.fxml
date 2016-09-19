@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.GUIController">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.GUIController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -140,7 +140,7 @@
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country" GridPane.columnIndex="2" />
                                                       <TextField fx:id="flightSearchQuery" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Keyword" GridPane.columnIndex="3" />
-                                                      <Button fx:id="flightsFilterButton1" mnemonicParsing="false" onAction="#flightsFilterButtonPressed" text="Filter" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                      <Button fx:id="flightsFilterButton1" mnemonicParsing="false" text="Filter" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                                                       <Button fx:id="routesSeeAllFlightButton" mnemonicParsing="false" text="See All" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                                                    </children>
                                                 </GridPane>
@@ -163,7 +163,7 @@
                                                   </rowConstraints>
                                                    <children>
                                                       <Button fx:id="addFlightToTable" mnemonicParsing="false" text="Add Flight" GridPane.rowIndex="1" />
-                                                      <Button fx:id="flightsFilterButton2" mnemonicParsing="false" onAction="#flightsFilterButtonPressed" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                      <Button fx:id="flightsFilterButton2" mnemonicParsing="false" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                    </children>
                                                 </GridPane>
                                              </children>

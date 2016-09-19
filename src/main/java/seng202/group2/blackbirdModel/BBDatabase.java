@@ -379,6 +379,9 @@ public class BBDatabase {
 
     //Route Adding
     public static boolean addRoutePointstoDB(ArrayList<RoutePoint> routePoints) {
+        if (routePoints == null) {
+            return false;
+        }
         //adds routes into the database
         boolean correct = true;
         try {

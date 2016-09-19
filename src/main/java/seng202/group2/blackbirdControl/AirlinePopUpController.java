@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 
@@ -24,7 +25,7 @@ public class AirlinePopUpController {
         this.airlinePoint = airlinePoint;
         this.airlineName = airlinePoint.getAirlineName();
     }**/
-
+    private Stage stage;
     @FXML private Label nameText;
     @FXML private Label idText;
     @FXML private Label countryText;
@@ -144,7 +145,6 @@ public class AirlinePopUpController {
             refreshMessage.setVisible(false);
             airlineEditButton.setVisible(true);
             nameText.setVisible(true);
-            refreshMessage.setVisible(true);
 
 
 
@@ -164,7 +164,7 @@ public class AirlinePopUpController {
 
             BBDatabase.editDataEntry(sql);
 
-
+            stage.close();
 
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -203,9 +203,18 @@ public class AirlinePopUpController {
         String country= attributes.get(1); //does not need to be checked
         String alias = attributes.get(2);//does not need to be checked
         String iata = attributes.get(3); //must be a string of length 2 or less
+        if(iata == null){
+            iata = "";
+        }
         String icao = attributes.get(4); //must be a string of length 3 or less
+        if(icao == null){
+            icao = "";
+        }
         String callsign = attributes.get(5); //does not need to be checked
         String active = attributes.get(6); // must be a string of either  "Y" or "N"
+        if(active == null){
+            active = "N";
+        }
         String[] validActives = {"Y", "N"};
         try {
             if (iata.length() > 2) {
@@ -224,6 +233,10 @@ public class AirlinePopUpController {
             validness[1] = "Null";
             return validness;
         }
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
 }

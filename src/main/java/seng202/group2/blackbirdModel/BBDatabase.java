@@ -902,7 +902,6 @@ public class BBDatabase {
                 if (srcAirportId == airport.getAirportID()) {
                     route.setSrcAirportCountry(airport.getAirportCountry());
                     route.setSrcAirportName(airport.getAirportName());
-                    System.out.println("HERE");
                     airport.incrementIncRoutes();
 //                    if (!updatedPoints.contains(route)){
 //                        updatedPoints.add(route);

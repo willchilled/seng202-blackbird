@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 
@@ -22,6 +23,7 @@ public class AirportPopUpController {
         this.airlineName = airportPoint.getAirlineName();
     }**/
 
+    private Stage stage;
     @FXML private Label airportNameText;
     @FXML private Label airportIdText;
     @FXML private Label airportCityText;
@@ -194,6 +196,7 @@ public class AirportPopUpController {
 
             BBDatabase.editDataEntry(sql);
 
+            stage.close();
 
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -240,11 +243,29 @@ public class AirportPopUpController {
         String city = attributes.get(1); //Does not need to be checked
         String country = attributes.get(2); //Does not need to be checked
         String iata = attributes.get(3); //Must be string of length 3 or less
+        if(iata == null){
+            iata = "";
+        }
         String icao = attributes.get(4); //Must be a string of length 4 or less
+        if(icao == null){
+            icao = "";
+        }
         String lat = attributes.get(5); //Must be a float
+        if(lat == null){
+            lat = "0";
+        }
         String lon = attributes.get(6); //Must be a float
+        if(lon == null){
+            lon = "0";
+        }
         String alt = attributes.get(7); //Must be a float
+        if(alt == null){
+            alt = "0";
+        }
         String timeZone = attributes.get(8); //Must be a float
+        if(timeZone == null){
+            timeZone = "0";
+        }
         String dst = attributes.get(9); //a string in 'E', 'A', 'S', 'O', 'Z', 'N', 'U', 'null'
         String tz = attributes.get(10);//Does not need to be checked
         String[] validDST = {"E", "A", "S", "O", "Z", "N", "U", null};
@@ -282,5 +303,10 @@ public class AirportPopUpController {
             return validness;
         }
     }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }
+
 

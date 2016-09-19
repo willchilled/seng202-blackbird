@@ -447,7 +447,7 @@ public class BBDatabase {
                 srcAiportname + "\", \"" + dstAiportName + "\", \""  + srcAirportCountry + "\", \"" + dstAirportCountry + "\"" + ");";
 
         try {
-            System.out.println(routeSql);
+           // System.out.println(routeSql);
             stmt.executeUpdate(routeSql);
             return true;
         } catch (SQLException e) {

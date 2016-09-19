@@ -240,12 +240,12 @@ public class GUIController {
         routesFilterbyEquipMenu.setItems(getRoutesFilterbyEquipList());
 
 
-        flightsFilterByDepartureMenu.setItems(flightsDepartList);
-        flightsFilterByDepartureMenu.setValue(flightsDepartList.get(0));
-        flightsFilterByDestinationMenu.setItems(flightsDestList);
-        flightsFilterByDestinationMenu.setValue(flightsDestList.get(0));
-        flightsFilterByCountryMenu.setItems(flightsCountryList);
-        flightsFilterByCountryMenu.setValue(flightsCountryList.get(0));
+//        flightsFilterByDepartureMenu.setItems(flightsDepartList);
+//        flightsFilterByDepartureMenu.setValue(flightsDepartList.get(0));
+//        flightsFilterByDestinationMenu.setItems(flightsDestList);
+//        flightsFilterByDestinationMenu.setValue(flightsDestList.get(0));
+//        flightsFilterByCountryMenu.setItems(flightsCountryList);
+//        flightsFilterByCountryMenu.setValue(flightsCountryList.get(0));
 
 
     }

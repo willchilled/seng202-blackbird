@@ -117,8 +117,8 @@
                               <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints maxHeight="628.0" minHeight="90.0" prefHeight="110.0" vgrow="NEVER" />
-                              <RowConstraints minHeight="10.0" prefHeight="639.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="174.0" vgrow="NEVER" />
+                              <RowConstraints maxHeight="632.0" minHeight="10.0" prefHeight="568.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
@@ -145,65 +145,63 @@
                               </TableView>
                               <GridPane hgap="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="929.0" />
-                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="297.0" minWidth="10.0" prefWidth="195.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="520.0" minWidth="10.0" prefWidth="317.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="612.0" minHeight="110.0" prefHeight="200.0" vgrow="NEVER" />
                                  </rowConstraints>
                                  <children>
-                                    <TitledPane animated="false" collapsible="false" prefHeight="85.0" prefWidth="712.0" text="Filter">
+                                    <TitledPane animated="false" collapsible="false" prefHeight="158.0" text="Filter">
                                        <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="935.0">
+                                          <AnchorPane minHeight="0.0" minWidth="0.0">
                                              <children>
-                                                <GridPane hgap="5.0" layoutX="26.0" layoutY="3.93310546875" prefHeight="59.0" prefWidth="1132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <GridPane hgap="5.0" layoutX="26.0" layoutY="5.0" prefHeight="114.0" prefWidth="554.0">
                                                    <columnConstraints>
-                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                                                      <ColumnConstraints hgrow="ALWAYS" maxWidth="93.0" minWidth="10.0" prefWidth="57.0" />
-                                                      <ColumnConstraints hgrow="NEVER" maxWidth="132.0" minWidth="10.0" prefWidth="119.0" />
+                                                      <ColumnConstraints hgrow="NEVER" maxWidth="144.0" minWidth="0.0" />
+                                                      <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="NEVER" maxWidth="421.0" minWidth="0.0" />
+                                                      <ColumnConstraints hgrow="NEVER" maxWidth="373.0" minWidth="0.0" />
                                                    </columnConstraints>
                                                    <rowConstraints>
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <Button fx:id="routesSeeallDataButton" layoutX="1053.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesSeeAllDataButtonPressed" prefHeight="25.0" prefWidth="120.0" text="See All Points" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                                                      <TextField fx:id="routesSearchMenu" layoutX="699.0" layoutY="24.0" prefHeight="25.0" prefWidth="141.0" promptText="Search..." GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                                      <Button fx:id="routesSeeallDataButton" layoutX="1053.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesSeeAllDataButtonPressed" prefHeight="25.0" prefWidth="120.0" text="See All Points" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+                                                      <TextField fx:id="routesSearchMenu" layoutX="699.0" layoutY="24.0" prefHeight="25.0" prefWidth="141.0" promptText="Search..." GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                                                       <ComboBox fx:id="routesFilterBySourceMenu" layoutX="26.0" layoutY="26.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                                                      <ComboBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                                      <ComboBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
                                                       <ComboBox fx:id="routesFilterbyDestMenu" layoutX="195.0" layoutY="25.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                                                       <Text layoutX="35.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Source" />
-                                                      <Text layoutX="364.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.columnIndex="2" />
-                                                      <Text layoutX="529.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.columnIndex="3" />
-                                                      <ComboBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                                      <Text layoutX="364.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                                      <Text layoutX="529.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                                                      <ComboBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
                                                       <Text layoutX="196.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" GridPane.columnIndex="1" />
-                                                      <Button fx:id="routesFilterButton1" mnemonicParsing="false" onAction="#routesFilterButtonPressed" text="Filter" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                                      <Button fx:id="routesFilterButton1" mnemonicParsing="false" onAction="#routesFilterButtonPressed" prefHeight="25.0" prefWidth="121.0" text="Filter" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                                    </children>
                                                 </GridPane>
                                              </children>
                                           </AnchorPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane animated="false" collapsible="false" prefHeight="85.0" prefWidth="179.0" text="Other" GridPane.columnIndex="1">
+                                    <TitledPane animated="false" collapsible="false" prefHeight="159.0" text="Other" GridPane.columnIndex="1">
                                       <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="166.0">
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="133.0" prefWidth="385.0">
                                              <children>
-                                                <GridPane hgap="5.0" layoutX="10.0" layoutY="15.0" prefHeight="30.0" prefWidth="174.0">
-                                                  <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="103.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="79.0" />
-                                                  </columnConstraints>
-                                                  <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                  </rowConstraints>
+                                                <GridPane layoutX="160.0" layoutY="25.0" prefHeight="133.0" prefWidth="417.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
                                                    <children>
-                                                      <Button fx:id="addRouteToTable" mnemonicParsing="false" onAction="#addSingleRoute" prefHeight="25.0" prefWidth="95.0" text="Add Route" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                                      <Button fx:id="routesFilterButton" alignment="CENTER" mnemonicParsing="false" onAction="#routesFilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                                      <Button fx:id="routesFilterButton" alignment="CENTER" layoutX="160.0" layoutY="25.0" mnemonicParsing="false" onAction="#routesFilterButtonPressed" prefHeight="25.0" prefWidth="97.0" style="-fx-base: #E81F00;" text="Update" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                      <Button fx:id="addRouteToTable" layoutX="161.0" layoutY="67.0" mnemonicParsing="false" onAction="#addRouteData" prefHeight="25.0" prefWidth="95.0" text="Add Route" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                                    </children>
                                                 </GridPane>
                                              </children>
@@ -248,24 +246,24 @@
                                     <TableColumn fx:id="airportDSTCol" prefWidth="75.0" text="DST" visible="false" />
                                     <TableColumn fx:id="airportTZCol" prefWidth="60.3333740234375" text="TZ" />
                                     <TableColumn fx:id="airportErrorCol" prefWidth="75.0" text="Errors" visible="false" />
-                                    <TableColumn fx:id="airportIncCol" prefWidth="75.0" text="Incoming" />
-                                    <TableColumn fx:id="airportOutCol" prefWidth="75.0" text="Outgoing" />
+                                    <TableColumn fx:id="airportIncCol" prefWidth="75.0" text="Outgoing" />
+                                    <TableColumn fx:id="airportOutCol" prefWidth="75.0" text="Incoming" />
                                  </columns>
                               </TableView>
                               <GridPane hgap="5.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="754.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                                     <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="375.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" prefWidth="592.0" text="Filter">
+                                    <TitledPane prefHeight="89.0" prefWidth="735.0">
                                        <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0">
                                              <children>
-                                                <GridPane hgap="5.0" layoutX="10.399999618530273" layoutY="7.0" prefHeight="59.0" prefWidth="1132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <GridPane hgap="5.0" layoutX="10.399999618530273" layoutY="7.0" prefHeight="63.0" prefWidth="752.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="NEVER" />
                                                       <ColumnConstraints hgrow="ALWAYS" />
@@ -280,7 +278,7 @@
                                                    </rowConstraints>
                                                    <children>
                                                       <Text layoutX="166.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keyword" GridPane.columnIndex="1" />
-                                                      <ComboBox fx:id="airportFilterByCountryMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                                      <ComboBox fx:id="airportFilterByCountryMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" prefWidth="120.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                        <TextField fx:id="airportSearchQuery" layoutX="165.39999961853027" layoutY="23.399999618530273" promptText="Search..." GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                       <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
                                                       <Button fx:id="filterButton1" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" prefHeight="25.0" prefWidth="82.0" text="Filter" GridPane.columnIndex="3" GridPane.rowIndex="1" />
@@ -291,27 +289,22 @@
                                           </AnchorPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" prefWidth="712.0" text="Other" GridPane.columnIndex="1">
+                                    <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" text="Other" GridPane.columnIndex="1">
                                        <content>
                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
                                              <children>
-                                                <GridPane hgap="10.0" layoutX="10.399999618530273" layoutY="7.0" prefHeight="59.0" prefWidth="1132.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <children>
-                                                      <Button fx:id="addAirportToTable1" layoutX="904.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" onAction="#addSingleAirport" prefHeight="25.0" prefWidth="113.0" text="Add Airport" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                                                      <Button fx:id="filterButton1" layoutX="1002.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                                                   </children>
+                                                <GridPane layoutX="30.399999618530273" layoutY="28.399999618530273" prefHeight="63.0" prefWidth="373.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columnConstraints>
-                                                      <ColumnConstraints hgrow="NEVER" />
-                                                      <ColumnConstraints hgrow="NEVER" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
-                                                      <ColumnConstraints hgrow="NEVER" maxWidth="341.0" minWidth="0.0" prefWidth="96.99999237060547" />
-                                                      <ColumnConstraints hgrow="NEVER" maxWidth="540.9999694824219" minWidth="57.0" prefWidth="92.00000762939453" />
-                                                      <ColumnConstraints hgrow="NEVER" maxWidth="344.0" minWidth="37.0" prefWidth="114.0" />
-                                                      <ColumnConstraints hgrow="NEVER" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                    </columnConstraints>
                                                    <rowConstraints>
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
+                                                   <children>
+                                                      <Button fx:id="filterButton1" layoutX="136.39999961853027" layoutY="28.399999618530273" mnemonicParsing="false" onAction="#AirportFilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                      <Button fx:id="addAirportToTable1" layoutX="30.399999618530273" layoutY="28.399999618530273" mnemonicParsing="false" onAction="#addSingleAirport" prefHeight="25.0" prefWidth="113.0" text="Add Airport" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                   </children>
                                                 </GridPane>
                                              </children>
                                           </AnchorPane>
@@ -355,7 +348,7 @@
                               </TableView>
                               <GridPane hgap="10.0" prefHeight="108.0" prefWidth="1143.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1134.0" minWidth="0.0" prefWidth="908.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1134.0" minWidth="0.0" />
                                     <ColumnConstraints hgrow="ALWAYS" maxWidth="1134.0" minWidth="0.0" prefWidth="206.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1134.0" minWidth="0.0" prefWidth="0.0" />
                                  </columnConstraints>
@@ -363,11 +356,11 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" prefWidth="989.0" text="Filter" GridPane.hgrow="ALWAYS">
+                                    <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" text="Filter" GridPane.hgrow="ALWAYS">
                                        <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="858.0">
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0">
                                              <children>
-                                                <GridPane hgap="5.0" layoutX="10.399999618530273" layoutY="6.93310546875" prefHeight="59.0" prefWidth="1132.0" vgap="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <GridPane hgap="5.0" layoutX="10.399999618530273" layoutY="6.93310546875" vgap="1.0">
                                                    <columnConstraints>
                                                       <ColumnConstraints hgrow="ALWAYS" />
                                                       <ColumnConstraints hgrow="ALWAYS" />
@@ -380,8 +373,8 @@
                                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <ComboBox fx:id="airlineFilterMenu" layoutX="215.39999961853027" layoutY="23.399999618530273" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                                                       <TextField fx:id="airlineSearchQuery" layoutX="420.3999996185303" layoutY="23.399999618530273" prefHeight="25.0" prefWidth="245.0" promptText="Search..." GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                                      <ComboBox fx:id="airlineFilterMenu" layoutX="215.39999961853027" layoutY="23.399999618530273" prefWidth="120.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                                       <TextField fx:id="airlineSearchQuery" layoutX="420.3999996185303" layoutY="23.399999618530273" prefHeight="25.0" prefWidth="120.0" promptText="Search..." GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                       <Button fx:id="airlineFilterButton" layoutX="998.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlinefilterButtonPressed" text="Filter" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                                          <GridPane.margin>
                                                             <Insets />
@@ -389,7 +382,7 @@
                                                       </Button>
                                                       <Text layoutX="165.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
                                                       <Button fx:id="airlineSeeAllButton" layoutX="1056.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlineSeeAllButtonPressed" text="See All Points" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                                                      <ComboBox fx:id="airlineActiveMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                                                      <ComboBox fx:id="airlineActiveMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                       <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Active" GridPane.columnIndex="1" />
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Keyword" GridPane.columnIndex="2" />
                                                    </children>
@@ -398,22 +391,21 @@
                                           </AnchorPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" prefWidth="231.0" text="Other" GridPane.columnIndex="1">
+                                    <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" prefHeight="85.0" text="Other" GridPane.columnIndex="1">
                                        <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0" prefWidth="209.0">
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="59.0">
                                              <children>
-                                                <GridPane hgap="5.0" layoutX="14.0" layoutY="14.0" prefHeight="44.0" prefWidth="193.0">
-                                                  <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.0" minWidth="10.0" prefWidth="111.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="107.0" />
-                                                  </columnConstraints>
-                                                  <rowConstraints>
-                                                      <RowConstraints maxHeight="24.0" minHeight="2.0" prefHeight="11.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                                                  </rowConstraints>
+                                                <GridPane layoutX="38.400001525878906" layoutY="18.399999618530273" prefHeight="59.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
                                                    <children>
-                                                      <Button fx:id="airlineFilterButton1" alignment="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlinefilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                                                      <Button fx:id="addAirlineToTable" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#addSingleAirline" text="Add Airline" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                      <Button fx:id="airlineFilterButton1" alignment="CENTER" layoutX="132.39999961853027" layoutY="18.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlinefilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                      <Button fx:id="addAirlineToTable" layoutX="38.39999961853027" layoutY="18.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#addSingleAirline" text="Add Airline" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                                    </children>
                                                 </GridPane>
                                              </children>

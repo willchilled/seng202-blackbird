@@ -7,19 +7,28 @@ import java.util.ArrayList;
 
 
 /**
- * Created by sha162 on 16/09/16.
-  */
+ * This class handles parsing of data, using an imported library called opencsv and the class CSVReader
+ * to read through an inputted file.
+ */
 public class ParserRefactor {
 
+    /**
+     * Parses a given file using CSVReader to generate a string array. This is then passed to the DataPoint
+     * static method to create a new DataPoint, and added to an arraylist of DataPoints.
+     * @param file The input file
+     * @param pointType The type of points that we are wanting to create
+     * @return The arraylist of datapoints that have been parsed from the file.
+     * @see DataPoint
+     * @see CSVReader
+     */
     public static ArrayList<DataPoint> parseFile(File file, String pointType){
-        DataPoint currentDataPoint = new DataPoint();
-        ArrayList<DataPoint> allDataPoints =  new ArrayList<DataPoint>();
+        ArrayList<DataPoint> allDataPoints =  new ArrayList<>();
         try {
             CSVReader reader = new CSVReader(new FileReader(file), ',', '"', '\0');
             String [] currentLine;
             while ((currentLine = reader.readNext()) != null) {
                 String[] formattedLine = formatLine(currentLine);
-                currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType);
+                DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType);
                 allDataPoints.add(currentDataPoint);
             }
         } catch (FileNotFoundException e) {
@@ -29,11 +38,15 @@ public class ParserRefactor {
         }
 
         return allDataPoints;
-
     }
 
+    /**
+     * Helper method to format each file line; removes all of the \N's in a line replacing them with null
+     * @param currentLine The current line, as a string array
+     * @return The formatted line, as a string array
+     */
     private static String[] formatLine(String[] currentLine) {
-        //Removes all of the \N's in a line replacing them with null
+        //
         String[] formattedLine = new String[currentLine.length];
         int lineCount = 0;
         for (String line: currentLine){

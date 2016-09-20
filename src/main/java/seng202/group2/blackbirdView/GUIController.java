@@ -269,7 +269,7 @@ public class GUIController {
 //        ArrayList<FlightPoint> flightPoints = Parser.parseFlightData(flightsFile);
 //
 //
-//
+//updateRefactoredAirportsTable
 //        BBDatabase.deleteDBFile();
 //        BBDatabase.createTables();
 //        BBDatabase.addAirlinePointstoDB(airlinePoints);
@@ -302,7 +302,7 @@ public class GUIController {
 //        airlineActiveMenu.setItems(airlineActiveList);
 //        airlineActiveMenu.setValue(airlineActiveList.get(0));
 //        setAirlineActiveList(airlineActiveList);
-//
+//updateRefactoredAirportsTable
 //        airlineActiveMenu.setItems(getAirlineActiveList());
 //        airlineActiveMenu.setValue(getAirlineActiveList().get(0));
 //        airlineCountryList = populateAirlineCountryList();
@@ -339,10 +339,33 @@ public class GUIController {
         DataBaseRefactor.insertDataPoints(myAirportPoints);
         ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints("AirportPoint");
         updateRefactoredAirportsTable(validAirportPoints);
+        updateAirportFields();
+
+    }
+
+    /**
+     * Updates the Airport dropdowns by populating them with current data from the database
+     */
+    public void updateAirportFields(){
+
+        airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
+        airlineActiveMenu.setItems(airlineActiveList);
+        airlineActiveMenu.setValue(airlineActiveList.get(0));
 
 
+        airPortCountryList = populateAirportCountryList();  //populating from valid data in database
+        airportFilterMenu.setItems(airPortCountryList);
+        airportFilterMenu.setValue(airPortCountryList.get(0));
 
+    }
 
+    private ObservableList<String> populateAirlineCountryList(){
+        //Populates the airline countries list
+        ArrayList<String> countries = Filter.filterUniqueAirLineCountries(Filter.getAllAirlinePointsfromDB());
+        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
+        countryList = addNullValue(countryList); //we need to add a null value
+        //System.out.println(countryList);
+        return countryList;
     }
 
     private void updateRefactoredAirportsTable(ArrayList<DataPoint> validAirportPoints) {
@@ -373,35 +396,36 @@ public class GUIController {
         });
 
 
-//        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event){
-//                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-//                    Stage stage;
-//                    Parent root;
-//                    stage = new Stage();
-//                    try {
-//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
-//                        root = loader.load();
-//                        AirportPopUpController popUpController = loader.getController();
-//                        popUpController.setAirportPoint(airportTable.getSelectionModel().getSelectedItem());
-//                        popUpController.setUpPopUp();
-//
-//                        stage.setScene(new Scene(root));
-//                        stage.setTitle("My Popup test");
-//                        stage.initModality(Modality.NONE);
-//                        stage.initOwner(null);
-//
-//                        stage.show();
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        //System.out.println("AH NO!");
-//                    }
-//
-//                }
-//            }
-//        });
+        airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Stage stage;
+                    Parent root;
+                    stage = new Stage();
+                    try {
+                        AirportPoint myPoint = (AirportPoint) airportTable.getSelectionModel().getSelectedItem();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
+                        root = loader.load();
+                        AirportPopUpController popUpController = loader.getController();
+                        popUpController.setAirportPoint(myPoint);
+                        popUpController.setUpPopUp();
+
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("My Popup test");
+                        stage.initModality(Modality.NONE);
+                        stage.initOwner(null);
+
+                        stage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        //System.out.println("AH NO!");
+                    }
+
+                }
+            }
+        });
     }
 
     public void addAirlineData(){
@@ -436,14 +460,6 @@ public class GUIController {
 
     }
 
-    private ObservableList<String> populateAirlineCountryList(){
-        //Populates the airline countries list
-        ArrayList<String> countries = Filter.filterUniqueAirLineCountries(Filter.getAllAirlinePointsfromDB());
-        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
-        countryList = addNullValue(countryList); //we need to add a null value
-        //System.out.println(countryList);
-        return countryList;
-    }
 
     public void addRouteData(){
         //adds route data into route list

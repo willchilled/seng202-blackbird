@@ -1,11 +1,8 @@
 package seng202.group2.blackbirdModel;
-import seng202.group2.blackbirdView.GUIController;
 
-import javax.swing.*;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sha162 on 10/09/16.

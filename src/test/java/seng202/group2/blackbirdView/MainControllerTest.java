@@ -8,7 +8,9 @@ import java.util.ArrayList;
 /**
  * Created by sha162 on 4/09/16.
  */
-public class GUIControllerTest extends TestCase {
+public class MainControllerTest extends TestCase {
+
+
     public void testSetAllPoints() throws Exception {
 
     }
@@ -71,7 +73,7 @@ public class GUIControllerTest extends TestCase {
 
     }
 
-    public void testAirlinefilterButtonPressed() throws Exception {
+    public void testAirlineFilterButtonPressed() throws Exception {
 
     }
 

@@ -1,13 +1,11 @@
-package seng202.group2.blackbirdView;
+package seng202.group2.blackbirdControl;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.BBDatabase;
 
 import java.util.Arrays;
 import java.util.List;

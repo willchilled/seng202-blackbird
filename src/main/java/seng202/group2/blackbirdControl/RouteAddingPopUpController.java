@@ -10,14 +10,8 @@ import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.Parser;
 import seng202.group2.blackbirdModel.RoutePoint;
-import seng202.group2.blackbirdView.GUIController;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import static seng202.group2.blackbirdModel.Parser.checkRouteData;
 
 /**
  * Created by sbe67 on 15/09/16.

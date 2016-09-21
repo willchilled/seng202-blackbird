@@ -95,7 +95,7 @@ public class DataBaseRefactor {
                             //FlightPoint myFlight = (FlightPoint) myPoints.get(0);
                             preparedStatement = prepareInsertFlightPointStatement(currentPoint, preparedStatement, currentConnection);
                             flightPointCount++;
-                        System.out.println(preparedStatement.toString());
+                        //System.out.println(preparedStatement.toString());
                             //System.out.println("AHH");
                             break;
                 }

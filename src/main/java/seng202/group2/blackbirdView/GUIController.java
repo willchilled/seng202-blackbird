@@ -73,7 +73,7 @@ public class GUIController {
     @FXML private TableView<DataPoint> airlineTable;
     @FXML private TableView<RoutePoint> routeTable;
     @FXML private TableView<Flight> flightTable;
-    @FXML private TableView<FlightPoint> flightPointTable;
+    @FXML private TableView<DataPoint> flightPointTable;
 // AIRPORT Table columns
     @FXML private TableColumn airportIDCol;
     @FXML private TableColumn airportNameCol;
@@ -488,16 +488,22 @@ public class GUIController {
         System.out.println("Add Flight Data");
 
 
-        try {
+
+
+        //try {
             File f = getFile();
-            ArrayList<FlightPoint> myFlightData = Parser.parseFlightData(f);
-            BBDatabase.addFlighttoDB(myFlightData);
-            //updateFlightsTable(myFlightData);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Error in flight, aborted.");
-        }
+            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, "FlightPoint");
+            //BBDatabase.addFlighttoDB(myFlightData);
+            DataBaseRefactor.insertDataPoints(myFlightData);
+        ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints("FlightPoint");
+
+            updateFlightsTable(myFlightData);
+        //updateFlightsDropdowns();
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(new JPanel(), "There was some incorrect data in your flight file.",
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//            System.out.println("Error in flight, aborted.");
+//        }
     }
 
 
@@ -723,6 +729,38 @@ public class GUIController {
 
 
     }
+
+    private void updateFlightsTable(ArrayList<DataPoint> points){
+        //updates FLIGHTS table with a set of FLIGHT POINTS
+        Flight myFlight = new Flight(points);
+
+
+        flightTable.getItems().addAll(myFlight);
+        flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
+        flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
+
+        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    //exportFlightMenuButton.setDisable(false);
+
+                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
+
+                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
+
+                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localType"));
+                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localeID"));
+                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("altitude"));
+                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
+                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
+                }
+
+            }
+        });
+
+    }
+
 
     // I HAVE BEEN COMENTED OUT BECAUSE I AM NOT WORKING
 

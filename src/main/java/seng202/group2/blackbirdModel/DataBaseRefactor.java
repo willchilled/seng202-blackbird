@@ -96,6 +96,7 @@ public class DataBaseRefactor {
                             //FlightPoint myFlight = (FlightPoint) myPoints.get(0);
                             preparedStatement = prepareInsertFlightPointStatement(currentPoint, preparedStatement, currentConnection);
                             flightPointCount++;
+                        System.out.println(preparedStatement.toString());
                             //System.out.println("AHH");
                             break;
                 }
@@ -105,7 +106,7 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 }
                 catch (Exception e){
-                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                     System.out.println("Cant add: " +  currentPoint.toString());
                 }
             }

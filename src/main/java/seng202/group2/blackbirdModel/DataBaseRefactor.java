@@ -79,7 +79,8 @@ public class DataBaseRefactor {
                 //PreparedStatement preparedStatement = null;
 
                 switch (dataType){
-                    case AIRLINEPOINT: //System.out.println("Hey");
+                    case AIRLINEPOINT:
+                        //System.out.println("Hey");
                             preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
                             break;
 

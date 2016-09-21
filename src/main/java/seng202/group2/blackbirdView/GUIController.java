@@ -176,6 +176,9 @@ public class GUIController {
     //Airline Popup Info
   //  @FXML private Text nameText;
 
+    /**
+     * Dont delete this method, it is needed
+     */
     @FXML
     private void initialize(){
         //Automatic initialisation when the program starts

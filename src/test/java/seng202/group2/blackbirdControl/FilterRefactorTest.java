@@ -32,7 +32,12 @@ public class FilterRefactorTest extends TestCase {
 
 
         ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
+        System.out.println(airlinePoints.get(1) + "\n");
+        assertEquals(airlinePoints.size(), 100);
+
         ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
+        System.out.println(airportPoint.get(1) + "I'm here");
+        assertEquals(airportPoint.size(), 100);
 
         ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
         ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT);

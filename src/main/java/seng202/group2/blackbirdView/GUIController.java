@@ -338,9 +338,9 @@ public class GUIController {
 //        airportFilterMenu.setValue(airPortCountryList.get(0));
 
         /* Refactored version */
-        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, "AirportPoint");
+        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT);
         DataBaseRefactor.insertDataPoints(myAirportPoints);
-        ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints("AirportPoint");
+        ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         updateRefactoredAirportsTable(validAirportPoints);
         updateAirportFields();
 
@@ -429,6 +429,7 @@ public class GUIController {
                 }
             }
         });
+    }
 
     public void addAirlineData(){
         //Adds airline data into filter menu, updates airline data list
@@ -820,7 +821,7 @@ public class GUIController {
 //        updateAirportsTable(filteredPoints);
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(countrySelection));
-        ArrayList<DataPoint> myFilteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirportPoint");
+        ArrayList<DataPoint> myFilteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
         updateRefactoredAirportsTable(myFilteredPoints);
 
 
@@ -849,7 +850,7 @@ public class GUIController {
         menusPressed.add(activeSelection);
 
 
-        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirlinePoint");
+        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
         updateAirlinesTable(allPoints);
 
 
@@ -900,7 +901,7 @@ public class GUIController {
 
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("Airline"); //airportTable.getItems()
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT); //airportTable.getItems()
         updateAirlinesTable(allPoints);
 
         airlineFilterMenu.setValue(airlineCountryList.get(0));
@@ -921,7 +922,7 @@ public class GUIController {
 
 
 
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("AirportPoint"); //airportTable.getItems();
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT); //airportTable.getItems();
         // ArrayList<AirportPoint> filteredPoints = Filter.filterAirportCountry(allPoints, selection);
         updateRefactoredAirportsTable(allPoints);
 

@@ -47,7 +47,6 @@ public class DataPoint {
 
         DataPoint currentPoint = new DataPoint(type);
         if (type == DataTypes.AIRLINEPOINT) {
-            System.out.println("here");
             currentPoint = new AirlinePoint(dataArray);
 
         } else if (type == DataTypes.AIRLINEPOINT) {

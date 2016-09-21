@@ -105,7 +105,7 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 }
                 catch (Exception e){
-                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                     System.out.println("Cant add: " +  currentPoint.toString());
                 }
             }
@@ -305,7 +305,6 @@ public class DataBaseRefactor {
      * @return The prepared sql statement to insert an airline into the database.
      */
     private static PreparedStatement prepareInsertAirlineSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
-
         AirlinePoint airline = (AirlinePoint) currentPoint; //Casting to make more specific
         int id = airline.getAirlineID();
         String name = airline.getAirlineName();
@@ -359,8 +358,6 @@ public class DataBaseRefactor {
         System.out.println("Performing edit:" + sql);
 
     }
-
-
 
     /**
      * Performs a generic query to the database e.g. for filtering and searching. Calls the static method of

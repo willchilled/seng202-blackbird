@@ -22,8 +22,7 @@ public class ParserRefactor {
      * @see CSVReader
      */
     public static ArrayList<DataPoint> parseFile(File file, DataTypes pointType){
-        DataPoint currentDataPoint = new DataPoint();
-        ArrayList<DataPoint> allDataPoints =  new ArrayList<DataPoint>();
+        ArrayList<DataPoint> allDataPoints =  new ArrayList<>();
         try {
             CSVReader reader = new CSVReader(new FileReader(file), ',', '"', '\0');
             String [] currentLine;

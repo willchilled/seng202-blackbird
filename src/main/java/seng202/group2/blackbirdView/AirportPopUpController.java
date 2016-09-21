@@ -159,7 +159,7 @@ public class AirportPopUpController {
         String dst = airportDstTextEdit.getText();
         String tz = airportTZTextEdit.getText();
 
-        List<String> attributes = Arrays.asList(name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz);
+        List<String> attributes = Arrays.asList(airportIdText.getText(), name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz);
 
 
         if(validEntries(attributes)) {

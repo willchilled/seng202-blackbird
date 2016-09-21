@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import seng202.group2.blackbirdControl.Validater;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
@@ -131,10 +132,8 @@ public class AirlinePopUpController {
 
 
         String[] attributes = new String[] {idText.getText(), name, alias, iata, icao, callsign, country, active};
-        AirlinePoint myAirlineAirlinePoint = new AirlinePoint(attributes);
-        System.out.println(myAirlineAirlinePoint.getAirlineID());
 
-        if(!(myAirlineAirlinePoint.getAirlineID() == -1)) {
+        if(Validater.checkAirline(attributes)) {
 
             airlineNameTextEdit.setVisible(false);
             airlineCountryTextEdit.setVisible(false);

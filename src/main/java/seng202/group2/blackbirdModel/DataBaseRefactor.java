@@ -59,7 +59,6 @@ public class DataBaseRefactor {
             Class.forName("org.sqlite.JDBC");
             currentConnection = DriverManager.getConnection(getDatabaseName());
             currentConnection.setAutoCommit(false);
-            Statement stmt = currentConnection.createStatement();
             PreparedStatement preparedStatement = null;
 
             if (myPoints.get(0).getType().equals("FlightPoint")){
@@ -110,7 +109,6 @@ public class DataBaseRefactor {
                 }
             }
                 //.close();
-            currentConnection.commit();
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
@@ -340,6 +338,30 @@ public class DataBaseRefactor {
         return preparedStatement;
     }
 
+    public static void editDataEntry(String sql){
+
+        Connection c = makeConnection();
+
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            stmt.executeUpdate( sql );
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Performing edit:" + sql);
+
+    }
+
+
     /**
      * Adds an airline point.
      * @param currentPoint The airline point we want to add.
@@ -396,6 +418,9 @@ public class DataBaseRefactor {
                 resultPoints.add(myPoint);
                // System.out.println(myPoint.toString());
             }
+            preparedStatement.close();
+            currentConnection.close();
+            rs.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

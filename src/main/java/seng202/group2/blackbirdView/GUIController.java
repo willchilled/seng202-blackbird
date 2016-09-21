@@ -595,7 +595,6 @@ public class GUIController {
                     //Cast to airline Point to be able to get the name of the point
                     AirlinePoint myPoint = (AirlinePoint) airlineTable.getSelectionModel().getSelectedItem();
                     String myText = myPoint.getAirlineName();
-                    System.out.println(myText);
                     Stage stage;
                     Parent root;
                     stage = new Stage();

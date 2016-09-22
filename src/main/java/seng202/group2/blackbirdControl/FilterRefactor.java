@@ -75,7 +75,7 @@ public class FilterRefactor {
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
 
-        String sql = "SELECT * FROM ROUTE ";
+        String sql = "SELECT * FROM " + getJoinForRoutesTableSql() ;
         boolean allNone = checkEmptyMenus(menusPressed);
         //System.out.println(allNone + "-----------------------");
         if (!allNone){
@@ -86,9 +86,9 @@ public class FilterRefactor {
 
         String search = "";
         if (searchString.length() >0){
-            String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
-                    + "OR ROUTE.Src=\"%1$s\" OR ROUTE.SrcID=\"%1$s\" OR ROUTE.Dst=\"%1$s\" OR ROUTE.Dstid=\"%1$s\""
-                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
+            String searchStatement = "(IDnum=\"%1$s\" OR IDnum=\"%1$s\" OR AirlineID=\"%1$s\""
+                    + "OR Src=\"%1$s\" OR SrcID=\"%1$s\" OR Dst=\"%1$s\" OR Dstid=\"%1$s\""
+                    + "OR Codeshare=\"%1$s\" OR Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
             search = String.format(searchStatement, searchString);
             if(allNone){
                 sql += " WHERE ";
@@ -226,6 +226,12 @@ public class FilterRefactor {
                 "(select count(*) from route where route.dstid=airport.id)\n" +
                 "as outgoing from airport\n)  ";
         return sql;
+    }
+
+    private static String getJoinForRoutesTableSql(){
+        return " (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
+                "FROM route\n" +
+                "LEFT JOIN airport as a1 ON route.Srcid =  a1.id LEFT JOIN airport as a2 ON route.Dstid = a2.id\n) ";
     }
     /**
      * Helper function to append to the current sql string using the selected filter dropdowns.

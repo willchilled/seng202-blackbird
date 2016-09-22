@@ -267,6 +267,7 @@ public class BBDatabase {
                 active + "\");";
         // System.out.println(sql);
         try {
+            System.out.println("sql = " + sql);
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());

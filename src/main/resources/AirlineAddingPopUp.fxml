@@ -33,11 +33,6 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Callsign" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Active" GridPane.rowIndex="7" />
             <TextField fx:id="Name" promptText="Enter Name..." GridPane.columnIndex="1" />
-            <TextField fx:id="ID" promptText="Enter ID..." GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </TextField>
             <TextField fx:id="Alias" promptText="Enter Alias..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="IATA" promptText="Enter IATA..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="ICAO" promptText="Enter ICAO..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -54,10 +49,11 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" onAction="#cancleButtonPressed"/>
-                  <Button mnemonicParsing="false" text="Create" GridPane.columnIndex="1"  onAction="#createButtonPressed"/>
+                  <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
             </GridPane>
+            <Text fx:id="airlineID" strokeType="OUTSIDE" strokeWidth="0.0" text="Generated ID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
          <BorderPane.margin>
             <Insets />

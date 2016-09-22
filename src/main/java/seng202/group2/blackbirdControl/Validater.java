@@ -158,7 +158,6 @@ public class Validater {
 
     /**
      * Checks all attributes of an airline individually for validity. Checks type, length and required attributes.
-     *
      * @param attributes the attributes to be made into an airline point in the order:
      *                   id
      *                   name
@@ -219,6 +218,24 @@ public class Validater {
 
     }
 
+    /**
+     * Checks all attributes of an Airport for validity before trying to perform actions on them. Checks type, lenghth
+     * and validity
+     * @param attributes The attributes to be made into an airport point in the order:
+     *                   id
+     *                   name
+     *                   city
+     *                   country
+     *                   iata
+     *                   icao
+     *                   lat
+     *                   lon
+     *                   alt
+     *                   timeZone
+     *                   dst
+     *                   tz
+     * @return A boolean indicating whether the data is valid or not
+     */
     public static boolean checkAirport(String[] attributes){
 
         String id = attributes[0];
@@ -234,42 +251,42 @@ public class Validater {
         String dst = attributes[10];
         String tz = attributes[11];
 
-        if(!isValidID(id)){
-            System.out.println("BAD ID");
-        }
-        if(!isValidName(name)){
-            System.out.println("BAD name");
-        }
-        if(!isValidCity(city)){
-            System.out.println("BAD city");
-        }
-        if(!isValidCountry(country)){
-            System.out.println("BAD country");
-        }
-        if(!isValidIATA(iata)){
-            System.out.println("BAD iata");
-        }
-        if(!isValidICAO(icao)){
-            System.out.println("BAD icao");
-        }
-        if(!isValidLat(lat)){
-            System.out.println("BAD lat");
-        }
-        if(!isValidLong(lon)){
-            System.out.println("BAD lon");
-        }
-        if(!isValidAlt(alt)){
-            System.out.println("BAD alt");
-        }
-        if(!isValidTimeZone(timeZone)){
-            System.out.println("BAD timeZone");
-        }
-        if(!isValidDST(dst)){
-            System.out.println("BAD dst");
-        }
-        if(!isValidTZ(tz)){
-            System.out.println("BAD tz");
-        }
+//        if(!isValidID(id)){
+//            System.out.println("BAD ID");
+//        }
+//        if(!isValidName(name)){
+//            System.out.println("BAD name");
+//        }
+//        if(!isValidCity(city)){
+//            System.out.println("BAD city");
+//        }
+//        if(!isValidCountry(country)){
+//            System.out.println("BAD country");
+//        }
+//        if(!isValidIATA(iata)){
+//            System.out.println("BAD iata");
+//        }
+//        if(!isValidICAO(icao)){
+//            System.out.println("BAD icao");
+//        }
+//        if(!isValidLat(lat)){
+//            System.out.println("BAD lat");
+//        }
+//        if(!isValidLong(lon)){
+//            System.out.println("BAD lon");
+//        }
+//        if(!isValidAlt(alt)){
+//            System.out.println("BAD alt");
+//        }
+//        if(!isValidTimeZone(timeZone)){
+//            System.out.println("BAD timeZone");
+//        }
+//        if(!isValidDST(dst)){
+//            System.out.println("BAD dst");
+//        }
+//        if(!isValidTZ(tz)){
+//            System.out.println("BAD tz");
+//        }
 
         return (isValidID(id) &&
                 isValidName(name) &&
@@ -286,6 +303,11 @@ public class Validater {
 
     }
 
+    /**
+     * A helper function for checking if all characters ar upper case
+     * @param s The string to check
+     * @return A Boolean indicating if it is in fact all upper case
+     */
     private static boolean isAllUpper(String s) {
         for(char c : s.toCharArray()) {
             if(Character.isLetter(c) && Character.isLowerCase(c)) {

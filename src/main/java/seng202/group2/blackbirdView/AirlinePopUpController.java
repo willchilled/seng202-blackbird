@@ -6,8 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import seng202.group2.blackbirdControl.Validater;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.BBDatabase;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,12 +18,6 @@ public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
 
-    /*
-    public AirlinePopUpController(AirlinePoint airlinePoint) {
-        this.airlinePoint = airlinePoint;
-        this.airlineName = airlinePoint.getAirlineName();
-    }
-    */
 
     @FXML private Label nameText;
     @FXML private Label idText;
@@ -32,7 +28,6 @@ public class AirlinePopUpController {
     @FXML private Label callsignText;
     @FXML private Label activeText;
     @FXML private TextField airlineNameTextEdit;
-    @FXML private TextField airlineIDTextEdit;
     @FXML private TextField airlineCountryTextEdit;
     @FXML private TextField airlineAliasTextEdit;
     @FXML private TextField airlineIATATextEdit;
@@ -48,7 +43,6 @@ public class AirlinePopUpController {
 
     @FXML
     void setUpPopUp(){
-        System.out.println("here!");
         nameText.setText(airlinePoint.getAirlineName());
         idText.setText(String.valueOf(airlinePoint.getAirlineID()));
         countryText.setText(airlinePoint.getCountry());
@@ -59,10 +53,6 @@ public class AirlinePopUpController {
         activeText.setText(airlinePoint.getActive());
 
 
-
-      //  nameText.setVisible(true);
-        //nameText.setText("Hi");
-        //String ms = nameText.getText();
     }
 
     public void setAirlinePoint(AirlinePoint airlinePoint) {
@@ -70,10 +60,12 @@ public class AirlinePopUpController {
     }
 
 
+    /**
+     * Called upon pressing the edit button in the view data menu. Switches to editing mode.
+     */
     public void editAirline(){
 
         airlineNameTextEdit.setVisible(true);
-        airlineIDTextEdit.setVisible(true);
         airlineCountryTextEdit.setVisible(true);
         airlineAliasTextEdit.setVisible(true);
         airlineIATATextEdit.setVisible(true);
@@ -89,9 +81,6 @@ public class AirlinePopUpController {
 
         if(nameText.getText() != ""){
             airlineNameTextEdit.setText((nameText.getText()));
-        }
-        if(idText.getText() != ""){
-            airlineIDTextEdit.setText(idText.getText());
         }
         if(countryText.getText() != ""){
             airlineCountryTextEdit.setText(countryText.getText());
@@ -112,15 +101,15 @@ public class AirlinePopUpController {
             airlineActiveTextEdit.setText(activeText.getText());
         }
 
-
-
-        //airlinePoint.setCountry("POOS");
     }
 
+    /**
+     * Called upon pressing the Finish button in the editing menu. Takes all editable fields and updates the selected
+     * point in the database and then returns to the data viewing menu
+     */
     public void commitEdit(){
 
         String name = airlineNameTextEdit.getText();
-        String id = airlineIDTextEdit.getText();
         String country = airlineCountryTextEdit.getText();
         String alias = airlineAliasTextEdit.getText();
         String iata = airlineIATATextEdit.getText();
@@ -128,15 +117,12 @@ public class AirlinePopUpController {
         String callsign = airlineCallsignTextEdit.getText();
         String active = airlineActiveTextEdit.getText();
 
-        List<String> attributes = Arrays.asList(name, id, country, alias, iata, icao, callsign, active);
 
-        System.out.println("calling valid Entries");
+        String[] attributes = new String[] {idText.getText(), name, alias, iata, icao, callsign, country, active};
 
-        if(validEntries(attributes)) {
+        if(Validater.checkAirline(attributes)) {
 
-            System.out.println("Lets save this data!");
             airlineNameTextEdit.setVisible(false);
-            airlineIDTextEdit.setVisible(false);
             airlineCountryTextEdit.setVisible(false);
             airlineAliasTextEdit.setVisible(false);
             airlineIATATextEdit.setVisible(false);
@@ -149,21 +135,21 @@ public class AirlinePopUpController {
             airlineEditButton.setVisible(true);
             nameText.setVisible(true);
 
-            System.out.println("ICAO: " + icaoText.getText());
-            System.out.println("IATA: " + iataText.getText());
+
+            String sql = String.format("UPDATE AIRLINE SET NAME='%1$s', COUNTRY='%2$s', ALIAS='%3$s'," +
+                    " IATA='%4$s', ICAO='%5$s', CALLSIGN='%6$s', ACTIVE='%7$s' WHERE ID='%8$s'",
+                    name, country, alias, iata, icao, callsign, active, idText.getText());
 
 
+            DataBaseRefactor.editDataEntry(sql);
 
-            String sql = String.format("UPDATE AIRLINE SET ID='%1$s', NAME='%2$s', COUNTRY='%3$s', ALIAS='%4$s'," +
-                    " IATA='%5$s', ICAO='%6$s', CALLSIGN='%7$s', ACTIVE='%8$s' WHERE NAME='%9$s' AND ID='%10$s'" +
-                    " AND ALIAS='%11$s' AND IATA='%12$s' AND ICAO='%13$s' AND CALLSIGN='%14$s' AND COUNTRY='%15$s' AND ACTIVE='%16$s'",
-                    id, name, country, alias, iata, icao, callsign, active, nameText.getText(), idText.getText(),
-                    aliasText.getText(), iataText.getText(), icaoText.getText(), callsignText.getText(),
-                    countryText.getText(), activeText.getText());
-
-            System.out.println(sql);
-
-           // BBDatabase.editAirlineDataEntry(sql);
+            nameText.setText(name);
+            countryText.setText(country);
+            aliasText.setText(alias);
+            iataText.setText(iata);
+            icaoText.setText(icao);
+            callsignText.setText(callsign);
+            activeText.setText(active);
 
 
 
@@ -172,11 +158,12 @@ public class AirlinePopUpController {
         }
     }
 
+    /**
+     * Discards all edited fields and returns to the data viewing menu
+     */
     public void cancelEdit(){
 
-        System.out.println("Nah fuck this!");
         airlineNameTextEdit.setVisible(false);
-        airlineIDTextEdit.setVisible(false);
         airlineCountryTextEdit.setVisible(false);
         airlineAliasTextEdit.setVisible(false);
         airlineIATATextEdit.setVisible(false);
@@ -188,13 +175,6 @@ public class AirlinePopUpController {
         airlineInvalidDataText.setVisible(false);
         airlineEditButton.setVisible(true);
         nameText.setVisible(true);
-    }
-
-    //TODO FIX VALID ENTRIES! Currently only returns true does not check anything!
-    public static boolean validEntries(List<String> attributes){
-
-        return true;
-
     }
 
 }

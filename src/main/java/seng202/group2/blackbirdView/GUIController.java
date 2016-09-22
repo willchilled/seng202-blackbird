@@ -50,11 +50,11 @@ public class GUIController {
 
 
 
-    ArrayList<AirportPoint> allPoints = new ArrayList<AirportPoint>();
+    ArrayList<AirportPoint> allPoints = new ArrayList<>();
     //ArrayList<AirportPoint> allValidPoints = new ArrayList<>();
 
     ArrayList<DataPoint> allAirlinePoints = new ArrayList<>();
-    ArrayList<RoutePoint> allRoutePoints = new ArrayList<RoutePoint>();
+    ArrayList<DataPoint> allRoutePoints = new ArrayList<DataPoint>();
 
 //    public ArrayList<AirportPoint> getAllValidPoints() {
 //        return allValidPoints;
@@ -71,7 +71,7 @@ public class GUIController {
     private MenuItem addDataMenuButton;
     @FXML private TableView<DataPoint> airportTable;
     @FXML private TableView<DataPoint> airlineTable;
-    @FXML private TableView<RoutePoint> routeTable;
+    @FXML private TableView<DataPoint> routeTable;
     @FXML private TableView<Flight> flightTable;
     @FXML private TableView<DataPoint> flightPointTable;
 // AIRPORT Table columns
@@ -153,11 +153,11 @@ public class GUIController {
 
 ;
 
-    public ArrayList<RoutePoint> getAllRoutePoints() {
+    public ArrayList<DataPoint> getAllRoutePoints() {
         return allRoutePoints;
     }
 
-    public void setAllRoutePoints(ArrayList<RoutePoint> allRoutePoints){
+    public void setAllRoutePoints(ArrayList<DataPoint> allRoutePoints){
         this.allRoutePoints = allRoutePoints;
     }
 
@@ -473,16 +473,14 @@ public class GUIController {
          File f;
          f = getFile();
 
-
-
-
-         ArrayList<RoutePoint> myRouteData = Parser.parseRouteData(f);
-        BBDatabase.addRoutePointstoDB(myRouteData);
+         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
+        DataBaseRefactor.insertDataPoints(myRouteData);
+        //BBDatabase.addRoutePointstoDB(myRouteData);
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
         //ArrayList<AirlinePoint> validRouteData = Filter.getAllRoutePointsfromDB();
-        setAllRoutePoints(myRouteData); //populating local data with all points
+        //setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
-        updateRoutesDropdowns();
+        //updateRoutesDropdowns();
 
     }
 
@@ -631,19 +629,28 @@ public class GUIController {
         });
     }
 
-    private void updateRoutesTable(ArrayList<RoutePoint> points){
+    private void updateRoutesTable(ArrayList<DataPoint> points){
 
         routeTable.getItems().setAll(points);
 
-        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
-        routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
-        routeSrcCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirport"));
-        routeSrcIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportID"));
-        routeDestCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirport"));
-        routeDestIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportID"));
-        routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
-        routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
-        routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+        routeAirlineCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airline"));
+        routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("airlineID"));
+        routeSrcCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("srcAirport"));
+        routeSrcIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("srcAirportID"));
+        routeDestCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("dstAirport"));
+        routeDestIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("dstAirportID"));
+        routeCSCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("codeshare"));
+        routeStopsCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("stops"));
+        routeEqCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String[]>("equipment"));
+
+        routeTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            //This refreshes the current table
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+                routeTable.getColumns().get(0).setVisible(false);
+                routeTable.getColumns().get(0).setVisible(true);
+            }
+        });
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -652,11 +659,12 @@ public class GUIController {
                     Stage stage;
                     Parent root;
                     stage = new Stage();
+                    RoutePoint myPoint = (RoutePoint) routeTable.getSelectionModel().getSelectedItem();
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
                         root = loader.load();
                         RoutePopUpController popUpController = loader.getController();
-                        popUpController.setRoutePoint(routeTable.getSelectionModel().getSelectedItem());
+                        popUpController.setRoutePoint(myPoint);
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
@@ -863,7 +871,7 @@ public class GUIController {
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
         String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
-        ArrayList<RoutePoint> routePoints = new ArrayList<>();
+        ArrayList<DataPoint> routePoints = new ArrayList<>();
 
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
@@ -879,7 +887,8 @@ public class GUIController {
 
         }
         if (!allNone){
-             routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+            routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.ROUTEPOINT);
+            //routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
 
 
         }

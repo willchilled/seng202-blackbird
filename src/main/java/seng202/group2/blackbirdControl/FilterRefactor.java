@@ -205,14 +205,12 @@ public class FilterRefactor {
     /**
      * Method that helps us to filter unique entries within a specified column from a table. Used to populate
      * the filter dropdown menus.
-     * @param type The table of data to query from (i.e. the type of data we are dealing with)
-     * @param input The specified column to get distinct strings from (e.g. Countries)
      * @return The arraylist of distinct strings returned from the database
      * @see DataBaseRefactor
      */
-    protected static ArrayList<String> filterUnique(String type, String input) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
+    protected static ArrayList<String> filterDistinct(String column, String table) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
         String sql = "SELECT DISTINCT %s from %s";
-        sql = String.format(sql, input, type);
+        sql = String.format(sql, column, table);
         ArrayList<String> menuItems = DataBaseRefactor.performDistinctQuery(sql);   //DB method to grab distinct stuff
         Collections.sort(menuItems, String.CASE_INSENSITIVE_ORDER);
         return menuItems;

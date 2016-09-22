@@ -203,9 +203,7 @@ public class RouteTabController {
     }
 
     private void populateRoutesFilterBySourceList(){
-        ArrayList<String> uniqueSources = new ArrayList<String>();
-        String sql = "Src";
-        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+        ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Src", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterBySourceMenu.setItems(uniqueObservableSources);
@@ -214,9 +212,7 @@ public class RouteTabController {
     }
 
     private void populateRoutesFilterbyDestList(){
-        ArrayList<String> uniqueSources = new ArrayList<String>();
-        String sql = "Dst";
-        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+        ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Dst", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterbyDestMenu.setItems(uniqueObservableSources);
@@ -224,9 +220,7 @@ public class RouteTabController {
     }
 
     private void populateRoutesFilterByStopsList(){
-        ArrayList<String> uniqueSources = new ArrayList<String>();
-        String sql = "Stops";
-        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+        ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Stops", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterByStopsMenu.setItems(uniqueObservableSources);

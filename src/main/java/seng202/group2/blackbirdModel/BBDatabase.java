@@ -12,31 +12,6 @@ public class BBDatabase {
     private static String dataBaseName="jdbc:sqlite:default.db";
 
 
-    public static int getMaxInColumn(String tableName, String columnName){
-        //Returns the highest value in a column for a table
-        int highID = 0;
-        try {
-            //Connect to DB
-            Connection c = makeConnection();
-            Statement stmt = null;
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
-            stmt = c.createStatement();
-
-            String sql = "SELECT " + columnName + ", MAX(" + columnName + ") FROM " + tableName;
-            ResultSet rs = stmt.executeQuery(sql);
-            highID = rs.getInt(columnName);
-            stmt.close();
-            c.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return highID;
-    }
-
     public static String getDatabaseName() {
         return dataBaseName;
     }

@@ -29,7 +29,7 @@ public class Validater {
 
     }
 
-    private static boolean isValidAirlineAlias(String alias){
+    private static boolean isValidAlias(String alias){
 
         return ((!alias.equals("") && alias.length() <= 40) || alias.equals(""));
 
@@ -37,13 +37,13 @@ public class Validater {
 
     private static boolean isValidIATA(String iata){
 
-        return ((!iata.equals("") && iata.length() <= 2 && isAllUpper(iata)) || iata.equals(""));
+        return ((!iata.equals("") && iata.length() <= 3 && isAllUpper(iata)) || iata.equals(""));
 
     }
 
     private static boolean isValidICAO(String icao){
 
-        return ((!icao.equals("") && icao.length() <= 3 && isAllUpper(icao)) || icao.equals(""));
+        return ((!icao.equals("") && icao.length() <= 4 && isAllUpper(icao)) || icao.equals(""));
 
     }
 
@@ -62,6 +62,92 @@ public class Validater {
     private static boolean isValidActive(String active){
 
         return ((!active.equals("") && (active.equals("Y") || active.equals("N"))) || active.equals(""));
+
+    }
+
+    private static boolean isValidCity(String city){
+
+        return ((!city.equals("") && city.length() <= 40) || city.equals(""));
+
+    }
+
+    private static boolean isValidLat(String lat){
+
+        if(lat.equals("")){
+            return true;
+        }
+        try {
+            float num = Float.parseFloat(lat);
+            if(num <= 90 && num >= -90){
+                return true;
+            }
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return false;
+
+    }
+
+    private static boolean isValidLong(String lon){
+
+        if(lon.equals("")){
+            return true;
+        }
+        try {
+            float num = Float.parseFloat(lon);
+            if(num <= 180.0 && num >= -180.0){
+                return true;
+            }
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return false;
+
+    }
+
+    private static boolean isValidTimeZone(String timeZone){
+
+        if(timeZone.equals("")){
+            return true;
+        }
+        try {
+            float num = Float.parseFloat(timeZone);
+            if(num <= 14.0 && num >= -12.0){
+                return true;
+            }
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
+
+    }
+
+    private static boolean isValidAlt(String alt){
+
+        if(alt.equals("")){
+            return true;
+        }
+        try {
+            float num = Float.parseFloat(alt);
+            if(num >= 0.00){
+                return true;
+            }
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
+
+    }
+
+    private static boolean isValidDST(String DST){
+
+        return ((!DST.equals("") && DST.length() == 1 && isAllUpper(DST) ) || DST.equals(""));
+
+    }
+
+    private static boolean isValidTZ(String TZ){
+
+        return ((!TZ.equals("") && TZ.length() <= 40) || TZ.equals(""));
 
     }
 
@@ -121,7 +207,7 @@ public class Validater {
 
         return (isValidID(id) &&
                 isValidName(name) &&
-                isValidAirlineAlias(alias) &&
+                isValidAlias(alias) &&
                 isValidIATA(iata) &&
                 isValidICAO(icao) &&
                 isValidAirlineCallsign(callsign) &&
@@ -129,36 +215,73 @@ public class Validater {
                 isValidActive(active));
 
     }
-//
-//    public static boolean checkAirport(String[] attributes){
-//
-//        String id = attributes[0];
-//        String name = attributes[1];
-//        String city = attributes[2];
-//        String country = attributes[3];
-//        String iata = attributes[4];
-//        String icao = attributes[5];
-//        String lat = attributes[6];
-//        String lon = attributes[7];
-//        String alt = attributes[8];
-//        String timeZone = attributes[9];
-//        String dst = attributes[10];
-//        String tz = attributes[1];
-//
-//        return (isValidID(id) &&
-//                isValidName(name) &&
-//                isValidAirportCity(city) &&
-//                isValidCountry(country) &&
-//                isValidIATA(iata) &&
-//                isValidICAO(icao) &&
-//                isValidLat(lat) &&
-//                isValidLong(lon) &&
-//                isValidAlt(alt) &&
-//                isValidTimeZone(timeZone) &&
-//                isValidDST(dst) &&
-//                isValidTZ(tz));
-//
-//    }
+
+    public static boolean checkAirport(String[] attributes){
+
+        String id = attributes[0];
+        String name = attributes[1];
+        String city = attributes[2];
+        String country = attributes[3];
+        String iata = attributes[4];
+        String icao = attributes[5];
+        String lat = attributes[6];
+        String lon = attributes[7];
+        String alt = attributes[8];
+        String timeZone = attributes[9];
+        String dst = attributes[10];
+        String tz = attributes[11];
+
+        if(!isValidID(id)){
+            System.out.println("BAD ID");
+        }
+        if(!isValidName(name)){
+            System.out.println("BAD name");
+        }
+        if(!isValidCity(city)){
+            System.out.println("BAD city");
+        }
+        if(!isValidCountry(country)){
+            System.out.println("BAD country");
+        }
+        if(!isValidIATA(iata)){
+            System.out.println("BAD iata");
+        }
+        if(!isValidICAO(icao)){
+            System.out.println("BAD icao");
+        }
+        if(!isValidLat(lat)){
+            System.out.println("BAD lat");
+        }
+        if(!isValidLong(lon)){
+            System.out.println("BAD lon");
+        }
+        if(!isValidAlt(alt)){
+            System.out.println("BAD alt");
+        }
+        if(!isValidTimeZone(timeZone)){
+            System.out.println("BAD timeZone");
+        }
+        if(!isValidDST(dst)){
+            System.out.println("BAD dst");
+        }
+        if(!isValidTZ(tz)){
+            System.out.println("BAD tz");
+        }
+
+        return (isValidID(id) &&
+                isValidName(name) &&
+                isValidCity(city) &&
+                isValidCountry(country) &&
+                isValidIATA(iata) &&
+                isValidICAO(icao) &&
+                isValidLat(lat) &&
+                isValidLong(lon) &&
+                isValidAlt(alt) &&
+                isValidTimeZone(timeZone) &&
+                isValidDST(dst) &&
+                isValidTZ(tz));
+
+    }
 
     private static boolean isAllUpper(String s) {
         for(char c : s.toCharArray()) {

@@ -18,12 +18,6 @@ public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
 
-    /*
-    public AirlinePopUpController(AirlinePoint airlinePoint) {
-        this.airlinePoint = airlinePoint;
-        this.airlineName = airlinePoint.getAirlineName();
-    }
-    */
 
     @FXML private Label nameText;
     @FXML private Label idText;
@@ -59,10 +53,6 @@ public class AirlinePopUpController {
         activeText.setText(airlinePoint.getActive());
 
 
-
-      //  nameText.setVisible(true);
-        //nameText.setText("Hi");
-        //String ms = nameText.getText();
     }
 
     public void setAirlinePoint(AirlinePoint airlinePoint) {
@@ -111,9 +101,6 @@ public class AirlinePopUpController {
             airlineActiveTextEdit.setText(activeText.getText());
         }
 
-
-
-        //airlinePoint.setCountry("POOS");
     }
 
     /**
@@ -189,18 +176,6 @@ public class AirlinePopUpController {
         airlineInvalidDataText.setVisible(false);
         airlineEditButton.setVisible(true);
         nameText.setVisible(true);
-    }
-
-    /**
-     * Checks all editable fields for validity before trying to perform a query for the purpose of pre warnign the user
-     * @param attributes The list of editable fields and their respective values
-     * @return A boolean indicating if the fields were all valid
-     */
-    //TODO FIX VALID ENTRIES! Currently only returns true does not check anything!
-    public static boolean validEntries(List<String> attributes){
-
-        return true;
-
     }
 
 }

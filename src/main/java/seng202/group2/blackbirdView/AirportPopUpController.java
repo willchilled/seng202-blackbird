@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import seng202.group2.blackbirdControl.Validater;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
 
@@ -97,6 +98,7 @@ public class AirportPopUpController {
         airportTimeZoneTextEdit.setVisible(true);
         airportDstTextEdit.setVisible(true);
         airportTZTextEdit.setVisible(true);
+        airportInvalidDataText.setVisible(false);
 
         airportEditButton.setVisible(false);
         airportFinishButton.setVisible(true);
@@ -159,10 +161,10 @@ public class AirportPopUpController {
         String dst = airportDstTextEdit.getText();
         String tz = airportTZTextEdit.getText();
 
-        List<String> attributes = Arrays.asList(airportIdText.getText(), name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz);
+        String[] attributes = new String[] {airportIdText.getText(), name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
 
 
-        if(validEntries(attributes)) {
+        if(Validater.checkAirport(attributes)) {
 
 
             airportNameText.setVisible(true);
@@ -181,7 +183,7 @@ public class AirportPopUpController {
             airportEditButton.setVisible(true);
             airportFinishButton.setVisible(false);
             airportCancelButton.setVisible(false);
-
+            airportInvalidDataText.setVisible(false);
 
             String sql = String.format("UPDATE AIRPORT SET NAME='%1$s', CITY='%2$s', COUNTRY='%3$s', IATA='%4$s'," +
                     " ICAO='%5$s', LATITUDE='%6$s', LONGITUDE='%7$s', ALTITUDE='%8$s', TIMEZONE='%9$s', DST='%10$s'," +
@@ -229,6 +231,7 @@ public class AirportPopUpController {
         airportTimeZoneTextEdit.setVisible(false);
         airportDstTextEdit.setVisible(false);
         airportTZTextEdit.setVisible(false);
+        airportInvalidDataText.setVisible(false);
 
         airportEditButton.setVisible(true);
         airportFinishButton.setVisible(false);

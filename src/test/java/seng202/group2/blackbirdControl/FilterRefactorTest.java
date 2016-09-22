@@ -60,6 +60,10 @@ public class FilterRefactorTest extends TestCase {
 
     }
 
+    public void testTest() throws Exception {
+        assertEquals(0, 0);
+    }
+
     public void testFilterSelectionsWithAirports() throws Exception {
 
         String search = "";

@@ -28,6 +28,7 @@
                             <MenuItem fx:id="exportRouteMenuButton" disable="true" mnemonicParsing="false" onAction="#exportRouteData" text="Route" visible="true" />
                             <MenuItem fx:id="exportAirportMenuButton" disable="true" mnemonicParsing="false" onAction="#exportAirportData" text="Airport" />
                             <MenuItem fx:id="exportAirlineMenuButton" disable="true" mnemonicParsing="false" onAction="#exportAirlineData" text="Airline" />
+                            <MenuItem fx:id="exportDatabase" disable="true" mnemonicParsing="false" onAction="#exportDatabase" text="Database" />
                         </items>
                     </Menu>
                 </items>

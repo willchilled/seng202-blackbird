@@ -17,48 +17,104 @@ public class MenuBarController {
 
     @FXML
     MenuItem addDataMenuButton;
+    //export menu stuff
+    @FXML
+    MenuItem exportDataMenuButton;
+    @FXML
+    MenuItem exportDatabase;
+    @FXML
+    MenuItem exportFlightMenuButton;
+    @FXML
+    MenuItem exportRouteMenuButton;
+    @FXML
+    MenuItem exportAirportMenuButton;
+    @FXML
+    MenuItem exportAirlineMenuButton;
+
 
     public void show(){
         addDataMenuButton.setDisable(false);
         mainController.show();
-    }
+        exportDataMenuButton.setDisable(false);
+        exportDataMenuButton.setDisable(false);
+        exportDatabase.setDisable(false);
 
+    }
 
     public void setMainController(MainController controller) {
         this.mainController = controller;
     }
 
-    public void addRouteData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.addRouteData()
+     * Makes the export for route data usable
+     */
+    public void addRouteData() {
         mainController.addRouteData();
+        exportRouteMenuButton.setDisable(false); //make export possible
     }
 
-    public void addFlightData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.addFlightData()
+     * Makes the export for flight data usable
+     */
+    public void addFlightData() {
         mainController.addFlightData();
+        exportFlightMenuButton.setDisable(false); //make export possible
     }
 
-    public void addAirlineData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.addAirlineData()
+     * Makes the export for airline data usable
+     */
+    public void addAirlineData() {
         mainController.addAirlineData();
-
+        exportAirlineMenuButton.setDisable(false); //make export possible
     }
 
-    public void addAirportData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.addAirportData()
+     * Makes the export for airport data usable
+     */
+    public void addAirportData() {
         mainController.addAirportData();
+        exportAirportMenuButton.setDisable(false); //make export possible
     }
 
-    public void exportRouteData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.exportRouteData();
+     */
+    public void exportRouteData() {
         mainController.exportRouteData();
     }
 
-    public void exportFlightData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.exportFlightData();
+     */
+    public void exportFlightData() {
         mainController.exportFlightData();
     }
 
-    public void exportAirlineData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.exportAirlineData();
+     */
+    public void exportAirlineData() {
         mainController.exportAirlineData();
     }
 
-    public void exportAirportData(ActionEvent actionEvent) {
+    /**
+     * Calls mainController.exportAirportData();
+     */
+    public void exportAirportData() {
         mainController.exportAirportData();
-
     }
+
+    /**
+     * Calls Exporter.exportDatabase
+     */
+    public void exportDatabase(){
+        Exporter.exportDataBase();
+    }
+
+
 }

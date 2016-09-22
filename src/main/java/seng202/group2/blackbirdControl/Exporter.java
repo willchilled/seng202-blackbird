@@ -34,7 +34,6 @@ public class Exporter {
                     writer.write(points.get(i).toString()+"\n");
                  //   System.out.println(points.get(i).toString());
                 }
-                System.out.println("WOW HERE OMG");
 
                     //writer.write("something");
             } catch (UnsupportedEncodingException e) {

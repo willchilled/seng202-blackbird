@@ -108,7 +108,7 @@ public class DataBaseRefactor {
                 }
                 catch (Exception e){
                     System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    System.out.println("Cant add: " +  currentPoint.toString());
+                    System.out.println("Prepared statement failed for: " +  currentPoint);
                 }
             }
             //.close();
@@ -117,10 +117,10 @@ public class DataBaseRefactor {
         } catch (Exception e) {
             // System.err.println(e.getClass().getName() + ": " + e.getMessage());
             //System.exit(0);
-            System.out.println("Could not add :");
+            System.out.println("Some error occurred when making connection? :");
         }
 
-        System.out.println("Records created successfully");
+        //System.out.println("Records created successfully");
     }
 
     /**
@@ -145,8 +145,8 @@ public class DataBaseRefactor {
             // System.out.println(FlightCount);
 
         } catch (SQLException e) {
-            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could not print ");
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.out.println("DataBaseRefactor.prepareInsertFlightPointStatement failed");
             //e.printStackTrace();
         }
         return preparedStatement;
@@ -174,7 +174,8 @@ public class DataBaseRefactor {
             preparedStatement.close();
         }
         catch (Exception e){
-            System.out.println("Cant add " +  myPoints.toString());
+            //System.out.println("Cant add " +  myPoints.toString());
+            System.out.println("DataBaseRefactor.addFlight failed");
         }
     }
 
@@ -196,8 +197,9 @@ public class DataBaseRefactor {
 
         } catch (SQLException e) {
             //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("Could no print ");
+            //System.out.println("Could no print ");
             //e.printStackTrace();
+            System.out.println("DataBaseRefactor.prepareInsertFlightStatement failed");
         }
         return preparedStatement;
     }
@@ -240,13 +242,11 @@ public class DataBaseRefactor {
             preparedStatement.setInt(9, stops);
             preparedStatement.setString(10, equp);
         } catch (SQLException e) {
-
-            System.out.println("canont prepare statement");
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.out.println("DataBaseRefactor.prepareInsertRouteSql failed");
         }
 
         return preparedStatement;
-
     }
 
     /**
@@ -289,9 +289,8 @@ public class DataBaseRefactor {
             preparedStatement.setString(11, Dst);
             preparedStatement.setString(12, tz);
         } catch (SQLException e) {
-
-            System.out.println("canont prepare statement");
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.out.println("DataBaseRefactor.prepareInsertAirportSql failed");
         }
 
         return preparedStatement;
@@ -331,7 +330,7 @@ public class DataBaseRefactor {
             preparedStatement.setString(7, country);
             preparedStatement.setString(8, active);
         } catch (SQLException e) {
-            System.out.println("canont prepare statement");
+            System.out.println("DataBaseRefactor.prepareInsertAirlineSql failed");
         }
         return preparedStatement;
     }
@@ -412,6 +411,7 @@ public class DataBaseRefactor {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
+            System.out.println("DataBaseRefactor.performGenericQuery query failed");
             e.printStackTrace();
         }
 
@@ -426,7 +426,7 @@ public class DataBaseRefactor {
      */
     public static ArrayList<String> performDistinctQuery(String sql){
 
-        ArrayList<String> distinctResults = new ArrayList<String>();
+        ArrayList<String> distinctResults = new ArrayList<>();
 
         try {
             Connection currentConnection = makeConnection();
@@ -449,6 +449,7 @@ public class DataBaseRefactor {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
+            System.out.println("DataBaseRefactor.performDistinctQuery query failed");
             e.printStackTrace();
         }
 

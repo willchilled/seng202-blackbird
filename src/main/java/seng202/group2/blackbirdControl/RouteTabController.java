@@ -137,6 +137,9 @@ public class RouteTabController {
         File f = HelperFunctions.getFile("Add Route Data");
 
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
+//        for (DataPoint item : myRouteData) {
+//            System.out.println(item);
+//        }
         DataBaseRefactor.insertDataPoints(myRouteData);
        
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB

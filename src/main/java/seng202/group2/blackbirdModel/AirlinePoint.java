@@ -15,7 +15,7 @@ public class AirlinePoint extends DataPoint {
     private String callsign;
     private String country;
     private String active;
-    private int correctEntry=1;
+    private int correctEntry=0;
 
     /**
      * Creates an airlinePoint with an ID and Name
@@ -31,8 +31,8 @@ public class AirlinePoint extends DataPoint {
 
     /**
      * Attempts to create an airlinePoint from a list of strings with length 8.
-     * If successful it creates an airline with values from list and correctEntry as 1.
-     * If unsuccessful it creates am airline with airlineID -1, airlineName as currentLine.toString() and correctEntry 0.
+     * If successful it creates an airline with values from list and correctEntry as 0.
+     * If unsuccessful it creates am airline with airlineID -1, airlineName as currentLine.toString() and correctEntry 1.
      * @param currentLine   The list of strings holding the information for the airline in index of:
      *                      0 airlineID,
      *                      1 airlineName,
@@ -56,13 +56,12 @@ public class AirlinePoint extends DataPoint {
                 this.callsign = currentLine[5];
                 this.country = currentLine[6].trim();    //should not be null, handle by parser later
                 this.active = currentLine[7].trim().toUpperCase();
-                this.correctEntry = 1;
             }
             catch(NumberFormatException e) {
                 //AirlinePoint myAirlinePoint = new
                 this.airlineID = -1;
                 this.airlineName = currentLine.toString();
-                this.correctEntry = 0;
+                this.correctEntry = 1;
             }
 
         }

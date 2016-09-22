@@ -12,7 +12,7 @@ public class FlightPoint extends DataPoint {
     private int altitude;
     private float latitude;
     private float longitude;
-    private int correctEntry=1;
+    private int correctEntry=0;
 
     /**
      * Creates a FlightPoint with values given
@@ -33,7 +33,7 @@ public class FlightPoint extends DataPoint {
 
     /**
      * Attempts to create a FlightPoint from a  list of strings of length 5.
-     * If successful it creates an FlightPoint with values from list and correctEntry as 1.
+     * If successful it creates an FlightPoint with values from list and correctEntry as 0.
      * If unsuccessful it creates am FlightPoint with localtype "I AM INCORRECT".
      * @param currentLine The list of strings holding the information for the FlightPoint in index of:
      *                    0 localtype,
@@ -58,6 +58,7 @@ public class FlightPoint extends DataPoint {
         }
         catch(NumberFormatException e){
             this.localtype = "I AM INCORRECT";
+            correctEntry = 1;   //set as 1 here?
         }
 
     }

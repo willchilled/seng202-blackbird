@@ -27,7 +27,7 @@ public class RoutePoint extends DataPoint {
 
     private AirportPoint source;
     private AirportPoint destination;
-    private int correctEntry=1;
+    private int correctEntry=0;
 
     /**
      * Creates a RoutePoint with an airline and airlineID
@@ -42,8 +42,8 @@ public class RoutePoint extends DataPoint {
 
     /**
      * Attempts to create an RoutePoint with a list of strings of length 9.
-     * If successful it creates an RoutePoint with values from list and correctEntry as 1.
-     * If unsuccessful it creates am RoutePoint with routeID -1, airline as currentLine.toString() and correctEntry 0.
+     * If successful it creates an RoutePoint with values from list and correctEntry as 0.
+     * If unsuccessful it creates am RoutePoint with routeID -1, airline as currentLine.toString() and correctEntry 1.
      * @param currentLine The list of strings holding the information for the RoutePoint in index of:
      *                    0 airline,
      *                    1 airlineID,
@@ -72,6 +72,7 @@ public class RoutePoint extends DataPoint {
                 this.srcAirportID = Integer.parseInt(currentLine[3]);
                 this.dstAirport = currentLine[4];
                 this.dstAirportID = Integer.parseInt(currentLine[5]);
+
                 this.codeshare = currentLine[6];    //should not be null, handle by parser later
                 this.stops = Integer.parseInt(currentLine[7]);
                 this.equipment = currentLine[8];
@@ -90,8 +91,8 @@ public class RoutePoint extends DataPoint {
             catch(NumberFormatException e) {
                 //AirlinePoint myAirlinePoint = new
                 this.routeID = -1;
-                this.airline = currentLine.toString();
-                this.correctEntry = 0;
+                //this.airline = currentLine.toString();
+                this.correctEntry = 1;
             }
 
         }

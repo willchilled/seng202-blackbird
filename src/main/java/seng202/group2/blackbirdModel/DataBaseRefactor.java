@@ -455,6 +455,38 @@ public class DataBaseRefactor {
         return distinctResults;
     }
 
+    /**
+     * Grabs the Max value of an attribute in a column. Namely for finding the max ID of an entity in a database for the
+     * purpose of incrementing when adding a new value. Note this only works for integer values.
+     * @param tableName The table from which to grab the max value
+     * @param columnName The attribute of which you want the max value
+     * @return Returns an int of the max value
+     */
+    public static int getMaxInColumn(String tableName, String columnName){
+        //Returns the highest value in a column for a table
+        int highID = 0;
+        try {
+            //Connect to DB
+            Connection c = makeConnection();
+            Statement stmt = null;
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            String sql = "SELECT " + columnName + ", MAX(" + columnName + ") FROM " + tableName;
+            ResultSet rs = stmt.executeQuery(sql);
+            highID = rs.getInt(columnName);
+            stmt.close();
+            c.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return highID;
+    }
+
 
     /**
      * Deletes an existing database.

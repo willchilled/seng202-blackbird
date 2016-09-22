@@ -7,11 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdModel.Parser;
+import seng202.group2.blackbirdModel.*;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -26,7 +25,7 @@ public class AirportAddingPopUpController {
 
     ObservableList<String> timeZones = FXCollections.observableArrayList("No values Loaded");
     @FXML private TextField Name;
-    @FXML private TextField ID;
+    @FXML private Text airportID;
     @FXML private TextField City;
     @FXML private TextField Country;
     @FXML private TextField IATA;
@@ -46,6 +45,7 @@ public class AirportAddingPopUpController {
         adderStage.setTitle("Add Airport Information");
         adderStage.initModality(Modality.NONE);
         adderStage.initOwner(null);
+        airportID.setText(Integer.toString(DataBaseRefactor.getMaxInColumn("AIRPORT", "ID") + 1));
 
         adderStage.show();
         timeZones = populateTimeZoneMenu();
@@ -55,28 +55,18 @@ public class AirportAddingPopUpController {
     }
 
     public void createButtonPressed(){
-        String values = getValues();
-        String[] airportPoint = values.split(", ");
-        System.out.println(values);
-        int count = BBDatabase.getMaxInColumn("AIRPORT", "ID");
 
-        AirportPoint myAirportPoint = Parser.checkAirportData(airportPoint, count);
-        ArrayList<AirportPoint> myAirportData = new ArrayList<AirportPoint>();
-        System.out.println(myAirportPoint.getAirportID());
-        System.out.println(myAirportPoint.getAirportName());
-        System.out.println(myAirportPoint.getAirportCity());
-        System.out.println(myAirportPoint.getAirportCountry());
-        System.out.println(myAirportPoint.getIata());
-        System.out.println(myAirportPoint.getIcao());
-        System.out.println(myAirportPoint.getLatitude());
-        System.out.println(myAirportPoint.getLongitude());
-        System.out.println(myAirportPoint.getAltitude());
-        System.out.println(myAirportPoint.getTimeZone());
-        System.out.println(myAirportPoint.getDst());
-        System.out.println(myAirportPoint.getTz());
-        myAirportData.add(myAirportPoint);
-        BBDatabase.addAirportPointsToDB(myAirportData);
-        adderStage.close();
+        String[] airportPoint = getValues().split(", ");
+        if(Validator.checkAirport(airportPoint)) {
+            ArrayList<DataPoint> myAirportData = new ArrayList<>();
+            DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT);
+            myAirportData.add(myAirportPoint);
+
+            DataBaseRefactor.insertDataPoints(myAirportData);
+            adderStage.close();
+        } else {
+
+        }
     }
 
     public void cancleButtonPressed(){
@@ -87,7 +77,7 @@ public class AirportAddingPopUpController {
     private String getValues(){
         //Gets Values from the inputs
         String airportName = Name.getText().toString();
-        String airportID = ID.getText().toString();
+        String id = airportID.getText().toString();
         String airportCity = City.getText().toString();
         String airportCountry = Country.getText().toString();
         String airportIATA = IATA.getText().toString();
@@ -99,7 +89,7 @@ public class AirportAddingPopUpController {
         String airportDST = DST.getText().toString();
         String airportTZOlson = tzOlson.getText().toString();
         String values = new String();
-        values += airportID + ", ";
+        values += id + ", ";
         values += airportName + ", ";
         values += airportCity + ", ";
         values += airportCountry + ", ";

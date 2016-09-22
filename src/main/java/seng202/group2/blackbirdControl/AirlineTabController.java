@@ -92,7 +92,7 @@ public class AirlineTabController {
 
     private ObservableList<String> populateAirlineCountryList(){
         //Populates the airline countries list
-        ArrayList<String> countries = FilterRefactor.filterUnique("Airline", "country");
+        ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airline");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = HelperFunctions.addNullValue(countryList); //we need to add a null value
         return countryList;

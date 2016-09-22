@@ -131,7 +131,7 @@ public class MainController implements Initializable {
 
         }
         if (!allNone){
-            routePoints = Filter.filterRoutesBySelections(menusPressed, searchQuery);
+            routePoints = *****DEPRECATED --->> Filter*****.filterRoutesBySelections(menusPressed, searchQuery);
 
 
         }

@@ -75,7 +75,6 @@ public class ParserRefactorTest extends TestCase {
 //        BBDatabase.addAirlinePointstoDB(airlinePoints);
 //        BBDatabase.addAirportPointsToDB(airportPoints);
 //        BBDatabase.addRoutePointstoDB(routePoints);
-        //myAirlineData = Filter.getAllAirlinePointsfromDB();
 
     }
 

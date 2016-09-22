@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.BBDatabase;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 import seng202.group2.blackbirdModel.Parser;
 import seng202.group2.blackbirdModel.RoutePoint;
 
@@ -49,7 +50,7 @@ public class RouteAddingPopUpController {
         }
 
         RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
-        int count = BBDatabase.getMaxInColumn("ROUTE", "IDnum");
+        int count = DataBaseRefactor.getMaxInColumn("ROUTE", "IDnum");
         myRoutePoint = Parser.checkRouteData(routePoint, count);
 
         myRoutePoint.setRouteID(count);	//set our own routeID

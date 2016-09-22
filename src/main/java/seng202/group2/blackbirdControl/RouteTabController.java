@@ -199,7 +199,7 @@ public class RouteTabController {
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
         populateRoutesFilterByStopsList();
-        //populateRoutesFilterByEquipList();
+        populateRoutesFilterByEquipList();
     }
 
     private void populateRoutesFilterBySourceList(){
@@ -227,9 +227,32 @@ public class RouteTabController {
         routesFilterByStopsMenu.setValue(uniqueObservableSources.get(0));
     }
 
+    private void populateRoutesFilterByEquipList(){
+        ArrayList<String> uniqueEquip = new ArrayList<>();
+        ArrayList<DataPoint> myRoutes = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        for (DataPoint route : myRoutes) {
+            RoutePoint myRoute = (RoutePoint) route;
+            if (myRoute.getEquipment() == null) {
+                continue;
+            }
+            String[] equip = myRoute.getEquipment().split("\\s+");
+            for (String myEquip : equip) {
+                if (!uniqueEquip.contains(myEquip)) {
+                    uniqueEquip.add(myEquip);
+                }
+            }
+        }
+        Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
+//        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
+        uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
+        routesFilterbyEquipMenu.setItems(uniqueObservableSources);
+        routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
+    }
+
 
     public void exportRouteData() {
-        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(routeTable.getItems());
+        ArrayList<DataPoint> myPoints = new ArrayList<>(routeTable.getItems());
         Exporter.exportData(myPoints);
     }
 }

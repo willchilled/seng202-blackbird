@@ -357,6 +357,9 @@ public class DataBaseRefactor {
                 resultPoints.add(myPoint);
                // System.out.println(myPoint.toString());
             }
+            preparedStatement.close();
+            currentConnection.commit();
+            currentConnection.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

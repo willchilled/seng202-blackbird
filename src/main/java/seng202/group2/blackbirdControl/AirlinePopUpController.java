@@ -172,7 +172,6 @@ public class AirlinePopUpController {
 
     public void cancelEdit(){
 
-        System.out.println("Nah fuck this!");
         airlineNameTextEdit.setVisible(false);
         airlineIDTextEdit.setVisible(false);
         airlineCountryTextEdit.setVisible(false);

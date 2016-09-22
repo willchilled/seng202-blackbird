@@ -55,9 +55,9 @@ public class AirportAddingPopUpController {
     }
 
     public void createButtonPressed(){
-        String shit = getValues();
-        String[] airportPoint = shit.split(", ");
-        System.out.println(shit);
+        String values = getValues();
+        String[] airportPoint = values.split(", ");
+        System.out.println(values);
         int count = BBDatabase.getMaxInColumn("AIRPORT", "ID");
 
         AirportPoint myAirportPoint = Parser.checkAirportData(airportPoint, count);

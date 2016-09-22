@@ -161,12 +161,12 @@ public class FilterRefactor {
 
 
 
-    private static ArrayList<String> filterUnique(String type, String input) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
+    protected static ArrayList<String> filterUnique(String type, String input) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
         String sql = "SELECT DISTINCT %s from %s";
         sql = String.format(sql, input, type);
-        //ArrayList<String> menuItems = DataBaseRefactor.performDistinctQuery(sql, type);   //DB method to grab distinct stuff
+        ArrayList<String> menuItems = DataBaseRefactor.performDistinctQuery(sql);   //DB method to grab distinct stuff
         //UNCOMMENT ABOVE WHEN READY
-        ArrayList<String> menuItems = null;
+        //ArrayList<String> menuItems = null;
         Collections.sort(menuItems, String.CASE_INSENSITIVE_ORDER);
         return menuItems;
     }

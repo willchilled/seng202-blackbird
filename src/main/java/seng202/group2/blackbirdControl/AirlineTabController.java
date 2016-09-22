@@ -15,8 +15,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirlinePoint;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 import seng202.group2.blackbirdModel.DataPoint;
+import seng202.group2.blackbirdModel.ParserRefactor;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -57,38 +60,45 @@ public class AirlineTabController {
 
 
     public void show(){
-        //mainController.show();
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
     }
 
+    public void addAirlineData(){
+        //Adds airline data into filter menu, updates airline data list
 
+        //Adds data into DataBase thus filtering it against database constraints, then pulling out remaining "good"
+        // data to populate the GUI.
+        File f = HelperFunctions.getFile("Add Airline Data");
+        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, "AirlinePoint");
+        DataBaseRefactor.insertDataPoints(myPoints);
+        ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints("AirlinePoint");
+        System.out.println(validAirlineData.get(0).toString());
 
+        //Populates DropDowns according to data
+        updateAirlineFields();
 
-    public void setMainController(MainController controller) {
-        this.mainController = controller;
+        // Populates Rows in the Airline Table
+        updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
     }
 
+    private void updateAirlineFields() {
 
-    public void airlineFilterButtonPressed(ActionEvent actionEvent) {
-        String countrySelection = airlineFilterMenu.getValue().toString();
-        String activeSelection = airlineActiveMenu.getValue().toString();
-        String searchQuery = airlineSearchQuery.getText().toString();
-
-        if (activeSelection =="Active"){
-            activeSelection = "Y";
-        }
-        else if (activeSelection == "Inactive"){
-            activeSelection = "N";
-        }
-
-        ArrayList<String> menusPressed  = new ArrayList<String>();
-        menusPressed.add(countrySelection);
-        menusPressed.add(activeSelection);
+        airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
+        airlineActiveMenu.setItems(airlineActiveList);
+        airlineActiveMenu.setValue(airlineActiveList.get(0));
 
 
-        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirlinePoint");
-        updateAirlinesTable(allPoints);
-        
+        airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
+        airlineFilterMenu.setItems(airlineCountryList);
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+    }
+
+    private ObservableList<String> populateAirlineCountryList(){
+        //Populates the airline countries list
+        ArrayList<String> countries = FilterRefactor.filterUnique("Airline", "country");
+        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
+        countryList = HelperFunctions.addNullValue(countryList); //we need to add a null value
+        return countryList;
     }
 
     private void updateAirlinesTable(ArrayList<DataPoint> points) {
@@ -150,11 +160,36 @@ public class AirlineTabController {
         });
     }
 
+
+
+
+    public void airlineFilterButtonPressed(ActionEvent actionEvent) {
+        String countrySelection = airlineFilterMenu.getValue().toString();
+        String activeSelection = airlineActiveMenu.getValue().toString();
+        String searchQuery = airlineSearchQuery.getText().toString();
+
+        if (activeSelection =="Active"){
+            activeSelection = "Y";
+        }
+        else if (activeSelection == "Inactive"){
+            activeSelection = "N";
+        }
+
+        ArrayList<String> menusPressed  = new ArrayList<String>();
+        menusPressed.add(countrySelection);
+        menusPressed.add(activeSelection);
+
+
+        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirlinePoint");
+        updateAirlinesTable(allPoints);
+        
+    }
+
+
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("Airline"); //airportTable.getItems()
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("AirlinePoint"); //airportTable.getItems()
         updateAirlinesTable(allPoints);
-
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         airlineFilterMenu.setItems(airlineCountryList);
 
@@ -166,6 +201,31 @@ public class AirlineTabController {
 
 
     public void addSingleAirline(ActionEvent actionEvent) {
+        //Brings up popup to insert airline values
+        try {
+            Stage adderStage = new Stage();
+            Parent root;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirlineAddingPopUp.fxml"));
+            root = loader.load();
+
+            //use controller to control it
+            AirlineAddingPopUpController popUpController = loader.getController();
+            popUpController.setAdderStage(adderStage);
+            popUpController.setRoot(root);
+            popUpController.control();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
+    }
+
+    public void setMainController(MainController controller) {
+        this.mainController = controller;
+    }
+
+    public void exportAirlineData() {
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(airlineTable.getItems());
+        Exporter.exportData(myPoints);
     }
 }

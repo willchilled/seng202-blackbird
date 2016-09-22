@@ -14,12 +14,13 @@ public class MenuBarController {
 
     private MainController mainController;
 
+
     @FXML
     MenuItem addDataMenuButton;
 
     public void show(){
         addDataMenuButton.setDisable(false);
-        //mainController.show();
+        mainController.show();
     }
 
 
@@ -28,27 +29,36 @@ public class MenuBarController {
     }
 
     public void addRouteData(ActionEvent actionEvent) {
+        mainController.addRouteData();
     }
 
     public void addFlightData(ActionEvent actionEvent) {
+        mainController.addFlightData();
     }
 
     public void addAirlineData(ActionEvent actionEvent) {
+        mainController.addAirlineData();
+
     }
 
     public void addAirportData(ActionEvent actionEvent) {
+        mainController.addAirportData();
     }
 
     public void exportRouteData(ActionEvent actionEvent) {
+        mainController.exportRouteData();
     }
 
     public void exportFlightData(ActionEvent actionEvent) {
+        mainController.exportFlightData();
     }
 
     public void exportAirlineData(ActionEvent actionEvent) {
+        mainController.exportAirlineData();
     }
 
     public void exportAirportData(ActionEvent actionEvent) {
+        mainController.exportAirportData();
 
     }
 }

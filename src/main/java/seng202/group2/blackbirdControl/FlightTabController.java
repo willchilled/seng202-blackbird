@@ -1,11 +1,18 @@
 package seng202.group2.blackbirdControl;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import seng202.group2.blackbirdModel.Flight;
-import seng202.group2.blackbirdModel.FlightPoint;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import seng202.group2.blackbirdModel.*;
+
+import javax.swing.*;
+import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by emr65 on 20/09/16.
@@ -16,7 +23,7 @@ public class FlightTabController {
 
     //FLIGHT and FLIGHT POINT tables
     @FXML private TableView<Flight> flightTable;
-    @FXML private TableView<FlightPoint> flightPointTable;
+    @FXML private TableView<DataPoint> flightPointTable;
 
     //FLIGHT Table columns
     @FXML private TableColumn flightSourceCol;
@@ -44,8 +51,54 @@ public class FlightTabController {
     }
 
 
+    public void addFlightData() {
+            File f = HelperFunctions.getFile("Add Flight Data");
+            
+            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, "FlightPoint");
+            //BBDatabase.addFlighttoDB(myFlightData);
+            DataBaseRefactor.insertDataPoints(myFlightData);
+            ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints("FlightPoint");
+    
+            updateFlightsTable(myFlightData);
+
+    }
+
+    private void updateFlightsTable(ArrayList<DataPoint> points) {
+
+        Flight myFlight = new Flight(points);
 
 
+        flightTable.getItems().addAll(myFlight);
+        flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
+        flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
 
+        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event){
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    //exportFlightMenuButton.setDisable(false);
 
+                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
+
+                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
+
+                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localType"));
+                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localeID"));
+                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("altitude"));
+                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
+                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
+                }
+
+            }
+        });
+
+    }
+
+    public void exportFlightData() {
+        //Giver user a warning that it will only export the currently selected flight (the one in the flightpoint table)
+        //NEED TO LABEL THE FLIGHT TABLES.
+
+        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(flightPointTable.getItems());
+        Exporter.exportData(myPoints);
+    }
 }

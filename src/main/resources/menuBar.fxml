@@ -19,7 +19,7 @@
                             <MenuItem fx:id="flightMenuItem" mnemonicParsing="false" onAction="#addFlightData" text="Flight" />
                             <MenuItem fx:id="routeMenuItem" mnemonicParsing="false" onAction="#addRouteData" text="Route" />
                             <MenuItem fx:id="airportMenuItem" mnemonicParsing="false" onAction="#addAirportData" text="Airport" />
-                            <MenuItem mnemonicParsing="false" onAction="#addAirlineData" text="Airline" />
+                            <MenuItem fx:id="airlineMenuItem" mnemonicParsing="false" onAction="#addAirlineData" text="Airline" />
                         </items>
                     </Menu>
                     <Menu fx:id="exportDataMenuButton" disable="true" mnemonicParsing="false" text="Export Data">

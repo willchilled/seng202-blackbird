@@ -78,12 +78,12 @@ public class DataBaseRefactorTest extends TestCase {
 
     public void testEditDataPoint() throws Exception {
         String sql = "SELECT * FROM AIRLINE WHERE ID='2'";
-        ArrayList<DataPoint> myPoints = DataBaseRefactor.performGenericQuery(sql, "AirlinePoint");
+        ArrayList<DataPoint> myPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
         AirlinePoint myAirline = (AirlinePoint) myPoints.get(0);
         System.out.println("name = " + myAirline.getAirlineName());
         String edit = "UPDATE AIRLINE SET NAME='Poos', COUNTRY='United States', ALIAS='', IATA='', ICAO='GNL', CALLSIGN='GENERAL', ACTIVE='N' WHERE ID='2'";
         DataBaseRefactor.editDataEntry(edit);
-        myPoints = DataBaseRefactor.performGenericQuery(sql, "AirlinePoint");
+        myPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
         myAirline = (AirlinePoint) myPoints.get(0);
         assertEquals("Poos", myAirline.getAirlineName());
 

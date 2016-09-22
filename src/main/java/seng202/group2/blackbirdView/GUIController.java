@@ -493,10 +493,10 @@ public class GUIController {
 
         //try {
             File f = getFile();
-            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, "FlightPoint");
+            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
             //BBDatabase.addFlighttoDB(myFlightData);
             DataBaseRefactor.insertDataPoints(myFlightData);
-        ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints("FlightPoint");
+        ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints(DataTypes.FLIGHTPOINT);
 
             updateFlightsTable(myFlightData);
         //updateFlightsDropdowns();

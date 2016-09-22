@@ -104,7 +104,7 @@ public class AirportAddingPopUpController {
 //        for (String a: allValues){
 //            System.out.println(a);
 //        }
-        DataPoint test = DataPoint.createDataPointFromStringArray(allValues, "AirportPoint");
+        DataPoint test = DataPoint.createDataPointFromStringArray(allValues, DataTypes.AIRPORTPOINT);
         //System.out.println(test.toString());
         ArrayList<DataPoint> myList= new ArrayList<>(Arrays.asList(test));
         DataBaseRefactor.insertDataPoints(myList);

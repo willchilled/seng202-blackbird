@@ -12,7 +12,7 @@ public class DataPointTest extends TestCase {
 
         String[] myAirport = new String[]{"1", "A", "B", "C", "d", "e", "1", "2", "3", "10.0", "u", "HI", "5", "10"};
         //System.out.println(myAirport.length);
-        DataPoint airport = DataPoint.createDataPointFromStringArray(myAirport, "AirportPoint");
+        DataPoint airport = DataPoint.createDataPointFromStringArray(myAirport, DataTypes.AIRPORTPOINT);
         assertEquals(airport.getType(), "AirportPoint");
         //System.out.println("airport.toString() = " + airport.toString());
         AirportPoint myPoint  = (AirportPoint) airport;
@@ -23,7 +23,7 @@ public class DataPointTest extends TestCase {
         //Testing to make sure you can make a new route point
         String[] myRoute = new String[]{"2G", "410", "AER", "100", "Letter", "100", "1", "10", "hi", "CHCHINT", "CHCH", "WELLY", "WELLYS"};
 
-        DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(myRoute, "RoutePoint");
+        DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(myRoute, DataTypes.ROUTEPOINT);
         assertEquals(myRoutePoint.getType(), "RoutePoint");
         RoutePoint myRoutePointCasted = (RoutePoint) myRoutePoint;
         assertEquals(myRoutePointCasted.getDstAirportName(), "WELLY");

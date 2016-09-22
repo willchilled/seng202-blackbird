@@ -82,15 +82,14 @@ public class RouteTabController {
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
         //TODO fix this when the correct stuff is linked to the GUI
-        String equipSelection = "No values Loaded";
+        String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<DataPoint> routePoints;
 
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
             routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
             updateRoutesTable(routePoints);
-        }
-        else{
+        } else {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
@@ -98,36 +97,39 @@ public class RouteTabController {
 
         //This is bad style but you win some and you lose some
         //(I lost this one)
-        ArrayList<String> uniqueCountries = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Src FROM ROUTE");
-        ObservableList<String> myCountries =  FXCollections.observableArrayList(uniqueCountries);
-        myCountries = HelperFunctions.addNullValue(myCountries);
-        routesFilterBySourceMenu.setValue(myCountries.get(0));
-        routesFilterBySourceMenu.setItems(myCountries);
-
-        ArrayList<String> dstCodes = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Dst FROM ROUTE");
-        ObservableList<String> myDstCodes =  FXCollections.observableArrayList(dstCodes);
-        myDstCodes = HelperFunctions.addNullValue(myDstCodes);
-        routesFilterbyDestMenu.setValue(myDstCodes.get(0));
-        routesFilterbyDestMenu.setItems(myDstCodes);
-
-        ArrayList<String> stops = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Stops FROM ROUTE");
-        ObservableList<String> myStops =  FXCollections.observableArrayList(stops);
-        myStops = HelperFunctions.addNullValue(myStops);
-        routesFilterByStopsMenu.setValue(myStops.get(0));
-        routesFilterByStopsMenu.setItems(myStops);
-
-        ArrayList<String> equip = BBDatabase.performDistinctStringQuery("SELECT DISTINCT equipment FROM ROUTE");
-        ObservableList<String> myEquip =  FXCollections.observableArrayList(equip);
-        myEquip= HelperFunctions.addNullValue(myEquip);
-        routesFilterbyEquipMenu.setValue(myEquip.get(0));
-        routesFilterbyEquipMenu.setItems(myEquip);
+//        ArrayList<String> uniqueCountries = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Src FROM ROUTE");
+//        ObservableList<String> myCountries =  FXCollections.observableArrayList(uniqueCountries);
+//        myCountries = HelperFunctions.addNullValue(myCountries);
+//        routesFilterBySourceMenu.setValue(myCountries.get(0));
+//        routesFilterBySourceMenu.setItems(myCountries);
+//
+//        ArrayList<String> dstCodes = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Dst FROM ROUTE");
+//        ObservableList<String> myDstCodes =  FXCollections.observableArrayList(dstCodes);
+//        myDstCodes = HelperFunctions.addNullValue(myDstCodes);
+//        routesFilterbyDestMenu.setValue(myDstCodes.get(0));
+//        routesFilterbyDestMenu.setItems(myDstCodes);
+//
+//        ArrayList<String> stops = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Stops FROM ROUTE");
+//        ObservableList<String> myStops =  FXCollections.observableArrayList(stops);
+//        myStops = HelperFunctions.addNullValue(myStops);
+//        routesFilterByStopsMenu.setValue(myStops.get(0));
+//        routesFilterByStopsMenu.setItems(myStops);
+//
+//        ArrayList<String> equip = BBDatabase.performDistinctStringQuery("SELECT DISTINCT equipment FROM ROUTE");
+//        ObservableList<String> myEquip =  FXCollections.observableArrayList(equip);
+//        myEquip= HelperFunctions.addNullValue(myEquip);
+//        routesFilterbyEquipMenu.setValue(myEquip.get(0));
+//        routesFilterbyEquipMenu.setItems(myEquip);
         // ArrayList<String>
+        //updateRoutesDropdowns();
 
         updateRoutesTable(routePoints);
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
         ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT); //airportTable.getItems()
+        updateRoutesDropdowns();    //TODO better way of clearing filters after pressing see all
+
         updateRoutesTable(allPoints);
 
     }
@@ -137,6 +139,9 @@ public class RouteTabController {
         File f = HelperFunctions.getFile("Add Route Data");
 
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
+//        for (DataPoint item : myRouteData) {
+//            System.out.println(item);
+//        }
         DataBaseRefactor.insertDataPoints(myRouteData);
        
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
@@ -196,7 +201,7 @@ public class RouteTabController {
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
         populateRoutesFilterByStopsList();
-        //populateRoutesFilterByEquipList();
+        populateRoutesFilterByEquipList();
     }
 
     private void populateRoutesFilterBySourceList(){
@@ -224,9 +229,32 @@ public class RouteTabController {
         routesFilterByStopsMenu.setValue(uniqueObservableSources.get(0));
     }
 
+    private void populateRoutesFilterByEquipList(){
+        ArrayList<String> uniqueEquip = new ArrayList<>();
+        ArrayList<DataPoint> myRoutes = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        for (DataPoint route : myRoutes) {
+            RoutePoint myRoute = (RoutePoint) route;
+            if (myRoute.getEquipment() == null) {
+                continue;
+            }
+            String[] equip = myRoute.getEquipment().split("\\s+");
+            for (String myEquip : equip) {
+                if (!uniqueEquip.contains(myEquip)) {
+                    uniqueEquip.add(myEquip);
+                }
+            }
+        }
+        Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
+//        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
+        uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
+        routesFilterbyEquipMenu.setItems(uniqueObservableSources);
+        routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
+    }
+
 
     public void exportRouteData() {
-        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(routeTable.getItems());
+        ArrayList<DataPoint> myPoints = new ArrayList<>(routeTable.getItems());
         Exporter.exportData(myPoints);
     }
 }

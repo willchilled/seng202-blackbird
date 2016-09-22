@@ -22,7 +22,7 @@ public class AirportPoint extends DataPoint {
     private int incomingRoutes=0;
     private int outgoingRoutes=0;
 
-    private int correctEntry=1;
+    private int correctEntry=0;
 
     private int numberOfRoutes;
 
@@ -48,8 +48,8 @@ public class AirportPoint extends DataPoint {
 
     /**
      * Attempts to create an AirportPoint with a list of strings of length 12.
-     * If successful it creates an AirportPoint with values from list and correctEntry as 1.
-     * If unsuccessful it creates am AirportPoint with airportID -1, airportName as currentLine.toString() and correctEntry 0.
+     * If successful it creates an AirportPoint with values from list and correctEntry as 0.
+     * If unsuccessful it creates am AirportPoint with airportID -1, airportName as currentLine.toString() and correctEntry 1.
      * @param currentLine The list of strings holding the information for the airport in index of:
      *                    0 airportID,
      *                    1 airportName,
@@ -95,7 +95,6 @@ public class AirportPoint extends DataPoint {
                 this.dst = currentLine[10];
                 //System.out.println("STRING TZ: " + currentLine[11]);
                 this.tz = currentLine[11];
-                this.correctEntry = 1;
 
                 if (currentLine.length == 14){ // We add a special case for when there is data in the array
                     this.outgoingRoutes = Integer.parseInt(currentLine[12]);
@@ -106,8 +105,8 @@ public class AirportPoint extends DataPoint {
             catch(NumberFormatException e) {
                 //AirlinePoint myAirlinePoint = new
                 this.airportID = -1;
-                this.airportName = currentLine.toString();
-                this.correctEntry = 0;
+                //this.airportName = currentLine.toString();
+                this.correctEntry = 1;
             }
 
 

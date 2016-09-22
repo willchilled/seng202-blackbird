@@ -140,7 +140,6 @@ public class AirlinePopUpController {
                     " IATA='%4$s', ICAO='%5$s', CALLSIGN='%6$s', ACTIVE='%7$s' WHERE ID='%8$s'",
                     name, country, alias, iata, icao, callsign, active, idText.getText());
 
-            System.out.println(sql);
 
             DataBaseRefactor.editDataEntry(sql);
 

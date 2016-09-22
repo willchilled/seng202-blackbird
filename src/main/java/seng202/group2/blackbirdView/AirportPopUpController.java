@@ -70,10 +70,6 @@ public class AirportPopUpController {
         airportDstText.setText(airportPoint.getDst());
         airportTzText.setText(airportPoint.getTz());
 
-
-      //  nameText.setVisible(true);
-        //nameText.setText("Hi");
-        //String ms = nameText.getText();
     }
 
     public void setAirportPoint(AirportPoint airportPoint) {
@@ -190,8 +186,6 @@ public class AirportPopUpController {
                     " TZ='%11$s' WHERE ID='%12$s'",
                     name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz, airportIdText.getText());
 
-            System.out.println(sql);
-
             DataBaseRefactor.editDataEntry(sql);
 
             airportNameText.setText(name);
@@ -240,16 +234,5 @@ public class AirportPopUpController {
 
     }
 
-    /**
-     * Checks all editable fields for validity before trying to perform a query for the purpose of pre warnign the user
-     * @param attributes The list of editable fields and their respective values
-     * @return A boolean indicating if the fields were all valid
-     */
-    //TODO FIX VALID ENTRIES! Currently only returns true does not check anything!
-    public static boolean validEntries(List<String> attributes){
-
-        return true;
-
-    }
 }
 

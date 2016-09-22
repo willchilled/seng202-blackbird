@@ -14,10 +14,13 @@ public class Validater {
         }
         try {
             int num = Integer.parseInt(id);   // Checks to see if it is an int. However if it passes here it could still
+            if(num > 0){
+                return true;
+            }
         }catch(NumberFormatException e){      // fail later at the database if it is not unique
             return false;
         }
-        return true;
+        return false;
 
     }
 

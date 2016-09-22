@@ -24,6 +24,7 @@ public class AirlineAddingPopUpController {
     @FXML private TextField ICAO;
     @FXML private TextField Callsign;
     @FXML private TextField Country;
+    @FXML private Text addAirlineInvalidText;
     @FXML private CheckBox Active;
     private Stage adderStage;
     private Parent root;
@@ -41,13 +42,17 @@ public class AirlineAddingPopUpController {
     public void createButtonPressed(){;
 
         String[] airlinePoint = getValues().split(", ");
-        ArrayList<DataPoint> myAirlineData = new ArrayList<>();
-        DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT);
-        myAirlineData.add(myAirlinePoint);
+        if(Validator.checkAirline(airlinePoint)) {
+            ArrayList<DataPoint> myAirlineData = new ArrayList<>();
+            DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT);
+            myAirlineData.add(myAirlinePoint);
 
-        DataBaseRefactor.insertDataPoints(myAirlineData);
+            DataBaseRefactor.insertDataPoints(myAirlineData);
 
-        adderStage.close();
+            adderStage.close();
+        } else {
+            addAirlineInvalidText.setVisible(true);
+        }
     }
 
     public void cancleButtonPressed(){

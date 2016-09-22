@@ -25,7 +25,7 @@ public class Validator {
 
     private static boolean isValidName(String name){
 
-        return ((!name.equals("") && name.length() <= 40) || name.equals(""));
+        return (!name.equals("") && name.length() <= 40);
 
     }
 
@@ -55,7 +55,7 @@ public class Validator {
 
     private static boolean isValidCountry(String country){
 
-        return ((!country.equals("") && country.length() <= 40) || country.equals(""));
+        return (!country.equals("") && country.length() <= 40);
 
     }
 
@@ -179,13 +179,13 @@ public class Validator {
 
 
 //        System.out.println("Checking Data in Validater: ...");
-//        if(!isValidAirlineID(id)){
+//        if(!isValidID(id)){
 //            System.out.println("Bad id");
 //        }
 //        if(!isValidName(name)){
 //            System.out.println("Bad name");
 //        }
-//        if(!isValidAirlineAlias(alias)){
+//        if(!isValidAlias(alias)){
 //            System.out.println("Bad alias");
 //        }
 //        if(!isValidIATA(iata)){
@@ -197,12 +197,14 @@ public class Validator {
 //        if(!isValidAirlineCallsign(callsign)){
 //            System.out.println("Bad callsign");
 //        }
-//        if(!isValidAirlineCountry(country)){
+//        if(!isValidCountry(country)){
 //            System.out.println("Bad country");
 //        }
 //        if(!isValidActive(active)){
 //            System.out.println("Bad active");
 //        }
+//        System.out.println("================");
+//        System.out.println("================");
 
         return (isValidID(id) &&
                 isValidName(name) &&
@@ -248,6 +250,7 @@ public class Validator {
         String dst = attributes[10];
         String tz = attributes[11];
 
+//        System.out.println("----VALIDATOR----");
 //        if(!isValidID(id)){
 //            System.out.println("BAD ID");
 //        }
@@ -284,6 +287,8 @@ public class Validator {
 //        if(!isValidTZ(tz)){
 //            System.out.println("BAD tz");
 //        }
+//        System.out.println("------------------");
+//        System.out.println("------------------");
 
         return (isValidID(id) &&
                 isValidName(name) &&

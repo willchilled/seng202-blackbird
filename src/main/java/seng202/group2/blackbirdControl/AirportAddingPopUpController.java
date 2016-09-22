@@ -36,6 +36,7 @@ public class AirportAddingPopUpController {
     @FXML private ComboBox tzComboBox;
     @FXML private TextField DST;
     @FXML private TextField tzOlson;
+    @FXML private Text addAirportInvalidText;
     private Stage adderStage;
     private Parent root;
 
@@ -56,7 +57,7 @@ public class AirportAddingPopUpController {
 
     public void createButtonPressed(){
 
-        String[] airportPoint = getValues().split(", ");
+        String[] airportPoint = getValues().split(", ", -1);
         if(Validator.checkAirport(airportPoint)) {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT);
@@ -65,11 +66,11 @@ public class AirportAddingPopUpController {
             DataBaseRefactor.insertDataPoints(myAirportData);
             adderStage.close();
         } else {
-
+            addAirportInvalidText.setVisible(true);
         }
     }
 
-    public void cancleButtonPressed(){
+    public void cancelButtonPressed(){
         //just closes the stage
         adderStage.close();
     }

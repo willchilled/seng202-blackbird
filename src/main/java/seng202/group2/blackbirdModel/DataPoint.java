@@ -45,11 +45,14 @@ public class DataPoint {
         This creates a dataPoint from a string array and sets the type
          */
 
+
+
         DataPoint currentPoint = new DataPoint(type);
         if ("AirlinePoint".equals(type)) {
             currentPoint = new AirlinePoint(dataArray);
 
         } else if ("AirportPoint".equals(type)) {
+            //System.out.println(dataArray[0] + "---------");
             currentPoint = new AirportPoint(dataArray);
 
         } else if ("RoutePoint".equals(type)) {
@@ -59,6 +62,7 @@ public class DataPoint {
             currentPoint = new FlightPoint(dataArray);
         }
         currentPoint.type = type;
+        //System.out.println(currentPoint.toString());
         return currentPoint;
     }
 
@@ -74,6 +78,7 @@ public class DataPoint {
         if (this.getType() == mypoint.getType()) return true;
         else return false;
     }
+
 
 
 }

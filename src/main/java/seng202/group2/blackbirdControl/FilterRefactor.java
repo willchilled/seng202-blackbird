@@ -5,8 +5,6 @@ import seng202.group2.blackbirdModel.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class helps us to perform filters on the inputted data by generating sql strings to be performed for
@@ -111,7 +109,7 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String airportFilter(ArrayList<String> menusPressed, String searchString) {
-        String sql = "SELECT * FROM AIRPORT ";
+        String sql = "SELECT * FROM " + getJoinForAirportsTableSql();
 
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){
@@ -132,6 +130,7 @@ public class FilterRefactor {
         }
 
         sql += search;
+        //System.out.println(sql);
         //allPoints = BBDatabase.performQuery(sql);     //PERFORM DB QUERY
         //return null;
         return sql;
@@ -171,14 +170,13 @@ public class FilterRefactor {
 
         sql += search;
         //sql = removeLastWHERE(sql);
-        System.out.println(sql);
+        //System.out.println(sql);
         //sql = sql.replaceAll()
        // System.out.println("Performing query:"+ sql);
         //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
         //System.out.println("SIZE: " + allPoints.size());
         return sql; //return an arraylist
     }
-
 
 
 //    public static ArrayList<DataPoint> filterRouteEquipment(ArrayList<DataPoint> routes, String equipment) {
@@ -223,6 +221,12 @@ public class FilterRefactor {
 
     //------------------------------------------HELPER FUNCTIONS----------------------------------------------------//
 
+    private static String getJoinForAirportsTableSql(){
+        String sql = " (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
+                "(select count(*) from route where route.dstid=airport.id)\n" +
+                "as outgoing from airport\n)  ";
+        return sql;
+    }
     /**
      * Helper function to append to the current sql string using the selected filter dropdowns.
      * @param current The current sql string
@@ -276,7 +280,7 @@ public class FilterRefactor {
      * @return The sql string with the last 'where' removed, if 'and' is the last word.
      */
     private static String removeLastWHERE(String sqlString) {
-        System.out.println(sqlString.substring(sqlString.length()-6, sqlString.length()-1));
+        //System.out.println(sqlString.substring(sqlString.length()-6, sqlString.length()-1));
         String substring = sqlString.substring(sqlString.length()-6, sqlString.length()-1);
         if (substring.equals("WHERE")){
             sqlString = sqlString.substring(0, sqlString.length()-6);

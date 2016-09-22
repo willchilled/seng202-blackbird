@@ -35,6 +35,7 @@ public class FilterRefactorTest extends TestCase {
         ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, "AirportPoint");
 
         ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, "RoutePoint");
+        //System.out.println((RoutePoint) routePoints.get(0) + "HEEEY");
         ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, "FlightPoint");
         //ArrayList<Flight>
 
@@ -56,7 +57,8 @@ public class FilterRefactorTest extends TestCase {
         // ArrayList<Fl> a= flightPoints;
 
         DataBaseRefactor.insertDataPoints(flightPoints);
-
+        //routePoints = FilterRefactor.getAllPoints("RoutePoint");
+        //System.out.println(routePoints + "_____________________________");
 
     }
 
@@ -66,6 +68,10 @@ public class FilterRefactorTest extends TestCase {
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Greenland"));
         ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "AirportPoint");
         //System.out.println(dataPoints);
+        //System.out.println(dataPoints);
+        AirportPoint testPoint = (AirportPoint) dataPoints.get(0);
+        System.out.println(testPoint.getIncomingRoutes());
+
         assertEquals(dataPoints.size(), 4);
 
         selectedFields = new ArrayList<>(Arrays.asList("None"));

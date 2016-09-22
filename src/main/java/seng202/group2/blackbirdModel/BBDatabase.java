@@ -379,9 +379,10 @@ public class BBDatabase {
         int dstid = route.getDstAirportID();
         String codeshare = route.getCodeshare();
         int Stops = route.getStops();
+        String equipment = route.getEquipment();
 
         //make route sql text to execute
-        String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops)" +
+        String routeSql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, equipment)" +
                 "VALUES (" +
                 +IDnum + ", " +
                 "\"" + Airline + "\", " +
@@ -391,10 +392,11 @@ public class BBDatabase {
                 "\"" + dst + "\", " +
                 dstid + ", " +
                 "\"" + codeshare + "\", " +
-                Stops + ");";
+                Stops + ", \"" + equipment + "\");";
 
 
         try {
+            System.out.println(routeSql);
             stmt.executeUpdate(routeSql);
         } catch (SQLException e) {
             //bad route data
@@ -405,24 +407,24 @@ public class BBDatabase {
 
 
         //equipment is special cos its a dick
-        String strEquipment = route.getEquipment();
-        String[] ListEquipment = strEquipment.split(" ");
-
-        //make equipment sql
-        //for all equipment in route
-        for (String equip : ListEquipment) {
-            //add equipment to equipment table
-            String EquipSql = "INSERT INTO EQUIPMENT (IDnum, EquipmentName)" +
-                    "VALUES(" +
-                    "" + IDnum + ", " +
-                    "\"" + equip + "\");";
-            try {
-                stmt.executeUpdate(EquipSql);
-            }catch  (SQLException e){
-                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                System.out.println("Could not add equipment on: " + route);
-            }
-        }
+//        String strEquipment = route.getEquipment();
+//        String[] ListEquipment = strEquipment.split(" ");
+//
+//        //make equipment sql
+//        //for all equipment in route
+//        for (String equip : ListEquipment) {
+//            //add equipment to equipment table
+//            String EquipSql = "INSERT INTO EQUIPMENT (IDnum, EquipmentName)" +
+//                    "VALUES(" +
+//                    "" + IDnum + ", " +
+//                    "\"" + equip + "\");";
+//            try {
+//                stmt.executeUpdate(EquipSql);
+//            }catch  (SQLException e){
+//                System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//                System.out.println("Could not add equipment on: " + route);
+//            }
+//        }
     }
 
     //Flight Adding

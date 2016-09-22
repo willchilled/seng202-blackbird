@@ -135,6 +135,7 @@
             <Button fx:id="airportEditButton" layoutX="162.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirport" text="Edit" />
             <Button fx:id="airportFinishButton" layoutX="281.0" layoutY="12.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
             <Button fx:id="airportCancelButton" layoutX="28.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
+            <Text fx:id="airportInvalidDataText" fill="#e80909" layoutX="108.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" />
          </children>
       </Pane>
    </children>

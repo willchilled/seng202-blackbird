@@ -1,3 +1,5 @@
+
+
 package seng202.group2.blackbirdModel;
 
 /**
@@ -5,7 +7,7 @@ package seng202.group2.blackbirdModel;
  */
 public class FlightPoint extends DataPoint {
 
-    private String locaLtype;
+    private String localtype;
     private String localeID;
     private int altitude;
     private float latitude;
@@ -22,7 +24,7 @@ public class FlightPoint extends DataPoint {
      */
     public FlightPoint(String type, String localeID, int altitude, float latitude, float longitude) {
 
-        this.locaLtype = type;
+        this.localtype = type;
         this.localeID = localeID;
         this.altitude = altitude;
         this.latitude = latitude;
@@ -32,9 +34,9 @@ public class FlightPoint extends DataPoint {
     /**
      * Attempts to create a FlightPoint from a  list of strings of length 5.
      * If successful it creates an FlightPoint with values from list and correctEntry as 1.
-     * If unsuccessful it creates am FlightPoint with locaLtype "I AM INCORRECT".
+     * If unsuccessful it creates am FlightPoint with localtype "I AM INCORRECT".
      * @param currentLine The list of strings holding the information for the FlightPoint in index of:
-     *                    0 locaLtype,
+     *                    0 localtype,
      *                    1 localeID,
      *                    2 altitude,
      *                    3 latitude,
@@ -47,27 +49,25 @@ public class FlightPoint extends DataPoint {
 
         try {
             if (currentLine.length == 5) {
-                this.locaLtype = currentLine[0];
+                this.localtype = currentLine[0];
                 this.localeID = currentLine[1];
                 this.altitude = Integer.parseInt(currentLine[2]);
                 this.latitude = Float.parseFloat(currentLine[3]);
                 this.longitude = Float.parseFloat(currentLine[4]);
-
-
             }
         }
         catch(NumberFormatException e){
-            this.locaLtype = "I AM INCORRECT";
+            this.localtype = "I AM INCORRECT";
         }
 
     }
 
     public String getLocalType() {
-        return locaLtype;
+        return localtype;
     }
 
     public void setLocalType(String type) {
-        this.locaLtype = type;
+        this.localtype = type;
     }
 
     public String getLocaleID() {
@@ -104,7 +104,7 @@ public class FlightPoint extends DataPoint {
 
     /**
      * Returns the FlightPoint in the form of a string
-     * @return locaLtype, localeID, altitude, latitude, longitude
+     * @return localtype, localeID, altitude, latitude, longitude
      */
     @Override
     public String toString() {
@@ -113,7 +113,7 @@ public class FlightPoint extends DataPoint {
         //String, int, int, int, int
 
         return String.format("%s, %s, %s, %s,%s",
-                locaLtype, localeID, altitude, latitude, longitude);
+                localtype, localeID, altitude, latitude, longitude);
 
     }
 
@@ -126,3 +126,4 @@ public class FlightPoint extends DataPoint {
         this.correctEntry = correctEntry;
     }
 }
+

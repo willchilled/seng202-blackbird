@@ -1,3 +1,5 @@
+
+
 package seng202.group2.blackbirdControl;
 
 import seng202.group2.blackbirdModel.*;
@@ -5,35 +7,48 @@ import seng202.group2.blackbirdModel.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * Created by mch230 on 17/09/16.
+ * This class helps us to perform filters on the inputted data by generating sql strings to be performed for
+ * a filter query, then performing this query via the database methods.
  */
 public class FilterRefactor {
 
-    public static ArrayList<DataPoint> getAllPoints(String type) {
+    /**
+     * Gets all points within the database of the specified type
+     * @param type The type of data that we want
+     * @return The arraylist of datapoints returned from the database query.
+     * @see DataBaseRefactor
+     */
+    public static ArrayList<DataPoint> getAllPoints(DataTypes type) {
         String sql;
         switch (type) {
-            case "AirlinePoint": sql = "SELECT * FROM AIRLINE;"; break;
-            case "AirportPoint": sql = "SELECT * FROM AIRPORT;"; break;
-            case "RoutePoint": sql = "SELECT * FROM ROUTE;"; break;
-            //case "Flight": sql = "SELECT * FROM AIRLINE;";    //FLIGHTS UNABLE TO BE FILTERED ATM
+            case AIRLINEPOINT: sql = "SELECT * FROM AIRLINE;"; break;
+            case AIRPORTPOINT: sql = "SELECT * FROM AIRPORT;"; break;
+            case ROUTEPOINT: sql = "SELECT * FROM ROUTE;"; break;
+            case FLIGHTPOINT: sql = "SELECT * FROM AIRLINE;"; break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
-        return DataBaseRefactor.performGenericQuery(sql, type);      //NEED DB METHOD HERE
+        return DataBaseRefactor.performGenericQuery(sql, type);
     }
 
-
-    public static ArrayList<DataPoint> filterSelections(ArrayList<String> menusPressed, String searchString, String type) {
+    /**
+     * Calls upon the needed method to generate the sql string for a specified data type, then calls upon the
+     * database method to execute this query.
+     * @param menusPressed The arraylist of strings for each menu selection
+     * @param searchString The search string from the search bar
+     * @param type The type of data we are filtering
+     * @return The arraylist of datapoints returned from the filter query.
+     * @see DataBaseRefactor
+     */
+    public static ArrayList<DataPoint> filterSelections(ArrayList<String> menusPressed, String searchString, DataTypes type) {
         ArrayList<DataPoint> filtered;
         String myQuery = "";
         switch (type) {
-            case "AirlinePoint": myQuery = airlineFilter(menusPressed, searchString); break;
-            case "AirportPoint": myQuery = airportFilter(menusPressed, searchString); break;
-            case "RoutePoint": myQuery = routeFilter(menusPressed, searchString); break;
-            case "FlightPoint": myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case AIRLINEPOINT: myQuery = airlineFilter(menusPressed, searchString); break;
+            case AIRPORTPOINT: myQuery = airportFilter(menusPressed, searchString); break;
+            case ROUTEPOINT: myQuery = routeFilter(menusPressed, searchString); break;
+            case FLIGHTPOINT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
         filtered =  DataBaseRefactor.performGenericQuery(myQuery, type);
@@ -41,43 +56,62 @@ public class FilterRefactor {
     }
 
 
+    /**
+     * Returns the sql string for the filters specified
+     * @param menusPressed The arraylist of strings for each menu selection
+     * @param searchString The search string from the search bar
+     * @return The sql filter string to be executed.
+     */
     private static String flightFilter(ArrayList<String> menusPressed, String searchString) {
         //TODO
         //No filters for flights currently
         return null;
     }
 
-
+    /**
+     * Returns the sql string for the filters specified
+     * @param menusPressed The arraylist of strings for each menu selection
+     * @param searchString The search string from the search bar
+     * @return The sql filter string to be executed.
+     */
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
-        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"% %s%)\" AND " ));
+        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
 
-        //String sql = "SELECT * FROM ROUTE WHERE SRC=? AND DST=? AND STOP=? AND EQUIPMENT=?;";
-       // System.out.print(allSelections);
-//        String sql = "SELECT * FROM ROUTE LEFT OUTER JOIN EQUIPMENT ON EQUIPMENT.IDnum = ROUTE.IDnum WHERE ";
-        String sql = "SELECT * FROM ROUTE ";
-        sql = generateQueryString(sql, menusPressed, allSelections);
-        //String sql = "";
-        //System.out.println(sql);
-        String search = "";
-        if (searchString.length() >0){
-            String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
-                    + "OR ROUTE.Src=\"%1$s\" OR ROUTE.SrcID=\"%1$s\" OR ROUTE.Dst=\"%1$s\" OR ROUTE.Dstid=\"%1$s\""
-                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT.EquipmentName=\"%1$s\" );";
-            search = String.format(searchStatement, searchString);
-            sql += searchString;
-        } else {
-            sql = removeLastAND(sql);
+        String sql = "SELECT * FROM " + getJoinForRoutesTableSql() ;
+        boolean allNone = checkEmptyMenus(menusPressed);
+        //System.out.println(allNone + "-----------------------");
+        if (!allNone){
+            sql = generateQueryString(sql, menusPressed, allSelections);
         }
 
-        System.out.println(sql);
+        sql = removeLastAND(sql);
 
-        //routePoints = BBDatabase.performJoinRoutesEquipQuery(sql);    //DB METHOD HERE
+        String search = "";
+        if (searchString.length() >0){
+            String searchStatement = "(IDnum=\"%1$s\" OR IDnum=\"%1$s\" OR AirlineID=\"%1$s\""
+                    + "OR Src=\"%1$s\" OR SrcID=\"%1$s\" OR Dst=\"%1$s\" OR Dstid=\"%1$s\""
+                    + "OR Codeshare=\"%1$s\" OR Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
+            search = String.format(searchStatement, searchString);
+            if(allNone){
+                sql += " WHERE ";
+            }
+            else{
+                sql += " AND ";
+            }
+        }
+
+        sql += search;
         return sql;
     }
 
-
+    /**
+     * Returns the sql string for the filters specified
+     * @param menusPressed The arraylist of strings for each menu selection
+     * @param searchString The search string from the search bar
+     * @return The sql filter string to be executed.
+     */
     private static String airportFilter(ArrayList<String> menusPressed, String searchString) {
-        String sql = "SELECT * FROM AIRPORT ";
+        String sql = "SELECT * FROM " + getJoinForAirportsTableSql();
 
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){
@@ -98,12 +132,18 @@ public class FilterRefactor {
         }
 
         sql += search;
+        //System.out.println(sql);
         //allPoints = BBDatabase.performQuery(sql);     //PERFORM DB QUERY
         //return null;
         return sql;
     }
 
-
+    /**
+     * Returns the sql string for the filters specified
+     * @param menusPressed The arraylist of strings for each menu selection
+     * @param searchString The search string from the search bar
+     * @return The sql filter string to be executed.
+     */
     private static String airlineFilter(ArrayList<String> menusPressed, String searchString) {
         String sql = "SELECT * FROM AIRLINE ";
 
@@ -129,53 +169,80 @@ public class FilterRefactor {
         }
 
         sql += search;
-       // System.out.println("Performing query:"+ sql);
+        //sql = removeLastWHERE(sql);
+        //System.out.println(sql);
+        //sql = sql.replaceAll()
+        // System.out.println("Performing query:"+ sql);
         //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
         //System.out.println("SIZE: " + allPoints.size());
         return sql; //return an arraylist
     }
 
 
-
-    public static ArrayList<DataPoint> filterRouteEquipment(ArrayList<DataPoint> routes, String equipment) {
-        ArrayList<DataPoint> equipmentRoutes = new ArrayList<>();
-        String patternString;
-        if (equipment.isEmpty()) {
-            patternString = "^$";
-        } else {
-            String[] newString = equipment.split(" ");
-            patternString = "\\b(" + String.join("|", newString) + ")\\b";
-        }
-
-        Pattern pattern = Pattern.compile(patternString);
-
-        for (DataPoint route : routes) {
-            RoutePoint myroute = (RoutePoint) route;    //casting here
-            Matcher matcher = pattern.matcher(myroute.getEquipment());
-            if (matcher.find()) {
-                equipmentRoutes.add(route);
-            }
-        }
-        return equipmentRoutes;
-    }
-
+//    public static ArrayList<DataPoint> filterRouteEquipment(ArrayList<DataPoint> routes, String equipment) {
+//        ArrayList<DataPoint> equipmentRoutes = new ArrayList<>();
+//        String patternString;
+//        if (equipment.isEmpty()) {
+//            patternString = "^$";
+//        } else {
+//            String[] newString = equipment.split(" ");
+//            patternString = "\\b(" + String.join("|", newString) + ")\\b";
+//        }
+//
+//        Pattern pattern = Pattern.compile(patternString);
+//
+//        for (DataPoint route : routes) {
+//            RoutePoint myroute = (RoutePoint) route;    //casting here
+//            Matcher matcher = pattern.matcher(myroute.getEquipment());
+//            if (matcher.find()) {
+//                equipmentRoutes.add(route);
+//            }
+//        }
+//        return equipmentRoutes;
+//    }
 
 
+    /**
+     * Method that helps us to filter unique entries within a specified column from a table. Used to populate
+     * the filter dropdown menus.
+     * @param type The table of data to query from (i.e. the type of data we are dealing with)
+     * @param input The specified column to get distinct strings from (e.g. Countries)
+     * @return The arraylist of distinct strings returned from the database
+     * @see DataBaseRefactor
+     */
     protected static ArrayList<String> filterUnique(String type, String input) {    //input- relying on GUI to give the type and input e.g. Src, Dst??
         String sql = "SELECT DISTINCT %s from %s";
         sql = String.format(sql, input, type);
         ArrayList<String> menuItems = DataBaseRefactor.performDistinctQuery(sql);   //DB method to grab distinct stuff
-        //UNCOMMENT ABOVE WHEN READY
-        //ArrayList<String> menuItems = null;
         Collections.sort(menuItems, String.CASE_INSENSITIVE_ORDER);
         return menuItems;
     }
 
 
+    //------------------------------------------HELPER FUNCTIONS----------------------------------------------------//
 
+    private static String getJoinForAirportsTableSql(){
+        String sql = " (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
+                "(select count(*) from route where route.dstid=airport.id)\n" +
+                "as outgoing from airport\n)  ";
+        return sql;
+    }
+
+    private static String getJoinForRoutesTableSql(){
+        return " (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
+                "FROM route\n" +
+                "LEFT JOIN airport as a1 ON route.Srcid =  a1.id LEFT JOIN airport as a2 ON route.Dstid = a2.id\n) ";
+    }
+    /**
+     * Helper function to append to the current sql string using the selected filter dropdowns.
+     * @param current The current sql string
+     * @param menusPressed Items selected in the filter dropdowns
+     * @param allSelections All of the filter menus, in order to iterate through them
+     * @return The sql string updated with each filter dropdown selection
+     */
     private static String generateQueryString(String current, ArrayList<String> menusPressed, ArrayList<String> allSelections) {
         current += "WHERE ";
-        for (int i=0; i<menusPressed.size(); i++){
+        for (int i=0; i < menusPressed.size(); i++){
             String currentSelection = menusPressed.get(i);
             if(currentSelection != "None"){
                 current += String.format(allSelections.get(i), currentSelection);
@@ -184,6 +251,11 @@ public class FilterRefactor {
         return current;
     }
 
+    /**
+     * Helper function to see if all of the filter dropdowns have not been selected
+     * @param menusPressed The arraylist of filter dropdown selections
+     * @return A boolean value: true if all filter dropdowns have no selection; false if the user has made a dropdown selection
+     */
     private static boolean checkEmptyMenus(ArrayList<String> menusPressed) {
         boolean allNone = true;
         for (String currentSelection: menusPressed){
@@ -194,15 +266,33 @@ public class FilterRefactor {
         return allNone;
     }
 
-    private static String removeLastAND(String outputString) {
+    /**
+     * Helper function to remove the last 'and' of a sql string, if 'and' is the last word.
+     * @param sqlString The current sql string
+     * @return The sql string with the last 'and' removed, if 'and' is the last word.
+     */
+    private static String removeLastAND(String sqlString) {
 
-        String substring = outputString.substring(outputString.length()-4, outputString.length()-1);
+        String substring = sqlString.substring(sqlString.length()-4, sqlString.length()-1);
         if (substring.equals("AND")){
-            outputString = outputString.substring(0, outputString.length()-4);
+            sqlString = sqlString.substring(0, sqlString.length()-4);
         }
+        return sqlString;
+    }
 
-        return outputString;
-
+    /**
+     * Helper function to remove the last 'where' of a sql string, if 'where' is the last word.
+     * @param sqlString The current sql string
+     * @return The sql string with the last 'where' removed, if 'and' is the last word.
+     */
+    private static String removeLastWHERE(String sqlString) {
+        //System.out.println(sqlString.substring(sqlString.length()-6, sqlString.length()-1));
+        String substring = sqlString.substring(sqlString.length()-6, sqlString.length()-1);
+        if (substring.equals("WHERE")){
+            sqlString = sqlString.substring(0, sqlString.length()-6);
+        }
+        return sqlString;
     }
 
 }
+

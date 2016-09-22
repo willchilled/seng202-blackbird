@@ -14,10 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
-import seng202.group2.blackbirdModel.DataPoint;
-import seng202.group2.blackbirdModel.ParserRefactor;
+import seng202.group2.blackbirdModel.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,9 +66,9 @@ public class AirlineTabController {
         //Adds data into DataBase thus filtering it against database constraints, then pulling out remaining "good"
         // data to populate the GUI.
         File f = HelperFunctions.getFile("Add Airline Data");
-        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, "AirlinePoint");
+        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT);
         DataBaseRefactor.insertDataPoints(myPoints);
-        ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints("AirlinePoint");
+        ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
         System.out.println(validAirlineData.get(0).toString());
 
         //Populates DropDowns according to data
@@ -180,7 +177,7 @@ public class AirlineTabController {
         menusPressed.add(activeSelection);
 
 
-        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirlinePoint");
+        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
         updateAirlinesTable(allPoints);
         
     }
@@ -188,7 +185,7 @@ public class AirlineTabController {
 
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("AirlinePoint"); //airportTable.getItems()
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT); //airportTable.getItems()
         updateAirlinesTable(allPoints);
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         airlineFilterMenu.setItems(airlineCountryList);

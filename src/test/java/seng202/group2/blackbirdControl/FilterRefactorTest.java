@@ -31,15 +31,15 @@ public class FilterRefactorTest extends TestCase {
         File flightFile = new File(flightFileString);
 
 
-        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, "AirlinePoint");
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, "AirportPoint");
+        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
+        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
 
-        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, "RoutePoint");
-        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, "FlightPoint");
+        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT);
         //ArrayList<Flight>
 
         Flight flight = new Flight(flightPoints);
-        flight.setType("Flight");
+        flight.setType(DataTypes.FLIGHT);
         DataPoint f = flight;
         ArrayList<DataPoint> myFlight = new ArrayList<>();
         myFlight.add(f);
@@ -64,24 +64,24 @@ public class FilterRefactorTest extends TestCase {
 
         String search = "";
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Greenland"));
-        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "AirportPoint");
+        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", DataTypes.AIRPORTPOINT);
         //System.out.println(dataPoints);
         assertEquals(dataPoints.size(), 4);
 
         selectedFields = new ArrayList<>(Arrays.asList("None"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, search, "AirportPoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, search, DataTypes.AIRPORTPOINT);
         assertEquals(dataPoints.size(), 100); //Both lines are None
 
         selectedFields = new ArrayList<>(Arrays.asList("None"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, "Greenland", "AirportPoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "Greenland", DataTypes.AIRPORTPOINT);
         assertEquals(dataPoints.size(), 4); //Both lines are None
 //
         selectedFields = new ArrayList<>(Arrays.asList("Iceland"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, "Greenland", "AirportPoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "Greenland", DataTypes.AIRPORTPOINT);
         assertEquals(dataPoints.size(), 0); //Both lines are None
 
         selectedFields = new ArrayList<>(Arrays.asList("Iceland"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, "AEY", "AirportPoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "AEY", DataTypes.AIRPORTPOINT);
         assertEquals(dataPoints.size(), 1); //Both lines are None
     }
 
@@ -89,42 +89,42 @@ public class FilterRefactorTest extends TestCase {
 
         String search = "";
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Russia", "None"));
-        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "AirlinePoint");
+        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 5);
 
         selectedFields = new ArrayList<>(Arrays.asList("None", "None"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, search, "AirlinePoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, search, DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 100); //Both lines are None
 
         selectedFields = new ArrayList<>(Arrays.asList("Russia", "Y"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, search, "AirlinePoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, search, DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 0); //Both selections no search
 
         selectedFields = new ArrayList<>(Arrays.asList("Russia", "N"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, search, "AirlinePoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, search, DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 5); //Both selections no search
 
         selectedFields = new ArrayList<>(Arrays.asList("Russia", "N"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, "AED", "AirlinePoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "AED", DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 1); //Both selections and Search
 
         selectedFields = new ArrayList<>(Arrays.asList("Russia", "None"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, "N", "AirlinePoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "N", DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 5); //One selection and Search
 
         selectedFields = new ArrayList<>(Arrays.asList("None", "N"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, "Russia", "AirlinePoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "Russia", DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 5); //One selection and Search
 
         selectedFields = new ArrayList<>(Arrays.asList("None", "None"));
-        dataPoints = FilterRefactor.filterSelections(selectedFields, "Russia", "AirlinePoint");
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "Russia", DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 5); //One selection and Search
 
     }
     public void testRouteFilterSelections() throws  Exception{
         String search = "";
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "None"));
-        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "Poos", "RoutePoint");
+        ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "Poos", DataTypes.ROUTEPOINT);
         //assertEquals(dataPoints.size(), 5);
     }
 

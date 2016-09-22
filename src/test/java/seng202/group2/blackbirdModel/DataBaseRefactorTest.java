@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Created by sha162 on 17/09/16.
  */
 public class DataBaseRefactorTest extends TestCase {
+
     public void setUp() throws Exception {
         String cwd = System.getProperty("user.dir");
         String airlinesFileString;
@@ -32,19 +33,18 @@ public class DataBaseRefactorTest extends TestCase {
         //ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
 
 
-        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, "AirlinePoint");
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, "AirportPoint");
+        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
+        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
 
-        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, "RoutePoint");
-        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, "FlightPoint");
-        //ArrayList<Flight>
+        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT);
 
         Flight flight = new Flight(flightPoints);
-        flight.setType("Flight");
+        flight.setType(DataTypes.FLIGHT);
         DataPoint f = flight;
         ArrayList<DataPoint> myFlight = new ArrayList<>();
         myFlight.add(f);
-       // System.out.println(flight.getType() + "--------------------------");
+        // System.out.println(flight.getType() + "--------------------------");
 
 
         DataBaseRefactor.createTables();
@@ -54,7 +54,7 @@ public class DataBaseRefactorTest extends TestCase {
         DataBaseRefactor.insertDataPoints(myFlight);
 
 
-       // ArrayList<Fl> a= flightPoints;
+        // ArrayList<Fl> a= flightPoints;
 
         DataBaseRefactor.insertDataPoints(flightPoints);
 
@@ -67,7 +67,7 @@ public class DataBaseRefactorTest extends TestCase {
     public void testPerformGenericQuery() throws Exception {
 
         String sql = "SELECT * FROM FLIGHT";
-        DataBaseRefactor.performGenericQuery(sql, "FlightPoint");
+        DataBaseRefactor.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
     }
 
     public void testPerformDistinctQuery() throws Exception {
@@ -75,6 +75,21 @@ public class DataBaseRefactorTest extends TestCase {
         ArrayList<String> distinctPoints = DataBaseRefactor.performDistinctQuery(sql);
         assertEquals(46, distinctPoints.size());
         System.out.println("My Distinct Countries!");
+    }
+
+    public void testEditDataPoint() throws Exception {
+        String sql = "SELECT * FROM AIRLINE WHERE ID='2'";
+        ArrayList<DataPoint> myPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+        AirlinePoint myAirline = (AirlinePoint) myPoints.get(0);
+        System.out.println("name = " + myAirline.getAirlineName());
+        String edit = "UPDATE AIRLINE SET NAME='Poos', COUNTRY='United States', ALIAS='', IATA='', ICAO='GNL', CALLSIGN='GENERAL', ACTIVE='N' WHERE ID='2'";
+        DataBaseRefactor.editDataEntry(edit);
+        myPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+        myAirline = (AirlinePoint) myPoints.get(0);
+        assertEquals("Poos", myAirline.getAirlineName());
+
+
+
     }
 
 }

@@ -1,3 +1,5 @@
+
+
 package seng202.group2.blackbirdModel;
 
 /**
@@ -151,3 +153,4 @@ public class AirlinePoint extends DataPoint {
         this.correctEntry = correctEntry;
     }
 }
+

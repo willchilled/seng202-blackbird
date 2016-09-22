@@ -87,12 +87,12 @@ public class RouteTabController {
         ArrayList<DataPoint> routePoints;
 
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
-            routePoints = FilterRefactor.getAllPoints("RoutePoint");
+            routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
             updateRoutesTable(routePoints);
         }
         else{
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-            routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,"RoutePoint");
+            routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
 
 
@@ -127,7 +127,7 @@ public class RouteTabController {
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("RoutePoint"); //airportTable.getItems()
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT); //airportTable.getItems()
         updateRoutesTable(allPoints);
 
     }
@@ -136,11 +136,11 @@ public class RouteTabController {
         
         File f = HelperFunctions.getFile("Add Route Data");
 
-        ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, "RoutePoint");
+        ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
         DataBaseRefactor.insertDataPoints(myRouteData);
        
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
-        ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints("RoutePoint");
+        ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();

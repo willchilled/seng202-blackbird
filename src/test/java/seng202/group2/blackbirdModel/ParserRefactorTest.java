@@ -34,18 +34,18 @@ public class ParserRefactorTest extends TestCase {
         //ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
 
 
-        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, "AirlinePoint");
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, "AirportPoint");
+        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
+        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
 
-        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, "RoutePoint");
-        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, "FlightPoint");
+        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT);
        // System.out.println(airlinePoints.get(0).getType());
 
 
 
         Flight hello = new Flight(flightPoints);
         DataPoint myFlight = hello;
-        myFlight.setType("FlightPoint");
+        myFlight.setType(DataTypes.FLIGHTPOINT);
 
 
         DataPoint myFlight2 = new Flight(flightPoints);
@@ -59,10 +59,10 @@ public class ParserRefactorTest extends TestCase {
         //DataPoint test = DataPoint.createDataPointFromStringArray(flightPoints, "FlightPoint");//new DataPoint(flightPoints);
 //
 //
-        testDatatype(airlinePoints, "AirlinePoint");
-        testDatatype(airportPoint, "AirportPoint");
-        testDatatype(routePoints, "RoutePoint");
-        testDatatype(flightPoints, "FlightPoint");
+        testDatatype(airlinePoints, DataTypes.AIRLINEPOINT);
+        testDatatype(airportPoint, DataTypes.AIRPORTPOINT);
+        testDatatype(routePoints, DataTypes.ROUTEPOINT);
+        testDatatype(flightPoints, DataTypes.FLIGHTPOINT);
 
          //System.out.println(flightPoints.get(0).getType());
 
@@ -79,7 +79,7 @@ public class ParserRefactorTest extends TestCase {
 
     }
 
-    public void testDatatype(ArrayList<DataPoint> allPoints, String type){
+    public void testDatatype(ArrayList<DataPoint> allPoints, DataTypes type){
         //System.out.println(type);
         for (int i=0; i<allPoints.size(); i++){
             assertEquals(allPoints.get(i).getType(), type);

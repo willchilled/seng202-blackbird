@@ -14,10 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
-import seng202.group2.blackbirdModel.DataPoint;
-import seng202.group2.blackbirdModel.ParserRefactor;
+import seng202.group2.blackbirdModel.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,9 +65,9 @@ public class AirportTabController {
     public void addAirportData() {
         File f;
         f = HelperFunctions.getFile("Add Airport Data");
-        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, "AirportPoint");
+        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT);
         DataBaseRefactor.insertDataPoints(myAirportPoints);
-        ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints("AirportPoint");
+        ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         //System.out.println(validAirportPoints.get(1));
         updateAirportFields();
         updateAirportsTable(validAirportPoints);
@@ -78,6 +75,9 @@ public class AirportTabController {
     }
 
     private void updateAirportFields() {
+
+
+
         airportCountryList = populateAirportCountryList();  //populating from valid data in database
         //System.out.println(airportCountryList);
         airportFilterMenu.setItems(airportCountryList);
@@ -138,7 +138,7 @@ public class AirportTabController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("Airport");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 
@@ -162,7 +162,7 @@ public class AirportTabController {
         System.out.println(searchQuery);
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(countrySelection));
-        ArrayList<DataPoint> myFilteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, "AirportPoint");
+        ArrayList<DataPoint> myFilteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
         updateAirportsTable(myFilteredPoints);
 
     }
@@ -170,7 +170,7 @@ public class AirportTabController {
 
     public void airportSeeAllButtonPressed(ActionEvent actionEvent) {
         //gets all airport points and updates view
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints("AirportPoint"); //airportTable.getItems();
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT); //airportTable.getItems();
         updateAirportsTable(allPoints);
     }
 

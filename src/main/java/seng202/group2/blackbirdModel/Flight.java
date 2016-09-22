@@ -1,3 +1,5 @@
+
+
 package seng202.group2.blackbirdModel;
 
 import java.util.ArrayList;
@@ -64,5 +66,4 @@ public class Flight extends DataPoint {
 */
 
 }
-
 

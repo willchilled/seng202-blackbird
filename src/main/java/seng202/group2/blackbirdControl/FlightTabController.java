@@ -54,10 +54,10 @@ public class FlightTabController {
     public void addFlightData() {
             File f = HelperFunctions.getFile("Add Flight Data");
             
-            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, "FlightPoint");
+            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
             //BBDatabase.addFlighttoDB(myFlightData);
             DataBaseRefactor.insertDataPoints(myFlightData);
-            ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints("FlightPoint");
+            ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints(DataTypes.FLIGHTPOINT);
     
             updateFlightsTable(myFlightData);
 

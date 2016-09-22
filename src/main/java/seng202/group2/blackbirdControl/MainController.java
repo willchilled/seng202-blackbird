@@ -31,9 +31,7 @@ import java.util.ResourceBundle;
 
 import static javafx.fxml.FXMLLoader.load;
 
-/**
- * Created by emr65 on 13/08/16.
- */
+
 public class MainController implements Initializable {
 
     @FXML private MenuBarController menuBarController;
@@ -58,6 +56,8 @@ public class MainController implements Initializable {
         mainTabPane.setVisible(true);
         airlineTabController.show();
         airportTabController.show();
+        flightTabController.show();
+        routeTabController.show();
 
         DataBaseRefactor.createTables();
     }
@@ -100,33 +100,7 @@ public class MainController implements Initializable {
 }
 
 
-/*
 
-    @FXML
-    private void initialize(){
-        //Automatic initialisation when the program starts
-
-        //BBDatabase.createTables(); //COMMENT ME OUT IF YOU WANT PROGRAM TO RUN NORMALL
-        //addALLData();              //COMMENT ME OUT IF YOU WANT THE PROGRAM TO RUN NORAMLLY
-
-        airportFilterMenu.setValue(airPortCountryList.get(0));
-        airportFilterMenu.setItems(airPortCountryList);
-        airlineFilterMenu.setValue(airlineCountryList.get(0));
-        airlineFilterMenu.setItems(airlineCountryList);
-        airlineActiveMenu.setItems(airlineActiveList);
-        airlineActiveMenu.setValue(airlineActiveList.get(0));
-
-        routesFilterBySourceMenu.setValue(getRoutesFilterBySourceList().get(0));
-        routesFilterBySourceMenu.setItems(getRoutesFilterBySourceList());
-        routesFilterbyDestMenu.setValue(getRoutesFilterbyDestList().get(0));
-        routesFilterbyDestMenu.setItems(getRoutesFilterbyDestList());
-        routesFilterByStopsMenu.setValue(getRoutesFilterByStopsList().get(0));
-        routesFilterByStopsMenu.setItems(getRoutesFilterByStopsList());
-        routesFilterbyEquipMenu.setValue(getRoutesFilterbyEquipList().get(0));
-        routesFilterbyEquipMenu.setItems(getRoutesFilterbyEquipList());
-
-
-    */
 /*******************************************************************************************************************
      *******************************************************************************************************************
      *************************************** FILTERING BUTTONS**********************************************************

@@ -5,11 +5,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdModel.Parser;
+import seng202.group2.blackbirdModel.*;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 public class AirlineAddingPopUpController {
 
     @FXML private TextField Name;
-    @FXML private TextField ID;
+    @FXML private Text airlineID;
     @FXML private TextField Alias;
     @FXML private TextField IATA;
     @FXML private TextField ICAO;
@@ -34,6 +33,7 @@ public class AirlineAddingPopUpController {
         adderStage.setTitle("Add Airline Information");
         adderStage.initModality(Modality.NONE);
         adderStage.initOwner(null);
+        airlineID.setText(Integer.toString(DataBaseRefactor.getMaxInColumn("AIRLINE", "ID") + 1));
 
         adderStage.show();
     }
@@ -41,12 +41,11 @@ public class AirlineAddingPopUpController {
     public void createButtonPressed(){;
 
         String[] airlinePoint = getValues().split(", ");
-        int count = BBDatabase.getMaxInColumn("AIRLINE", "ID");
-        ArrayList<AirlinePoint> myAirlineData = new ArrayList<AirlinePoint>();
-        AirlinePoint myAirlinePoint = Parser.checkAirlineData(airlinePoint, count);
+        ArrayList<DataPoint> myAirlineData = new ArrayList<>();
+        DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT);
         myAirlineData.add(myAirlinePoint);
 
-        BBDatabase.addAirlinePointstoDB(myAirlineData);
+        DataBaseRefactor.insertDataPoints(myAirlineData);
 
         adderStage.close();
     }
@@ -58,7 +57,7 @@ public class AirlineAddingPopUpController {
 
     private String getValues(){
         String airlineName = Name.getText().toString();
-        String airlineID = ID.getText().toString();
+        String id= airlineID.getText().toString();
         String airlineAlias = Alias.getText().toString();
         String airlineIATA = IATA.getText().toString();
         String airlineICAO = ICAO.getText().toString();
@@ -66,7 +65,7 @@ public class AirlineAddingPopUpController {
         String airlineCountry = Country.getText().toString();
         boolean ActiveChecked = Active.isSelected();
         String values = new String();
-        values += airlineID + ", ";
+        values += id + ", ";
         values += airlineName + ", ";
         values += airlineAlias + ", ";
         values += airlineIATA + ", ";

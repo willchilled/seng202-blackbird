@@ -38,11 +38,6 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Longitude" GridPane.rowIndex="7" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Altitude" GridPane.rowIndex="8" />
             <TextField fx:id="Name" promptText="Enter Airport Name..." GridPane.columnIndex="1" />
-            <TextField fx:id="ID" promptText="Enter Airport ID..." GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </TextField>
             <TextField fx:id="City" promptText="Enter City..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="Country" promptText="Enter Country..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="IATA" promptText="Enter IATA/FF..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -57,8 +52,8 @@
             <TextField fx:id="DST" promptText="Enter DST..." GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" onAction="#cancleButtonPressed"/>
-                  <Button mnemonicParsing="false" text="Create" GridPane.columnIndex="1" onAction="#createButtonPressed" />
+                  <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -70,6 +65,7 @@
             </GridPane>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone(Olson Format)" GridPane.rowIndex="11" />
             <TextField fx:id="tzOlson" promptText="Enter Timzone..." GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <Text fx:id="airportID" strokeType="OUTSIDE" strokeWidth="0.0" text="airportID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
          <BorderPane.margin>
             <Insets />

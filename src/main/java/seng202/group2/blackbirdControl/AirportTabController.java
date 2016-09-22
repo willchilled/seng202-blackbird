@@ -87,7 +87,7 @@ public class AirportTabController {
     private ObservableList<String> populateAirportCountryList(){
         //Populates the dropdown of airline countries
         //ArrayList<AirportPoint> allPoints = getAllAirportPoints();
-        ArrayList<String> countries = FilterRefactor.filterUnique("Airport", "country");
+        ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = HelperFunctions.addNullValue(countryList);
 

@@ -274,9 +274,7 @@ public class DataBaseRefactor {
 
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
-            //System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setInt(1, airportID);
-            // System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setString(2, airportName);
             preparedStatement.setString(3, City);
             preparedStatement.setString(4, Country);
@@ -385,9 +383,8 @@ public class DataBaseRefactor {
 
                 int width = rsmd.getColumnCount();
 
-                //System.out.println("---------------");
-
-                if(dataType.equals(DataTypes.ROUTEPOINT)) {
+                if(dataType == DataTypes.ROUTEPOINT) {
+                    //System.out.println("Now here");
                     attributes = new String[width-1];
                     for (int i = 1; i < width; i++) {
 

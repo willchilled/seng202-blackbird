@@ -49,7 +49,7 @@ public class DataPoint {
         if (type == DataTypes.AIRLINEPOINT) {
             currentPoint = new AirlinePoint(dataArray);
 
-        } else if (type == DataTypes.AIRLINEPOINT) {
+        } else if (type == DataTypes.AIRPORTPOINT) {
             currentPoint = new AirportPoint(dataArray);
 
         } else if (type == DataTypes.ROUTEPOINT) {

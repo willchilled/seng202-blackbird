@@ -73,6 +73,7 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
+        System.out.println("Got here");
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
 
         String sql = "SELECT * FROM " + getJoinForRoutesTableSql() ;
@@ -99,6 +100,7 @@ public class FilterRefactor {
         }
 
         sql += search;
+        System.out.println("My sql is: " + sql);
         return sql;
     }
 

@@ -60,7 +60,7 @@ public class AirlinePoint extends DataPoint {
             catch(NumberFormatException e) {
                 //AirlinePoint myAirlinePoint = new
                 this.airlineID = -1;
-                this.airlineName = currentLine.toString();
+                //this.airlineName = currentLine.toString();
                 this.correctEntry = 1;
             }
 

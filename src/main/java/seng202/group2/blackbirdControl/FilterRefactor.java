@@ -5,8 +5,6 @@ import seng202.group2.blackbirdModel.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class helps us to perform filters on the inputted data by generating sql strings to be performed for
@@ -77,7 +75,7 @@ public class FilterRefactor {
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
 
-        String sql = "SELECT * FROM ROUTE ";
+        String sql = "SELECT * FROM " + getJoinForRoutesTableSql() ;
         boolean allNone = checkEmptyMenus(menusPressed);
         //System.out.println(allNone + "-----------------------");
         if (!allNone){
@@ -88,9 +86,9 @@ public class FilterRefactor {
 
         String search = "";
         if (searchString.length() >0){
-            String searchStatement = "(ROUTE.IDnum=\"%1$s\" OR ROUTE.IDnum=\"%1$s\" OR ROUTE.AirlineID=\"%1$s\""
-                    + "OR ROUTE.Src=\"%1$s\" OR ROUTE.SrcID=\"%1$s\" OR ROUTE.Dst=\"%1$s\" OR ROUTE.Dstid=\"%1$s\""
-                    + "OR ROUTE.Codeshare=\"%1$s\" OR ROUTE.Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
+            String searchStatement = "(IDnum=\"%1$s\" OR IDnum=\"%1$s\" OR AirlineID=\"%1$s\""
+                    + "OR Src=\"%1$s\" OR SrcID=\"%1$s\" OR Dst=\"%1$s\" OR Dstid=\"%1$s\""
+                    + "OR Codeshare=\"%1$s\" OR Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
             search = String.format(searchStatement, searchString);
             if(allNone){
                 sql += " WHERE ";
@@ -111,7 +109,7 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String airportFilter(ArrayList<String> menusPressed, String searchString) {
-        String sql = "SELECT * FROM AIRPORT ";
+        String sql = "SELECT * FROM " + getJoinForAirportsTableSql();
 
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){
@@ -132,6 +130,7 @@ public class FilterRefactor {
         }
 
         sql += search;
+        //System.out.println(sql);
         //allPoints = BBDatabase.performQuery(sql);     //PERFORM DB QUERY
         //return null;
         return sql;
@@ -171,14 +170,13 @@ public class FilterRefactor {
 
         sql += search;
         //sql = removeLastWHERE(sql);
-        System.out.println(sql);
+        //System.out.println(sql);
         //sql = sql.replaceAll()
        // System.out.println("Performing query:"+ sql);
         //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
         //System.out.println("SIZE: " + allPoints.size());
         return sql; //return an arraylist
     }
-
 
 
 //    public static ArrayList<DataPoint> filterRouteEquipment(ArrayList<DataPoint> routes, String equipment) {
@@ -223,6 +221,18 @@ public class FilterRefactor {
 
     //------------------------------------------HELPER FUNCTIONS----------------------------------------------------//
 
+    private static String getJoinForAirportsTableSql(){
+        String sql = " (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
+                "(select count(*) from route where route.dstid=airport.id)\n" +
+                "as outgoing from airport\n)  ";
+        return sql;
+    }
+
+    private static String getJoinForRoutesTableSql(){
+        return " (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
+                "FROM route\n" +
+                "LEFT JOIN airport as a1 ON route.Srcid =  a1.id LEFT JOIN airport as a2 ON route.Dstid = a2.id\n) ";
+    }
     /**
      * Helper function to append to the current sql string using the selected filter dropdowns.
      * @param current The current sql string
@@ -276,7 +286,7 @@ public class FilterRefactor {
      * @return The sql string with the last 'where' removed, if 'and' is the last word.
      */
     private static String removeLastWHERE(String sqlString) {
-        System.out.println(sqlString.substring(sqlString.length()-6, sqlString.length()-1));
+        //System.out.println(sqlString.substring(sqlString.length()-6, sqlString.length()-1));
         String substring = sqlString.substring(sqlString.length()-6, sqlString.length()-1);
         if (substring.equals("WHERE")){
             sqlString = sqlString.substring(0, sqlString.length()-6);

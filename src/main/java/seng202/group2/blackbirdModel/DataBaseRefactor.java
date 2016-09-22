@@ -223,7 +223,7 @@ public class DataBaseRefactor {
 
         //make route sql text to execute
         String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        //System.out.println(sql);
+        //System.out.println(sql + "I GET TO HERE") ;
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
             //System.out.println(preparedStatement + "AAAAH");
@@ -367,9 +367,6 @@ public class DataBaseRefactor {
      * Adds an airline point.
      * @param currentPoint The airline point we want to add.
      */
-    private static void addAirlinePoint(DataPoint currentPoint) {
-        //TODO?
-    }
 
     /**
      * Performs a generic query to the database e.g. for filtering and searching. Calls the static method of
@@ -380,7 +377,7 @@ public class DataBaseRefactor {
      * @see DataPoint
      */
     public static ArrayList<DataPoint> performGenericQuery(String sql, String dataType) {
-
+        //System.out.println(sql);
         ArrayList<DataPoint> resultPoints = new ArrayList<>();
 
         try {
@@ -416,6 +413,7 @@ public class DataBaseRefactor {
                     }
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
+                //System.out.println(myPoint.toString() + "HI");
                 resultPoints.add(myPoint);
                // System.out.println(myPoint.toString());
             }

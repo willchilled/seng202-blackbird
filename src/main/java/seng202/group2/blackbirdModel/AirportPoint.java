@@ -17,6 +17,8 @@ public class AirportPoint extends DataPoint {
     private float timeZone;
     private String dst;
     private String tz;
+    private int incomingRoutes=0;
+    private int outgoingRoutes=0;
 
     private int correctEntry=1;
 
@@ -62,9 +64,9 @@ public class AirportPoint extends DataPoint {
      */
     public AirportPoint(String[] currentLine) {
         super();
-        //System.out.println(currentLine);
+        //System.out.println(currentLine.length);
 
-        if (currentLine.length == 12){
+        if (currentLine.length == 12 || currentLine.length == 14){
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {
                // System.out.println("Int AID: " + currentLine[0]);
@@ -93,6 +95,11 @@ public class AirportPoint extends DataPoint {
                 this.tz = currentLine[11];
                 this.correctEntry = 1;
 
+                if (currentLine.length == 14){ // We add a special case for when there is data in the array
+                    this.outgoingRoutes = Integer.parseInt(currentLine[12]);
+                    this.incomingRoutes = Integer.parseInt(currentLine[13]);//check this is the right way round
+                }
+
             }
             catch(NumberFormatException e) {
                 //AirlinePoint myAirlinePoint = new
@@ -100,6 +107,7 @@ public class AirportPoint extends DataPoint {
                 this.airportName = currentLine.toString();
                 this.correctEntry = 0;
             }
+
 
         }
 
@@ -225,11 +233,25 @@ public class AirportPoint extends DataPoint {
      */
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
-                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
+        return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
+                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz, incomingRoutes, outgoingRoutes);
 
     }
 
 
+    public int getIncomingRoutes() {
+        return incomingRoutes;
+    }
 
+    public void setIncomingRoutes(int incomingRoutes) {
+        this.incomingRoutes = incomingRoutes;
+    }
+
+    public int getOutgoingRoutes() {
+        return outgoingRoutes;
+    }
+
+    public void setOutgoingRoutes(int outgoingRoutes) {
+        this.outgoingRoutes = outgoingRoutes;
+    }
 }

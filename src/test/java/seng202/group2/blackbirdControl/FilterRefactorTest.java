@@ -35,6 +35,7 @@ public class FilterRefactorTest extends TestCase {
         ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, "AirportPoint");
 
         ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, "RoutePoint");
+        //System.out.println((RoutePoint) routePoints.get(0) + "HEEEY");
         ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, "FlightPoint");
         //ArrayList<Flight>
 
@@ -56,7 +57,8 @@ public class FilterRefactorTest extends TestCase {
         // ArrayList<Fl> a= flightPoints;
 
         DataBaseRefactor.insertDataPoints(flightPoints);
-
+        //routePoints = FilterRefactor.getAllPoints("RoutePoint");
+        //System.out.println(routePoints + "_____________________________");
 
     }
 
@@ -70,6 +72,11 @@ public class FilterRefactorTest extends TestCase {
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Greenland"));
         ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "AirportPoint");
         //System.out.println(dataPoints);
+        //System.out.println(dataPoints);
+        AirportPoint testPoint = (AirportPoint) dataPoints.get(0);
+        assertEquals(testPoint.getIncomingRoutes(), 2);//These two tests are to make sure the number of incoming + outgoing routes is correct
+        assertEquals(testPoint.getOutgoingRoutes(), 1); //Might add more of these tests later and also they should really be in a different place
+
         assertEquals(dataPoints.size(), 4);
 
         selectedFields = new ArrayList<>(Arrays.asList("None"));
@@ -131,6 +138,9 @@ public class FilterRefactorTest extends TestCase {
         ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", "RoutePoint");
         assertEquals(dataPoints.size(), 98);
 
+        RoutePoint myRoutePoint = (RoutePoint) dataPoints.get(0);
+        assertEquals(myRoutePoint.getSrcAirportName(), "Narsarsuaq");
+
 
         selectedFields = new ArrayList<>(Arrays.asList("AER", "None", "None", "None"));
         dataPoints = FilterRefactor.filterSelections(selectedFields, "", "RoutePoint");
@@ -144,5 +154,7 @@ public class FilterRefactorTest extends TestCase {
         dataPoints = FilterRefactor.filterSelections(selectedFields, "EGO", "RoutePoint");
         assertEquals(dataPoints.size(), 4);
     }
+
+
 
 }

@@ -24,7 +24,7 @@ public class Exporter {
 
         if (userChoice == JFileChooser.APPROVE_OPTION) {
             File fileToSave = chooser.getSelectedFile();
-            System.out.println(fileToSave);
+            //System.out.println(fileToSave);
 
 
             try (Writer writer = new BufferedWriter(new OutputStreamWriter(
@@ -34,7 +34,7 @@ public class Exporter {
                     writer.write(points.get(i).toString()+"\n");
                  //   System.out.println(points.get(i).toString());
                 }
-                System.out.println("WOW HERE OMG");
+                //System.out.println("WOW HERE OMG");
 
                     //writer.write("something");
             } catch (UnsupportedEncodingException e) {

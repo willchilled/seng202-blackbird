@@ -82,15 +82,14 @@ public class RouteTabController {
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
         //TODO fix this when the correct stuff is linked to the GUI
-        String equipSelection = "No values Loaded";
+        String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<DataPoint> routePoints;
 
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
             routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
             updateRoutesTable(routePoints);
-        }
-        else{
+        } else {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
@@ -122,13 +121,15 @@ public class RouteTabController {
 //        routesFilterbyEquipMenu.setValue(myEquip.get(0));
 //        routesFilterbyEquipMenu.setItems(myEquip);
         // ArrayList<String>
-        updateRoutesDropdowns();
+        //updateRoutesDropdowns();
 
         updateRoutesTable(routePoints);
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
         ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT); //airportTable.getItems()
+        updateRoutesDropdowns();    //TODO better way of clearing filters after pressing see all
+
         updateRoutesTable(allPoints);
 
     }

@@ -1,6 +1,7 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,6 +43,10 @@ public class RouteTabController {
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
     @FXML private TableColumn routeErrorCol;
+    @FXML private TableColumn routeSrcCountryCol;
+    @FXML private TableColumn routeDstCountryCol;
+    @FXML private TableColumn routeSrcNameCol;
+    @FXML private TableColumn routeDstNameCol;
 
     @FXML private ComboBox routesFilterBySourceMenu;
     @FXML private ComboBox routesFilterbyDestMenu;
@@ -66,6 +71,7 @@ public class RouteTabController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RouteAddingPopUp.fxml"));
             root = loader.load();
 
+            //use controller to control it
             RouteAddingPopUpController popUpController = loader.getController();
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
@@ -151,15 +157,15 @@ public class RouteTabController {
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
         DataBaseRefactor.insertDataPoints(myRouteData);
 
-        //WAITING ON METHOD TO GET ROUTES BACK FROM DB
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points
-        updateRoutesTable(myRouteData);
+        updateRoutesTable(validRouteData);
         updateRoutesDropdowns();
+        mainController.updateAirports();
 
     }
 
-    private void updateRoutesTable(ArrayList<DataPoint> points) {
+    protected void updateRoutesTable(ArrayList<DataPoint> points) {
         routeTable.getItems().setAll(points);
 
 
@@ -172,6 +178,24 @@ public class RouteTabController {
         routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
         routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+        routeSrcCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportCountry"));
+        routeDstCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportCountry"));
+        routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
+        routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportName"));
+
+
+        routeTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            //This refreshes the current table
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+                routeTable.getColumns().get(0).setVisible(false);
+                routeTable.getColumns().get(0).setVisible(true);
+            }
+        });
+
+
+
+
 
 
 

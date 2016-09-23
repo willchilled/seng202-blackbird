@@ -46,6 +46,9 @@ public class AirportTabController {
     @FXML private TableColumn airportTZCol;
     @FXML private TableColumn airportErrorCol;
 
+    @FXML private TableColumn airportIncCol;
+    @FXML private TableColumn airportOutCol;
+
     //Filter and search
     @FXML private ComboBox airportFilterMenu;
     @FXML private TextField airportSearchQuery;
@@ -73,6 +76,7 @@ public class AirportTabController {
         //System.out.println(validAirportPoints.get(1));
         updateAirportFields();
         updateAirportsTable(validAirportPoints);
+        mainController.updateRoutes();
 
     }
 
@@ -96,23 +100,25 @@ public class AirportTabController {
         return countryList;
     }
 
-    private void updateAirportsTable(ArrayList<DataPoint> validAirportPoints) {
+    protected void updateAirportsTable(ArrayList<DataPoint> validAirportPoints) {
 
         airportTable.getItems().setAll(validAirportPoints);
 
-
-        airportIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("airportID"));
-        airportNameCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportName"));
-        airportCityCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportCity"));
-        airportCountryCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportCountry"));
-        airportIATACol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("iata"));
-        airportICAOCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("icao"));
-        airportLatCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
-        airportLongCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
-        airportAltCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("altitude"));
-        airportTimeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("timeZone"));
-        airportDSTCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("dst"));
-        airportTZCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("tz"));
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+        //airportRouteNo.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportIncCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportOutCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("outgoingRoutes"));
 
         airportTable.getItems().addListener(new ListChangeListener<DataPoint>() {
             //This refreshes the current table

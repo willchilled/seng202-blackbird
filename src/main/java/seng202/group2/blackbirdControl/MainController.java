@@ -42,6 +42,7 @@ public class MainController implements Initializable {
     @FXML private AirportTabController airportTabController;
     @FXML private AirlineTabController airlineTabController;
 
+
     @FXML private Tab airlineTab;
     @FXML private Tab routeTab;
     @FXML private Tab flightTab;
@@ -58,6 +59,7 @@ public class MainController implements Initializable {
         routeTabController.setMainController(this);
         airportTabController.setMainController(this);
         airlineTabController.setMainController(this);
+
     }
 
     public void show(){
@@ -140,6 +142,8 @@ public class MainController implements Initializable {
                 break;
         }
     }
+
+
 }
 
 

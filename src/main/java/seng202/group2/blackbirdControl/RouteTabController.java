@@ -143,7 +143,7 @@ public class RouteTabController {
 //            System.out.println(item);
 //        }
         DataBaseRefactor.insertDataPoints(myRouteData);
-       
+
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points

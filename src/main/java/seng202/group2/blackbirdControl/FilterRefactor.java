@@ -79,7 +79,7 @@ public class FilterRefactor {
 
         String sql = "SELECT * FROM " + getJoinForRoutesTableSql() ;
         boolean allNone = checkEmptyMenus(menusPressed);
-        //System.out.println(allNone + "-----------------------");
+
         if (!allNone){
             sql = generateQueryString(sql, menusPressed, allSelections);
         }
@@ -95,8 +95,7 @@ public class FilterRefactor {
             search = String.format(searchStatement, searchString);
             if(allNone){
                 sql += " WHERE ";
-            }
-            else{
+            } else {
                 sql += " AND ";
             }
         }

@@ -304,6 +304,7 @@ public class Validator {
 
     }
 
+
     /**
      * A helper function for checking if all characters ar upper case
      * @param s The string to check

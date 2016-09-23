@@ -41,6 +41,7 @@ public class MenuBarController {
         exportDataMenuButton.setDisable(false);
         exportDataMenuButton.setDisable(false);
         exportDatabase.setDisable(false);
+        //
         DataBaseRefactor.createTables();
     }
 

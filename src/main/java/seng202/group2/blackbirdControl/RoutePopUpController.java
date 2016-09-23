@@ -1,7 +1,10 @@
 package seng202.group2.blackbirdControl;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
@@ -11,6 +14,7 @@ import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.RoutePoint;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,22 +25,32 @@ public class RoutePopUpController {
 
     private Stage stage;
     @FXML private Label routeIDText;
-    @FXML private Label routeStopsText;
-    @FXML private Label routeDestText;
-    @FXML private Label routeCSText;
+    @FXML private Label routeAirlineText;
     @FXML private Label routeAirlineIDText;
     @FXML private Label routeSrcIDText;
-    @FXML private Label routeEquipText;
-    @FXML private Label routeDestIDText;
     @FXML private Label routeSrcText;
-    @FXML private Label routeAirlineText;
+    @FXML private Label routeSourceNameText;
+    @FXML private Label routeSourceCountryText;
+    @FXML private Label routeDestIDText;
+    @FXML private Label routeDestText;
+    @FXML private Label routeDestNameText;
+    @FXML private Label routeDestCountryText;
+    @FXML private Label routeCSText;
+    @FXML private Label routeStopsText;
+    @FXML private Label routeEquipText;
     @FXML private Text routeInvalidData;
+
+    @FXML private ComboBox airlineSelection;
+    @FXML private ComboBox sourceSelection;
+    @FXML private ComboBox destSelection;
+
     @FXML private TextField routeSrcTextEdit;
     @FXML private TextField routeSrcIDTextEdit;
     @FXML private TextField routeDstTextEdit;
     @FXML private TextField routeDstIDTextEdit;
     @FXML private TextField routeAirlineTextEdit;
     @FXML private TextField routeAirlineIDTextEdit;
+
     @FXML private TextField routeCShareTextEdit;
     @FXML private TextField routeStopsTextEdit;
     @FXML private TextField routeEquipmentTextEdit;
@@ -48,15 +62,33 @@ public class RoutePopUpController {
     @FXML
     public void setUpPopUp(){
         routeIDText.setText(String.valueOf(routePoint.getRouteID()));
-        routeStopsText.setText(String.valueOf(routePoint.getStops()));
-        routeDestText.setText(routePoint.getDstAirport());
-        routeCSText.setText(routePoint.getCodeshare());
+        routeAirlineText.setText(routePoint.getAirline());
         routeAirlineIDText.setText(String.valueOf(routePoint.getAirlineID()));
         routeSrcIDText.setText(String.valueOf(routePoint.getSrcAirportID()));
-        routeEquipText.setText(String.valueOf(routePoint.getEquipment()));
-        routeDestIDText.setText(String.valueOf(routePoint.getDstAirportID()));
         routeSrcText.setText(routePoint.getSrcAirport());
-        routeAirlineText.setText(routePoint.getAirline());
+        routeSourceNameText.setText(routePoint.getSrcAirportName());
+        routeSourceCountryText.setText(routePoint.getSrcAirportCountry());
+        routeDestIDText.setText(String.valueOf(routePoint.getDstAirportID()));
+        routeDestText.setText(routePoint.getDstAirport());
+        routeDestNameText.setText(routePoint.getDstAirportName());
+        routeDestCountryText.setText(routePoint.getDstAirportCountry());
+        routeCSText.setText(routePoint.getCodeshare());
+        routeStopsText.setText(String.valueOf(routePoint.getStops()));
+        routeEquipText.setText(String.valueOf(routePoint.getEquipment()));
+
+        ArrayList<String> airlineNames = FilterRefactor.filterDistinct("Name", "Airline");
+        ObservableList<String> airlineMenu = FXCollections.observableArrayList(airlineNames);
+        airlineMenu = HelperFunctions.addNullValue(airlineMenu);
+        airlineSelection.setItems(airlineMenu);
+        //airlineSelection.setValue(airlineMenu.get(0)); //TODO set initial value as the current value
+
+        ArrayList<String> sourceAirports = FilterRefactor.filterDistinct("Name", "Airport");
+        ObservableList<String> sourceNames = FXCollections.observableArrayList(sourceAirports);
+        sourceNames = HelperFunctions.addNullValue(sourceNames);
+        sourceSelection.setItems(sourceNames);
+        //sourceSelection.setValue(sourceNames.get(0)); //TODO set initial value as the current value
+        destSelection.setItems(sourceNames);
+        //destSelection.setValue(sourceNames.get(0));   //TODO set initial value as the current value
     }
 
     public void setRoutePoint(RoutePoint routePoint) {
@@ -67,51 +99,60 @@ public class RoutePopUpController {
     public void editRoute(){
 
         routeInvalidData.setVisible(false);
-
-        routeSrcTextEdit.setVisible(true);
-        routeSrcIDTextEdit.setVisible(true);
-        routeDstTextEdit.setVisible(true);
-        routeDstIDTextEdit.setVisible(true);
-        routeAirlineTextEdit.setVisible(true);
-        routeAirlineIDTextEdit.setVisible(true);
+        routeAirlineIDText.setVisible(false);
+        routeSrcIDText.setVisible(false);
+        routeSrcText.setVisible(false);
+        routeSourceCountryText.setVisible(false);
+        routeDestIDText.setVisible(false);
+        routeDestText.setVisible(false);
+        routeDestCountryText.setVisible(false);
+        airlineSelection.setVisible(true);
+        sourceSelection.setVisible(true);
+        destSelection.setVisible(true);
+//
+//        routeSrcTextEdit.setVisible(true);
+//        routeSrcIDTextEdit.setVisible(true);
+//        routeDstTextEdit.setVisible(true);
+//        routeDstIDTextEdit.setVisible(true);
+//        routeAirlineTextEdit.setVisible(true);
+//        routeAirlineIDTextEdit.setVisible(true);
         routeCShareTextEdit.setVisible(true);
         routeStopsTextEdit.setVisible(true);
         routeEquipmentTextEdit.setVisible(true);
         refreshMessage.setVisible(true);
 
-
         routeEditButton.setVisible(false);
         routeFinishButton.setVisible(true);
         routeCancelButton.setVisible(true);
-
-
-        if(routeSrcText.getText() != ""){
-            routeSrcTextEdit.setText(routeSrcText.getText());
-        }
-        if(routeSrcIDText.getText() != ""){
-            routeSrcIDTextEdit.setText(routeSrcIDText.getText());
-        }
-        if(routeDestText.getText() != ""){
-            routeDstTextEdit.setText(routeDestText.getText());
-        }
-        if(routeDestIDText.getText() != ""){
-            routeDstIDTextEdit.setText(routeDestIDText.getText());
-        }
-        if(routeAirlineText.getText() != ""){
-            routeAirlineTextEdit.setText(routeAirlineText.getText());
-        }
-        if(routeAirlineIDText.getText() != ""){
-            routeAirlineIDTextEdit.setText(routeAirlineIDText.getText());
-        }
-        if(routeCSText.getText() != ""){
-            routeCShareTextEdit.setText(routeCSText.getText());
-        }
-        if(routeStopsText.getText() != ""){
-            routeStopsTextEdit.setText(routeStopsText.getText());
-        }
-        if(routeEquipText.getText() != ""){
-            routeEquipmentTextEdit.setText(routeEquipText.getText());
-        }
+//
+//
+//        if(routeSrcText.getText() != ""){
+//            routeSrcTextEdit.setText(routeSrcText.getText());
+//        }
+//        if(routeSrcIDText.getText() != ""){
+//            routeSrcIDTextEdit.setText(routeSrcIDText.getText());
+//        }
+//        if(routeDestText.getText() != ""){
+//            routeDstTextEdit.setText(routeDestText.getText());
+//        }
+//        if(routeDestIDText.getText() != ""){
+//            routeDstIDTextEdit.setText(routeDestIDText.getText());
+//        }
+//        if(routeAirlineText.getText() != ""){
+//            routeAirlineTextEdit.setText(routeAirlineText.getText());
+//        }
+//        if(routeAirlineIDText.getText() != ""){
+//            routeAirlineIDTextEdit.setText(routeAirlineIDText.getText());
+//        }
+//        if(routeCSText.getText() != ""){
+//            routeCShareTextEdit.setText(routeCSText.getText());
+//        }
+//        if(routeStopsText.getText() != ""){
+//            routeStopsTextEdit.setText(routeStopsText.getText());
+//        }
+//        if(routeEquipText.getText() != ""){
+//            routeEquipmentTextEdit.setText(routeEquipText.getText());
+//        }
 
 
     }
@@ -182,26 +223,45 @@ public class RoutePopUpController {
 
     public void cancelEdit(){
 
-        routeIDText.setVisible(true);
+        routeInvalidData.setVisible(false);
+        routeAirlineIDText.setVisible(true);
+        routeSrcIDText.setVisible(true);
+        routeSrcText.setVisible(true);
+        routeSourceCountryText.setVisible(true);
+        routeDestIDText.setVisible(true);
+        routeDestText.setVisible(true);
+        routeDestCountryText.setVisible(true);
 
-        routeSrcTextEdit.setVisible(false);
-        routeSrcIDTextEdit.setVisible(false);
-        routeDstTextEdit.setVisible(false);
-        routeDstIDTextEdit.setVisible(false);
-        routeAirlineTextEdit.setVisible(false);
-        routeAirlineIDTextEdit.setVisible(false);
+        airlineSelection.setVisible(false);
+        sourceSelection.setVisible(false);
+        destSelection.setVisible(false);
+
         routeCShareTextEdit.setVisible(false);
         routeStopsTextEdit.setVisible(false);
         routeEquipmentTextEdit.setVisible(false);
-        routeInvalidData.setVisible(false);
-
+        refreshMessage.setVisible(false);
 
         routeEditButton.setVisible(true);
         routeFinishButton.setVisible(false);
         routeCancelButton.setVisible(false);
-        refreshMessage.setVisible(false);
 
-
+//        routeIDText.setVisible(true);
+//
+//        routeSrcTextEdit.setVisible(false);
+//        routeSrcIDTextEdit.setVisible(false);
+//        routeDstTextEdit.setVisible(false);
+//        routeDstIDTextEdit.setVisible(false);
+//        routeAirlineTextEdit.setVisible(false);
+//        routeAirlineIDTextEdit.setVisible(false);
+//        routeCShareTextEdit.setVisible(false);
+//        routeStopsTextEdit.setVisible(false);
+//        routeEquipmentTextEdit.setVisible(false);
+//        routeInvalidData.setVisible(false);
+//
+//        routeEditButton.setVisible(true);
+//        routeFinishButton.setVisible(false);
+//        routeCancelButton.setVisible(false);
+//        refreshMessage.setVisible(false);
     }
 
     //TODO fix this method here to check values properly

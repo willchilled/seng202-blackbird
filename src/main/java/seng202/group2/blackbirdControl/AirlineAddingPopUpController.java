@@ -17,6 +17,8 @@ import java.util.ArrayList;
  */
 public class AirlineAddingPopUpController {
 
+    private AirlineTabController airlineTabController;
+
     @FXML private TextField Name;
     @FXML private Text airlineID;
     @FXML private TextField Alias;
@@ -48,14 +50,14 @@ public class AirlineAddingPopUpController {
             myAirlineData.add(myAirlinePoint);
 
             DataBaseRefactor.insertDataPoints(myAirlineData);
-
+            airlineTabController.airlineFilterButtonPressed();
             adderStage.close();
         } else {
             addAirlineInvalidText.setVisible(true);
         }
     }
 
-    public void cancleButtonPressed(){
+    public void cancelButtonPressed(){
         //just closes the stage
         adderStage.close();
     }
@@ -86,5 +88,9 @@ public class AirlineAddingPopUpController {
 
     public void setAdderStage(Stage adderStage) {
         this.adderStage = adderStage;
+    }
+
+    public void setAirlineTabController(AirlineTabController controller) {
+        airlineTabController = controller;
     }
 }

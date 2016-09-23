@@ -28,6 +28,7 @@ import java.util.Collections;
 public class RouteTabController {
 
     private MainController mainController;
+    RouteTabController instance;
 
     //ROUTE table
     @FXML private TableView<DataPoint> routeTable;
@@ -54,15 +55,17 @@ public class RouteTabController {
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
+    public RouteTabController(){
+        instance = this;
+    }
+
     public void show(){
         routeTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Route"));
     }
 
-
     public void setMainController(MainController controller) {
         this.mainController = controller;
     }
-
 
     public void addSingleRoute(ActionEvent actionEvent) {
         try {
@@ -73,6 +76,7 @@ public class RouteTabController {
 
             //use controller to control it
             RouteAddingPopUpController popUpController = loader.getController();
+            popUpController.setRouteTabController(instance);
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();
@@ -82,7 +86,7 @@ public class RouteTabController {
         }
     }
 
-    public void routesFilterButtonPressed(ActionEvent actionEvent) {
+    public void routesFilterButtonPressed() {
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
@@ -164,6 +168,7 @@ public class RouteTabController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
                         root = loader.load();
                         RoutePopUpController popUpController = loader.getController();
+                        popUpController.setRouteTabController(instance);
                         popUpController.setRoutePoint(myPoint);
                         popUpController.setUpPopUp();
 
@@ -235,6 +240,50 @@ public class RouteTabController {
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);
         routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
+    }
+
+
+    public static String[] getIataOrIcao(String name, DataTypes type) {
+        String[] returnString = new String[2];
+        if (type == DataTypes.AIRLINEPOINT) {
+            String sql = "SELECT * FROM AIRLINE WHERE NAME='" + name + "'";
+            ArrayList<DataPoint> foundAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+            if (foundAirline.size() > 1) {
+                System.err.println("Found more than one airline");
+                //TODO What should be done here?
+            }
+            AirlinePoint myAirline = (AirlinePoint) foundAirline.get(0);
+            returnString[0] = Integer.toString(myAirline.getAirlineID());
+            if (!myAirline.getIata().isEmpty()) {
+                returnString[1] = myAirline.getIata();
+            } else if (!myAirline.getIcao().isEmpty()) {
+                returnString[1] = myAirline.getIcao();
+            } else {
+                System.err.println("Airline missing IATA and ICAO");
+                //TODO What should be done here?
+            }
+        }
+
+        if (type == DataTypes.AIRPORTPOINT) {
+            String sql = "SELECT * FROM AIRPORT WHERE NAME='" + name + "'";
+            ArrayList<DataPoint> foundSource = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRPORTPOINT);
+            if (foundSource.size() > 1) {
+                System.err.println("Found more than one airport for route src/dest");
+                //TODO What should be done here?
+            }
+            AirportPoint mySource = (AirportPoint) foundSource.get(0);
+            returnString[0] = Integer.toString(mySource.getAirportID());
+            if (!mySource.getIata().isEmpty()) {
+                returnString[1] = mySource.getIata();
+            } else if (!mySource.getIcao().isEmpty()) {
+                returnString[1] = mySource.getIcao();
+            } else {
+                System.err.println("Source Airport missing IATA and ICAO");
+                //TODO What should be done here?
+            }
+        }
+
+        return returnString;
     }
 
 

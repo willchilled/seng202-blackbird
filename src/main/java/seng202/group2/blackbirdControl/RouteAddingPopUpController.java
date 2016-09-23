@@ -36,6 +36,7 @@ public class RouteAddingPopUpController {
     @FXML private Text addRouteInvalidText;
     private Stage adderStage;
     private Parent root;
+    private RouteTabController routeTabController;
 
     public void control() {
         adderStage.setScene(new Scene(root));
@@ -70,8 +71,7 @@ public class RouteAddingPopUpController {
             ArrayList<DataPoint> myRouteData = new ArrayList<>();
             myRouteData.add(myRoutePoint);
             DataBaseRefactor.insertDataPoints(myRouteData);
-
-            //TODO Get the auto updating thing to happen here too
+            routeTabController.routesFilterButtonPressed();
 
             adderStage.close();
         } else {
@@ -104,59 +104,27 @@ public class RouteAddingPopUpController {
     }
 
     private String[] getFields(String[] values) {
-        String airline = ""; //index 0 in input file
+        String airline; //index 0 in input file
         String airlineID;
-        String srcAirport = "";
+        String srcAirport;
         String srcAirportID;
-        String dstAirport = "";
+        String dstAirport;
         String dstAirportID;
         String codeshare;
         String stops;
         String equipment;
-        String sql = "SELECT * FROM AIRLINE WHERE NAME='" + values[0] + "'";
-        ArrayList<DataPoint> foundAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
-        if (foundAirline.size() > 1) {
-            System.err.println("Found more than one airline");
-        }
-        AirlinePoint myAirline = (AirlinePoint) foundAirline.get(0);
-        airlineID = Integer.toString(myAirline.getAirlineID());
-        if (!myAirline.getIata().isEmpty()) {
-            airline = myAirline.getIata();
-        } else if (!myAirline.getIcao().isEmpty()) {
-            airline = myAirline.getIcao();
-        } else {
-            System.err.println("Airline missing IATA and ICAO");
-        }
 
-        String sql1 = "SELECT * FROM AIRPORT WHERE NAME='" + values[1] + "'";
-        ArrayList<DataPoint> foundSource = DataBaseRefactor.performGenericQuery(sql1, DataTypes.AIRPORTPOINT);
-        if (foundSource.size() > 1) {
-            System.err.println("Found more than one source airport");
-        }
-        AirportPoint mySource = (AirportPoint) foundSource.get(0);
-        srcAirportID = Integer.toString(mySource.getAirportID());
-        if (!mySource.getIata().isEmpty()) {
-            srcAirport = mySource.getIata();
-        } else if (!mySource.getIcao().isEmpty()) {
-            srcAirport = mySource.getIcao();
-        } else {
-            System.err.println("Source Airport missing IATA and ICAO");
-        }
+        String[] airlineFields = RouteTabController.getIataOrIcao(values[0], DataTypes.AIRLINEPOINT);
+        airlineID = airlineFields[0];
+        airline = airlineFields[1];
 
-        String sql2 = "SELECT * FROM AIRPORT WHERE NAME='" + values[2] + "'";
-        ArrayList<DataPoint> foundDest = DataBaseRefactor.performGenericQuery(sql2, DataTypes.AIRPORTPOINT);
-        if (foundDest.size() > 1) {
-            System.err.println("Found more than one dest airport");
-        }
-        AirportPoint myDest = (AirportPoint) foundDest.get(0);
-        dstAirportID = Integer.toString(myDest.getAirportID());
-        if (!myDest.getIata().isEmpty()) {
-            dstAirport = myDest.getIata();
-        } else if (!myDest.getIcao().isEmpty()) {
-            dstAirport = myDest.getIcao();
-        } else {
-            System.err.println("Dest Airport missing IATA and ICAO");
-        }
+        String[] sourceFields = RouteTabController.getIataOrIcao(values[1], DataTypes.AIRPORTPOINT);
+        srcAirportID = sourceFields[0];
+        srcAirport = sourceFields[1];
+
+        String[] destFields = RouteTabController.getIataOrIcao(values[2], DataTypes.AIRPORTPOINT);
+        dstAirportID = destFields[0];
+        dstAirport = destFields[1];
 
         codeshare = values[3];
         stops = values[4];
@@ -180,5 +148,9 @@ public class RouteAddingPopUpController {
 
     public void setRoot(Parent root) {
         this.root = root;
+    }
+
+    public void setRouteTabController(RouteTabController routeTabController) {
+        this.routeTabController = routeTabController;
     }
 }

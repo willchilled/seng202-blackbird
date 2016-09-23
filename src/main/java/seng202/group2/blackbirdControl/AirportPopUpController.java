@@ -3,7 +3,6 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,6 +11,8 @@ import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
 
 public class AirportPopUpController {
+
+    private AirportTabController airportTabController;
 
     private AirportPoint airportPoint;
 
@@ -81,7 +82,7 @@ public class AirportPopUpController {
         airportTimeZoneTextEdit.setVisible(true);
         airportDstTextEdit.setVisible(true);
         airportTZTextEdit.setVisible(true);
-        airportInvalidDataText.setVisible(false);
+//        airportInvalidDataText.setVisible(false);
 
         airportEditButton.setVisible(false);
         airportFinishButton.setVisible(true);
@@ -160,7 +161,7 @@ public class AirportPopUpController {
             airportEditButton.setVisible(true);
             airportFinishButton.setVisible(false);
             airportCancelButton.setVisible(false);
-            airportInvalidDataText.setVisible(false);
+//            airportInvalidDataText.setVisible(false);
 
             String sql = String.format("UPDATE AIRPORT SET NAME='%1$s', CITY='%2$s', COUNTRY='%3$s', IATA='%4$s'," +
                             " ICAO='%5$s', LATITUDE='%6$s', LONGITUDE='%7$s', ALTITUDE='%8$s', TIMEZONE='%9$s', DST='%10$s'," +
@@ -180,6 +181,8 @@ public class AirportPopUpController {
             airportTimeZoneText.setText(timeZone);
             airportDstText.setText(dst);
             airportTzText.setText(tz);
+
+            airportTabController.airportFilterButtonPressed();
 
         }else{
             airportInvalidDataText.setVisible(true);
@@ -209,6 +212,11 @@ public class AirportPopUpController {
         airportEditButton.setVisible(true);
         airportFinishButton.setVisible(false);
         airportCancelButton.setVisible(false);
+    }
+
+
+    public void setAirportTabController(AirportTabController controller) {
+        this.airportTabController = controller;
     }
 }
 

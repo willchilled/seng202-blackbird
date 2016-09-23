@@ -42,8 +42,11 @@ public class AirportAddingPopUpController {
     @FXML private ComboBox dstComboBox;
     @FXML private TextField tzOlson;
     @FXML private Text addAirportInvalidText;
+
     private Stage adderStage;
     private Parent root;
+
+    private AirportTabController airportTabController;
 
 
     public void control() {
@@ -73,6 +76,7 @@ public class AirportAddingPopUpController {
             myAirportData.add(myAirportPoint);
 
             DataBaseRefactor.insertDataPoints(myAirportData);
+            airportTabController.airportFilterButtonPressed();
             adderStage.close();
         } else {
             addAirportInvalidText.setVisible(true);
@@ -148,5 +152,10 @@ public class AirportAddingPopUpController {
 
     public void setRoot(Parent root) {
         this.root = root;
+    }
+
+
+    public void setAirportTabController(AirportTabController airportTabController) {
+        this.airportTabController = airportTabController;
     }
 }

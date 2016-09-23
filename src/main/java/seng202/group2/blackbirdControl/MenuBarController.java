@@ -3,6 +3,7 @@ package seng202.group2.blackbirdControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 
 import java.io.*;
 import java.net.URL;
@@ -40,7 +41,7 @@ public class MenuBarController {
         exportDataMenuButton.setDisable(false);
         exportDataMenuButton.setDisable(false);
         exportDatabase.setDisable(false);
-
+        DataBaseRefactor.createTables();
     }
 
     /**
@@ -65,6 +66,11 @@ public class MenuBarController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        exportRouteMenuButton.setDisable(false);
+        exportFlightMenuButton.setDisable(false);
+        exportAirlineMenuButton.setDisable(false);
+        exportAirportMenuButton.setDisable(false);
+        mainController.show();
     }
 
     public void setMainController(MainController controller) {

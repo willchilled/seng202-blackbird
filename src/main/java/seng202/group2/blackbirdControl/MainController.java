@@ -70,7 +70,7 @@ public class MainController implements Initializable {
         flightTabController.show();
         routeTabController.show();
 
-        DataBaseRefactor.createTables();
+        //I moved the create tables feature to the menu bar controller
     }
 
     public void addAirlineData(){

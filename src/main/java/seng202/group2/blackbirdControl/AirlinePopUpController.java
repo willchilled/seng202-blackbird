@@ -12,6 +12,8 @@ public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
 
+    private AirlineTabController airlineTabController;
+
     @FXML private Label nameText;
     @FXML private Label idText;
     @FXML private Label countryText;
@@ -133,6 +135,9 @@ public class AirlinePopUpController {
             icaoText.setText(icao);
             callsignText.setText(callsign);
             activeText.setText(active);
+
+            airlineTabController.airlineFilterButtonPressed();
+
         }else{
             airlineInvalidDataText.setVisible(true);
         }
@@ -156,6 +161,10 @@ public class AirlinePopUpController {
         airlineEditButton.setVisible(true);
         nameText.setVisible(true);
 
+    }
+
+    public void setAirlineTabController(AirlineTabController controller) {
+        this.airlineTabController = controller;
     }
 
 }

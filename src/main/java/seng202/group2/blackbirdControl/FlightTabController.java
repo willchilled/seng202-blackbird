@@ -41,6 +41,7 @@ public class FlightTabController {
     public void show(){
         //mainController.show();
         flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
+        flightPointTable.setPlaceholder(new Label("No data in table. Double click on a flight"));
     }
 
 

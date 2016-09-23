@@ -86,13 +86,9 @@ public class RouteTabController {
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
-        //TODO fix this when the correct stuff is linked to the GUI
         String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<DataPoint> routePoints;
-
-
-
 
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
             routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);

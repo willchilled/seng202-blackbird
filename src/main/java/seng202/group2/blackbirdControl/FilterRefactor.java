@@ -48,7 +48,7 @@ public class FilterRefactor {
             case AIRLINEPOINT: myQuery = airlineFilter(menusPressed, searchString); break;
             case AIRPORTPOINT: myQuery = airportFilter(menusPressed, searchString); break;
             case ROUTEPOINT: myQuery = routeFilter(menusPressed, searchString); break;
-            case FLIGHTPOINT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case FLIGHT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
         filtered =  DataBaseRefactor.performGenericQuery(myQuery, type);
@@ -63,9 +63,37 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String flightFilter(ArrayList<String> menusPressed, String searchString) {
-        //TODO
-        //No filters for flights currently
-        return null;
+
+        String sql = "SELECT * FROM AIRLINE ";
+
+        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("SrcICAO=\"%s\" AND ", "DstICAO=\"%s\" AND "));
+
+        boolean allNone = checkEmptyMenus(menusPressed);
+        if (!allNone){
+            sql = generateQueryString(sql, menusPressed, allSelections);
+        }
+
+        sql = removeLastAND(sql);
+
+        String search = "";
+        if (searchString.length() >0){
+            search = String.format("(SrcICAO='%1$s' OR DstICAO='%1$s')", searchString);
+            if(allNone){
+                sql += " WHERE ";
+            }
+            else{
+                sql += " AND ";
+            }
+        }
+
+        sql += search;
+        //sql = removeLastWHERE(sql);
+        //System.out.println(sql);
+        //sql = sql.replaceAll()
+        // System.out.println("Performing query:"+ sql);
+        //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
+        //System.out.println("SIZE: " + allPoints.size());
+        return sql; //return an arraylist
     }
 
     /**
@@ -169,12 +197,6 @@ public class FilterRefactor {
         }
 
         sql += search;
-        //sql = removeLastWHERE(sql);
-        //System.out.println(sql);
-        //sql = sql.replaceAll()
-        // System.out.println("Performing query:"+ sql);
-        //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
-        //System.out.println("SIZE: " + allPoints.size());
         return sql; //return an arraylist
     }
 

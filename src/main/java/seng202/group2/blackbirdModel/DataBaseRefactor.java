@@ -541,7 +541,7 @@ public class DataBaseRefactor {
                 " IATA           CHAR(2)," +    //can have either IATA or ICAO
                 " ICAO           CHAR(3)," +
                 " CALLSIGN           VARCHAR(40)," +
-                " COUNTRY           VARCHAR(40) NOT NULL," + //not null?
+                " COUNTRY           VARCHAR(40)," + //not null?
                 " ACTIVE           CHAR(1) constraint check_active check (ACTIVE in ('Y', 'N')) )";
         //System.out.println(sql);
         return sql;

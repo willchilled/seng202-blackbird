@@ -177,33 +177,33 @@ public class Validator {
         String country = attributes[6];
         String active = attributes[7];
 
-
-        System.out.println("--------VALIDATING AIRLINE---------");
-        if(!isValidID(id)){
-            System.out.println("Bad id");
-        }
-        if(!isValidName(name)){
-            System.out.println("Bad name");
-        }
-        if(!isValidAlias(alias)){
-            System.out.println("Bad alias");
-        }
-        if(!isValidIATA(iata)){
-            System.out.println("Bad iata");
-        }
-        if(!isValidICAO(icao)){
-            System.out.println("Bad icao");
-        }
-        if(!isValidAirlineCallsign(callsign)){
-            System.out.println("Bad callsign");
-        }
-        if(!isValidCountry(country)){
-            System.out.println("Bad country");
-        }
-        if(!isValidActive(active)){
-            System.out.println("Bad active");
-        }
-        System.out.println("================");
+//
+//        System.out.println("--------VALIDATING AIRLINE---------");
+//        if(!isValidID(id)){
+//            System.out.println("Bad id");
+//        }
+//        if(!isValidName(name)){
+//            System.out.println("Bad name");
+//        }
+//        if(!isValidAlias(alias)){
+//            System.out.println("Bad alias");
+//        }
+//        if(!isValidIATA(iata)){
+//            System.out.println("Bad iata");
+//        }
+//        if(!isValidICAO(icao)){
+//            System.out.println("Bad icao");
+//        }
+//        if(!isValidAirlineCallsign(callsign)){
+//            System.out.println("Bad callsign");
+//        }
+//        if(!isValidCountry(country)){
+//            System.out.println("Bad country");
+//        }
+//        if(!isValidActive(active)){
+//            System.out.println("Bad active");
+//        }
+//        System.out.println("================");
 
 
         return (isValidID(id) &&

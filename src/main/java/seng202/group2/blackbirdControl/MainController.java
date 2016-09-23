@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Filter;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -105,6 +106,23 @@ public class MainController implements Initializable {
 
     }
 
+    public void updateRoutes() {
+        //GET POINTS
+        ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        routeTabController.updateRoutesTable(routePoints);
+    }
+
+    public void updateAirports() {
+        //getpoints
+        ArrayList<DataPoint> airportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        airportTabController.updateAirportsTable(airportPoints);
+    }
+
+/*    public void updateTab(DataTypes type) {
+        mainTabPane.getSelectionModel().select(airportTab);
+
+
+    }*/
     public void updateTab(DataTypes type) {
 
         switch(type){

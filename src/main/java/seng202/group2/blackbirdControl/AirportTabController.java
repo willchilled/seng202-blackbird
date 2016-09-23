@@ -59,12 +59,19 @@ public class AirportTabController {
     @FXML private Button addAirportToTable;
     @FXML private Button filterButton;
 
+    ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
+
 
     public AirportTabController() {
         instance = this;
     }
 
-    ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
+    public void initialize(){
+        airportFilterMenu.setValue(airportCountryList.get(0));
+        airportFilterMenu.setItems(airportCountryList);
+    }
+
+
 
     public void show(){
         //mainController.show();
@@ -178,9 +185,16 @@ public class AirportTabController {
         System.out.println(searchQuery);
 
         ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(countrySelection));
-        ArrayList<DataPoint> myFilteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
-        updateAirportsTable(myFilteredPoints);
+        ArrayList<DataPoint> filteredPoints ;
 
+        if(countrySelection.equals("No values Loaded")){
+            filteredPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        }
+        else{
+            filteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
+        }
+
+        updateAirportsTable(filteredPoints);
     }
 
 

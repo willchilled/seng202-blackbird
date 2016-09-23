@@ -250,44 +250,44 @@ public class Validator {
         String dst = attributes[10];
         String tz = attributes[11];
 
-//        System.out.println("----VALIDATING AIRPORT----");
-//        if(!isValidID(id)){
-//            System.out.println("BAD ID");
-//        }
-//        if(!isValidName(name)){
-//            System.out.println("BAD name");
-//        }
-//        if(!isValidCity(city)){
-//            System.out.println("BAD city");
-//        }
-//        if(!isValidCountry(country)){
-//            System.out.println("BAD country");
-//        }
-//        if(!isValidIATA(iata)){
-//            System.out.println("BAD iata");
-//        }
-//        if(!isValidICAO(icao)){
-//            System.out.println("BAD icao");
-//        }
-//        if(!isValidLat(lat)){
-//            System.out.println("BAD lat");
-//        }
-//        if(!isValidLong(lon)){
-//            System.out.println("BAD lon");
-//        }
-//        if(!isValidAlt(alt)){
-//            System.out.println("BAD alt");
-//        }
-//        if(!isValidTimeZone(timeZone)){
-//            System.out.println("BAD timeZone");
-//        }
-//        if(!isValidDST(dst)){
-//            System.out.println("BAD dst");
-//        }
-//        if(!isValidTZ(tz)){
-//            System.out.println("BAD tz");
-//        }
-//        System.out.println("------------------");
+        System.out.println("----VALIDATING AIRPORT----");
+        if(!isValidID(id)){
+            System.out.println("BAD ID");
+        }
+        if(!isValidName(name)){
+            System.out.println("BAD name");
+        }
+        if(!isValidCity(city)){
+            System.out.println("BAD city");
+        }
+        if(!isValidCountry(country)){
+            System.out.println("BAD country");
+        }
+        if(!isValidIATA(iata)){
+            System.out.println("BAD iata");
+        }
+        if(!isValidICAO(icao)){
+            System.out.println("BAD icao");
+        }
+        if(!isValidLat(lat)){
+            System.out.println("BAD lat");
+        }
+        if(!isValidLong(lon)){
+            System.out.println("BAD lon");
+        }
+        if(!isValidAlt(alt)){
+            System.out.println("BAD alt");
+        }
+        if(!isValidTimeZone(timeZone)){
+            System.out.println("BAD timeZone");
+        }
+        if(!isValidDST(dst)){
+            System.out.println("BAD dst");
+        }
+        if(!isValidTZ(tz)){
+            System.out.println("BAD tz");
+        }
+        System.out.println("------------------");
 
         return (isValidID(id) &&
                 isValidName(name) &&

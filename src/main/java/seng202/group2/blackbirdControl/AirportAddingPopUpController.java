@@ -69,7 +69,7 @@ public class AirportAddingPopUpController {
 
     public void createButtonPressed(){
 
-        String[] airportPoint = getValues().split(", ", -1);
+        String[] airportPoint = getValues();
         if(Validator.checkAirport(airportPoint)) {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT);
@@ -88,7 +88,7 @@ public class AirportAddingPopUpController {
         adderStage.close();
     }
 
-    private String getValues(){
+    private String[] getValues(){
         //Gets Values from the inputs
         String airportName = Name.getText().toString();
         String id = airportID.getText().toString();
@@ -113,20 +113,9 @@ public class AirportAddingPopUpController {
             airportDST = dstComboBox.getValue().toString();
         }
         String airportTZOlson = tzOlson.getText().toString();
-        String values = new String();
-        values += id + ", ";
-        values += airportName + ", ";
-        values += airportCity + ", ";
-        values += airportCountry + ", ";
-        values += airportIATA + ", ";
-        values += airportICAO + ", ";
-        values += airportLatitude + ", ";
-        values += airportLongitude + ", ";
-        values += airportAltitude + ", ";
-        values += airportTZ + ", ";
-        values += airportDST + ", ";
-        values += airportTZOlson;
-        return values;
+
+        return new String[] {id, airportName, airportCity, airportCountry, airportIATA, airportICAO, airportLatitude,
+                                airportLongitude, airportAltitude, airportTZ, airportDST, airportTZOlson};
     }
 
     private ObservableList<String> populateTimeZoneMenu() {

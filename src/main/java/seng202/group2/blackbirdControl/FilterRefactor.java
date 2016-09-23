@@ -85,6 +85,7 @@ public class FilterRefactor {
         }
 
         sql = removeLastAND(sql);
+        sql = sql.replaceAll("%%", "");
 
         String search = "";
         if (searchString.length() >0){

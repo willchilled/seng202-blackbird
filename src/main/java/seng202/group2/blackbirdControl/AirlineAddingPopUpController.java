@@ -41,7 +41,7 @@ public class AirlineAddingPopUpController {
 
     public void createButtonPressed(){;
 
-        String[] airlinePoint = getValues().split(", ");
+        String[] airlinePoint = getValues();
         if(Validator.checkAirline(airlinePoint)) {
             ArrayList<DataPoint> myAirlineData = new ArrayList<>();
             DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT);
@@ -60,7 +60,7 @@ public class AirlineAddingPopUpController {
         adderStage.close();
     }
 
-    private String getValues(){
+    private String[] getValues(){
         String airlineName = Name.getText().toString();
         String id= airlineID.getText().toString();
         String airlineAlias = Alias.getText().toString();
@@ -69,22 +69,15 @@ public class AirlineAddingPopUpController {
         String airlineCallsign = Callsign.getText().toString();
         String airlineCountry = Country.getText().toString();
         boolean ActiveChecked = Active.isSelected();
-        String values = new String();
-        values += id + ", ";
-        values += airlineName + ", ";
-        values += airlineAlias + ", ";
-        values += airlineIATA + ", ";
-        values += airlineICAO + ", ";
-        values += airlineCallsign + ", ";
-        values += airlineCountry + ", ";
+        String airlineActive;
         if (ActiveChecked){
-            String airlineActive = "Y";
-            values += airlineActive;
+            airlineActive = "Y";
         }else{
-            String airlineActive = "N";
-            values += airlineActive;
+            airlineActive = "N";
         }
-        return values;
+
+        return new String[] {id, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
+                                airlineActive};
     }
 
     public void setRoot(Parent root) {

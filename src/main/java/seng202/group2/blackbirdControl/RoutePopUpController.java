@@ -19,11 +19,6 @@ public class RoutePopUpController {
     private RoutePoint routePoint;
     private RouteTabController routeTabController;
 
-    /**
-     public AirlinePopUpController(AirlinePoint airportPoint) {
-     this.airportPoint = airportPoint;
-     this.airlineName = airportPoint.getAirlineName();
-     }**/
     private Stage stage;
     @FXML private Label routeIDText;
     @FXML private Label routeStopsText;
@@ -50,9 +45,6 @@ public class RoutePopUpController {
     @FXML private Button routeCancelButton;
     @FXML private Pane refreshMessage;
 
-
-
-
     @FXML
     public void setUpPopUp(){
         routeIDText.setText(String.valueOf(routePoint.getRouteID()));
@@ -65,8 +57,6 @@ public class RoutePopUpController {
         routeDestIDText.setText(String.valueOf(routePoint.getDstAirportID()));
         routeSrcText.setText(routePoint.getSrcAirport());
         routeAirlineText.setText(routePoint.getAirline());
-
-
     }
 
     public void setRoutePoint(RoutePoint routePoint) {

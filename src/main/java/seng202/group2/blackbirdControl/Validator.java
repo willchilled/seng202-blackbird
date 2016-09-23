@@ -1,9 +1,6 @@
 package seng202.group2.blackbirdControl;
 
 import org.apache.commons.lang3.StringUtils;
-import seng202.group2.blackbirdModel.AirportPoint;
-import sun.util.resources.TimeZoneNamesBundle;
-import sun.util.resources.cldr.en.TimeZoneNames_en_NZ;
 
 /**
  * Created by emr65 on 22/09/16.

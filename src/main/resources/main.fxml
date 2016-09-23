@@ -15,7 +15,7 @@
    <center>
        <StackPane>
         <children>
-          <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
+          <TabPane fx:id="mainTabPane" cache="true" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
             <tabs>
                 <fx:include fx:id="flightTab" source="flightTab.fxml" />
                 <fx:include fx:id="routeTab" source="routeTab.fxml" />
@@ -23,7 +23,7 @@
                 <fx:include fx:id="airlineTab" source="airlineTab.fxml" />
             </tabs>
           </TabPane>
-            <fx:include source="open.fxml" fx:id="openPane"  StackPane.alignment="CENTER"/>
+            <fx:include fx:id="openPane" source="open.fxml" StackPane.alignment="CENTER" />
         </children>
        </StackPane>
    </center>

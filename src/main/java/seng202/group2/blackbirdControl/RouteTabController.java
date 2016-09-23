@@ -242,9 +242,11 @@ public class RouteTabController {
                 }
             }
         }
-        Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
+        //Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
+        Collections.sort(uniqueEquip);
 //        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
+        System.out.println(uniqueObservableSources.toString());
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);
         routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));

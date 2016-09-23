@@ -1,25 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.MainController">
-   <top>
-       <fx:include source="menuBar.fxml" fx:id="menuBar" BorderPane.alignment="CENTER"/>
-   </top>
-   <center>
-      <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-            <fx:include source="flightTab.fxml" fx:id="flightTab"/>
-            <fx:include source="routeTab.fxml" fx:id="routeTab"/>
-            <fx:include source="airportTab.fxml" fx:id="airportTab"/>
-            <fx:include source="airlineTab.fxml" fx:id="airlineTab"/>
-        </tabs>
-      </TabPane>
-   </center>
-</BorderPane>
+<GridPane fx:id="openPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="394.0" minWidth="10.0" prefWidth="326.0" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="499.0" minWidth="10.0" prefWidth="499.0" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="326.0" minWidth="10.0" prefWidth="307.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="372.0" minHeight="10.0" prefHeight="132.0" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="488.0" minHeight="10.0" prefHeight="228.0" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="487.0" minHeight="10.0" prefHeight="411.0" vgrow="ALWAYS" />
+    </rowConstraints>
+    <children>
+        <Pane prefHeight="228.0" prefWidth="456.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <children>
+                <Text layoutX="4.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Looks like you haven't loaded a project">
+                    <font>
+                        <Font size="25.0" />
+                    </font>
+                </Text>
+                <Text layoutX="31.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To begin select File -&gt; New Project">
+                    <font>
+                        <Font size="25.0" />
+                    </font>
+                </Text>
+            </children>
+        </Pane>
+    </children>
+</GridPane>

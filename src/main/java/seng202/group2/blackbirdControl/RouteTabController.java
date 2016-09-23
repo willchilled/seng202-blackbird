@@ -86,6 +86,9 @@ public class RouteTabController {
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<DataPoint> routePoints;
 
+
+
+
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
             routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
             updateRoutesTable(routePoints);
@@ -93,6 +96,11 @@ public class RouteTabController {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
+
+//        for (DataPoint myRoute: routePoints){
+//            RoutePoint currentRoute = (RoutePoint) myRoute;
+//            System.out.println(currentRoute.toStringWithAirports());
+//        }
 
 
         //This is bad style but you win some and you lose some
@@ -155,6 +163,7 @@ public class RouteTabController {
     private void updateRoutesTable(ArrayList<DataPoint> points) {
         routeTable.getItems().setAll(points);
 
+
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
         routeSrcCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirport"));
@@ -164,6 +173,12 @@ public class RouteTabController {
         routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
         routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+
+
+
+
+
+
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -242,8 +257,8 @@ public class RouteTabController {
                 }
             }
         }
-        Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
-//        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+
+        Collections.sort(uniqueEquip);
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);

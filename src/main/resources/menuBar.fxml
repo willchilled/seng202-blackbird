@@ -11,7 +11,7 @@
                     <Menu mnemonicParsing="false" text="Project">
                         <items>
                             <MenuItem fx:id="newProjMenu" mnemonicParsing="false" onAction="#show" text="New" />
-                            <MenuItem disable="true" mnemonicParsing="false" text="Load" />
+                            <MenuItem disable="false" mnemonicParsing="false" onAction="#loadDb" text="Load" />
                         </items>
                     </Menu>
                     <Menu fx:id="addDataMenuButton" disable="true" mnemonicParsing="false" text="Add Data">

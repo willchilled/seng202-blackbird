@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
+import java.io.*;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.util.ResourceBundle;
 
 /**
@@ -39,6 +41,30 @@ public class MenuBarController {
         exportDataMenuButton.setDisable(false);
         exportDatabase.setDisable(false);
 
+    }
+
+    /**
+     * A method to load a previous database file
+     */
+    public void loadDb(){
+        //get thier file
+        File theirDB = HelperFunctions.getFile("Choose a Database");
+        if (theirDB== null) {
+            System.out.println("No File was loaded");
+            return;
+        }
+        //get the default database
+        String cwd = System.getProperty("user.dir");
+        String dbFileName = (cwd+"/default.db");
+        try {
+            FileChannel src = new FileInputStream(theirDB).getChannel();
+            FileChannel dest = new FileOutputStream(dbFileName).getChannel();
+            dest.transferFrom(src, 0, src.size());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setMainController(MainController controller) {

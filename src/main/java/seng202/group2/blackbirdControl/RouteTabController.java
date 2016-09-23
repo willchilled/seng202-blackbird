@@ -243,6 +243,50 @@ public class RouteTabController {
     }
 
 
+    public static String[] getIataOrIcao(String name, DataTypes type) {
+        String[] returnString = new String[2];
+        if (type == DataTypes.AIRLINEPOINT) {
+            String sql = "SELECT * FROM AIRLINE WHERE NAME='" + name + "'";
+            ArrayList<DataPoint> foundAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+            if (foundAirline.size() > 1) {
+                System.err.println("Found more than one airline");
+                //TODO What should be done here?
+            }
+            AirlinePoint myAirline = (AirlinePoint) foundAirline.get(0);
+            returnString[0] = Integer.toString(myAirline.getAirlineID());
+            if (!myAirline.getIata().isEmpty()) {
+                returnString[1] = myAirline.getIata();
+            } else if (!myAirline.getIcao().isEmpty()) {
+                returnString[1] = myAirline.getIcao();
+            } else {
+                System.err.println("Airline missing IATA and ICAO");
+                //TODO What should be done here?
+            }
+        }
+
+        if (type == DataTypes.AIRPORTPOINT) {
+            String sql = "SELECT * FROM AIRPORT WHERE NAME='" + name + "'";
+            ArrayList<DataPoint> foundSource = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRPORTPOINT);
+            if (foundSource.size() > 1) {
+                System.err.println("Found more than one airport for route src/dest");
+                //TODO What should be done here?
+            }
+            AirportPoint mySource = (AirportPoint) foundSource.get(0);
+            returnString[0] = Integer.toString(mySource.getAirportID());
+            if (!mySource.getIata().isEmpty()) {
+                returnString[1] = mySource.getIata();
+            } else if (!mySource.getIcao().isEmpty()) {
+                returnString[1] = mySource.getIcao();
+            } else {
+                System.err.println("Source Airport missing IATA and ICAO");
+                //TODO What should be done here?
+            }
+        }
+
+        return returnString;
+    }
+
+
     public void exportRouteData() {
         ArrayList<DataPoint> myPoints = new ArrayList<>(routeTable.getItems());
         Exporter.exportData(myPoints);

@@ -66,6 +66,7 @@ public class RoutePoint extends DataPoint {
                 //this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
                 this.airline = currentLine[0];	//let people name airline whatever they want
                 //System.out.println("I EXPECT AN INT: " +currentLine[0]);
+                //if (currentLine)
                 this.airlineID = Integer.parseInt(currentLine[1]);
                 // System.out.println("");
                 this.srcAirport= currentLine[2];
@@ -212,6 +213,12 @@ public class RoutePoint extends DataPoint {
      */
     @Override
     public String toString() {
+        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
+                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
+
+    }
+
+    public String toStringWithAirports() {
         return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s, %s, %s, %s, %s",
                 airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment, srcAirportName, srcAirportCountry, dstAirportName, dstAirportCountry);
 

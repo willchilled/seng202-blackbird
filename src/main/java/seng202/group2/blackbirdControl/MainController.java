@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
@@ -28,6 +29,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Filter;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -40,7 +42,14 @@ public class MainController implements Initializable {
     @FXML private AirportTabController airportTabController;
     @FXML private AirlineTabController airlineTabController;
 
+
+    @FXML private Tab airlineTab;
+    @FXML private Tab routeTab;
+    @FXML private Tab flightTab;
+    @FXML private Tab airportTab;
+
     @FXML private TabPane mainTabPane;
+    @FXML private GridPane openPane;
 
 
     @Override
@@ -50,10 +59,12 @@ public class MainController implements Initializable {
         routeTabController.setMainController(this);
         airportTabController.setMainController(this);
         airlineTabController.setMainController(this);
+
     }
 
     public void show(){
         mainTabPane.setVisible(true);
+        openPane.setVisible(false);
         airlineTabController.show();
         airportTabController.show();
         flightTabController.show();
@@ -96,6 +107,42 @@ public class MainController implements Initializable {
         flightTabController.exportFlightData();
 
     }
+
+    public void updateRoutes() {
+        //GET POINTS
+        ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        routeTabController.updateRoutesTable(routePoints);
+    }
+
+    public void updateAirports() {
+        //getpoints
+        ArrayList<DataPoint> airportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        airportTabController.updateAirportsTable(airportPoints);
+    }
+
+/*    public void updateTab(DataTypes type) {
+        mainTabPane.getSelectionModel().select(airportTab);
+
+
+    }*/
+    public void updateTab(DataTypes type) {
+
+        switch(type){
+            case FLIGHT:
+                mainTabPane.getSelectionModel().select(flightTab);
+                break;
+            case ROUTEPOINT:
+                mainTabPane.getSelectionModel().select(routeTab);
+                break;
+            case AIRPORTPOINT:
+                mainTabPane.getSelectionModel().select(airportTab);
+                break;
+            case AIRLINEPOINT:
+                mainTabPane.getSelectionModel().select(airlineTab);
+                break;
+        }
+    }
+
 
 }
 

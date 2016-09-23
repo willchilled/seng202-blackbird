@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.MainController">
+   <top>
+       <fx:include fx:id="menuBar" source="menuBar.fxml" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+       <StackPane>
+        <children>
+          <TabPane fx:id="mainTabPane" cache="true" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
+            <tabs>
+                <fx:include fx:id="flightTab" source="flightTab.fxml" />
+                <fx:include fx:id="routeTab" source="routeTab.fxml" />
+                <fx:include fx:id="airportTab" source="airportTab.fxml" />
+                <fx:include fx:id="airlineTab" source="airlineTab.fxml" />
+            </tabs>
+          </TabPane>
+            <fx:include fx:id="openPane" source="open.fxml" StackPane.alignment="CENTER" />
+        </children>
+       </StackPane>
+   </center>
+</BorderPane>

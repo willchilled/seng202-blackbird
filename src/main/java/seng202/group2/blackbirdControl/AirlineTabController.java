@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdControl;
 
+import com.sun.prism.PixelFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 public class AirlineTabController {
 
     private MainController mainController;
+    AirlineTabController instance;
+
 
     //Airline Table
     @FXML private TableView<DataPoint> airlineTable;
@@ -55,6 +58,10 @@ public class AirlineTabController {
     ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
 
+    public AirlineTabController(){
+        instance = this;
+    }
+
 
     public void show(){
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
@@ -66,6 +73,16 @@ public class AirlineTabController {
         //Adds data into DataBase thus filtering it against database constraints, then pulling out remaining "good"
         // data to populate the GUI.
         File f = HelperFunctions.getFile("Add Airline Data");
+        if (f == null) {
+            return;
+        }
+//        else if (!f.exists() || !f.canRead() || !f.isFile()){
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Oops!");
+//            alert.setHeaderText("Bad file");
+//            alert.setContentText("Invalid file selected");
+//            return;
+//        }
         ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT);
         DataBaseRefactor.insertDataPoints(myPoints);
         ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
@@ -76,6 +93,7 @@ public class AirlineTabController {
 
         // Populates Rows in the Airline Table
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+        mainController.updateTab(DataTypes.AIRLINEPOINT);
     }
 
     private void updateAirlineFields() {
@@ -137,6 +155,7 @@ public class AirlineTabController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
                         root = loader.load();
                         AirlinePopUpController popUpController = loader.getController();
+                        popUpController.setAirlineTabController(instance);
                         popUpController.setAirlinePoint(myPoint);
                         popUpController.setUpPopUp();
 
@@ -160,7 +179,7 @@ public class AirlineTabController {
 
 
 
-    public void airlineFilterButtonPressed(ActionEvent actionEvent) {
+    public void airlineFilterButtonPressed() {
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
         String searchQuery = airlineSearchQuery.getText().toString();
@@ -181,7 +200,6 @@ public class AirlineTabController {
         updateAirlinesTable(allPoints);
         
     }
-
 
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list
@@ -207,6 +225,7 @@ public class AirlineTabController {
 
             //use controller to control it
             AirlineAddingPopUpController popUpController = loader.getController();
+            popUpController.setAirlineTabController(instance);
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();

@@ -1,5 +1,10 @@
 package seng202.group2.blackbirdControl;
 
+import org.apache.commons.lang3.StringUtils;
+import seng202.group2.blackbirdModel.AirportPoint;
+import sun.util.resources.TimeZoneNamesBundle;
+import sun.util.resources.cldr.en.TimeZoneNames_en_NZ;
+
 /**
  * Created by emr65 on 22/09/16.
  */
@@ -25,7 +30,7 @@ public class Validator {
 
     private static boolean isValidName(String name){
 
-        return ((!name.equals("") && name.length() <= 40) || name.equals(""));
+        return (!name.equals("") && name.length() <= 40);
 
     }
 
@@ -55,7 +60,7 @@ public class Validator {
 
     private static boolean isValidCountry(String country){
 
-        return ((!country.equals("") && country.length() <= 40) || country.equals(""));
+        return (!country.equals("") && country.length() <= 40);
 
     }
 
@@ -177,15 +182,15 @@ public class Validator {
         String country = attributes[6];
         String active = attributes[7];
 
-
-//        System.out.println("Checking Data in Validater: ...");
-//        if(!isValidAirlineID(id)){
+//
+//        System.out.println("--------VALIDATING AIRLINE---------");
+//        if(!isValidID(id)){
 //            System.out.println("Bad id");
 //        }
 //        if(!isValidName(name)){
 //            System.out.println("Bad name");
 //        }
-//        if(!isValidAirlineAlias(alias)){
+//        if(!isValidAlias(alias)){
 //            System.out.println("Bad alias");
 //        }
 //        if(!isValidIATA(iata)){
@@ -197,12 +202,14 @@ public class Validator {
 //        if(!isValidAirlineCallsign(callsign)){
 //            System.out.println("Bad callsign");
 //        }
-//        if(!isValidAirlineCountry(country)){
+//        if(!isValidCountry(country)){
 //            System.out.println("Bad country");
 //        }
 //        if(!isValidActive(active)){
 //            System.out.println("Bad active");
 //        }
+//        System.out.println("================");
+
 
         return (isValidID(id) &&
                 isValidName(name) &&
@@ -248,49 +255,50 @@ public class Validator {
         String dst = attributes[10];
         String tz = attributes[11];
 
-//        if(!isValidID(id)){
-//            System.out.println("BAD ID");
-//        }
-//        if(!isValidName(name)){
-//            System.out.println("BAD name");
-//        }
-//        if(!isValidCity(city)){
-//            System.out.println("BAD city");
-//        }
-//        if(!isValidCountry(country)){
-//            System.out.println("BAD country");
-//        }
-//        if(!isValidIATA(iata)){
-//            System.out.println("BAD iata");
-//        }
-//        if(!isValidICAO(icao)){
-//            System.out.println("BAD icao");
-//        }
-//        if(!isValidLat(lat)){
-//            System.out.println("BAD lat");
-//        }
-//        if(!isValidLong(lon)){
-//            System.out.println("BAD lon");
-//        }
-//        if(!isValidAlt(alt)){
-//            System.out.println("BAD alt");
-//        }
-//        if(!isValidTimeZone(timeZone)){
-//            System.out.println("BAD timeZone");
-//        }
-//        if(!isValidDST(dst)){
-//            System.out.println("BAD dst");
-//        }
-//        if(!isValidTZ(tz)){
-//            System.out.println("BAD tz");
-//        }
+        System.out.println("----VALIDATING AIRPORT----");
+        if(!isValidID(id)){
+            System.out.println("BAD ID");
+        }
+        if(!isValidName(name)){
+            System.out.println("BAD name");
+        }
+        if(!isValidCity(city)){
+            System.out.println("BAD city");
+        }
+        if(!isValidCountry(country)){
+            System.out.println("BAD country");
+        }
+        if(!isValidIATA(iata)){
+            System.out.println("BAD iata");
+        }
+        if(!isValidICAO(icao)){
+            System.out.println("BAD icao");
+        }
+        if(!isValidLat(lat)){
+            System.out.println("BAD lat");
+        }
+        if(!isValidLong(lon)){
+            System.out.println("BAD lon");
+        }
+        if(!isValidAlt(alt)){
+            System.out.println("BAD alt");
+        }
+        if(!isValidTimeZone(timeZone)){
+            System.out.println("BAD timeZone");
+        }
+        if(!isValidDST(dst)){
+            System.out.println("BAD dst");
+        }
+        if(!isValidTZ(tz)){
+            System.out.println("BAD tz");
+        }
+        System.out.println("------------------");
 
         return (isValidID(id) &&
                 isValidName(name) &&
                 isValidCity(city) &&
                 isValidCountry(country) &&
-                isValidIATA(iata) &&
-                isValidICAO(icao) &&
+                (isValidIATA(iata) || isValidICAO(icao)) &&
                 isValidLat(lat) &&
                 isValidLong(lon) &&
                 isValidAlt(alt) &&
@@ -298,6 +306,23 @@ public class Validator {
                 isValidDST(dst) &&
                 isValidTZ(tz));
 
+    }
+
+    public static boolean checkRoute(String[] attributes){  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
+        boolean valid = true;
+        if (attributes[0].equals("None") || attributes[1].equals("None") || attributes[2].equals("None")) {
+            valid = false;
+        }
+        boolean num = StringUtils.isNumeric(attributes[4]);
+        if (!num) {
+            valid = false;
+        }
+
+        boolean validEquip = StringUtils.isAlphanumericSpace(attributes[5]);
+        if (!validEquip) {
+            valid = false;
+        }
+        return valid;
     }
 
     /**

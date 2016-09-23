@@ -49,10 +49,9 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone" GridPane.rowIndex="9" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daylight Saving Time" GridPane.rowIndex="10" />
             <ComboBox fx:id="tzComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <TextField fx:id="DST" promptText="Enter DST..." GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
                   <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
                <columnConstraints>
@@ -66,6 +65,9 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone(Olson Format)" GridPane.rowIndex="11" />
             <TextField fx:id="tzOlson" promptText="Enter Timzone..." GridPane.columnIndex="1" GridPane.rowIndex="11" />
             <Text fx:id="airportID" strokeType="OUTSIDE" strokeWidth="0.0" text="airportID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Text fx:id="addAirportInvalidText" fill="#eb0707" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+            <Text fx:id="addAirportInvalidText" fill="#fc1313" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+            <ComboBox fx:id="dstComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="10" />
          </children>
          <BorderPane.margin>
             <Insets />

@@ -17,6 +17,8 @@ import java.util.ArrayList;
  */
 public class AirlineAddingPopUpController {
 
+    private AirlineTabController airlineTabController;
+
     @FXML private TextField Name;
     @FXML private Text airlineID;
     @FXML private TextField Alias;
@@ -24,6 +26,7 @@ public class AirlineAddingPopUpController {
     @FXML private TextField ICAO;
     @FXML private TextField Callsign;
     @FXML private TextField Country;
+    @FXML private Text addAirlineInvalidText;
     @FXML private CheckBox Active;
     private Stage adderStage;
     private Parent root;
@@ -41,16 +44,20 @@ public class AirlineAddingPopUpController {
     public void createButtonPressed(){;
 
         String[] airlinePoint = getValues().split(", ");
-        ArrayList<DataPoint> myAirlineData = new ArrayList<>();
-        DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT);
-        myAirlineData.add(myAirlinePoint);
+        if(Validator.checkAirline(airlinePoint)) {
+            ArrayList<DataPoint> myAirlineData = new ArrayList<>();
+            DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT);
+            myAirlineData.add(myAirlinePoint);
 
-        DataBaseRefactor.insertDataPoints(myAirlineData);
-
-        adderStage.close();
+            DataBaseRefactor.insertDataPoints(myAirlineData);
+            airlineTabController.airlineFilterButtonPressed();
+            adderStage.close();
+        } else {
+            addAirlineInvalidText.setVisible(true);
+        }
     }
 
-    public void cancleButtonPressed(){
+    public void cancelButtonPressed(){
         //just closes the stage
         adderStage.close();
     }
@@ -88,5 +95,9 @@ public class AirlineAddingPopUpController {
 
     public void setAdderStage(Stage adderStage) {
         this.adderStage = adderStage;
+    }
+
+    public void setAirlineTabController(AirlineTabController controller) {
+        airlineTabController = controller;
     }
 }

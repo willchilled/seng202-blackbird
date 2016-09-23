@@ -27,6 +27,7 @@ import java.util.Arrays;
 public class AirportTabController {
 
     private MainController mainController;
+    AirportTabController instance;
 
     //Airport Table
     @FXML private TableView<DataPoint> airportTable;
@@ -46,6 +47,9 @@ public class AirportTabController {
     @FXML private TableColumn airportTZCol;
     @FXML private TableColumn airportErrorCol;
 
+    @FXML private TableColumn airportIncCol;
+    @FXML private TableColumn airportOutCol;
+
     //Filter and search
     @FXML private ComboBox airportFilterMenu;
     @FXML private TextField airportSearchQuery;
@@ -55,6 +59,11 @@ public class AirportTabController {
     @FXML private Button addAirportToTable;
     @FXML private Button filterButton;
 
+
+    public AirportTabController() {
+        instance = this;
+    }
+
     ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
 
     public void show(){
@@ -63,14 +72,18 @@ public class AirportTabController {
     }
 
     public void addAirportData() {
-        File f;
-        f = HelperFunctions.getFile("Add Airport Data");
+        File f = HelperFunctions.getFile("Add Airport Data");
+        if (f == null) {
+            return;
+        }
         ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT);
         DataBaseRefactor.insertDataPoints(myAirportPoints);
         ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         //System.out.println(validAirportPoints.get(1));
         updateAirportFields();
         updateAirportsTable(validAirportPoints);
+        mainController.updateRoutes();
+        mainController.updateTab(DataTypes.AIRPORTPOINT);
 
     }
 
@@ -94,23 +107,25 @@ public class AirportTabController {
         return countryList;
     }
 
-    private void updateAirportsTable(ArrayList<DataPoint> validAirportPoints) {
+    protected void updateAirportsTable(ArrayList<DataPoint> validAirportPoints) {
 
         airportTable.getItems().setAll(validAirportPoints);
 
-
-        airportIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Integer>("airportID"));
-        airportNameCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportName"));
-        airportCityCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportCity"));
-        airportCountryCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("airportCountry"));
-        airportIATACol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("iata"));
-        airportICAOCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("icao"));
-        airportLatCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
-        airportLongCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
-        airportAltCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("altitude"));
-        airportTimeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("timeZone"));
-        airportDSTCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("dst"));
-        airportTZCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("tz"));
+        airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
+        airportNameCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportName"));
+        airportCityCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCity"));
+        airportCountryCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("airportCountry"));
+        airportIATACol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("iata"));
+        airportICAOCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("icao"));
+        airportLatCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("latitude"));
+        airportLongCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("longitude"));
+        airportAltCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("altitude"));
+        airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
+        airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
+        airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
+        //airportRouteNo.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportIncCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
+        airportOutCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("outgoingRoutes"));
 
         airportTable.getItems().addListener(new ListChangeListener<DataPoint>() {
             //This refreshes the current table
@@ -134,6 +149,7 @@ public class AirportTabController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
                         root = loader.load();
                         AirportPopUpController popUpController = loader.getController();
+                        popUpController.setAirportTabController(instance);
                         popUpController.setAirportPoint(myPoint);
                         popUpController.setUpPopUp();
 
@@ -154,7 +170,7 @@ public class AirportTabController {
         });
     }
 
-    public void AirportFilterButtonPressed(ActionEvent actionEvent) {
+    public void airportFilterButtonPressed() {
 
         //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();
@@ -184,6 +200,7 @@ public class AirportTabController {
 
             //use controller to control it
             AirportAddingPopUpController popUpController = loader.getController();
+            popUpController.setAirportTabController(instance);
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();

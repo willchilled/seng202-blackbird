@@ -1,6 +1,7 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,6 +28,7 @@ import java.util.Collections;
 public class RouteTabController {
 
     private MainController mainController;
+    RouteTabController instance;
 
     //ROUTE table
     @FXML private TableView<DataPoint> routeTable;
@@ -42,6 +44,10 @@ public class RouteTabController {
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
     @FXML private TableColumn routeErrorCol;
+    @FXML private TableColumn routeSrcCountryCol;
+    @FXML private TableColumn routeDstCountryCol;
+    @FXML private TableColumn routeSrcNameCol;
+    @FXML private TableColumn routeDstNameCol;
 
     @FXML private ComboBox routesFilterBySourceMenu;
     @FXML private ComboBox routesFilterbyDestMenu;
@@ -49,15 +55,17 @@ public class RouteTabController {
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
+    public RouteTabController(){
+        instance = this;
+    }
+
     public void show(){
         routeTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Route"));
     }
 
-
     public void setMainController(MainController controller) {
         this.mainController = controller;
     }
-
 
     public void addSingleRoute(ActionEvent actionEvent) {
         try {
@@ -68,6 +76,7 @@ public class RouteTabController {
 
             //use controller to control it
             RouteAddingPopUpController popUpController = loader.getController();
+            popUpController.setRouteTabController(instance);
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();
@@ -77,77 +86,51 @@ public class RouteTabController {
         }
     }
 
-    public void routesFilterButtonPressed(ActionEvent actionEvent) {
+    public void routesFilterButtonPressed() {
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
-        //TODO fix this when the correct stuff is linked to the GUI
-        String equipSelection = "No values Loaded";
+        String equipSelection = routesFilterbyEquipMenu.getValue().toString();
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<DataPoint> routePoints;
 
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
             routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
             updateRoutesTable(routePoints);
-        }
-        else{
+        } else {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
-
-
-        //This is bad style but you win some and you lose some
-        //(I lost this one)
-        ArrayList<String> uniqueCountries = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Src FROM ROUTE");
-        ObservableList<String> myCountries =  FXCollections.observableArrayList(uniqueCountries);
-        myCountries = HelperFunctions.addNullValue(myCountries);
-        routesFilterBySourceMenu.setValue(myCountries.get(0));
-        routesFilterBySourceMenu.setItems(myCountries);
-
-        ArrayList<String> dstCodes = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Dst FROM ROUTE");
-        ObservableList<String> myDstCodes =  FXCollections.observableArrayList(dstCodes);
-        myDstCodes = HelperFunctions.addNullValue(myDstCodes);
-        routesFilterbyDestMenu.setValue(myDstCodes.get(0));
-        routesFilterbyDestMenu.setItems(myDstCodes);
-
-        ArrayList<String> stops = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Stops FROM ROUTE");
-        ObservableList<String> myStops =  FXCollections.observableArrayList(stops);
-        myStops = HelperFunctions.addNullValue(myStops);
-        routesFilterByStopsMenu.setValue(myStops.get(0));
-        routesFilterByStopsMenu.setItems(myStops);
-
-        ArrayList<String> equip = BBDatabase.performDistinctStringQuery("SELECT DISTINCT equipment FROM ROUTE");
-        ObservableList<String> myEquip =  FXCollections.observableArrayList(equip);
-        myEquip= HelperFunctions.addNullValue(myEquip);
-        routesFilterbyEquipMenu.setValue(myEquip.get(0));
-        routesFilterbyEquipMenu.setItems(myEquip);
-        // ArrayList<String>
-
         updateRoutesTable(routePoints);
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT); //airportTable.getItems()
-        updateRoutesTable(allPoints);
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        updateRoutesDropdowns();
 
+        updateRoutesTable(allPoints);
     }
 
     public void addRouteData() {
         
         File f = HelperFunctions.getFile("Add Route Data");
+        if (f == null) {
+            return;
+        }
 
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
         DataBaseRefactor.insertDataPoints(myRouteData);
-       
-        //WAITING ON METHOD TO GET ROUTES BACK FROM DB
+
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points
-        updateRoutesTable(myRouteData);
+        updateRoutesTable(validRouteData);
         updateRoutesDropdowns();
+        mainController.updateAirports();
+        mainController.updateTab(DataTypes.ROUTEPOINT);
 
     }
 
-    private void updateRoutesTable(ArrayList<DataPoint> points) {
+    protected void updateRoutesTable(ArrayList<DataPoint> points) {
         routeTable.getItems().setAll(points);
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
@@ -159,6 +142,19 @@ public class RouteTabController {
         routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
         routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+        routeSrcCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportCountry"));
+        routeDstCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportCountry"));
+        routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
+        routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportName"));
+
+        routeTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            //This refreshes the current table
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+                routeTable.getColumns().get(0).setVisible(false);
+                routeTable.getColumns().get(0).setVisible(true);
+            }
+        });
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -172,6 +168,7 @@ public class RouteTabController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
                         root = loader.load();
                         RoutePopUpController popUpController = loader.getController();
+                        popUpController.setRouteTabController(instance);
                         popUpController.setRoutePoint(myPoint);
                         popUpController.setUpPopUp();
 
@@ -184,7 +181,6 @@ public class RouteTabController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }
@@ -196,7 +192,7 @@ public class RouteTabController {
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
         populateRoutesFilterByStopsList();
-        //populateRoutesFilterByEquipList();
+        populateRoutesFilterByEquipList();
     }
 
     private void populateRoutesFilterBySourceList(){
@@ -205,7 +201,6 @@ public class RouteTabController {
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterBySourceMenu.setItems(uniqueObservableSources);
         routesFilterBySourceMenu.setValue(uniqueObservableSources.get(0));
-
     }
 
     private void populateRoutesFilterbyDestList(){
@@ -224,9 +219,76 @@ public class RouteTabController {
         routesFilterByStopsMenu.setValue(uniqueObservableSources.get(0));
     }
 
+    private void populateRoutesFilterByEquipList(){
+        ArrayList<String> uniqueEquip = new ArrayList<>();
+        ArrayList<DataPoint> myRoutes = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        for (DataPoint route : myRoutes) {
+            RoutePoint myRoute = (RoutePoint) route;
+            if (myRoute.getEquipment() == null) {
+                continue;
+            }
+            String[] equip = myRoute.getEquipment().split("\\s+");
+            for (String myEquip : equip) {
+                if (!uniqueEquip.contains(myEquip)) {
+                    uniqueEquip.add(myEquip);
+                }
+            }
+        }
+
+        Collections.sort(uniqueEquip);
+        ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
+        uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
+        routesFilterbyEquipMenu.setItems(uniqueObservableSources);
+        routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
+    }
+
+
+    public static String[] getIataOrIcao(String name, DataTypes type) {
+        String[] returnString = new String[2];
+        if (type == DataTypes.AIRLINEPOINT) {
+            String sql = "SELECT * FROM AIRLINE WHERE NAME='" + name + "'";
+            ArrayList<DataPoint> foundAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+            if (foundAirline.size() > 1) {
+                System.err.println("Found more than one airline");
+                //TODO What should be done here?
+            }
+            AirlinePoint myAirline = (AirlinePoint) foundAirline.get(0);
+            returnString[0] = Integer.toString(myAirline.getAirlineID());
+            if (!myAirline.getIata().isEmpty()) {
+                returnString[1] = myAirline.getIata();
+            } else if (!myAirline.getIcao().isEmpty()) {
+                returnString[1] = myAirline.getIcao();
+            } else {
+                System.err.println("Airline missing IATA and ICAO");
+                //TODO What should be done here?
+            }
+        }
+
+        if (type == DataTypes.AIRPORTPOINT) {
+            String sql = "SELECT * FROM AIRPORT WHERE NAME='" + name + "'";
+            ArrayList<DataPoint> foundSource = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRPORTPOINT);
+            if (foundSource.size() > 1) {
+                System.err.println("Found more than one airport for route src/dest");
+                //TODO What should be done here?
+            }
+            AirportPoint mySource = (AirportPoint) foundSource.get(0);
+            returnString[0] = Integer.toString(mySource.getAirportID());
+            if (!mySource.getIata().isEmpty()) {
+                returnString[1] = mySource.getIata();
+            } else if (!mySource.getIcao().isEmpty()) {
+                returnString[1] = mySource.getIcao();
+            } else {
+                System.err.println("Source Airport missing IATA and ICAO");
+                //TODO What should be done here?
+            }
+        }
+
+        return returnString;
+    }
+
 
     public void exportRouteData() {
-        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(routeTable.getItems());
+        ArrayList<DataPoint> myPoints = new ArrayList<>(routeTable.getItems());
         Exporter.exportData(myPoints);
     }
 }

@@ -24,8 +24,8 @@ public class FilterRefactor {
         String sql;
         switch (type) {
             case AIRLINEPOINT: sql = "SELECT * FROM AIRLINE;"; break;
-            case AIRPORTPOINT: sql = "SELECT * FROM AIRPORT;"; break;
-            case ROUTEPOINT: sql = "SELECT * FROM ROUTE;"; break;
+            case AIRPORTPOINT: sql = getJoinForAirportsTableSql(); break;
+            case ROUTEPOINT: sql = getJoinForRoutesTableSql(); break;
             case FLIGHTPOINT: sql = "SELECT * FROM AIRLINE;"; break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
@@ -48,7 +48,7 @@ public class FilterRefactor {
             case AIRLINEPOINT: myQuery = airlineFilter(menusPressed, searchString); break;
             case AIRPORTPOINT: myQuery = airportFilter(menusPressed, searchString); break;
             case ROUTEPOINT: myQuery = routeFilter(menusPressed, searchString); break;
-            case FLIGHTPOINT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case FLIGHT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
         filtered =  DataBaseRefactor.performGenericQuery(myQuery, type);
@@ -63,9 +63,37 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String flightFilter(ArrayList<String> menusPressed, String searchString) {
-        //TODO
-        //No filters for flights currently
-        return null;
+
+        String sql = "SELECT * FROM AIRLINE ";
+
+        ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("SrcICAO=\"%s\" AND ", "DstICAO=\"%s\" AND "));
+
+        boolean allNone = checkEmptyMenus(menusPressed);
+        if (!allNone){
+            sql = generateQueryString(sql, menusPressed, allSelections);
+        }
+
+        sql = removeLastAND(sql);
+
+        String search = "";
+        if (searchString.length() >0){
+            search = String.format("(SrcICAO='%1$s' OR DstICAO='%1$s')", searchString);
+            if(allNone){
+                sql += " WHERE ";
+            }
+            else{
+                sql += " AND ";
+            }
+        }
+
+        sql += search;
+        //sql = removeLastWHERE(sql);
+        //System.out.println(sql);
+        //sql = sql.replaceAll()
+        // System.out.println("Performing query:"+ sql);
+        //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
+        //System.out.println("SIZE: " + allPoints.size());
+        return sql; //return an arraylist
     }
 
     /**
@@ -77,14 +105,15 @@ public class FilterRefactor {
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
 
-        String sql = "SELECT * FROM " + getJoinForRoutesTableSql() ;
+        String sql = getJoinForRoutesTableSql() ;
         boolean allNone = checkEmptyMenus(menusPressed);
-        //System.out.println(allNone + "-----------------------");
+
         if (!allNone){
             sql = generateQueryString(sql, menusPressed, allSelections);
         }
 
         sql = removeLastAND(sql);
+        sql = sql.replaceAll("%%", "");
 
         String search = "";
         if (searchString.length() >0){
@@ -94,8 +123,7 @@ public class FilterRefactor {
             search = String.format(searchStatement, searchString);
             if(allNone){
                 sql += " WHERE ";
-            }
-            else{
+            } else {
                 sql += " AND ";
             }
         }
@@ -111,7 +139,7 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String airportFilter(ArrayList<String> menusPressed, String searchString) {
-        String sql = "SELECT * FROM " + getJoinForAirportsTableSql();
+        String sql = getJoinForAirportsTableSql();
 
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){
@@ -169,12 +197,6 @@ public class FilterRefactor {
         }
 
         sql += search;
-        //sql = removeLastWHERE(sql);
-        //System.out.println(sql);
-        //sql = sql.replaceAll()
-        // System.out.println("Performing query:"+ sql);
-        //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
-        //System.out.println("SIZE: " + allPoints.size());
         return sql; //return an arraylist
     }
 
@@ -220,14 +242,14 @@ public class FilterRefactor {
     //------------------------------------------HELPER FUNCTIONS----------------------------------------------------//
 
     private static String getJoinForAirportsTableSql(){
-        String sql = " (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
+        String sql = " SELECT * FROM (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
                 "(select count(*) from route where route.dstid=airport.id)\n" +
                 "as outgoing from airport\n)  ";
         return sql;
     }
 
     private static String getJoinForRoutesTableSql(){
-        return " (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
+        return " SELECT * FROM (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
                 "FROM route\n" +
                 "LEFT JOIN airport as a1 ON route.Srcid =  a1.id LEFT JOIN airport as a2 ON route.Dstid = a2.id\n) ";
     }

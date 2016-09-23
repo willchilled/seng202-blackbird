@@ -49,11 +49,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
                   <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <Text fx:id="airlineID" strokeType="OUTSIDE" strokeWidth="0.0" text="airlineID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Text fx:id="addAirlineInvalidText" fill="#e10606" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
          </children>
          <BorderPane.margin>
             <Insets />

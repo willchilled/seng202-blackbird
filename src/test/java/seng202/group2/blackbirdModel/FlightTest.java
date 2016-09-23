@@ -22,7 +22,7 @@ public class FlightTest extends TestCase {
 //        flightsFileString = cwd + "/JUnitTesting/flight.txt";
 //        File flightsFile = new File(flightsFileString);
 //
-//        ArrayList<FlightPoint> testFlightPoints = Parser.parseFlightData(flightsFile);
+
 //        //Flight testFlight = new Flight(testFlightPoints);
 //
 //        assertEquals("NZCH", testFlight.getSrcAirport());
@@ -36,7 +36,7 @@ public class FlightTest extends TestCase {
 //        flightsFileString = cwd + "/JUnitTesting/flight.txt";
 //        File flightsFile = new File(flightsFileString);
 //
-//        ArrayList<FlightPoint> testFlightPoints = Parser.parseFlightData(flightsFile);
+
 //        Flight testFlight = new Flight(testFlightPoints);
 //
 //        assertEquals("WSSS", testFlight.getDestAirport());
@@ -49,7 +49,7 @@ public class FlightTest extends TestCase {
 //        flightsFileString = cwd + "/JUnitTesting/flight.txt";
 //        File flightsFile = new File(flightsFileString);
 //
-//        ArrayList<FlightPoint> testFlightPoints = Parser.parseFlightData(flightsFile);
+
 //        Flight testFlight = new Flight(testFlightPoints);
 //
 //        assertEquals(testFlightPoints, testFlight.getFlightPoints());

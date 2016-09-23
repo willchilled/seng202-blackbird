@@ -72,43 +72,45 @@ public class AirportPoint extends DataPoint {
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {
                 // System.out.println("Int AID: " + currentLine[0]);
-                System.out.println("id: " + currentLine[0]);
                 this.airportID = Integer.parseInt(currentLine[0]);	//should not be null
                 //System.out.println("STRING ANAME: " + currentLine[1]);
-                System.out.println("airportName: " + currentLine[1]);
                 this.airportName = currentLine[1];	//let people name airline whatever they want
                 //System.out.println("STRING ACITY: " + currentLine[2]);
-                System.out.println("airportCity: " + currentLine[2]);
                 this.airportCity = currentLine[2];
                 //System.out.println("STRING ACOUNTRY: " + currentLine[3]);
-                System.out.println("airportCountry: " + currentLine[3]);
                 this.airportCountry= currentLine[3];
                 //System.out.println("STRING IATA: " + currentLine[4]);
-                System.out.println("iata: " + currentLine[4]);
                 this.iata =currentLine[4];
                 //System.out.println("STRING ICAO: " + currentLine[5]);
-                System.out.println("icao: " + currentLine[5]);
                 this.icao = currentLine[5];
-                //System.out.println("FLOAT LAT: " + currentLine[6]);
-                System.out.println("latitude: " + currentLine[6]);
-                this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
+                if(currentLine[6].isEmpty()){
+                    this.latitude = 0;
+                } else {
+                    this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
+                }
                 //System.out.println("FLOAT LONG: " + currentLine[7]);
-                System.out.println("longitude: " + currentLine[7]);
-                this.longitude = Float.parseFloat(currentLine[7].trim());
+                if(currentLine[7].isEmpty()){
+                    this.longitude = 0;
+                } else {
+                    this.longitude = Float.parseFloat(currentLine[7].trim());
+                }
                 //System.out.println("INT ALT: " + currentLine[8]);
-                System.out.println("altitude: " + currentLine[8]);
-                this.altitude = Float.parseFloat(currentLine[8]);
+                if(currentLine[8].isEmpty()){
+                    this.altitude = 0;
+                } else {
+                    this.altitude = Float.parseFloat(currentLine[8]);
+                }
                 //System.out.println("FLOAT TIMEZONE: " + currentLine[9]);
-                System.out.println("timeZone: " + currentLine[9]);
-                this.timeZone = Float.parseFloat(currentLine[9]);
+                if(currentLine[9].isEmpty()){
+                    timeZone = 0;
+                } else {
+                    this.timeZone = Float.parseFloat(currentLine[9]);
+                }
                 //System.out.println("STRING DST: " + currentLine[10]);
-                System.out.println("dst: " + currentLine[10]);
                 this.dst = currentLine[10];
                 //System.out.println("STRING TZ: " + currentLine[11]);
-                System.out.println("tz: " + currentLine[11]);
                 this.tz = currentLine[11];
 
-                System.out.println("===================");
 
                 if (currentLine.length == 14){ // We add a special case for when there is data in the array
                     this.outgoingRoutes = Integer.parseInt(currentLine[12]);

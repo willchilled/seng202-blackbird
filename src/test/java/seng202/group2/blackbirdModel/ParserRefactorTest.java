@@ -29,10 +29,6 @@ public class ParserRefactorTest extends TestCase {
         File routesFile = new File(routesFileString);
         File flightFile = new File(flightFileString);
 
-       // ArrayList<AirlinePoint> airlinePoints = Parser.parseAirlineData(airlinesFile);
-       // ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
-        //ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
-
 
         ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
         ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
@@ -66,8 +62,7 @@ public class ParserRefactorTest extends TestCase {
 
          //System.out.println(flightPoints.get(0).getType());
 
-//        ArrayList<AirportPoint> airportPoints = Parser.parseAirportData(airportsFile);
-//        ArrayList<RoutePoint> routePoints = Parser.parseRouteData(routesFile);
+
 
 
 //        BBDatabase.deleteDBFile();

@@ -47,11 +47,11 @@
             <TextField fx:id="Stops" promptText="Enter Stops..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <TextField fx:id="Equipment" promptText="Enter Equipment..." GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="6" />
-            <CheckBox fx:id="Codeshare"  mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <CheckBox fx:id="Codeshare" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" onAction="#cancelButtonPressed"/>
-                  <Button mnemonicParsing="false" text="Create" GridPane.columnIndex="1" onAction="#createButtonPressed"/>
+                  <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -61,6 +61,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <Text fx:id="addRouteInvalidText" fill="#bf0606" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
          </children>
          <BorderPane.margin>
             <Insets />

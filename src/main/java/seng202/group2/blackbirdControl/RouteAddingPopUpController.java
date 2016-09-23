@@ -5,12 +5,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.BBDatabase;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
-import seng202.group2.blackbirdModel.Parser;
-import seng202.group2.blackbirdModel.RoutePoint;
+import seng202.group2.blackbirdModel.*;
 
 import java.util.ArrayList;
 
@@ -28,6 +26,7 @@ public class RouteAddingPopUpController {
     @FXML private CheckBox Codeshare;
     @FXML private TextField Stops;
     @FXML private TextField Equipment;
+    @FXML private Text addRouteInvalidText;
     private Stage adderStage;
     private Parent root;
 
@@ -41,27 +40,20 @@ public class RouteAddingPopUpController {
     }
 
     public void createButtonPressed(){
-        String[] routePoint = getValues().split(", ");
-        String airline = routePoint[0];
-        int airlineID = 0;	// 0 if airlineID is null
 
-        if (!routePoint[1].equals("\\N")) {
-            airlineID = Integer.parseInt(routePoint[1]);
-        }
-
-        RoutePoint myRoutePoint = new RoutePoint(airline, airlineID);
-        int count = DataBaseRefactor.getMaxInColumn("ROUTE", "IDnum");
-        myRoutePoint = Parser.checkRouteData(routePoint, count);
-
-        myRoutePoint.setRouteID(count);	//set our own routeID
-
-        ArrayList<RoutePoint> myRouteData = new ArrayList<RoutePoint>();
-        myRouteData.add(myRoutePoint);
-
-        BBDatabase.addRoutePointstoDB(myRouteData);
-        //make so it displays
-
-        adderStage.close();
+//        String[] routePoint = getValues().split(", ", -1);
+//        if(Validator.checkRoute(routePoint)) {
+//            ArrayList<DataPoint> myRouteData = new ArrayList<>();
+//            DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(routePoint, DataTypes.ROUTEPOINT);
+//            myRouteData.add(myRoutePoint);
+//
+//            DataBaseRefactor.insertDataPoints(myRouteData);
+//            adderStage.close();
+//        } else {
+//            addRouteInvalidText.setVisible(true);
+//        }
+//
+//        adderStage.close();
     }
 
     public void cancelButtonPressed(){

@@ -18,16 +18,15 @@ public class AirportPointTest extends TestCase {
     }
 
     public void testGetCorrectEntry() throws Exception {
-        String cwd = System.getProperty("user.dir");
-        String airportFileString;
-        airportFileString = cwd + "/JUnitTesting/airports.txt";
-        File airportFile = new File(airportFileString);
-
-        ArrayList<AirportPoint> testAirportPoints = Parser.parseAirportData(airportFile);
-
-
-
-        AirportPoint testWorking = testAirportPoints.get(0);
+//        String cwd = System.getProperty("user.dir");
+//        String airportFileString;
+//        airportFileString = cwd + "/JUnitTesting/airports.txt";
+//        File airportFile = new File(airportFileString);
+//
+//
+//
+//
+//        AirportPoint testWorking = testAirportPoints.get(0);
        // AirportPoint testNotWorking = testAirportPoints.get(4647);
 
 

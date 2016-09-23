@@ -189,7 +189,6 @@ public class RouteTabController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }
@@ -210,7 +209,6 @@ public class RouteTabController {
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterBySourceMenu.setItems(uniqueObservableSources);
         routesFilterBySourceMenu.setValue(uniqueObservableSources.get(0));
-
     }
 
     private void populateRoutesFilterbyDestList(){

@@ -158,12 +158,12 @@ public class RouteTabController {
         updateRoutesTable(validRouteData);
         updateRoutesDropdowns();
         mainController.updateAirports();
+        mainController.updateTab(DataTypes.ROUTEPOINT);
 
     }
 
     protected void updateRoutesTable(ArrayList<DataPoint> points) {
         routeTable.getItems().setAll(points);
-
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
@@ -188,12 +188,6 @@ public class RouteTabController {
                 routeTable.getColumns().get(0).setVisible(true);
             }
         });
-
-
-
-
-
-
 
 
 

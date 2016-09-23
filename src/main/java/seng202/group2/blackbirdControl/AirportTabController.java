@@ -77,6 +77,7 @@ public class AirportTabController {
         updateAirportFields();
         updateAirportsTable(validAirportPoints);
         mainController.updateRoutes();
+        mainController.updateTab(DataTypes.AIRPORTPOINT);
 
     }
 

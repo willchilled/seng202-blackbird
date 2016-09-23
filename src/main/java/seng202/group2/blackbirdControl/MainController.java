@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,6 +41,11 @@ public class MainController implements Initializable {
     @FXML private RouteTabController routeTabController;
     @FXML private AirportTabController airportTabController;
     @FXML private AirlineTabController airlineTabController;
+
+    @FXML private Tab airlineTab;
+    @FXML private Tab routeTab;
+    @FXML private Tab flightTab;
+    @FXML private Tab airportTab;
 
     @FXML private TabPane mainTabPane;
     @FXML private GridPane openPane;
@@ -119,6 +123,23 @@ public class MainController implements Initializable {
 
 
     }*/
+    public void updateTab(DataTypes type) {
+
+        switch(type){
+            case FLIGHT:
+                mainTabPane.getSelectionModel().select(flightTab);
+                break;
+            case ROUTEPOINT:
+                mainTabPane.getSelectionModel().select(routeTab);
+                break;
+            case AIRPORTPOINT:
+                mainTabPane.getSelectionModel().select(airportTab);
+                break;
+            case AIRLINEPOINT:
+                mainTabPane.getSelectionModel().select(airlineTab);
+                break;
+        }
+    }
 }
 
 

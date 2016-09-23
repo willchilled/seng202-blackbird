@@ -87,7 +87,7 @@ public class AirlineTabController {
 
         // Populates Rows in the Airline Table
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
-       // mainController.updateTab(DataTypes.AIRLINEPOINT);
+        mainController.updateTab(DataTypes.AIRLINEPOINT);
     }
 
     private void updateAirlineFields() {

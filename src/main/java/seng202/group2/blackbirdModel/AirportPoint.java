@@ -83,18 +83,34 @@ public class AirportPoint extends DataPoint {
                 this.iata =currentLine[4];
                 //System.out.println("STRING ICAO: " + currentLine[5]);
                 this.icao = currentLine[5];
-                //System.out.println("FLOAT LAT: " + currentLine[6]);
-                this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
+                if(currentLine[6].isEmpty()){
+                    this.latitude = 0;
+                } else {
+                    this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
+                }
                 //System.out.println("FLOAT LONG: " + currentLine[7]);
-                this.longitude = Float.parseFloat(currentLine[7].trim());
+                if(currentLine[7].isEmpty()){
+                    this.longitude = 0;
+                } else {
+                    this.longitude = Float.parseFloat(currentLine[7].trim());
+                }
                 //System.out.println("INT ALT: " + currentLine[8]);
-                this.altitude = Float.parseFloat(currentLine[8]);
+                if(currentLine[8].isEmpty()){
+                    this.altitude = 0;
+                } else {
+                    this.altitude = Float.parseFloat(currentLine[8]);
+                }
                 //System.out.println("FLOAT TIMEZONE: " + currentLine[9]);
-                this.timeZone = Float.parseFloat(currentLine[9]);
+                if(currentLine[9].isEmpty()){
+                    timeZone = 0;
+                } else {
+                    this.timeZone = Float.parseFloat(currentLine[9]);
+                }
                 //System.out.println("STRING DST: " + currentLine[10]);
                 this.dst = currentLine[10];
                 //System.out.println("STRING TZ: " + currentLine[11]);
                 this.tz = currentLine[11];
+
 
                 if (currentLine.length == 14){ // We add a special case for when there is data in the array
                     this.outgoingRoutes = Integer.parseInt(currentLine[12]);

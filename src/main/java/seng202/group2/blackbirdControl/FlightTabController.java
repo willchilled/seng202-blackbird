@@ -52,17 +52,17 @@ public class FlightTabController {
 
 
     public void addFlightData() {
-        File f = HelperFunctions.getFile("Add Flight Data");
-        if (f == null) {
-            return;
-        }
-
-        ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
-        //BBDatabase.addFlighttoDB(myFlightData);
-        DataBaseRefactor.insertDataPoints(myFlightData);
-        ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints(DataTypes.FLIGHTPOINT);
+            File f = HelperFunctions.getFile("Add Flight Data");
+            if (f == null) {
+                return;
+            }
+            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
+            //BBDatabase.addFlighttoDB(myFlightData);
+            DataBaseRefactor.insertDataPoints(myFlightData);
+            ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints(DataTypes.FLIGHTPOINT);
     
-        updateFlightsTable(myFlightData);
+            updateFlightsTable(myFlightData);
+            mainController.updateTab(DataTypes.FLIGHT);
     }
 
     private void updateFlightsTable(ArrayList<DataPoint> points) {

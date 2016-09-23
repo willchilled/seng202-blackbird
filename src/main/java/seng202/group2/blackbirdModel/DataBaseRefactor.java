@@ -522,7 +522,7 @@ public class DataBaseRefactor {
                 " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
                 " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
                 " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
-                " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U'))," +
+                " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', ''))," +
                 " TZ             VARCHAR(40))";
         //System.out.println(sql);
         return sql;

@@ -63,51 +63,111 @@ public class RouteAddingPopUpController {
 
     public void createButtonPressed(){
 
-//        String[] routePoint = getValues().split(", ", -1);
-//        if(Validator.checkRoute(routePoint)) {
-//            ArrayList<DataPoint> myRouteData = new ArrayList<>();
-//            DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(routePoint, DataTypes.ROUTEPOINT);
-//            myRouteData.add(myRoutePoint);
-//
-//            DataBaseRefactor.insertDataPoints(myRouteData);
-//            adderStage.close();
-//        } else {
-//            addRouteInvalidText.setVisible(true);
-//        }
-//
-//        adderStage.close();
+        String[] values = getValues();
+        if (Validator.checkRoute(values)) {
+            String[] valueFields = getFields(values);
+            DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT);
+            ArrayList<DataPoint> myRouteData = new ArrayList<>();
+            myRouteData.add(myRoutePoint);
+            DataBaseRefactor.insertDataPoints(myRouteData);
+
+            //TODO Get the auto updating thing to happen here too
+
+            adderStage.close();
+        } else {
+            addRouteInvalidText.setVisible(true);
+        }
+
+        //adderStage.close();
 
     }
 
-    private String getValues() {
-//        String routeAirlineIATA = AirlineIATA.getText().toString();
-//        String routeAirlineID = AirlineID.getText().toString();
-//        String routeSrc = Src.getText().toString();
-//        String routeSrcID = SrcID.getText().toString();
-//        String routeDst = Dst.getText().toString();
-//        String routeDstID = DstID.getText().toString();
-        boolean codeshareChecked = Codeshare.isSelected();
+    private String[] getValues() {
+        String myAirline = airlineSelection.getValue().toString();
+        String mySource = sourceSelection.getValue().toString();
+        String myDest = destSelection.getValue().toString();
+        String routeCodeshare = "";
         String routeStops = Stops.getText().toString();
         String routeEquipment = Equipment.getText().toString();
-        String values = new String();
-//        values += routeAirlineIATA;
-//        values += ", " + routeAirlineID;
-//        values += ", " + routeSrc;
-//        values += ", " + routeSrcID;
-//        values += ", " + routeDst;
-//        values += ", " + routeDstID;
-        if (codeshareChecked){
-            String routeCodeshare = "Y";
-            values += ", " + routeCodeshare;
-        } else {
-            String routeCodeshare = "";
-            values += ", " + routeCodeshare;
-        }
-        values += ", " + routeStops;
-        values += ", " + routeEquipment;
+        //System.out.println(routeStops);
 
+        boolean codeshareChecked = Codeshare.isSelected();
+        if (codeshareChecked){
+            routeCodeshare = "Y";
+        }
+
+        if(routeStops.isEmpty()) {
+            routeStops = "0";
+        }
+        String[] values = {myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment};
         return values;
     }
+
+    private String[] getFields(String[] values) {
+        String airline = ""; //index 0 in input file
+        String airlineID;
+        String srcAirport = "";
+        String srcAirportID;
+        String dstAirport = "";
+        String dstAirportID;
+        String codeshare;
+        String stops;
+        String equipment;
+        String sql = "SELECT * FROM AIRLINE WHERE NAME='" + values[0] + "'";
+        ArrayList<DataPoint> foundAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+        if (foundAirline.size() > 1) {
+            System.err.println("Found more than one airline");
+        }
+        AirlinePoint myAirline = (AirlinePoint) foundAirline.get(0);
+        airlineID = Integer.toString(myAirline.getAirlineID());
+        if (!myAirline.getIata().isEmpty()) {
+            airline = myAirline.getIata();
+        } else if (!myAirline.getIcao().isEmpty()) {
+            airline = myAirline.getIcao();
+        } else {
+            System.err.println("Airline missing IATA and ICAO");
+        }
+
+        String sql1 = "SELECT * FROM AIRPORT WHERE NAME='" + values[1] + "'";
+        ArrayList<DataPoint> foundSource = DataBaseRefactor.performGenericQuery(sql1, DataTypes.AIRPORTPOINT);
+        if (foundSource.size() > 1) {
+            System.err.println("Found more than one source airport");
+        }
+        AirportPoint mySource = (AirportPoint) foundSource.get(0);
+        srcAirportID = Integer.toString(mySource.getAirportID());
+        if (!mySource.getIata().isEmpty()) {
+            srcAirport = mySource.getIata();
+        } else if (!mySource.getIcao().isEmpty()) {
+            srcAirport = mySource.getIcao();
+        } else {
+            System.err.println("Source Airport missing IATA and ICAO");
+        }
+
+        String sql2 = "SELECT * FROM AIRPORT WHERE NAME='" + values[2] + "'";
+        ArrayList<DataPoint> foundDest = DataBaseRefactor.performGenericQuery(sql2, DataTypes.AIRPORTPOINT);
+        if (foundDest.size() > 1) {
+            System.err.println("Found more than one dest airport");
+        }
+        AirportPoint myDest = (AirportPoint) foundDest.get(0);
+        dstAirportID = Integer.toString(myDest.getAirportID());
+        if (!myDest.getIata().isEmpty()) {
+            dstAirport = myDest.getIata();
+        } else if (!myDest.getIcao().isEmpty()) {
+            dstAirport = myDest.getIcao();
+        } else {
+            System.err.println("Dest Airport missing IATA and ICAO");
+        }
+
+        codeshare = values[3];
+        stops = values[4];
+        equipment = values[5];
+
+        String[] newString = {airline, airlineID, srcAirport, srcAirportID,
+                dstAirport, dstAirportID, codeshare, stops, equipment};
+
+        return newString;
+    }
+
 
     public void cancelButtonPressed(){
         //just closes the stage

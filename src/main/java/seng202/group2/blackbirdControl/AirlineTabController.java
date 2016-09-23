@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by emr65 on 20/09/16.
  */
-public class AirlineTabController {
+public class AirlineTabController{
 
     private MainController mainController;
     AirlineTabController instance;
@@ -60,6 +60,14 @@ public class AirlineTabController {
 
     public AirlineTabController(){
         instance = this;
+    }
+
+    @FXML
+    private void initialize(){
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
+        airlineFilterMenu.setItems(airlineCountryList);
+        airlineActiveMenu.setItems(airlineActiveList);
+        airlineActiveMenu.setValue(airlineActiveList.get(0));
     }
 
 
@@ -183,6 +191,7 @@ public class AirlineTabController {
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
         String searchQuery = airlineSearchQuery.getText().toString();
+        ArrayList<DataPoint> allPoints;
 
         if (activeSelection =="Active"){
             activeSelection = "Y";
@@ -190,13 +199,15 @@ public class AirlineTabController {
         else if (activeSelection == "Inactive"){
             activeSelection = "N";
         }
-
-        ArrayList<String> menusPressed  = new ArrayList<String>();
-        menusPressed.add(countrySelection);
-        menusPressed.add(activeSelection);
-
-
-        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
+        if(countrySelection.equals("No values Loaded") && activeSelection.equals("No values Loaded")){
+            allPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
+        }
+        else {
+            ArrayList<String> menusPressed = new ArrayList<String>();
+            menusPressed.add(countrySelection);
+            menusPressed.add(activeSelection);
+            allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
+        }
         updateAirlinesTable(allPoints);
         
     }

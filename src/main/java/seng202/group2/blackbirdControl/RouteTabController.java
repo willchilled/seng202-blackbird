@@ -30,6 +30,12 @@ public class RouteTabController {
     private MainController mainController;
     RouteTabController instance;
 
+    private ObservableList<String> routesFilterBySourceList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyDestList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterByStopsList  = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> routesFilterbyEquipList  = FXCollections.observableArrayList("No values Loaded");
+
+
     //ROUTE table
     @FXML private TableView<DataPoint> routeTable;
 
@@ -57,6 +63,17 @@ public class RouteTabController {
 
     public RouteTabController(){
         instance = this;
+    }
+
+    public void initialize(){
+        routesFilterBySourceMenu.setValue(getRoutesFilterBySourceList().get(0));
+        routesFilterBySourceMenu.setItems(getRoutesFilterBySourceList());
+        routesFilterbyDestMenu.setValue(getRoutesFilterbyDestList().get(0));
+        routesFilterbyDestMenu.setItems(getRoutesFilterbyDestList());
+        routesFilterByStopsMenu.setValue(getRoutesFilterByStopsList().get(0));
+        routesFilterByStopsMenu.setItems(getRoutesFilterByStopsList());
+        routesFilterbyEquipMenu.setValue(getRoutesFilterbyEquipList().get(0));
+        routesFilterbyEquipMenu.setItems(getRoutesFilterbyEquipList());
     }
 
     public void show(){
@@ -96,7 +113,7 @@ public class RouteTabController {
 
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
             routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
-            updateRoutesTable(routePoints);
+            //updateRoutesTable(routePoints);
         } else {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
@@ -291,4 +308,20 @@ public class RouteTabController {
         ArrayList<DataPoint> myPoints = new ArrayList<>(routeTable.getItems());
         Exporter.exportData(myPoints);
     }
+
+    public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}
+
+    public ObservableList<String> getRoutesFilterBySourceList(){return routesFilterBySourceList;}
+
+    public ObservableList<String> getRoutesFilterbyDestList(){return routesFilterbyDestList;}
+
+    public void setRoutesFilterbyDestList(ArrayList<String> destList){ this.routesFilterbyDestList = routesFilterbyDestList;}
+
+    public void SetRoutesFilterByStopsList(ArrayList<String> stopsList){ this.routesFilterByStopsList = routesFilterByStopsList;}
+
+    public ObservableList<String> getRoutesFilterByStopsList(){return routesFilterByStopsList;}
+
+    public ObservableList<String> getRoutesFilterbyEquipList(){return routesFilterbyEquipList;}
+
+    public void setRoutesFilterbyEquipList(ArrayList<String> equipList){ this.routesFilterbyEquipList = routesFilterbyEquipList;}
 }

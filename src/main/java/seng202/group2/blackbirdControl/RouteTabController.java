@@ -1,6 +1,7 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,6 +43,10 @@ public class RouteTabController {
     @FXML private TableColumn routeStopsCol;
     @FXML private TableColumn routeEqCol;
     @FXML private TableColumn routeErrorCol;
+    @FXML private TableColumn routeSrcCountryCol;
+    @FXML private TableColumn routeDstCountryCol;
+    @FXML private TableColumn routeSrcNameCol;
+    @FXML private TableColumn routeDstNameCol;
 
     @FXML private ComboBox routesFilterBySourceMenu;
     @FXML private ComboBox routesFilterbyDestMenu;
@@ -86,12 +91,20 @@ public class RouteTabController {
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<DataPoint> routePoints;
 
+
+
+
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
             routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
             updateRoutesTable(routePoints);
         } else {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
+        }
+
+        for (DataPoint myRoute: routePoints){
+            RoutePoint currentRoute = (RoutePoint) myRoute;
+            System.out.println(currentRoute.toStringWithAirports());
         }
 
 
@@ -144,16 +157,18 @@ public class RouteTabController {
 //        }
         DataBaseRefactor.insertDataPoints(myRouteData);
        
-        //WAITING ON METHOD TO GET ROUTES BACK FROM DB
+
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points
-        updateRoutesTable(myRouteData);
+        updateRoutesTable(validRouteData);
         updateRoutesDropdowns();
+        mainController.updateAirports();
 
     }
 
-    private void updateRoutesTable(ArrayList<DataPoint> points) {
+    protected void updateRoutesTable(ArrayList<DataPoint> points) {
         routeTable.getItems().setAll(points);
+
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
@@ -164,6 +179,30 @@ public class RouteTabController {
         routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
         routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
+        routeSrcCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportCountry"));
+        routeDstCountryCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportCountry"));
+        routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
+        routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportName"));
+
+
+        routeTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            //This refreshes the current table
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+                routeTable.getColumns().get(0).setVisible(false);
+                routeTable.getColumns().get(0).setVisible(true);
+            }
+        });
+
+
+
+
+
+
+
+
+
+
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -242,8 +281,8 @@ public class RouteTabController {
                 }
             }
         }
-        Collections.sort(uniqueEquip.subList(1, uniqueEquip.size()));
-//        uniqueSources = Filter.findDistinctStringFromTable(sql, "ROUTE");
+
+        Collections.sort(uniqueEquip);
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);

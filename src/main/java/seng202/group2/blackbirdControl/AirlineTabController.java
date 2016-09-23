@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdControl;
 
+import com.sun.prism.PixelFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -76,6 +77,7 @@ public class AirlineTabController {
 
         // Populates Rows in the Airline Table
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
+       // mainController.updateTab(DataTypes.AIRLINEPOINT);
     }
 
     private void updateAirlineFields() {

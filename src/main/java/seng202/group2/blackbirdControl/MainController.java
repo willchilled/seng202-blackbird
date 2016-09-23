@@ -10,12 +10,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
@@ -28,6 +30,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Filter;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -41,6 +44,7 @@ public class MainController implements Initializable {
     @FXML private AirlineTabController airlineTabController;
 
     @FXML private TabPane mainTabPane;
+    @FXML private GridPane openPane;
 
 
     @Override
@@ -54,6 +58,7 @@ public class MainController implements Initializable {
 
     public void show(){
         mainTabPane.setVisible(true);
+        openPane.setVisible(false);
         airlineTabController.show();
         airportTabController.show();
         flightTabController.show();
@@ -97,6 +102,23 @@ public class MainController implements Initializable {
 
     }
 
+    public void updateRoutes() {
+        //GET POINTS
+        ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        routeTabController.updateRoutesTable(routePoints);
+    }
+
+    public void updateAirports() {
+        //getpoints
+        ArrayList<DataPoint> airportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        airportTabController.updateAirportsTable(airportPoints);
+    }
+
+/*    public void updateTab(DataTypes type) {
+        mainTabPane.getSelectionModel().select(airportTab);
+
+
+    }*/
 }
 
 

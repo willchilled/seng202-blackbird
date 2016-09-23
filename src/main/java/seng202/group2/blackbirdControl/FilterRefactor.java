@@ -24,8 +24,8 @@ public class FilterRefactor {
         String sql;
         switch (type) {
             case AIRLINEPOINT: sql = "SELECT * FROM AIRLINE;"; break;
-            case AIRPORTPOINT: sql = "SELECT * FROM AIRPORT;"; break;
-            case ROUTEPOINT: sql = "SELECT * FROM ROUTE;"; break;
+            case AIRPORTPOINT: sql = getJoinForAirportsTableSql(); break;
+            case ROUTEPOINT: sql = getJoinForRoutesTableSql(); break;
             case FLIGHTPOINT: sql = "SELECT * FROM AIRLINE;"; break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
@@ -77,7 +77,7 @@ public class FilterRefactor {
     private static String routeFilter(ArrayList<String> menusPressed, String searchString) {
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("Src=\"%s\" AND ", "Dst=\"%s\" AND ", "Stops=\"%s\" AND ", "(EQUIPMENT LIKE \"%%%s%%\") AND " ));
 
-        String sql = "SELECT * FROM " + getJoinForRoutesTableSql() ;
+        String sql = getJoinForRoutesTableSql() ;
         boolean allNone = checkEmptyMenus(menusPressed);
         //System.out.println(allNone + "-----------------------");
         if (!allNone){
@@ -112,7 +112,7 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String airportFilter(ArrayList<String> menusPressed, String searchString) {
-        String sql = "SELECT * FROM " + getJoinForAirportsTableSql();
+        String sql = getJoinForAirportsTableSql();
 
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){
@@ -221,14 +221,14 @@ public class FilterRefactor {
     //------------------------------------------HELPER FUNCTIONS----------------------------------------------------//
 
     private static String getJoinForAirportsTableSql(){
-        String sql = " (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
+        String sql = " SELECT * FROM (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
                 "(select count(*) from route where route.dstid=airport.id)\n" +
                 "as outgoing from airport\n)  ";
         return sql;
     }
 
     private static String getJoinForRoutesTableSql(){
-        return " (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
+        return " SELECT * FROM (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
                 "FROM route\n" +
                 "LEFT JOIN airport as a1 ON route.Srcid =  a1.id LEFT JOIN airport as a2 ON route.Dstid = a2.id\n) ";
     }

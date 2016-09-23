@@ -45,7 +45,6 @@ public class FilterRefactorTest extends TestCase {
         myFlight.add(f);
         // System.out.println(flight.getType() + "--------------------------");
 
-
         DataBaseRefactor.createTables();
         DataBaseRefactor.insertDataPoints(airlinePoints);
         DataBaseRefactor.insertDataPoints(airportPoint);

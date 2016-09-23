@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
@@ -41,6 +42,7 @@ public class MainController implements Initializable {
     @FXML private AirlineTabController airlineTabController;
 
     @FXML private TabPane mainTabPane;
+    @FXML private GridPane openPane;
 
 
     @Override
@@ -54,6 +56,7 @@ public class MainController implements Initializable {
 
     public void show(){
         mainTabPane.setVisible(true);
+        openPane.setVisible(false);
         airlineTabController.show();
         airportTabController.show();
         flightTabController.show();
@@ -97,6 +100,11 @@ public class MainController implements Initializable {
 
     }
 
+/*    public void updateTab(DataTypes type) {
+        mainTabPane.getSelectionModel().select(airportTab);
+
+
+    }*/
 }
 
 

@@ -36,6 +36,7 @@ public class RouteAddingPopUpController {
     @FXML private Text addRouteInvalidText;
     private Stage adderStage;
     private Parent root;
+    private RouteTabController routeTabController;
 
     public void control() {
         adderStage.setScene(new Scene(root));
@@ -70,8 +71,7 @@ public class RouteAddingPopUpController {
             ArrayList<DataPoint> myRouteData = new ArrayList<>();
             myRouteData.add(myRoutePoint);
             DataBaseRefactor.insertDataPoints(myRouteData);
-
-            //TODO Get the auto updating thing to happen here too
+            routeTabController.routesFilterButtonPressed();
 
             adderStage.close();
         } else {
@@ -180,5 +180,9 @@ public class RouteAddingPopUpController {
 
     public void setRoot(Parent root) {
         this.root = root;
+    }
+
+    public void setRouteTabController(RouteTabController routeTabController) {
+        this.routeTabController = routeTabController;
     }
 }

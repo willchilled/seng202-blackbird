@@ -76,6 +76,7 @@ public class RouteTabController {
 
             //use controller to control it
             RouteAddingPopUpController popUpController = loader.getController();
+            popUpController.setRouteTabController(instance);
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();

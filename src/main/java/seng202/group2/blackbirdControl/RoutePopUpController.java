@@ -17,6 +17,7 @@ import java.util.List;
 public class RoutePopUpController {
 
     private RoutePoint routePoint;
+    private RouteTabController routeTabController;
 
     /**
      public AirlinePopUpController(AirlinePoint airportPoint) {
@@ -177,8 +178,9 @@ public class RoutePopUpController {
             routeEquipText.setText(routeEquipmentTextEdit.getText());
 
             System.out.println("Performing query: " + sql);
-
             //TODO route editing database call
+
+            routeTabController.routesFilterButtonPressed();
             stage.close();
 
         } else {
@@ -220,5 +222,9 @@ public class RoutePopUpController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void setRouteTabController(RouteTabController controller) {
+        routeTabController = controller;
     }
 }

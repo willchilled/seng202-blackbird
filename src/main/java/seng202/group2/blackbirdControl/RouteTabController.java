@@ -28,6 +28,7 @@ import java.util.Collections;
 public class RouteTabController {
 
     private MainController mainController;
+    RouteTabController instance;
 
     //ROUTE table
     @FXML private TableView<DataPoint> routeTable;
@@ -54,15 +55,17 @@ public class RouteTabController {
     @FXML private ComboBox routesFilterbyEquipMenu;
     @FXML private TextField routesSearchMenu;
 
+    public RouteTabController(){
+        instance = this;
+    }
+
     public void show(){
         routeTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Route"));
     }
 
-
     public void setMainController(MainController controller) {
         this.mainController = controller;
     }
-
 
     public void addSingleRoute(ActionEvent actionEvent) {
         try {
@@ -82,7 +85,7 @@ public class RouteTabController {
         }
     }
 
-    public void routesFilterButtonPressed(ActionEvent actionEvent) {
+    public void routesFilterButtonPressed() {
         String sourceSelection = routesFilterBySourceMenu.getValue().toString();
         String destSelection = routesFilterbyDestMenu.getValue().toString();
         String stopsSelection = routesFilterByStopsMenu.getValue().toString();
@@ -205,6 +208,7 @@ public class RouteTabController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
                         root = loader.load();
                         RoutePopUpController popUpController = loader.getController();
+                        popUpController.setRouteTabController(instance);
                         popUpController.setRoutePoint(myPoint);
                         popUpController.setUpPopUp();
 

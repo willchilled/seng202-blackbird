@@ -29,6 +29,7 @@ public class AirlineTabController {
     private MainController mainController;
     AirlineTabController instance;
 
+
     //Airline Table
     @FXML private TableView<DataPoint> airlineTable;
 
@@ -224,6 +225,7 @@ public class AirlineTabController {
 
             //use controller to control it
             AirlineAddingPopUpController popUpController = loader.getController();
+            popUpController.setAirlineTabController(instance);
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();

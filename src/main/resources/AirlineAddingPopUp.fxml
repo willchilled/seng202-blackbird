@@ -49,7 +49,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancleButtonPressed" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
                   <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
                </children>
             </GridPane>

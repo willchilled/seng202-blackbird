@@ -27,6 +27,7 @@ import java.util.Arrays;
 public class AirportTabController {
 
     private MainController mainController;
+    AirportTabController instance;
 
     //Airport Table
     @FXML private TableView<DataPoint> airportTable;
@@ -57,6 +58,11 @@ public class AirportTabController {
     @FXML private Button airportSeeAllButton;
     @FXML private Button addAirportToTable;
     @FXML private Button filterButton;
+
+
+    public AirportTabController() {
+        instance = this;
+    }
 
     ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
 
@@ -143,6 +149,8 @@ public class AirportTabController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
                         root = loader.load();
                         AirportPopUpController popUpController = loader.getController();
+                        //TODO set tab controller\
+                        popUpController.setAirportTabController(instance);
                         popUpController.setAirportPoint(myPoint);
                         popUpController.setUpPopUp();
 
@@ -163,7 +171,7 @@ public class AirportTabController {
         });
     }
 
-    public void AirportFilterButtonPressed(ActionEvent actionEvent) {
+    public void AirportFilterButtonPressed() {
 
         //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();

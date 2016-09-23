@@ -63,8 +63,10 @@ public class AirportTabController {
     }
 
     public void addAirportData() {
-        File f;
-        f = HelperFunctions.getFile("Add Airport Data");
+        File f = HelperFunctions.getFile("Add Airport Data");
+        if (f == null) {
+            return;
+        }
         ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT);
         DataBaseRefactor.insertDataPoints(myAirportPoints);
         ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);

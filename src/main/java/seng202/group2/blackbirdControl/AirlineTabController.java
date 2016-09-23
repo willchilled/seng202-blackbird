@@ -67,6 +67,16 @@ public class AirlineTabController {
         //Adds data into DataBase thus filtering it against database constraints, then pulling out remaining "good"
         // data to populate the GUI.
         File f = HelperFunctions.getFile("Add Airline Data");
+        if (f == null) {
+            return;
+        }
+//        else if (!f.exists() || !f.canRead() || !f.isFile()){
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Oops!");
+//            alert.setHeaderText("Bad file");
+//            alert.setContentText("Invalid file selected");
+//            return;
+//        }
         ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT);
         DataBaseRefactor.insertDataPoints(myPoints);
         ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);

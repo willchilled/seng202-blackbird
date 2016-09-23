@@ -66,7 +66,6 @@ public class RouteTabController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RouteAddingPopUp.fxml"));
             root = loader.load();
 
-            //use controller to control it
             RouteAddingPopUpController popUpController = loader.getController();
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
@@ -145,11 +144,11 @@ public class RouteTabController {
     public void addRouteData() {
         
         File f = HelperFunctions.getFile("Add Route Data");
+        if (f == null) {
+            return;
+        }
 
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
-//        for (DataPoint item : myRouteData) {
-//            System.out.println(item);
-//        }
         DataBaseRefactor.insertDataPoints(myRouteData);
 
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB

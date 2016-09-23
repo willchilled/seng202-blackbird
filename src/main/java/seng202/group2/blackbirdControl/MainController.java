@@ -41,6 +41,11 @@ public class MainController implements Initializable {
     @FXML private AirportTabController airportTabController;
     @FXML private AirlineTabController airlineTabController;
 
+    @FXML private Tab airlineTab;
+    @FXML private Tab routeTab;
+    @FXML private Tab flightTab;
+    @FXML private Tab airportTab;
+
     @FXML private TabPane mainTabPane;
     @FXML private GridPane openPane;
 
@@ -100,11 +105,23 @@ public class MainController implements Initializable {
 
     }
 
-/*    public void updateTab(DataTypes type) {
-        mainTabPane.getSelectionModel().select(airportTab);
+    public void updateTab(DataTypes type) {
 
-
-    }*/
+        switch(type){
+            case FLIGHT:
+                mainTabPane.getSelectionModel().select(flightTab);
+                break;
+            case ROUTEPOINT:
+                mainTabPane.getSelectionModel().select(routeTab);
+                break;
+            case AIRPORTPOINT:
+                mainTabPane.getSelectionModel().select(airportTab);
+                break;
+            case AIRLINEPOINT:
+                mainTabPane.getSelectionModel().select(airlineTab);
+                break;
+        }
+    }
 }
 
 

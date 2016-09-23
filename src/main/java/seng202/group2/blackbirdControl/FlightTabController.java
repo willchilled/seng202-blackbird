@@ -60,7 +60,7 @@ public class FlightTabController {
             ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints(DataTypes.FLIGHTPOINT);
     
             updateFlightsTable(myFlightData);
-
+            mainController.updateTab(DataTypes.FLIGHT);
     }
 
     private void updateFlightsTable(ArrayList<DataPoint> points) {

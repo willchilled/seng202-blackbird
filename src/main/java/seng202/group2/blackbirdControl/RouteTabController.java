@@ -147,22 +147,18 @@ public class RouteTabController {
         File f = HelperFunctions.getFile("Add Route Data");
 
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
-//        for (DataPoint item : myRouteData) {
-//            System.out.println(item);
-//        }
         DataBaseRefactor.insertDataPoints(myRouteData);
        
         //WAITING ON METHOD TO GET ROUTES BACK FROM DB
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
-        //setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(myRouteData);
         updateRoutesDropdowns();
+        mainController.updateTab(DataTypes.ROUTEPOINT);
 
     }
 
     private void updateRoutesTable(ArrayList<DataPoint> points) {
         routeTable.getItems().setAll(points);
-
 
         routeAirlineCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("airline"));
         routeAirlineIDCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("airlineID"));
@@ -173,12 +169,6 @@ public class RouteTabController {
         routeCSCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("codeshare"));
         routeStopsCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, Integer>("stops"));
         routeEqCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String[]>("equipment"));
-
-
-
-
-
-
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override

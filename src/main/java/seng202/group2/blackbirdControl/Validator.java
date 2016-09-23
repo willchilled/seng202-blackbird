@@ -1,5 +1,10 @@
 package seng202.group2.blackbirdControl;
 
+import org.apache.commons.lang3.StringUtils;
+import seng202.group2.blackbirdModel.AirportPoint;
+import sun.util.resources.TimeZoneNamesBundle;
+import sun.util.resources.cldr.en.TimeZoneNames_en_NZ;
+
 /**
  * Created by emr65 on 22/09/16.
  */
@@ -293,8 +298,7 @@ public class Validator {
                 isValidName(name) &&
                 isValidCity(city) &&
                 isValidCountry(country) &&
-                isValidIATA(iata) &&
-                isValidICAO(icao) &&
+                (isValidIATA(iata) || isValidICAO(icao)) &&
                 isValidLat(lat) &&
                 isValidLong(lon) &&
                 isValidAlt(alt) &&
@@ -304,6 +308,22 @@ public class Validator {
 
     }
 
+    public static boolean checkRoute(String[] attributes){  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
+        boolean valid = true;
+        if (attributes[0].equals("None") || attributes[1].equals("None") || attributes[2].equals("None")) {
+            valid = false;
+        }
+        boolean num = StringUtils.isNumeric(attributes[4]);
+        if (!num) {
+            valid = false;
+        }
+
+        boolean validEquip = StringUtils.isAlphanumericSpace(attributes[5]);
+        if (!validEquip) {
+            valid = false;
+        }
+        return valid;
+    }
 
     /**
      * A helper function for checking if all characters ar upper case

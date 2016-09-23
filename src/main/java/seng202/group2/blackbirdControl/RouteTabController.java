@@ -100,50 +100,14 @@ public class RouteTabController {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
-
-//        for (DataPoint myRoute: routePoints){
-//            RoutePoint currentRoute = (RoutePoint) myRoute;
-//            System.out.println(currentRoute.toStringWithAirports());
-//        }
-
-
-        //This is bad style but you win some and you lose some
-        //(I lost this one)
-//        ArrayList<String> uniqueCountries = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Src FROM ROUTE");
-//        ObservableList<String> myCountries =  FXCollections.observableArrayList(uniqueCountries);
-//        myCountries = HelperFunctions.addNullValue(myCountries);
-//        routesFilterBySourceMenu.setValue(myCountries.get(0));
-//        routesFilterBySourceMenu.setItems(myCountries);
-//
-//        ArrayList<String> dstCodes = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Dst FROM ROUTE");
-//        ObservableList<String> myDstCodes =  FXCollections.observableArrayList(dstCodes);
-//        myDstCodes = HelperFunctions.addNullValue(myDstCodes);
-//        routesFilterbyDestMenu.setValue(myDstCodes.get(0));
-//        routesFilterbyDestMenu.setItems(myDstCodes);
-//
-//        ArrayList<String> stops = BBDatabase.performDistinctStringQuery("SELECT DISTINCT Stops FROM ROUTE");
-//        ObservableList<String> myStops =  FXCollections.observableArrayList(stops);
-//        myStops = HelperFunctions.addNullValue(myStops);
-//        routesFilterByStopsMenu.setValue(myStops.get(0));
-//        routesFilterByStopsMenu.setItems(myStops);
-//
-//        ArrayList<String> equip = BBDatabase.performDistinctStringQuery("SELECT DISTINCT equipment FROM ROUTE");
-//        ObservableList<String> myEquip =  FXCollections.observableArrayList(equip);
-//        myEquip= HelperFunctions.addNullValue(myEquip);
-//        routesFilterbyEquipMenu.setValue(myEquip.get(0));
-//        routesFilterbyEquipMenu.setItems(myEquip);
-        // ArrayList<String>
-        //updateRoutesDropdowns();
-
         updateRoutesTable(routePoints);
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT); //airportTable.getItems()
-        updateRoutesDropdowns();    //TODO better way of clearing filters after pressing see all
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        updateRoutesDropdowns();
 
         updateRoutesTable(allPoints);
-
     }
 
     public void addRouteData() {
@@ -182,7 +146,6 @@ public class RouteTabController {
         routeSrcNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("srcAirportName"));
         routeDstNameCol.setCellValueFactory(new PropertyValueFactory<RoutePoint, String>("dstAirportName"));
 
-
         routeTable.getItems().addListener(new ListChangeListener<DataPoint>() {
             //This refreshes the current table
             @Override
@@ -191,10 +154,6 @@ public class RouteTabController {
                 routeTable.getColumns().get(0).setVisible(true);
             }
         });
-
-
-
-
 
         routeTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override

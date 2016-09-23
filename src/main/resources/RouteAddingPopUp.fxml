@@ -44,11 +44,11 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <Text fx:id="addRouteInvalidText" fill="#bf0606" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <Text fx:id="addRouteInvalidText" fill="#bf0606" strokeType="OUTSIDE" strokeWidth="0.0" text="Required field is missing" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
             <ComboBox fx:id="airlineSelection" prefWidth="150.0" GridPane.columnIndex="1" />
             <ComboBox fx:id="sourceSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="destSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField promptText="Enter number of stops..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="Stops" promptText="Enter number of stops..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <BorderPane.margin>
             <Insets />

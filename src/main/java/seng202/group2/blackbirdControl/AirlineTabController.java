@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class AirlineTabController {
 
     private MainController mainController;
+    AirlineTabController instance;
 
     //Airline Table
     @FXML private TableView<DataPoint> airlineTable;
@@ -55,6 +56,10 @@ public class AirlineTabController {
 
     ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
+
+    public AirlineTabController(){
+        instance = this;
+    }
 
 
     public void show(){
@@ -149,6 +154,7 @@ public class AirlineTabController {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airlinePopup.fxml"));
                         root = loader.load();
                         AirlinePopUpController popUpController = loader.getController();
+                        popUpController.setAirlineTabController(instance);
                         popUpController.setAirlinePoint(myPoint);
                         popUpController.setUpPopUp();
 
@@ -172,7 +178,7 @@ public class AirlineTabController {
 
 
 
-    public void airlineFilterButtonPressed(ActionEvent actionEvent) {
+    public void airlineFilterButtonPressed() {
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
         String searchQuery = airlineSearchQuery.getText().toString();
@@ -193,7 +199,6 @@ public class AirlineTabController {
         updateAirlinesTable(allPoints);
         
     }
-
 
     public void airlineSeeAllButtonPressed(ActionEvent actionEvent) {
         // gets all airline points and populates list

@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
@@ -165,6 +167,14 @@ public class AirlinePopUpController {
 
     public void setAirlineTabController(AirlineTabController controller) {
         this.airlineTabController = controller;
+    }
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            commitEdit();
+        }
     }
 
 }

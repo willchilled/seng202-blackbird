@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
@@ -161,7 +163,7 @@ public class AirportPopUpController {
             airportEditButton.setVisible(true);
             airportFinishButton.setVisible(false);
             airportCancelButton.setVisible(false);
-//            airportInvalidDataText.setVisible(false);
+            airportInvalidDataText.setVisible(false);
 
             String sql = String.format("UPDATE AIRPORT SET NAME='%1$s', CITY='%2$s', COUNTRY='%3$s', IATA='%4$s'," +
                             " ICAO='%5$s', LATITUDE='%6$s', LONGITUDE='%7$s', ALTITUDE='%8$s', TIMEZONE='%9$s', DST='%10$s'," +
@@ -212,6 +214,15 @@ public class AirportPopUpController {
         airportEditButton.setVisible(true);
         airportFinishButton.setVisible(false);
         airportCancelButton.setVisible(false);
+    }
+
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            commitEdit();
+        }
     }
 
 

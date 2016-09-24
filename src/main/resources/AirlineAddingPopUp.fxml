@@ -32,14 +32,14 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ICAO (3)" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Callsign" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Active" GridPane.rowIndex="7" />
-            <TextField fx:id="Name" promptText="Enter Name..." GridPane.columnIndex="1" />
-            <TextField fx:id="Alias" promptText="Enter Alias..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="IATA" promptText="Enter IATA..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="ICAO" promptText="Enter ICAO..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="Callsign" promptText="Enter Callsign..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="Country" promptText="Enter Country..." GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country" GridPane.rowIndex="6" />
-            <CheckBox fx:id="Active" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="Name" promptText="Enter Name..." GridPane.columnIndex="1" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="Alias" promptText="Enter Alias..." GridPane.columnIndex="1" GridPane.rowIndex="2" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="IATA" promptText="Enter IATA..." GridPane.columnIndex="1" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="ICAO" promptText="Enter ICAO..." GridPane.columnIndex="1" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="Callsign" promptText="Enter Callsign..." GridPane.columnIndex="1" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="Country" promptText="Enter Country..." GridPane.columnIndex="1" GridPane.rowIndex="6" onKeyPressed="#enterPressed"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country" GridPane.rowIndex="6" onKeyPressed="#enterPressed"/>
+            <CheckBox fx:id="Active" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="7" onKeyPressed="#enterPressed"/>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="8">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

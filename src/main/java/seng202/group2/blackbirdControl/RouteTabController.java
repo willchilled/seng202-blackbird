@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -190,7 +192,7 @@ public class RouteTabController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("Detailed Route Information");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 
@@ -205,6 +207,9 @@ public class RouteTabController {
         });
     }
 
+    /**
+     * Updates all of the dropdown menus for route filtering.
+     */
     private void updateRoutesDropdowns() {
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
@@ -212,6 +217,9 @@ public class RouteTabController {
         populateRoutesFilterByEquipList();
     }
 
+    /**
+     * Populates route source dropdown
+     */
     private void populateRoutesFilterBySourceList(){
         ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Src", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
@@ -303,10 +311,51 @@ public class RouteTabController {
         return returnString;
     }
 
+    public static String[] getFields(String[] values) {
+        String airline; //index 0 in input file
+        String airlineID;
+        String srcAirport;
+        String srcAirportID;
+        String dstAirport;
+        String dstAirportID;
+        String codeshare;
+        String stops;
+        String equipment;
+
+        String[] airlineFields = RouteTabController.getIataOrIcao(values[0], DataTypes.AIRLINEPOINT);
+        airlineID = airlineFields[0];
+        airline = airlineFields[1];
+
+        String[] sourceFields = RouteTabController.getIataOrIcao(values[1], DataTypes.AIRPORTPOINT);
+        srcAirportID = sourceFields[0];
+        srcAirport = sourceFields[1];
+
+        String[] destFields = RouteTabController.getIataOrIcao(values[2], DataTypes.AIRPORTPOINT);
+        dstAirportID = destFields[0];
+        dstAirport = destFields[1];
+
+        codeshare = values[3];
+        stops = values[4];
+        equipment = values[5];
+
+        String[] newString = {airline, airlineID, srcAirport, srcAirportID,
+                dstAirport, dstAirportID, codeshare, stops, equipment};
+
+        return newString;
+    }
+
 
     public void exportRouteData() {
         ArrayList<DataPoint> myPoints = new ArrayList<>(routeTable.getItems());
         Exporter.exportData(myPoints);
+    }
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            routesFilterButtonPressed();
+        }
     }
 
     public void setAllRoutesFilterBySourceList(ArrayList<String> sourceList){ this.routesFilterBySourceList = routesFilterBySourceList;}

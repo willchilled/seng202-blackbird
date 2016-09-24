@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -161,7 +163,7 @@ public class AirportTabController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("Airport");
+                        stage.setTitle("Detailed Airport Information");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 
@@ -226,6 +228,14 @@ public class AirportTabController {
 
     public void setMainController(MainController controller) {
         this.mainController = controller;
+    }
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            airportFilterButtonPressed();
+        }
     }
 
 

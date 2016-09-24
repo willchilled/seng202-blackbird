@@ -5,6 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -92,5 +94,13 @@ public class AirlineAddingPopUpController {
 
     public void setAirlineTabController(AirlineTabController controller) {
         airlineTabController = controller;
+    }
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            createButtonPressed();
+        }
     }
 }

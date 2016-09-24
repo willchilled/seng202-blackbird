@@ -28,27 +28,28 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="*Destination Airport" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.rowIndex="5" />
-            <TextField fx:id="Equipment" promptText="Enter Equipment..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="3" />
-            <CheckBox fx:id="Codeshare" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
-                  <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <Text fx:id="addRouteInvalidText" fill="#bf0606" strokeType="OUTSIDE" strokeWidth="0.0" text="Required field is missing" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-            <ComboBox fx:id="airlineSelection" prefWidth="150.0" GridPane.columnIndex="1" />
-            <ComboBox fx:id="sourceSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="destSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="Stops" promptText="Enter number of stops..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Codeshare" GridPane.rowIndex="3" />
+            <TextField fx:id="Equipment" promptText="Enter Equipment..." GridPane.columnIndex="1" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
+            <CheckBox fx:id="Codeshare" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
+            <ComboBox fx:id="airlineSelection" prefWidth="150.0" GridPane.columnIndex="1" onKeyPressed="#enterPressed"/>
+            <ComboBox fx:id="sourceSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
+            <ComboBox fx:id="destSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="Stops" promptText="Enter number of stops..." GridPane.columnIndex="1" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
+
+             <Text fx:id="addRouteInvalidText" fill="#bf0606" strokeType="OUTSIDE" strokeWidth="0.0" text="Required field is missing" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+                 <children>
+                     <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
+                     <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
+                 </children>
+                 <columnConstraints>
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+             </GridPane>
          </children>
          <BorderPane.margin>
             <Insets />

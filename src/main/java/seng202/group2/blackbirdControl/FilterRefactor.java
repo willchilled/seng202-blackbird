@@ -37,6 +37,11 @@ public class FilterRefactor {
         return DataBaseRefactor.performGenericQuery(sql, type);
     }
 
+    /**
+     * Finds the number of incoming and outoging routes for each airport
+     * @param myAirportPoints The list of airport pints wanting to be linked
+     * @return airport points with number of incoming and outgoing routes set
+     */
     private static ArrayList<DataPoint> linkRoutesandAirports(ArrayList<DataPoint> myAirportPoints) {
         ArrayList<DataPoint> linkedAiportPoints = new ArrayList<DataPoint>();
         ArrayList<DataPoint> myRoutes = getAllPoints(DataTypes.ROUTEPOINT);

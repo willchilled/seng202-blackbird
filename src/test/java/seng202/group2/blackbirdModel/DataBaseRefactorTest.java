@@ -70,14 +70,14 @@ public class DataBaseRefactorTest extends TestCase {
         String sql = "SELECT DISTINCT COUNTRY FROM AIRLINE";
         ArrayList<String> distinctPoints = DataBaseRefactor.performDistinctQuery(sql);
         assertEquals(46, distinctPoints.size());
-        System.out.println("My Distinct Countries!");
+       // System.out.println("My Distinct Countries!");
     }
 
     public void testEditDataPoint() throws Exception {
         String sql = "SELECT * FROM AIRLINE WHERE ID='2'";
         ArrayList<DataPoint> myPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
         AirlinePoint myAirline = (AirlinePoint) myPoints.get(0);
-        System.out.println("name = " + myAirline.getAirlineName());
+        //System.out.println("name = " + myAirline.getAirlineName());
         String edit = "UPDATE AIRLINE SET NAME='Poos', COUNTRY='United States', ALIAS='', IATA='', ICAO='GNL', CALLSIGN='GENERAL', ACTIVE='N' WHERE ID='2'";
         DataBaseRefactor.editDataEntry(edit);
         myPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);

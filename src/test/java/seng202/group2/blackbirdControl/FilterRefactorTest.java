@@ -135,7 +135,7 @@ public class FilterRefactorTest extends TestCase {
         assertEquals(dataPoints.size(), 98);
 
         RoutePoint myRoutePoint = (RoutePoint) dataPoints.get(0);
-        System.out.println(myRoutePoint.toStringWithAirports());
+        //System.out.println(myRoutePoint.toStringWithAirports());
         assertEquals(myRoutePoint.getSrcAirportName(), "Narsarsuaq");
 
 
@@ -180,7 +180,7 @@ public class FilterRefactorTest extends TestCase {
 
         for (DataPoint p: airportPoints){
             AirportPoint myp = (AirportPoint) p;
-            System.out.println(myp.toStringWithRoutes());
+            //System.out.println(myp.toStringWithRoutes());
         }
         AirportPoint currentPoint = (AirportPoint) airportPoints.get(0); //These are hard coded into the files
         assertEquals(currentPoint.getOutgoingRoutes(), 2);

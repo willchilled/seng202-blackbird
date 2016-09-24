@@ -64,6 +64,10 @@ public class FlightTabController {
     }
 
 
+    /**
+     * Called upon clicking the Add Flight Data option in the menu bar. Adds a specified CSV file of a flight to the
+     * database and then updates the table
+     */
     public void addFlightData() {
         File f = HelperFunctions.getFile("Add Flight Data");
         if (f == null) {
@@ -78,6 +82,9 @@ public class FlightTabController {
         mainController.updateTab(DataTypes.FLIGHT);
     }
 
+    /**
+     * Updates all flight filter dropdowns with current data
+     */
     private void updateFlightFields() {
 
         flightSrcICAOList = populateFlightSrcList();
@@ -90,6 +97,10 @@ public class FlightTabController {
         flightDstICAOMenu.setValue(flightDstICAOList.get(0));
     }
 
+    /**
+     * Populates the SrcICAOs dropdown upon adding data.
+     * @return The list of current SrcICAOs in the database for flights
+     */
     private ObservableList<String> populateFlightSrcList(){
         ArrayList<String> srcICAOs = FilterRefactor.filterDistinct("SrcICAO", "FLIGHT");
         ObservableList<String> srcICAOList = FXCollections.observableArrayList(srcICAOs);
@@ -97,7 +108,10 @@ public class FlightTabController {
         return srcICAOList;
     }
 
-
+    /**
+     * Populates the DstICAO dropdown upon adding data.
+     * @return The list of current DstICAOs in the database for flights
+     */
     private ObservableList<String> populateFlightDstList(){
         ArrayList<String> dstICAOs = FilterRefactor.filterDistinct("DstICAO", "FLIGHT");
         ObservableList<String> dstICAOList = FXCollections.observableArrayList(dstICAOs);
@@ -105,6 +119,12 @@ public class FlightTabController {
         return dstICAOList;
     }
 
+
+    /**
+     * Called upon pressing the 'Filter' button in the flights tab. Grabs all info from the filter selections and sends
+     * it to the Filter class to create a search query to obtain all flight points. Updates the flight table with these
+     * points.
+     */
     public void flightFilterButtonPressed() {
         String srcAirport = flightSrcICAOMenu.getValue().toString();
         String dstAirport = flightDstICAOMenu.getValue().toString();
@@ -121,6 +141,10 @@ public class FlightTabController {
 
     }
 
+    /**
+     * Called upon pressing the 'Add Flight' button in Flights. Opens the flight creator
+     * @param actionEvent Mouse Click
+     */
     public void flightMakeFlightButtonPressed(ActionEvent actionEvent) {
 
         //Brings up popup to create a flight
@@ -143,6 +167,11 @@ public class FlightTabController {
 
     }
 
+    /**
+     * Updates the filght tables upon being called. Also contains a nested function to update the flightPoint table
+     * upon clicking a row
+     * @param filteredFlights A list of the flights with which to update the tables
+     */
     private void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
 
         flightTable.getItems().setAll(filteredFlights);
@@ -181,6 +210,9 @@ public class FlightTabController {
     }
 
 
+    /**
+     * Exports the current flightPoint data showing into a CSV file of the users chosing.
+     */
     public void exportFlightData() {
         //Giver user a warning that it will only export the currently selected flight (the one in the flightpoint table)
         //NEED TO LABEL THE FLIGHT TABLES.

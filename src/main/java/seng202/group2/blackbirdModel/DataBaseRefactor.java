@@ -6,6 +6,7 @@ import javax.xml.crypto.Data;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -381,22 +382,22 @@ public class DataBaseRefactor {
 
                 int width = rsmd.getColumnCount();
 
-                if(dataType == DataTypes.ROUTEPOINT) {
-                    //System.out.println("Now here");
-                    attributes = new String[width-1];
-                    for (int i = 1; i < width; i++) {
-
-                        attributes[i-1] = rs.getString(i + 1);
-                        //System.out.println(i + " " + attributes[i-1]);
-                    }
-
-                } else {
+//                if(dataType == DataTypes.ROUTEPOINT) {
+//                    //System.out.println("Now here");
+//                    attributes = new String[width-1];
+//                    for (int i = 1; i < width; i++) {
+//
+//                        attributes[i-1] = rs.getString(i + 1);
+//                        //System.out.println(i + " " + attributes[i-1]);
+//                    }
+//
+//                } else {
                     attributes = new String[width];
                     for (int i = 0; i < width; i++) {
 
                         attributes[i] = rs.getString(i + 1);
                          //System.out.println(i + " " + attributes[i]);
-                    }
+//                    }
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
                 resultPoints.add(myPoint);

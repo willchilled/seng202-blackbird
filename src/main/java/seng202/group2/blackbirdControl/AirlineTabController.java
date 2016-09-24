@@ -211,6 +211,7 @@ public class AirlineTabController{
             menusPressed.add(activeSelection);
             allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
         }
+        updateAirlineFields();
         updateAirlinesTable(allPoints);
         
     }

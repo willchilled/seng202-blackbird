@@ -48,7 +48,6 @@ public class FlightPoint extends DataPoint {
         //System.out.println(currentLine.toString());
 
         try {
-            //FOR CREATING NEW FLIGHT POINTS!
             if (currentLine.length == 5) {
                 this.localtype = currentLine[0];
                 this.localeID = currentLine[1];

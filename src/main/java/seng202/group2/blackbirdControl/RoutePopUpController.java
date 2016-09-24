@@ -83,16 +83,68 @@ public class RoutePopUpController {
         ArrayList<String> airlineNames = FilterRefactor.filterDistinct("Name", "Airline");
         ObservableList<String> airlineMenu = FXCollections.observableArrayList(airlineNames);
         airlineMenu = HelperFunctions.addNullValue(airlineMenu);
-        airlineSelection.setItems(airlineMenu);
-        //airlineSelection.setValue(airlineMenu.get(0)); //TODO set initial value as the current value
 
-        ArrayList<String> sourceAirports = FilterRefactor.filterDistinct("Name", "Airport");
-        ObservableList<String> sourceNames = FXCollections.observableArrayList(sourceAirports);
-        sourceNames = HelperFunctions.addNullValue(sourceNames);
-        sourceSelection.setItems(sourceNames);
-        //sourceSelection.setValue(sourceNames.get(0)); //TODO set initial value as the current value
-        destSelection.setItems(sourceNames);
-        //destSelection.setValue(sourceNames.get(0));   //TODO set initial value as the current value
+        ArrayList<String> uniqueAirportList = FilterRefactor.filterDistinct("Name", "Airport");
+        ObservableList<String> uniqueAirports = FXCollections.observableArrayList(uniqueAirportList);
+        uniqueAirports = HelperFunctions.addNullValue(uniqueAirports);
+        Integer[] myIndices = getMenuIndex(airlineMenu, uniqueAirports);
+
+        airlineSelection.setItems(airlineMenu);
+        airlineSelection.setValue(airlineMenu.get(myIndices[0]));
+
+        sourceSelection.setItems(uniqueAirports);
+        sourceSelection.setValue(uniqueAirports.get(myIndices[1]));
+
+        destSelection.setItems(uniqueAirports);
+        destSelection.setValue(uniqueAirports.get(myIndices[2]));
+    }
+
+    private Integer[] getMenuIndex(ObservableList<String> airlineMenu, ObservableList<String> uniqueAirports) {
+        Integer[] returnIndices = new Integer[3];
+        String sql = "SELECT * FROM AIRLINE WHERE ID=" + routePoint.getAirlineID();
+        System.out.println(sql);
+
+        int myIndex = 0;
+        ArrayList<DataPoint> myAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+        if (myAirline.size() > 1) {
+            System.err.println("More than one airline found");
+        } else if (myAirline.size() == 0) {
+            myIndex = 0;
+        } else {
+            AirlinePoint grabName = (AirlinePoint) myAirline.get(0);
+            myIndex = airlineMenu.indexOf(grabName.getAirlineName());
+        }
+        returnIndices[0] = myIndex;
+
+        String sql1 = "SELECT * FROM AIRPORT WHERE ID=" + routePoint.getSrcAirportID();
+        System.out.println(sql1);
+        int sourceIndex = 0;
+        ArrayList<DataPoint> sourceAirport = DataBaseRefactor.performGenericQuery(sql1, DataTypes.AIRPORTPOINT);
+        if (sourceAirport.size() > 1) {
+            System.err.println("More than one airport found");
+        } else if (sourceAirport.size() == 0) {
+            sourceIndex = 0;
+        } else {
+            AirportPoint grabName = (AirportPoint) sourceAirport.get(0);
+            sourceIndex = uniqueAirports.indexOf(grabName.getAirportName());
+        }
+        returnIndices[1] = sourceIndex;
+
+        String sql2 = "SELECT * FROM AIRPORT WHERE ID=" + routePoint.getDstAirportID();
+        System.out.println(sql2);
+        int destIndex = 0;
+        ArrayList<DataPoint> destAirport = DataBaseRefactor.performGenericQuery(sql2, DataTypes.AIRPORTPOINT);
+        if (destAirport.size() > 1) {
+            System.err.println("More than one airport found");
+        } else if (destAirport.size() == 0) {
+            destIndex = 0;
+        } else {
+            AirportPoint grabName = (AirportPoint) destAirport.get(0);
+            destIndex = uniqueAirports.indexOf(grabName.getAirportName());
+        }
+        returnIndices[2] = destIndex;
+
+        return returnIndices;
     }
 
     public void setRoutePoint(RoutePoint routePoint) {
@@ -110,41 +162,12 @@ public class RoutePopUpController {
         //refreshMessage.setVisible(true);
 //
 
-//
-//
-//        if(routeSrcText.getText() != ""){
-//            routeSrcTextEdit.setText(routeSrcText.getText());
-//        }
-//        if(routeSrcIDText.getText() != ""){
-//            routeSrcIDTextEdit.setText(routeSrcIDText.getText());
-//        }
-//        if(routeDestText.getText() != ""){
-//            routeDstTextEdit.setText(routeDestText.getText());
-//        }
-//        if(routeDestIDText.getText() != ""){
-//            routeDstIDTextEdit.setText(routeDestIDText.getText());
-//        }
-//        if(routeAirlineText.getText() != ""){
-//            routeAirlineTextEdit.setText(routeAirlineText.getText());
-//        }
-//        if(routeAirlineIDText.getText() != ""){
-//            routeAirlineIDTextEdit.setText(routeAirlineIDText.getText());
-//        }
-//        if(routeCSText.getText() != ""){
-//            routeCShareTextEdit.setText(routeCSText.getText());
-//        }
-//        if(routeStopsText.getText() != ""){
-//            routeStopsTextEdit.setText(routeStopsText.getText());
-//        }
-//        if(routeEquipText.getText() != ""){
-//            routeEquipmentTextEdit.setText(routeEquipText.getText());
-//        }
-
 
     }
 
     public void commitEdit(){
         String[] values = getValues();
+        System.out.println(Arrays.toString(values));
         if (Validator.checkRoute(values)) {
             String[] valueFields = RouteTabController.getFields(values);
 
@@ -153,13 +176,33 @@ public class RoutePopUpController {
                             " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s', Equipment=\"%9$s\" WHERE IDnum='%10$s'",
                     valueFields[0], valueFields[1], valueFields[2], valueFields[3], valueFields[4], valueFields[5],
                     valueFields[6], valueFields[7], valueFields[8], routeIDText.getText());
+            System.out.println(sql);
             DataBaseRefactor.performGenericQuery(sql, DataTypes.ROUTEPOINT);
 //            ArrayList<DataPoint> myRouteData = new ArrayList<>();
 //            myRouteData.add(myRoutePoint);
 //            DataBaseRefactor.insertDataPoints(myRouteData);
             routeTabController.routesFilterButtonPressed();
 
-            stage.close();
+
+            routeIDText.setText(String.valueOf(routePoint.getRouteID()));
+            routeAirlineText.setText(routePoint.getAirline());
+            routeAirlineIDText.setText(String.valueOf(routePoint.getAirlineID()));
+            routeSrcIDText.setText(String.valueOf(routePoint.getSrcAirportID()));
+            routeSrcText.setText(routePoint.getSrcAirport());
+            routeSourceNameText.setText(routePoint.getSrcAirportName());
+            routeSourceCountryText.setText(routePoint.getSrcAirportCountry());
+            routeDestIDText.setText(String.valueOf(routePoint.getDstAirportID()));
+            routeDestText.setText(routePoint.getDstAirport());
+            routeDestNameText.setText(routePoint.getDstAirportName());
+            routeDestCountryText.setText(routePoint.getDstAirportCountry());
+            routeCSText.setText(routePoint.getCodeshare());
+            routeStopsText.setText(String.valueOf(routePoint.getStops()));
+            routeEquipText.setText(String.valueOf(routePoint.getEquipment()));
+
+            infoText.setVisible(true);
+            editText.setVisible(false);
+
+            //stage.close();
         } else {
             routeInvalidData.setVisible(true);
         }

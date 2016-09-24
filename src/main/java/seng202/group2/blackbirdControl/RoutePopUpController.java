@@ -9,8 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.RoutePoint;
+import seng202.group2.blackbirdModel.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,6 +141,25 @@ public class RoutePopUpController {
     }
 
     public void commitEdit(){
+        String[] values = getValues();
+        if (Validator.checkRoute(values)) {
+            String[] valueFields = RouteTabController.getFields(values);
+
+            //DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT);
+            String sql = String.format("UPDATE ROUTE SET Airline='%1$s', Airlineid='%2$s', Src='%3$s', Srcid='%4$s'," +
+                            " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s', Equipment=\"%9$s\" WHERE IDnum='%10$s'",
+                    valueFields[0], valueFields[1], valueFields[2], valueFields[3], valueFields[4], valueFields[5],
+                    valueFields[6], valueFields[7], valueFields[8], routeIDText.getText());
+            DataBaseRefactor.performGenericQuery(sql, DataTypes.ROUTEPOINT);
+//            ArrayList<DataPoint> myRouteData = new ArrayList<>();
+//            myRouteData.add(myRoutePoint);
+//            DataBaseRefactor.insertDataPoints(myRouteData);
+            routeTabController.routesFilterButtonPressed();
+
+            stage.close();
+        } else {
+            routeInvalidData.setVisible(true);
+        }
 
 //        String src = routeSrcTextEdit.getText();
 //        String srcID = routeSrcIDTextEdit.getText();
@@ -176,9 +194,7 @@ public class RoutePopUpController {
 //            routeFinishButton.setVisible(false);
 //            routeCancelButton.setVisible(false);
 //
-//            String sql = String.format("UPDATE ROUTE SET Airline='%1$s', Airlineid='%2$s', Src='%3$s', Srcid='%4$s'," +
-//                            " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s', Equipment=\"%9$s\" WHERE IDnum='%10$s'",
-//                    airline, airlineID, src, srcID, dst, dstID, codeShare, stops, equipment, routeIDText.getText());
+
 //
 //
 //
@@ -201,9 +217,28 @@ public class RoutePopUpController {
 //        } else {
 //            routeInvalidData.setVisible(true);
 //        }
-
-
     }
+
+    private String[] getValues() {
+        String myAirline = airlineSelection.getValue().toString();
+        String mySource = sourceSelection.getValue().toString();
+        String myDest = destSelection.getValue().toString();
+        String routeCodeshare = "";
+        String routeStops = routeStopsTextEdit.getText().toString();
+        String routeEquipment = routeEquipmentTextEdit.getText().toString();
+
+        boolean codeshareChecked = codeshareSelection.isSelected();
+        if (codeshareChecked){
+            routeCodeshare = "Y";
+        }
+
+        if(routeStops.isEmpty()) {
+            routeStops = "0";
+        }
+        String[] values = {myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment};
+        return values;
+    }
+
 
     public void cancelEdit(){
         infoText.setVisible(true);

@@ -165,8 +165,6 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="routeStopsTextEdit" promptText="eg 0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <TextField fx:id="routeEquipmentTextEdit" promptText="eg 744 777" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                         <Label text="*Airline Name:" GridPane.halignment="RIGHT">
                            <font>
                               <Font size="15.0" />
@@ -183,6 +181,8 @@
                            </font>
                         </Label>
                         <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <TextField fx:id="routeStopsTextEdit" promptText="eg 0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <TextField fx:id="routeEquipmentTextEdit" promptText="eg 744 777" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>
                     </children>

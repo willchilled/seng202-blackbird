@@ -66,7 +66,7 @@ public class RouteAddingPopUpController {
 
         String[] values = getValues();
         if (Validator.checkRoute(values)) {
-            String[] valueFields = getFields(values);
+            String[] valueFields = RouteTabController.getFields(values);
             DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT);
             ArrayList<DataPoint> myRouteData = new ArrayList<>();
             myRouteData.add(myRoutePoint);
@@ -103,38 +103,7 @@ public class RouteAddingPopUpController {
         return values;
     }
 
-    private String[] getFields(String[] values) {
-        String airline; //index 0 in input file
-        String airlineID;
-        String srcAirport;
-        String srcAirportID;
-        String dstAirport;
-        String dstAirportID;
-        String codeshare;
-        String stops;
-        String equipment;
 
-        String[] airlineFields = RouteTabController.getIataOrIcao(values[0], DataTypes.AIRLINEPOINT);
-        airlineID = airlineFields[0];
-        airline = airlineFields[1];
-
-        String[] sourceFields = RouteTabController.getIataOrIcao(values[1], DataTypes.AIRPORTPOINT);
-        srcAirportID = sourceFields[0];
-        srcAirport = sourceFields[1];
-
-        String[] destFields = RouteTabController.getIataOrIcao(values[2], DataTypes.AIRPORTPOINT);
-        dstAirportID = destFields[0];
-        dstAirport = destFields[1];
-
-        codeshare = values[3];
-        stops = values[4];
-        equipment = values[5];
-
-        String[] newString = {airline, airlineID, srcAirport, srcAirportID,
-                dstAirport, dstAirportID, codeshare, stops, equipment};
-
-        return newString;
-    }
 
 
     public void cancelButtonPressed(){

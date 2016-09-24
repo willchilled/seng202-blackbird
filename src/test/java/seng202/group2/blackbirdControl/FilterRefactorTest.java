@@ -66,9 +66,11 @@ public class FilterRefactorTest extends TestCase {
         ArrayList<DataPoint> dataPoints = FilterRefactor.filterSelections(selectedFields, "", DataTypes.AIRPORTPOINT);
         //System.out.println(dataPoints);
         //System.out.println(dataPoints);
-        AirportPoint testPoint = (AirportPoint) dataPoints.get(0);
-        assertEquals(testPoint.getIncomingRoutes(), 2);//These two tests are to make sure the number of incoming + outgoing routes is correct
-        assertEquals(testPoint.getOutgoingRoutes(), 1); //Might add more of these tests later and also they should really be in a different place
+//        AirportPoint testPoint = (AirportPoint) dataPoints.get(0);
+//        System.out.println(testPoint.toStringWithRoutes());
+//        assertEquals(testPoint.getOutgoingRoutes(), 1); //Might add more of these tests later and also they should really be in a different place
+//        assertEquals(testPoint.getIncomingRoutes(), 2);//These two tests are to make sure the number of incoming + outgoing routes is correct
+
 
         assertEquals(dataPoints.size(), 4);
 
@@ -149,5 +151,143 @@ public class FilterRefactorTest extends TestCase {
         dataPoints = FilterRefactor.filterSelections(selectedFields, "EGO", DataTypes.ROUTEPOINT);
         assertEquals(dataPoints.size(), 4);
     }
+
+    public void testAirportLinkWithRoutes(){
+        DataBaseRefactor.createTables();
+
+        String cwd = System.getProperty("user.dir");
+        String airportsFileString;
+        String routesFileString;
+
+        airportsFileString = cwd + "/JUnitTesting/airportsSmall.txt";
+        routesFileString = cwd + "/JUnitTesting/routeSmall";
+
+        File airportsFile = new File(airportsFileString);
+        File routesFile = new File(routesFileString);
+
+
+        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
+
+        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
+        //ArrayList<Flight>
+
+        DataBaseRefactor.createTables();
+        DataBaseRefactor.insertDataPoints(airportPoint);
+        DataBaseRefactor.insertDataPoints(routePoints);
+
+
+        ArrayList<DataPoint> airportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+
+        for (DataPoint p: airportPoints){
+            AirportPoint myp = (AirportPoint) p;
+            System.out.println(myp.toStringWithRoutes());
+        }
+        AirportPoint currentPoint = (AirportPoint) airportPoints.get(0); //These are hard coded into the files
+        assertEquals(currentPoint.getOutgoingRoutes(), 2);
+        assertEquals(currentPoint.getIncomingRoutes(), 1);
+
+        currentPoint = (AirportPoint) airportPoints.get(1);
+        assertEquals(currentPoint.getOutgoingRoutes(), 0);
+        assertEquals(currentPoint.getIncomingRoutes(), 0);
+
+        currentPoint = (AirportPoint) airportPoints.get(2);
+        assertEquals(currentPoint.getOutgoingRoutes(), 1);
+        assertEquals(currentPoint.getIncomingRoutes(), 2);
+
+
+
+    }
+
+    public void testBenchmarkFilterSpeeds(){
+        String cwd = System.getProperty("user.dir");
+        String airlinesFileString;
+        String airportsFileString;
+        String routesFileString;
+        String flightFileString;
+
+        airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
+        airportsFileString = cwd + "/JUnitTesting/airportsLarge.txt";
+        routesFileString = cwd + "/JUnitTesting/route60000.txt";
+        flightFileString = cwd + "/JUnitTesting/flight.txt";
+
+        File airlinesFile = new File(airlinesFileString);
+        File airportsFile = new File(airportsFileString);
+        File routesFile = new File(routesFileString);
+        File flightFile = new File(flightFileString);
+
+
+        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
+
+        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT);
+        //ArrayList<Flight>
+
+        Flight flight = new Flight(flightPoints);
+        flight.setType(DataTypes.FLIGHT);
+        DataPoint f = flight;
+        ArrayList<DataPoint> myFlight = new ArrayList<>();
+        myFlight.add(f);
+        // System.out.println(flight.getType() + "--------------------------");
+
+        DataBaseRefactor.createTables();
+        DataBaseRefactor.insertDataPoints(airlinePoints);
+
+        DataBaseRefactor.insertDataPoints(myFlight);
+        DataBaseRefactor.insertDataPoints(flightPoints);
+
+        double numTrials = 3;
+        long totalStart1 =0;
+        long totalFinish1 = 0;
+        long totalStart2 =0;
+        long totalFinish2 = 0;
+        for (int i = 0; i < numTrials; i++) {
+            //System.out.println(i);
+            long startTime = System.nanoTime();
+            ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
+            ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
+            long endTime = System.nanoTime();
+
+            totalStart1 += startTime;
+            totalFinish1 += endTime;
+
+
+            startTime = System.nanoTime();
+            DataBaseRefactor.insertDataPoints(airportPoint);
+            DataBaseRefactor.insertDataPoints(routePoints);
+            endTime = System.nanoTime();
+
+            totalStart2 += startTime;
+            totalFinish2 += endTime;
+
+        }
+
+        assertTrue(((totalFinish1 - totalStart1)/1000000000.0)/ numTrials < 3); //Ensuring parsing airports and routes takes under 3 seconds
+        assertTrue(((totalFinish2 - totalStart2)/1000000000.0)/ numTrials < 3); //Adding airports and routes should take less than 3 seconds
+
+
+
+        assertTrue(findTimeTakes(numTrials, DataTypes.ROUTEPOINT) < 3); //Ensuring Filtering routes can be done in under 3 seconds
+        assertTrue(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT) < 3);
+        assertTrue(findTimeTakes(numTrials, DataTypes.AIRLINEPOINT) < 3);
+//        assertTrue(findTimeTakes(numTrials, DataTypes.FLIGHT) < 3);
+
+
+    }
+
+    public double findTimeTakes(double numTrials, DataTypes type){
+        long totalStartTime=0;
+        long totalFinishTime=0;
+
+        for (int i = 0; i < numTrials; i++) {
+
+            long startTime = System.nanoTime();
+            FilterRefactor.getAllPoints(type);
+            long endTime = System.nanoTime();
+            totalStartTime += startTime;
+            totalFinishTime += endTime;
+        }
+
+        return ((totalFinishTime - totalStartTime)/ numTrials)/1000000000.0;
+    }
+
 
 }

@@ -264,7 +264,7 @@ public class RoutePopUpController {
     }
 
     public void enterPressed(KeyEvent ke)
-    {
+    { //TODO test this when edit routes is working properly
         if(ke.getCode() == KeyCode.ENTER)
         {
             commitEdit();

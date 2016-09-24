@@ -58,7 +58,7 @@ public class RoutePoint extends DataPoint {
     public RoutePoint(String[] currentLine) {
         super();
 
-        if (currentLine.length == 9 || currentLine.length == 14){
+        if (currentLine.length == 9 || currentLine.length == 13){
 
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {

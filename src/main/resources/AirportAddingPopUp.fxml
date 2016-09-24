@@ -37,37 +37,36 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ICAO (4)" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Longitude" GridPane.rowIndex="7" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Altitude" GridPane.rowIndex="8" />
-            <TextField fx:id="Name" promptText="Enter Airport Name..." GridPane.columnIndex="1" />
-            <TextField fx:id="City" promptText="Enter City..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="Country" promptText="Enter Country..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="IATA" promptText="Enter IATA/FF..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="ICAO" promptText="Enter ICAO..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="Longitude" promptText="Enter Longitude..." GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="Altitude" promptText="Enter Altitude..." GridPane.columnIndex="1" GridPane.rowIndex="8" />
+             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone" GridPane.rowIndex="9" />
+             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daylight Saving Time" GridPane.rowIndex="10" />
+             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone(Olson Format)" GridPane.rowIndex="11" />
+             <Text fx:id="airportID" strokeType="OUTSIDE" strokeWidth="0.0" text="airportID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="Name" promptText="Enter Airport Name..." GridPane.columnIndex="1" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="City" promptText="Enter City..." GridPane.columnIndex="1" GridPane.rowIndex="2" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="Country" promptText="Enter Country..." GridPane.columnIndex="1" GridPane.rowIndex="3" onKeyPressed="#enterPressed" />
+            <TextField fx:id="IATA" promptText="Enter IATA/FF..." GridPane.columnIndex="1" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="ICAO" promptText="Enter ICAO..." GridPane.columnIndex="1" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="Longitude" promptText="Enter Longitude..." GridPane.columnIndex="1" GridPane.rowIndex="7" onKeyPressed="#enterPressed"/>
+             <TextField fx:id="Latitude" promptText="Enter Latitude..." GridPane.columnIndex="1" GridPane.rowIndex="6" onKeyPressed="#enterPressed"/>
+            <TextField fx:id="Altitude" promptText="Enter Altitude..." GridPane.columnIndex="1" GridPane.rowIndex="8" onKeyPressed="#enterPressed"/>
+             <ComboBox fx:id="tzComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="9" onKeyPressed="#enterPressed"/>
+             <TextField fx:id="tzOlson" promptText="Enter Timzone..." GridPane.columnIndex="1" GridPane.rowIndex="11" onKeyPressed="#enterPressed"/>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Latitude" GridPane.rowIndex="6" />
-            <TextField fx:id="Latitude" promptText="Enter Latitude..." GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone" GridPane.rowIndex="9" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daylight Saving Time" GridPane.rowIndex="10" />
-            <ComboBox fx:id="tzComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
-                  <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time Zone(Olson Format)" GridPane.rowIndex="11" />
-            <TextField fx:id="tzOlson" promptText="Enter Timzone..." GridPane.columnIndex="1" GridPane.rowIndex="11" />
-            <Text fx:id="airportID" strokeType="OUTSIDE" strokeWidth="0.0" text="airportID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Text fx:id="addAirportInvalidText" fill="#eb0707" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-            <Text fx:id="addAirportInvalidText" fill="#fc1313" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
-            <ComboBox fx:id="dstComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <ComboBox fx:id="dstComboBox" prefWidth="200.0" promptText="None" GridPane.columnIndex="1" GridPane.rowIndex="10" onKeyPressed="#enterPressed"/>
+             <Text fx:id="addAirportInvalidText" fill="#eb0707" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
+                 <children>
+                     <Button mnemonicParsing="false" onAction="#cancelButtonPressed" text="Cancel" />
+                     <Button mnemonicParsing="false" onAction="#createButtonPressed" text="Create" GridPane.columnIndex="1" />
+                 </children>
+                 <columnConstraints>
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+             </GridPane>
          </children>
          <BorderPane.margin>
             <Insets />

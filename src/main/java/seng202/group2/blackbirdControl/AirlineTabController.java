@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdControl;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import com.sun.prism.PixelFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -12,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -68,8 +71,8 @@ public class AirlineTabController{
         airlineFilterMenu.setItems(airlineCountryList);
         airlineActiveMenu.setItems(airlineActiveList);
         airlineActiveMenu.setValue(airlineActiveList.get(0));
-    }
 
+        }
 
     public void show(){
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
@@ -245,6 +248,14 @@ public class AirlineTabController{
             e.printStackTrace();
         }
         
+    }
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            airlineFilterButtonPressed();
+        }
     }
 
     public void setMainController(MainController controller) {

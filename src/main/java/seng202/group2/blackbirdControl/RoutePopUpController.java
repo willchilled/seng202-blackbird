@@ -8,6 +8,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -268,6 +270,14 @@ public class RoutePopUpController {
     public boolean validEntries(List<String> attributes){
 
         return true;
+    }
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            commitEdit();
+        }
     }
 
     public void setStage(Stage stage) {

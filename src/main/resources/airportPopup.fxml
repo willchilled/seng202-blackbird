@@ -108,17 +108,17 @@
                                 <Label fx:id="airportTimeZoneText" text="timezone" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
                                 <Label fx:id="airportDstText" text="dst" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
                                 <Label fx:id="airportTzText" text="tz" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="10" />
-                                <TextField fx:id="airportIDTextEdit" promptText="eg 2009" visible="false" GridPane.columnIndex="2" />
-                                <TextField fx:id="airportCityTextEdit" promptText="eg Chirstchurch" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                <TextField fx:id="airportCountryTextEdit" promptText="eg New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                <TextField fx:id="airportIATATextEdit" promptText="eg CHC" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                <TextField fx:id="airportICAOTextEdit" promptText="eg NZCH" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                <TextField fx:id="airportLatTextEdit" promptText="eg -43.489358" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                                <TextField fx:id="airportLongTextEdit" promptText="eg 172.532225" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                                <TextField fx:id="airportAltTextEdit" promptText="eg 123" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                                <TextField fx:id="airportTimeZoneTextEdit" promptText="eg 12" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                                <TextField fx:id="airportDstTextEdit" promptText="eg Z" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                                <TextField fx:id="airportTZTextEdit" promptText="eg Pacific/Auckland" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                                <TextField fx:id="airportIDTextEdit" promptText="eg 2009" visible="false" GridPane.columnIndex="2" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportCityTextEdit" promptText="eg Chirstchurch" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportCountryTextEdit" promptText="eg New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportIATATextEdit" promptText="eg CHC" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportICAOTextEdit" promptText="eg NZCH" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportLatTextEdit" promptText="eg -43.489358" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportLongTextEdit" promptText="eg 172.532225" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportAltTextEdit" promptText="eg 123" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="7" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportTimeZoneTextEdit" promptText="eg 12" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="8" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportDstTextEdit" promptText="eg Z" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="9" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportTZTextEdit" promptText="eg Pacific/Auckland" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="10" onKeyPressed="#enterPressed"/>
                             </children>
                         </GridPane>
                     </children>
@@ -132,7 +132,7 @@
                         <Font size="20.0" />
                     </font>
                 </Label>
-                <TextField fx:id="airportNameTextEdit" layoutX="99.0" layoutY="9.0" promptText="eg Christchurch Intl" visible="false" />
+                <TextField fx:id="airportNameTextEdit" layoutX="99.0" layoutY="9.0" promptText="eg Christchurch Intl" visible="false" onKeyPressed="#enterPressed"/>
             </children>
         </Pane>
         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">

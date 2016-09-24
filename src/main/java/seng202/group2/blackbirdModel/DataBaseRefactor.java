@@ -103,8 +103,9 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 }
                 catch (Exception e){
-                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    System.out.println("Prepared statement failed for: " +  currentPoint);
+                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    //System.out.println("Prepared statement failed for: " +  currentPoint);
+                    //UNCOMMENT THESE OUT WHEN WE DECIDE HOW TO DEAL WITH ERROR CHECKING IN THE DATBASE
                 }
             }
             //.close();
@@ -394,7 +395,7 @@ public class DataBaseRefactor {
                     for (int i = 0; i < width; i++) {
 
                         attributes[i] = rs.getString(i + 1);
-                        // System.out.println(i + " " + attributes[i]);
+                         //System.out.println(i + " " + attributes[i]);
                     }
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
@@ -596,7 +597,7 @@ public class DataBaseRefactor {
      */
     private static String createFlightPointTable(){
         String sql = "CREATE TABLE FLIGHTPOINT" +
-                "(SeqOrder         INTEGER NOT NULL UNIQUE /*gives the sequence of the flight points*/," +
+                "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
                 "LocaleID       VARCHAR(5) NOT NULL, "+
                 "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
                 "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +

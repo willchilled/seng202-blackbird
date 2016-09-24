@@ -62,7 +62,6 @@ public class RoutePoint extends DataPoint {
 
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {
-
                 //this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
                 this.airline = currentLine[0];	//let people name airline whatever they want
                 //System.out.println("I EXPECT AN INT: " +currentLine[0]);

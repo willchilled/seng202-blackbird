@@ -147,9 +147,9 @@
                         <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ComboBox fx:id="destSelection" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" onKeyPressed="#enterPressed"/>
-                        <ComboBox fx:id="sourceSelection" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
-                        <ComboBox fx:id="airlineSelection" prefWidth="150.0" GridPane.columnIndex="2" onKeyPressed="#enterPressed"/>
+                        <ComboBox fx:id="destSelection" onKeyPressed="#enterPressed" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="sourceSelection" onKeyPressed="#enterPressed" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="airlineSelection" onKeyPressed="#enterPressed" prefWidth="150.0" GridPane.columnIndex="2" />
                         <Label text="Code Share:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                            <font>
                               <Font size="15.0" />
@@ -180,9 +180,9 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <CheckBox mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <TextField fx:id="routeStopsTextEdit" promptText="eg 0" GridPane.columnIndex="2" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
-                        <TextField fx:id="routeEquipmentTextEdit" promptText="eg 744 777" GridPane.columnIndex="2" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
+                        <CheckBox fx:id="codeshareSelection" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <TextField fx:id="routeStopsTextEdit" onKeyPressed="#enterPressed" promptText="eg 0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <TextField fx:id="routeEquipmentTextEdit" onKeyPressed="#enterPressed" promptText="eg 744 777" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>
                     </children>

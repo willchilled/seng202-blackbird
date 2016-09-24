@@ -1,26 +1,23 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Filter;
 
 /**
  * Created by emr65 on 20/09/16.
@@ -30,7 +27,7 @@ public class FlightTabController {
     private MainController mainController;
 
     //FLIGHT and FLIGHT POINT tables
-    @FXML private TableView<Flight> flightTable;
+    @FXML private TableView<DataPoint> flightTable;
     @FXML private TableView<DataPoint> flightPointTable;
 
     //FLIGHT Table columns
@@ -46,6 +43,7 @@ public class FlightTabController {
 
     @FXML private ComboBox flightSrcICAOMenu;
     @FXML private ComboBox flightDstICAOMenu;
+    @FXML private TextField flightSearchQuery;
 
     ObservableList<String> flightSrcICAOList = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> flightDstICAOList  = FXCollections.observableArrayList("No values Loaded");
@@ -66,100 +64,128 @@ public class FlightTabController {
     }
 
 
+    /**
+     * Called upon clicking the Add Flight Data option in the menu bar. Adds a specified CSV file of a flight to the
+     * database and then updates the table
+     */
     public void addFlightData() {
-            File f = HelperFunctions.getFile("Add Flight Data");
-            if (f == null) {
-                return;
-            }
-            ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
-            //BBDatabase.addFlighttoDB(myFlightData);
-            DataBaseRefactor.insertDataPoints(myFlightData);
-            ArrayList<DataPoint> flightdata = FilterRefactor.getAllPoints(DataTypes.FLIGHTPOINT);
+        File f = HelperFunctions.getFile("Add Flight Data");
+        if (f == null) {
+            return;
+        }
+        ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
+        DataBaseRefactor.insertDataPoints(myFlightData);
+        ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+
+        updateFlightFields();
+        updateFlightsTable(myFlights);
+        mainController.updateTab(DataTypes.FLIGHT);
+    }
+
+    /**
+     * Updates all flight filter dropdowns with current data
+     */
+    private void updateFlightFields() {
+
+        flightSrcICAOList = populateFlightSrcList();
+        flightSrcICAOMenu.setItems(flightSrcICAOList);
+        flightSrcICAOMenu.setValue(flightSrcICAOList.get(0));
 
 
-            //updateFlightFields();
-            updateFlightsTable(myFlightData);
-            mainController.updateTab(DataTypes.FLIGHT);
+        flightDstICAOList = populateFlightDstList();  //populating from valid data in database
+        flightDstICAOMenu.setItems(flightDstICAOList);
+        flightDstICAOMenu.setValue(flightDstICAOList.get(0));
+    }
+
+    /**
+     * Populates the SrcICAOs dropdown upon adding data.
+     * @return The list of current SrcICAOs in the database for flights
+     */
+    private ObservableList<String> populateFlightSrcList(){
+        ArrayList<String> srcICAOs = FilterRefactor.filterDistinct("SrcICAO", "FLIGHT");
+        ObservableList<String> srcICAOList = FXCollections.observableArrayList(srcICAOs);
+        srcICAOList = HelperFunctions.addNullValue(srcICAOList); //we need to add a null value
+        return srcICAOList;
+    }
+
+    /**
+     * Populates the DstICAO dropdown upon adding data.
+     * @return The list of current DstICAOs in the database for flights
+     */
+    private ObservableList<String> populateFlightDstList(){
+        ArrayList<String> dstICAOs = FilterRefactor.filterDistinct("DstICAO", "FLIGHT");
+        ObservableList<String> dstICAOList = FXCollections.observableArrayList(dstICAOs);
+        dstICAOList = HelperFunctions.addNullValue(dstICAOList); //we need to add a null value
+        return dstICAOList;
     }
 
 
-//================vvvvvvvvvv=============FLIGHT STUFF TO BE IMPLEMENTED=================vvvvvvvvvvvvvv===============//
+    /**
+     * Called upon pressing the 'Filter' button in the flights tab. Grabs all info from the filter selections and sends
+     * it to the Filter class to create a search query to obtain all flight points. Updates the flight table with these
+     * points.
+     */
+    public void flightFilterButtonPressed() {
+        String srcAirport = flightSrcICAOMenu.getValue().toString();
+        String dstAirport = flightDstICAOMenu.getValue().toString();
+        String searchQuery = flightSearchQuery.getText().toString();
 
-    //TODO We need to implement this when we can work out how to make sceneBuilder work!
-//    private void updateFlightFields() {
-//
-//        flightSrcICAOList = populateFlightSrcList();
-//        flightSrcICAOMenu.setItems(flightSrcICAOList);
-//        flightSrcICAOMenu.setValue(flightSrcICAOList.get(0));
-//
-//
-//        flightDstICAOList = populateFlightDstList();  //populating from valid data in database
-//        flightDstICAOMenu.setItems(flightDstICAOList);
-//        flightDstICAOMenu.setValue(flightDstICAOList.get(0));
-//    }
-//
-//    private ObservableList<String> populateFlightSrcList(){
-//        ArrayList<String> srcICAOs = FilterRefactor.filterDistinct("SrcICAO", "FLIGHT");
-//        ObservableList<String> srcICAOList = FXCollections.observableArrayList(srcICAOs);
-//        srcICAOList = HelperFunctions.addNullValue(srcICAOList); //we need to add a null value
-//        return srcICAOList;
-//    }
-//
-//
-//    private ObservableList<String> populateFlightDstList(){
-//        ArrayList<String> dstICAOs = FilterRefactor.filterDistinct("DstICAO", "FLIGHT");
-//        ObservableList<String> dstICAOList = FXCollections.observableArrayList(dstICAOs);
-//        dstICAOList = HelperFunctions.addNullValue(dstICAOList); //we need to add a null value
-//        return dstICAOList;
-//    }
-//
-//    public void flightFilterButtonPressed() {
-//        String srcAirport = flightSrcMenu.getValue().toString();
-//        String dstAirport = flightDstMenu.getValue().toString();
-//        String searchQuery = flightSearchQuery.getText().toString();
-//
-//        ArrayList<String> menusPressed  = new ArrayList<String>();
-//        menusPressed.add(srcAirport);
-//        menusPressed.add(dstAirport);
-//
-//
-//        ArrayList<DataPoint> allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
-//        updateFlightsTable(allPoints);
-//
-//    }
-//
-//    public void flightMakeFlightButtonPressed(ActionEvent actionEvent) {
-//
-//        //Brings up popup to create a flight
-//        try {
-//            Stage adderStage = new Stage();
-//            Parent root;
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightCreatorPopUp.fxml"));
-//            root = loader.load();
-//
-//            //use controller to control it
-//            AirlineAddingPopUpController popUpController = loader.getController();
-//            popUpController.setAdderStage(adderStage);
-//            popUpController.setRoot(root);
-//            popUpController.control();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
+        ArrayList<String> menusPressed  = new ArrayList<String>();
+        menusPressed.add(srcAirport);
+        menusPressed.add(dstAirport);
 
-// ======================^^^^^^^==================FLIGHT STUFF TO BE IMPLEMENTED===============^^^^^^^^^^^============//
+        //Returns selected Flights !NOT FLIGHT POINTS!//
+        ArrayList<DataPoint> filteredFlights = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
 
+        updateFlightsTable(filteredFlights);
 
-    private void updateFlightsTable(ArrayList<DataPoint> points) {
+    }
 
-        Flight myFlight = new Flight(points);
+    /**
+     * Called upon pressing the 'Add Flight' button in Flights. Opens the flight creator
+     * @param actionEvent Mouse Click
+     */
+    public void flightMakeFlightButtonPressed(ActionEvent actionEvent) {
 
+        //Brings up popup to create a flight
+        try {
+            Stage creatorStage = new Stage();
+            Parent root;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightCreatorPopUp.fxml"));
+            root = loader.load();
 
-        flightTable.getItems().addAll(myFlight);
+            //use controller to control it
+            FlightCreatorPopUpController popUpController = loader.getController();
+            //popUpController.setFlightTabController(instance);
+            popUpController.setCreatorStage(creatorStage);
+            popUpController.setRoot(root);
+            popUpController.control();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Updates the filght tables upon being called. Also contains a nested function to update the flightPoint table
+     * upon clicking a row
+     * @param filteredFlights A list of the flights with which to update the tables
+     */
+    private void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
+
+        flightTable.getItems().setAll(filteredFlights);
         flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
         flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
+
+        flightTable.getItems().addListener(new ListChangeListener<DataPoint>() {
+            //This refreshes the current table
+            @Override
+            public void onChanged(Change<? extends DataPoint> c) {
+                flightTable.getColumns().get(0).setVisible(false);
+                flightTable.getColumns().get(0).setVisible(true);
+            }
+        });
 
         flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -167,7 +193,7 @@ public class FlightTabController {
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                     //exportFlightMenuButton.setDisable(false);
 
-                    Flight pressedFlight = flightTable.getSelectionModel().getSelectedItem();
+                    Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
 
                     flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
 
@@ -184,6 +210,9 @@ public class FlightTabController {
     }
 
 
+    /**
+     * Exports the current flightPoint data showing into a CSV file of the users chosing.
+     */
     public void exportFlightData() {
         //Giver user a warning that it will only export the currently selected flight (the one in the flightpoint table)
         //NEED TO LABEL THE FLIGHT TABLES.

@@ -55,6 +55,14 @@ public class FlightPoint extends DataPoint {
                 this.latitude = Float.parseFloat(currentLine[3]);
                 this.longitude = Float.parseFloat(currentLine[4]);
             }
+            //FOR GRABBING OLD FLIGHTPOINTS FROM DATABASE FOR RECREATION
+            if (currentLine.length == 7) {
+                this.localtype = currentLine[2];
+                this.localeID = currentLine[1];
+                this.altitude = Integer.parseInt(currentLine[3]);
+                this.latitude = Float.parseFloat(currentLine[4]);
+                this.longitude = Float.parseFloat(currentLine[5]);
+            }
         }
         catch(NumberFormatException e){
             this.localtype = "I AM INCORRECT";

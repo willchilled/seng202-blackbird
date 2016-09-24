@@ -2,6 +2,10 @@
 
 package seng202.group2.blackbirdModel;
 
+import seng202.group2.blackbirdControl.FilterRefactor;
+
+import java.util.ArrayList;
+
 /**
  * A super class for the data points held in the program
  */
@@ -59,6 +63,13 @@ public class DataPoint {
 
         } else if (type == DataTypes.FLIGHTPOINT) {
             currentPoint = new FlightPoint(dataArray);
+            FlightPoint myFlightPoint = (FlightPoint) currentPoint;
+
+        } else if (type == DataTypes.FLIGHT) {
+            String sql = String.format("SELECT * FROM FLIGHTPOINT WHERE FlightIDNum='%s'", dataArray[0]);
+            ArrayList<DataPoint> flightPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
+            currentPoint = new Flight(flightPoints);
+
         }
         currentPoint.type = type;
         return currentPoint;
@@ -76,6 +87,8 @@ public class DataPoint {
         if (this.getType() == mypoint.getType()) return true;
         else return false;
     }
+
+
 
 
 }

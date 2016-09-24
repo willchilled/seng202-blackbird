@@ -80,6 +80,19 @@ public class RoutePopUpController {
         routeStopsText.setText(String.valueOf(routePoint.getStops()));
         routeEquipText.setText(String.valueOf(routePoint.getEquipment()));
 
+        if(routeCSText.getText() != "") {
+            System.out.println(routeCSText.getText());
+            System.out.println("True");
+            codeshareSelection.setSelected(true);
+        }
+
+        if(routeStopsText.getText() != ""){
+            routeStopsTextEdit.setText(routeStopsText.getText());
+        }
+        if(routeEquipText.getText() != ""){
+            routeEquipmentTextEdit.setText(routeEquipText.getText());
+        }
+
         ArrayList<String> airlineNames = FilterRefactor.filterDistinct("Name", "Airline");
         ObservableList<String> airlineMenu = FXCollections.observableArrayList(airlineNames);
         airlineMenu = HelperFunctions.addNullValue(airlineMenu);

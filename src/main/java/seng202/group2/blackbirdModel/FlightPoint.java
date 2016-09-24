@@ -55,6 +55,7 @@ public class FlightPoint extends DataPoint {
                 this.latitude = Float.parseFloat(currentLine[3]);
                 this.longitude = Float.parseFloat(currentLine[4]);
             }
+
         }
         catch(NumberFormatException e){
             this.localtype = "I AM INCORRECT";

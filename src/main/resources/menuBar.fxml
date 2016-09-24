@@ -31,6 +31,13 @@
                             <MenuItem fx:id="exportAirlineMenuButton" disable="true" mnemonicParsing="false" onAction="#exportAirlineData" text="Airline" />
                         </items>
                     </Menu>
+                    <Menu fx:id="deleteDataMenuButton" mnemonicParsing="false" text="Delete Data">
+                        <items>
+                            <MenuItem fx:id="deleteAirlineMenuButton" mnemonicParsing="false" onAction="#deleteAirlineData" text="Airline" />
+                            <MenuItem fx:id="deleteRouteMenuButton"  mnemonicParsing="false" onAction="#deleteRouteData" text="Route" visible="true" />
+                            <MenuItem fx:id="deleteAirportMenuButton" mnemonicParsing="false" onAction="#deleteAirportData" text="Airport" />
+                        </items>
+                    </Menu>
                 </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

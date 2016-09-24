@@ -1,14 +1,14 @@
 package seng202.group2.blackbirdControl;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.DataTypes;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.channels.FileChannel;
-import java.util.ResourceBundle;
 
 /**
  * Created by emr65 on 20/09/16.
@@ -83,6 +83,7 @@ public class MenuBarController {
      * Makes the export for route data usable
      */
     public void addRouteData() {
+        //TODO change these to use the addDataOptions
         mainController.addRouteData();
         exportRouteMenuButton.setDisable(false); //make export possible
     }
@@ -143,11 +144,61 @@ public class MenuBarController {
     }
 
     /**
-     * Calls Exporter.exportDatabase
+     * Calls Exporter.exportDatabase()
      */
     public void exportDatabase(){
         Exporter.exportDataBase();
     }
+
+    /**
+     * Calls DatabaseRefactor.clearTable()
+     * Drops and recreates the table to remove all data
+     */
+    public void deleteAirlineData(){
+        DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);
+    }
+
+    /**
+     * Calls DatabaseRefactor.clearTable
+     * Drops and recreates the table to remove all data
+     */
+    public void deleteAirportData(){
+        DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);
+    }
+
+    /**
+     * Calls DatabaseRefactor.clearTable
+     * Drops and recreates the table to remove all data
+     */
+    public void deleteRouteData(){
+        DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
+    }
+
+    public void showAddOptions(){
+
+        ButtonType mergeButton = new ButtonType("Merge");
+        ButtonType replaceButton = new ButtonType("Replace");
+
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Testing", mergeButton, replaceButton, ButtonType.CANCEL);
+        alert.setTitle("Replace or Merge New Data");
+        alert.setHeaderText("testing");
+        alert.setContentText("testing");
+        alert.showAndWait().ifPresent(response -> {
+            if(response == mergeButton){
+                //TODO method here
+                System.out.println("merge");
+            }
+            else if(response == replaceButton){
+                //TODO method here
+                System.out.println("replace");
+            }
+        });
+
+    }
+
+
+
 
 
 }

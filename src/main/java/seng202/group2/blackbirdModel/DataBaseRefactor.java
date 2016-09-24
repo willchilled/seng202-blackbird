@@ -2,7 +2,6 @@
 
 package seng202.group2.blackbirdModel;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -661,5 +660,55 @@ public class DataBaseRefactor {
         //System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
     }
 
+    /**
+     * Drops a table, then re-creates it, in order to clear a single table
+     * @param type the enum DataType of the table to be dropped
+     * */
+    public static void clearTable(DataTypes type){
+        try {
+            System.out.println("In the drop table method");
+            Connection currentConnection = makeConnection();
+            Class.forName("org.sqlite.JDBC");
+            currentConnection = DriverManager.getConnection(getDatabaseName());
+            currentConnection.setAutoCommit(false);
+            PreparedStatement preparedStatement = null;
+            PreparedStatement preparedStatement2 = null;
+            String sqlDrop = "";
+            String sqlCreate = "";
+
+            switch(type){
+                case AIRLINEPOINT:
+                    sqlDrop = "DROP TABLE AIRLINE";
+                    sqlCreate = createAirlineTable();
+                    break;
+                case AIRPORTPOINT:
+                    sqlDrop = "DROP TABLE AIRPORT";
+                    sqlCreate = createAirportTable();
+                    break;
+                case ROUTEPOINT:
+                    sqlDrop = "DROP TABLE ROUTE";
+                    sqlCreate = createRouteTable();
+                    break;
+            }
+                try{
+                    preparedStatement = currentConnection.prepareStatement(sqlDrop);
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+
+                    preparedStatement = currentConnection.prepareStatement(sqlCreate);
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+
+                }catch (Exception e){
+                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    System.out.println("Prepared statement failed");
+                }
+            currentConnection.commit();
+            currentConnection.close();
+        } catch (Exception e) {
+            System.out.println("Some error occurred when making connection? :");
+            e.printStackTrace();
+        }
+    }
 }
 

@@ -207,6 +207,9 @@ public class RouteTabController {
         });
     }
 
+    /**
+     * Updates all of the dropdown menus for route filtering.
+     */
     private void updateRoutesDropdowns() {
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
@@ -214,6 +217,9 @@ public class RouteTabController {
         populateRoutesFilterByEquipList();
     }
 
+    /**
+     * Populates route source dropdown
+     */
     private void populateRoutesFilterBySourceList(){
         ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Src", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
@@ -303,6 +309,39 @@ public class RouteTabController {
         }
 
         return returnString;
+    }
+
+    public static String[] getFields(String[] values) {
+        String airline; //index 0 in input file
+        String airlineID;
+        String srcAirport;
+        String srcAirportID;
+        String dstAirport;
+        String dstAirportID;
+        String codeshare;
+        String stops;
+        String equipment;
+
+        String[] airlineFields = RouteTabController.getIataOrIcao(values[0], DataTypes.AIRLINEPOINT);
+        airlineID = airlineFields[0];
+        airline = airlineFields[1];
+
+        String[] sourceFields = RouteTabController.getIataOrIcao(values[1], DataTypes.AIRPORTPOINT);
+        srcAirportID = sourceFields[0];
+        srcAirport = sourceFields[1];
+
+        String[] destFields = RouteTabController.getIataOrIcao(values[2], DataTypes.AIRPORTPOINT);
+        dstAirportID = destFields[0];
+        dstAirport = destFields[1];
+
+        codeshare = values[3];
+        stops = values[4];
+        equipment = values[5];
+
+        String[] newString = {airline, airlineID, srcAirport, srcAirportID,
+                dstAirport, dstAirportID, codeshare, stops, equipment};
+
+        return newString;
     }
 
 

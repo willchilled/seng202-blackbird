@@ -14,11 +14,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Filter;
 
 /**
  * Created by emr65 on 20/09/16.
@@ -72,7 +71,7 @@ public class FlightTabController {
         }
         ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
         DataBaseRefactor.insertDataPoints(myFlightData);
-        ArrayList<DataPoint> myFlights = DataBaseRefactor.performGenericQuery("SELECT * FROM FLIGHT", DataTypes.FLIGHT);
+        ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
 
         updateFlightFields();
         updateFlightsTable(myFlights);
@@ -126,14 +125,15 @@ public class FlightTabController {
 
         //Brings up popup to create a flight
         try {
-            Stage adderStage = new Stage();
+            Stage creatorStage = new Stage();
             Parent root;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightCreatorPopUp.fxml"));
             root = loader.load();
 
             //use controller to control it
-            AirlineAddingPopUpController popUpController = loader.getController();
-            popUpController.setAdderStage(adderStage);
+            FlightCreatorPopUpController popUpController = loader.getController();
+            //popUpController.setFlightTabController(instance);
+            popUpController.setCreatorStage(creatorStage);
             popUpController.setRoot(root);
             popUpController.control();
 

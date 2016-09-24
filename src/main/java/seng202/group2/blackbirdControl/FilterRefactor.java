@@ -27,6 +27,7 @@ public class FilterRefactor {
             case AIRPORTPOINT: sql = getJoinForAirportsTableSql(); break;
             case ROUTEPOINT: sql = getJoinForRoutesTableSql(); break;
             case FLIGHTPOINT: sql = "SELECT * FROM AIRLINE;"; break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case FLIGHT: sql = "SELECT * FROM FLIGHT;"; break;
             default: return null;
         }
         return DataBaseRefactor.performGenericQuery(sql, type);

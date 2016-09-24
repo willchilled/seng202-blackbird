@@ -105,8 +105,9 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 }
                 catch (Exception e){
-                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    System.out.println("Prepared statement failed for: " +  currentPoint);
+                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    //System.out.println("Prepared statement failed for: " +  currentPoint);
+                    //UNCOMMENT THESE OUT WHEN WE DECIDE HOW TO DEAL WITH ERROR CHECKING IN THE DATBASE
                 }
             }
             //.close();

@@ -4,9 +4,8 @@ package seng202.group2.blackbirdControl;
 
 import seng202.group2.blackbirdModel.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import javax.xml.crypto.Data;
+import java.util.*;
 
 /**
  * This class helps us to perform filters on the inputted data by generating sql strings to be performed for
@@ -23,13 +22,68 @@ public class FilterRefactor {
     public static ArrayList<DataPoint> getAllPoints(DataTypes type) {
         String sql;
         switch (type) {
-            case AIRLINEPOINT: sql = "SELECT * FROM AIRLINE;"; break;
-            case AIRPORTPOINT: sql = getJoinForAirportsTableSql(); break;
+            case AIRLINEPOINT: sql = "SELECT * FROM AIRLINE"; break;
+            case AIRPORTPOINT: sql = "SELECT * FROM AIRPORT";
+                //This needs special case because it has to join routes nd airports;
+                ArrayList<DataPoint> myAirportPoints = DataBaseRefactor.performGenericQuery(sql, type);
+                myAirportPoints = linkRoutesandAirports(myAirportPoints);
+                return myAirportPoints;
+
             case ROUTEPOINT: sql = getJoinForRoutesTableSql(); break;
             case FLIGHTPOINT: sql = "SELECT * FROM AIRLINE;"; break;   //FLIGHTS UNABLE TO BE FILTERED ATM
+            case FLIGHT: sql = "SELECT * FROM FLIGHT;"; break;
             default: return null;
         }
         return DataBaseRefactor.performGenericQuery(sql, type);
+    }
+
+    /**
+     * Finds the number of incoming and outoging routes for each airport
+     * @param myAirportPoints The list of airport pints wanting to be linked
+     * @return airport points with number of incoming and outgoing routes set
+     */
+    private static ArrayList<DataPoint> linkRoutesandAirports(ArrayList<DataPoint> myAirportPoints) {
+        ArrayList<DataPoint> linkedAiportPoints = new ArrayList<DataPoint>();
+        ArrayList<DataPoint> myRoutes = getAllPoints(DataTypes.ROUTEPOINT);
+        Map<Integer, Integer> incomingRoutesDict = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> outgoingRoutesDict = new HashMap<Integer, Integer>();
+
+        for (DataPoint myPoint : myAirportPoints) {
+            int key = ((AirportPoint) myPoint).getAirportID();
+            incomingRoutesDict.put(key, 0);
+            outgoingRoutesDict.put(key, 0);
+        }
+
+        for (DataPoint myPoint : myRoutes) {
+
+            try{
+                RoutePoint currentRoutePoint =  (RoutePoint) myPoint;
+                int outGoingRouteKey = currentRoutePoint.getSrcAirportID();
+                int incomingRouteKey = currentRoutePoint.getDstAirportID();
+
+                int currentOutAmount = outgoingRoutesDict.get(outGoingRouteKey);
+                outgoingRoutesDict.put(outGoingRouteKey, currentOutAmount+1);
+
+                int currentIncAmount = incomingRoutesDict.get(incomingRouteKey);
+                incomingRoutesDict.put(incomingRouteKey, currentIncAmount+1);
+
+            }
+            catch (Exception e){
+
+            }
+        }
+
+        for(DataPoint myPoint: myAirportPoints){
+            AirportPoint currentPoint  = (AirportPoint) myPoint;
+            int key = currentPoint.getAirportID();
+            currentPoint.setOutgoingRoutes(outgoingRoutesDict.get(key));
+
+            currentPoint.setIncomingRoutes(incomingRoutesDict.get(key));
+            DataPoint xPoint = currentPoint;
+            linkedAiportPoints.add(xPoint);
+        }
+
+        return linkedAiportPoints;
     }
 
     /**
@@ -46,7 +100,10 @@ public class FilterRefactor {
         String myQuery = "";
         switch (type) {
             case AIRLINEPOINT: myQuery = airlineFilter(menusPressed, searchString); break;
-            case AIRPORTPOINT: myQuery = airportFilter(menusPressed, searchString); break;
+            case AIRPORTPOINT: myQuery = airportFilter(menusPressed, searchString);
+                ArrayList<DataPoint> myAirportPoints = DataBaseRefactor.performGenericQuery(myQuery, type);
+                myAirportPoints = linkRoutesandAirports(myAirportPoints);
+                return myAirportPoints;
             case ROUTEPOINT: myQuery = routeFilter(menusPressed, searchString); break;
             case FLIGHT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
@@ -140,7 +197,7 @@ public class FilterRefactor {
      * @return The sql filter string to be executed.
      */
     private static String airportFilter(ArrayList<String> menusPressed, String searchString) {
-        String sql = getJoinForAirportsTableSql();
+        String sql = "SELECT * FROM AIRPORT ";
 
         boolean allNone = checkEmptyMenus(menusPressed);
         if (!allNone){

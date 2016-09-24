@@ -168,7 +168,7 @@ public class AirlineTabController{
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("View/Edit Data");
+                        stage.setTitle("Detailed Airline Data");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 

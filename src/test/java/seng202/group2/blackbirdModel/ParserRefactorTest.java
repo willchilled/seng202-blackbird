@@ -45,7 +45,7 @@ public class ParserRefactorTest extends TestCase {
 
 
         DataPoint myFlight2 = new Flight(flightPoints);
-        System.out.println(myFlight2.getType());
+        //System.out.println(myFlight2.getType());
 
         //DataPoint myFlight3 = new DataPoint("Flight", flightPoints);
 

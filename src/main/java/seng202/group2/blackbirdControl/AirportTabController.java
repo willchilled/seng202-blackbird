@@ -163,7 +163,7 @@ public class AirportTabController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("Airport");
+                        stage.setTitle("Detailed Airport Information");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 

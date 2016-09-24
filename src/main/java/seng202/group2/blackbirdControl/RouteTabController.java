@@ -192,7 +192,7 @@ public class RouteTabController {
                         popUpController.setUpPopUp();
 
                         stage.setScene(new Scene(root));
-                        stage.setTitle("My Popup test");
+                        stage.setTitle("Detailed Route Information");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
 

@@ -3,13 +3,12 @@ package seng202.group2.blackbirdControl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 //import seng202.group2.blackbirdModel.AirlinePoint;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,6 +25,7 @@ public class RoutePopUpController {
     private RouteTabController routeTabController;
 
     private Stage stage;
+    @FXML private GridPane infoText;
     @FXML private Label routeIDText;
     @FXML private Label routeAirlineText;
     @FXML private Label routeAirlineIDText;
@@ -42,20 +42,23 @@ public class RoutePopUpController {
     @FXML private Label routeEquipText;
     @FXML private Text routeInvalidData;
 
+    @FXML private GridPane editText;
     @FXML private ComboBox airlineSelection;
     @FXML private ComboBox sourceSelection;
     @FXML private ComboBox destSelection;
-
-    @FXML private TextField routeSrcTextEdit;
-    @FXML private TextField routeSrcIDTextEdit;
-    @FXML private TextField routeDstTextEdit;
-    @FXML private TextField routeDstIDTextEdit;
-    @FXML private TextField routeAirlineTextEdit;
-    @FXML private TextField routeAirlineIDTextEdit;
-
-    @FXML private TextField routeCShareTextEdit;
+    @FXML private CheckBox codeshareSelection;
+//    @FXML private TextField routeCShareTextEdit;
     @FXML private TextField routeStopsTextEdit;
     @FXML private TextField routeEquipmentTextEdit;
+
+//    @FXML private TextField routeSrcTextEdit;
+//    @FXML private TextField routeSrcIDTextEdit;
+//    @FXML private TextField routeDstTextEdit;
+//    @FXML private TextField routeDstIDTextEdit;
+//    @FXML private TextField routeAirlineTextEdit;
+//    @FXML private TextField routeAirlineIDTextEdit;
+
+
     @FXML private Button routeEditButton;
     @FXML private Button routeFinishButton;
     @FXML private Button routeCancelButton;
@@ -100,32 +103,14 @@ public class RoutePopUpController {
 
     public void editRoute(){
 
-        routeInvalidData.setVisible(false);
-        routeAirlineIDText.setVisible(false);
-        routeSrcIDText.setVisible(false);
-        routeSrcText.setVisible(false);
-        routeSourceCountryText.setVisible(false);
-        routeDestIDText.setVisible(false);
-        routeDestText.setVisible(false);
-        routeDestCountryText.setVisible(false);
-        airlineSelection.setVisible(true);
-        sourceSelection.setVisible(true);
-        destSelection.setVisible(true);
-//
-//        routeSrcTextEdit.setVisible(true);
-//        routeSrcIDTextEdit.setVisible(true);
-//        routeDstTextEdit.setVisible(true);
-//        routeDstIDTextEdit.setVisible(true);
-//        routeAirlineTextEdit.setVisible(true);
-//        routeAirlineIDTextEdit.setVisible(true);
-        routeCShareTextEdit.setVisible(true);
-        routeStopsTextEdit.setVisible(true);
-        routeEquipmentTextEdit.setVisible(true);
-        refreshMessage.setVisible(true);
-
+        infoText.setVisible(false);
+        editText.setVisible(true);
         routeEditButton.setVisible(false);
         routeFinishButton.setVisible(true);
         routeCancelButton.setVisible(true);
+        //refreshMessage.setVisible(true);
+//
+
 //
 //
 //        if(routeSrcText.getText() != ""){

@@ -64,7 +64,7 @@ public class FilterRefactor {
      */
     private static String flightFilter(ArrayList<String> menusPressed, String searchString) {
 
-        String sql = "SELECT * FROM AIRLINE ";
+        String sql = "SELECT * FROM FLIGHT ";
 
         ArrayList<String> allSelections = new ArrayList<>(Arrays.asList("SrcICAO=\"%s\" AND ", "DstICAO=\"%s\" AND "));
 
@@ -93,6 +93,7 @@ public class FilterRefactor {
         // System.out.println("Performing query:"+ sql);
         //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
         //System.out.println("SIZE: " + allPoints.size());
+        System.out.println("sql flight search; " + sql);
         return sql; //return an arraylist
     }
 

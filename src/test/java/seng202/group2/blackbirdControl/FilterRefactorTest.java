@@ -199,6 +199,7 @@ public class FilterRefactorTest extends TestCase {
     }
 
     public void testBenchmarkFilterSpeeds(){
+        int benchMarkTime = 5;
         String cwd = System.getProperty("user.dir");
         String airlinesFileString;
         String airportsFileString;
@@ -260,14 +261,14 @@ public class FilterRefactorTest extends TestCase {
 
         }
 
-        assertTrue(((totalFinish1 - totalStart1)/1000000000.0)/ numTrials < 3); //Ensuring parsing airports and routes takes under 3 seconds
-        assertTrue(((totalFinish2 - totalStart2)/1000000000.0)/ numTrials < 3); //Adding airports and routes should take less than 3 seconds
+        assertTrue(((totalFinish1 - totalStart1)/1000000000.0)/ numTrials < benchMarkTime); //Ensuring parsing airports and routes takes under 3 seconds
+        assertTrue(((totalFinish2 - totalStart2)/1000000000.0)/ numTrials < benchMarkTime); //Adding airports and routes should take less than 3 seconds
 
 
-
-        assertTrue(findTimeTakes(numTrials, DataTypes.ROUTEPOINT) < 3); //Ensuring Filtering routes can be done in under 3 seconds
-        assertTrue(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT) < 3);
-        assertTrue(findTimeTakes(numTrials, DataTypes.AIRLINEPOINT) < 3);
+        //System.out.println(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT));
+        assertTrue(findTimeTakes(numTrials, DataTypes.ROUTEPOINT) < benchMarkTime); //Ensuring Filtering routes can be done in under 3 seconds
+        assertTrue(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT) < benchMarkTime);
+        assertTrue(findTimeTakes(numTrials, DataTypes.AIRLINEPOINT) < benchMarkTime);
 //        assertTrue(findTimeTakes(numTrials, DataTypes.FLIGHT) < 3);
 
 

@@ -82,7 +82,6 @@ public class DataBaseRefactor {
 
                 switch (dataType){
                     case AIRLINEPOINT:
-                        //System.out.println("Hey");
                         preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
                         break;
 
@@ -93,12 +92,10 @@ public class DataBaseRefactor {
                         preparedStatement = prepareInsertRouteSql(currentPoint, preparedStatement, currentConnection);
                         break;
                     case FLIGHTPOINT:
-
                         //This behaves differently because the data is ArrayList<DataPoint<FlightPoints>>
                         //FlightPoint myFlight = (FlightPoint) myPoints.get(0);
                         preparedStatement = prepareInsertFlightPointStatement(currentPoint, preparedStatement, currentConnection);
                         flightPointCount++;
-                        //System.out.println("AHH");
                         break;
                 }
 
@@ -214,7 +211,7 @@ public class DataBaseRefactor {
     private static PreparedStatement prepareInsertRouteSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
         RoutePoint route = (RoutePoint) currentPoint;
 
-        int idNum = route.getRouteID();
+        //int idNum = route.getRouteID();
         String airline = route.getAirline();
         int airlineID = route.getAirlineID();
         String src = route.getSrcAirport();

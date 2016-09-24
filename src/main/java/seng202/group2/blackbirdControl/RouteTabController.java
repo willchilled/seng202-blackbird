@@ -205,6 +205,9 @@ public class RouteTabController {
         });
     }
 
+    /**
+     * Updates all of the dropdown menus for route filtering.
+     */
     private void updateRoutesDropdowns() {
         populateRoutesFilterBySourceList();
         populateRoutesFilterbyDestList();
@@ -212,6 +215,9 @@ public class RouteTabController {
         populateRoutesFilterByEquipList();
     }
 
+    /**
+     * Populates route source dropdown
+     */
     private void populateRoutesFilterBySourceList(){
         ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Src", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);

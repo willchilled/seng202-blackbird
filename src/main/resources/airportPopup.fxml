@@ -108,17 +108,17 @@
                                 <Label fx:id="airportTimeZoneText" text="timezone" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
                                 <Label fx:id="airportDstText" text="dst" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
                                 <Label fx:id="airportTzText" text="tz" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="10" />
-                                <TextField fx:id="airportIDTextEdit" promptText="eg 2009" visible="false" GridPane.columnIndex="2" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportCityTextEdit" promptText="eg Chirstchurch" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportCountryTextEdit" promptText="eg New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportIATATextEdit" promptText="eg CHC" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportICAOTextEdit" promptText="eg NZCH" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportLatTextEdit" promptText="eg -43.489358" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportLongTextEdit" promptText="eg 172.532225" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportAltTextEdit" promptText="eg 123" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="7" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportTimeZoneTextEdit" promptText="eg 12" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="8" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportDstTextEdit" promptText="eg Z" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="9" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airportTZTextEdit" promptText="eg Pacific/Auckland" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="10" onKeyPressed="#enterPressed"/>
+                                <TextField fx:id="airportIDTextEdit" onKeyPressed="#enterPressed" promptText="eg 2009" visible="false" GridPane.columnIndex="2" />
+                                <TextField fx:id="airportCityTextEdit" onKeyPressed="#enterPressed" promptText="eg Chirstchurch" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                <TextField fx:id="airportCountryTextEdit" onKeyPressed="#enterPressed" promptText="eg New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                <TextField fx:id="airportIATATextEdit" onKeyPressed="#enterPressed" promptText="eg CHC" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                <TextField fx:id="airportICAOTextEdit" onKeyPressed="#enterPressed" promptText="eg NZCH" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                <TextField fx:id="airportLatTextEdit" onKeyPressed="#enterPressed" promptText="eg -43.489358" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                <TextField fx:id="airportLongTextEdit" onKeyPressed="#enterPressed" promptText="eg 172.532225" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                <TextField fx:id="airportAltTextEdit" onKeyPressed="#enterPressed" promptText="eg 123" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                <TextField fx:id="airportTimeZoneTextEdit" onKeyPressed="#enterPressed" promptText="eg 12" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                                <TextField fx:id="airportDstTextEdit" onKeyPressed="#enterPressed" promptText="eg Z" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                                <TextField fx:id="airportTZTextEdit" onKeyPressed="#enterPressed" promptText="eg Pacific/Auckland" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="10" />
                             </children>
                         </GridPane>
                     </children>
@@ -132,12 +132,13 @@
                         <Font size="20.0" />
                     </font>
                 </Label>
-                <TextField fx:id="airportNameTextEdit" layoutX="99.0" layoutY="9.0" promptText="eg Christchurch Intl" visible="false" onKeyPressed="#enterPressed"/>
+                <TextField fx:id="airportNameTextEdit" layoutX="99.0" layoutY="9.0" onKeyPressed="#enterPressed" promptText="eg Christchurch Intl" visible="false" />
             </children>
         </Pane>
         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
             <children>
-                <Button fx:id="airportEditButton" layoutX="183.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirport" text="Edit" />
+                <Button fx:id="airportEditButton" layoutX="149.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirport" text="Edit" />
+            <Button layoutX="204.0" layoutY="12.0" mnemonicParsing="false" onAction="#deleteSingleAirport" text="Delete" />
                 <Button fx:id="airportFinishButton" layoutX="320.0" layoutY="11.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
                 <Button fx:id="airportCancelButton" layoutX="28.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
                 <Text fx:id="airportInvalidDataText" fill="#d30909" layoutX="108.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BAD DATA! TRY AGAIN." visible="false" />

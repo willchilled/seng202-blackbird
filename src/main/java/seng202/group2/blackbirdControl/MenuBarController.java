@@ -50,7 +50,7 @@ public class MenuBarController {
      */
     public void loadDb(){
         //get their file
-        File theirDB = HelperFunctions.getFile("Choose a Database");
+        File theirDB = HelperFunctions.getFile("Choose a Database", false);
         if (theirDB== null) {
             System.out.println("No File was loaded");
             return;

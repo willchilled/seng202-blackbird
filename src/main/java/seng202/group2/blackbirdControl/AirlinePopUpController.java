@@ -1,9 +1,7 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -11,6 +9,8 @@ import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
 import seng202.group2.blackbirdModel.DataTypes;
+
+import java.util.Optional;
 
 public class AirlinePopUpController {
 
@@ -168,21 +168,25 @@ public class AirlinePopUpController {
 
     }
 
-    public void delete(){
-        System.out.println("delete");
-        //create sql, send it to database
-        //Want an alert to say "are you sure?"
-        //Want this for all of them though... how to do this?
+    /**
+     * Deletes a single airline point. Asks user for confirmation before deleting.
+     */
+    public void deleteSingleAirline(){
         String sql = "";
         int id = airlinePoint.getAirlineID();
         sql = String.format("DELETE FROM AIRLINE WHERE ID = %s", id);
-        System.out.println(sql);
-        DataBaseRefactor.editDataEntry(sql);
-        airlineTabController.airlineFilterButtonPressed();
-        stage.close();
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Entry");
+        alert.setContentText("Are you sure you want to delete?");
 
-        //TODO delete single airline.
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+            DataBaseRefactor.editDataEntry(sql);
+            airlineTabController.airlineFilterButtonPressed();
+            stage.close();
+        }
     }
 
     public void setAirlineTabController(AirlineTabController controller) {

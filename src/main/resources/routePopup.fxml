@@ -191,10 +191,11 @@
         </Pane>
         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
             <children>
-                <Button fx:id="routeEditButton" alignment="CENTER" layoutX="178.0" layoutY="38.0" mnemonicParsing="false" onAction="#editRoute" text="Edit" />
+                <Button fx:id="routeEditButton" alignment="CENTER" layoutX="149.0" layoutY="44.0" mnemonicParsing="false" onAction="#editRoute" text="Edit" />
                 <Button fx:id="routeFinishButton" layoutX="300.0" layoutY="38.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
                 <Button fx:id="routeCancelButton" layoutX="45.0" layoutY="38.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
                 <Text fx:id="routeInvalidData" fill="#ee1111" layoutX="130.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Missing required field" visible="false" />
+            <Button layoutX="209.0" layoutY="44.0" mnemonicParsing="false" onAction="#deleteSingleRoute" text="Delete" />
             </children>
         </Pane>
     </children>

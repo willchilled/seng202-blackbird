@@ -19,15 +19,7 @@ public class Exporter {
 
     public static void exportData(ArrayList<DataPoint> points){
 
-        JFileChooser chooser = new JFileChooser();
-        JPanel mainPanel = new JPanel();
-        chooser.setDialogTitle("Export Data as Text File");
-        int userChoice = chooser.showSaveDialog(mainPanel);
-
-        if (userChoice == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = chooser.getSelectedFile();
-            System.out.println(fileToSave);
-
+        File fileToSave = HelperFunctions.getFile("Save File", true);
 
             try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(fileToSave), "utf-8"))) {
@@ -47,9 +39,6 @@ public class Exporter {
             }
 
         }
-
-
-    }
 
     /**
      * A method to save the database under a filename

@@ -82,7 +82,7 @@ public class AirlineTabController{
 
         //Adds data into DataBase thus filtering it against database constraints, then pulling out remaining "good"
         // data to populate the GUI.
-        File f = HelperFunctions.getFile("Add Airline Data");
+        File f = HelperFunctions.getFile("Add Airline Data", false);
         if (f == null) {
             return;
         }
@@ -264,8 +264,4 @@ public class AirlineTabController{
         Exporter.exportData(myPoints);
     }
 
-    public void deleteSingleAirline(){
-        String sql = "";
-        DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
-    }
 }

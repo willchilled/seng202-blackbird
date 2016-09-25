@@ -80,16 +80,14 @@ public class RoutePopUpController {
         routeStopsText.setText(String.valueOf(routePoint.getStops()));
         routeEquipText.setText(String.valueOf(routePoint.getEquipment()));
 
-        if(routeCSText.getText() != "") {
-            System.out.println(routeCSText.getText());
-            System.out.println("True");
+        if(!routeCSText.getText().isEmpty()) {
             codeshareSelection.setSelected(true);
         }
 
-        if(routeStopsText.getText() != ""){
+        if(!routeStopsText.getText().isEmpty()){
             routeStopsTextEdit.setText(routeStopsText.getText());
         }
-        if(routeEquipText.getText() != ""){
+        if(!routeEquipText.getText().isEmpty()){
             routeEquipmentTextEdit.setText(routeEquipText.getText());
         }
 
@@ -172,10 +170,6 @@ public class RoutePopUpController {
         routeEditButton.setVisible(false);
         routeFinishButton.setVisible(true);
         routeCancelButton.setVisible(true);
-        //refreshMessage.setVisible(true);
-//
-
-
     }
 
     public void commitEdit(){
@@ -190,92 +184,29 @@ public class RoutePopUpController {
                     valueFields[0], valueFields[1], valueFields[2], valueFields[3], valueFields[4], valueFields[5],
                     valueFields[6], valueFields[7], valueFields[8], routeIDText.getText());
             System.out.println(sql);
-            DataBaseRefactor.performGenericQuery(sql, DataTypes.ROUTEPOINT);
-//            ArrayList<DataPoint> myRouteData = new ArrayList<>();
-//            myRouteData.add(myRoutePoint);
-//            DataBaseRefactor.insertDataPoints(myRouteData);
+            DataBaseRefactor.editDataEntry(sql);
             routeTabController.routesFilterButtonPressed();
 
+            String sql1 = "SELECT * FROM ROUTE WHERE IDnum='" + routeIDText.getText() + "'";
+            System.out.println(sql1);
+            ArrayList<DataPoint> myRoute = DataBaseRefactor.performGenericQuery(sql1, DataTypes.ROUTEPOINT);
+            System.out.println(myRoute.get(0));
+            RoutePoint myEditedRoute = (RoutePoint) myRoute.get(0);
+            System.out.println(myEditedRoute);
 
-            routeIDText.setText(String.valueOf(routePoint.getRouteID()));
-            routeAirlineText.setText(routePoint.getAirline());
-            routeAirlineIDText.setText(String.valueOf(routePoint.getAirlineID()));
-            routeSrcIDText.setText(String.valueOf(routePoint.getSrcAirportID()));
-            routeSrcText.setText(routePoint.getSrcAirport());
-            routeSourceNameText.setText(routePoint.getSrcAirportName());
-            routeSourceCountryText.setText(routePoint.getSrcAirportCountry());
-            routeDestIDText.setText(String.valueOf(routePoint.getDstAirportID()));
-            routeDestText.setText(routePoint.getDstAirport());
-            routeDestNameText.setText(routePoint.getDstAirportName());
-            routeDestCountryText.setText(routePoint.getDstAirportCountry());
-            routeCSText.setText(routePoint.getCodeshare());
-            routeStopsText.setText(String.valueOf(routePoint.getStops()));
-            routeEquipText.setText(String.valueOf(routePoint.getEquipment()));
+            setRoutePoint(myEditedRoute);
 
             infoText.setVisible(true);
             editText.setVisible(false);
 
-            //stage.close();
+            routeEditButton.setVisible(true);
+            routeFinishButton.setVisible(false);
+            routeCancelButton.setVisible(false);
+
+            stage.close();
         } else {
             routeInvalidData.setVisible(true);
         }
-
-//        String src = routeSrcTextEdit.getText();
-//        String srcID = routeSrcIDTextEdit.getText();
-//        String dst = routeDstTextEdit.getText();
-//        String dstID = routeDstIDTextEdit.getText();
-//        String airline = routeAirlineTextEdit.getText();
-//        String airlineID = routeAirlineIDTextEdit.getText();
-//        String codeShare = routeCShareTextEdit.getText();
-//        String stops = routeStopsTextEdit.getText();
-//        String equipment = routeEquipmentTextEdit.getText();
-//
-//
-//        List<String> attributes = Arrays.asList(src, srcID, dst, dstID, airline, airlineID, codeShare, stops, equipment);
-//
-//        if(validEntries(attributes)){
-//            routeIDText.setVisible(true);
-//
-//            routeSrcTextEdit.setVisible(false);
-//            routeSrcIDTextEdit.setVisible(false);
-//            routeDstTextEdit.setVisible(false);
-//            routeDstIDTextEdit.setVisible(false);
-//            routeAirlineTextEdit.setVisible(false);
-//            routeAirlineIDTextEdit.setVisible(false);
-//            routeCShareTextEdit.setVisible(false);
-//            routeStopsTextEdit.setVisible(false);
-//            routeEquipmentTextEdit.setVisible(false);
-//            routeInvalidData.setVisible(false);
-//            refreshMessage.setVisible(false);
-//
-//
-//            routeEditButton.setVisible(true);
-//            routeFinishButton.setVisible(false);
-//            routeCancelButton.setVisible(false);
-//
-
-//
-//
-//
-//            routeSrcText.setText(routeSrcTextEdit.getText());
-//            routeSrcIDText.setText(routeSrcIDTextEdit.getText());
-//            routeDestText.setText(routeDstTextEdit.getText());
-//            routeDestIDText.setText(routeDstIDTextEdit.getText());
-//            routeAirlineText.setText(routeAirlineTextEdit.getText());
-//            routeAirlineIDText.setText(routeAirlineIDTextEdit.getText());
-//            routeCSText.setText(routeCShareTextEdit.getText());
-//            routeStopsText.setText(routeStopsTextEdit.getText());
-//            routeEquipText.setText(routeEquipmentTextEdit.getText());
-//
-//            System.out.println("Performing query: " + sql);
-//            //TODO route editing database call
-//
-//            routeTabController.routesFilterButtonPressed();
-//            stage.close();
-//
-//        } else {
-//            routeInvalidData.setVisible(true);
-//        }
     }
 
     private String[] getValues() {
@@ -306,11 +237,6 @@ public class RoutePopUpController {
         routeEditButton.setVisible(true);
         routeFinishButton.setVisible(false);
         routeCancelButton.setVisible(false);
-        //refreshMessage.setVisible(false);
-//        routeEditButton.setVisible(true);
-//        routeFinishButton.setVisible(false);
-//        routeCancelButton.setVisible(false);
-//        refreshMessage.setVisible(false);
     }
 
     //TODO fix this method here to check values properly

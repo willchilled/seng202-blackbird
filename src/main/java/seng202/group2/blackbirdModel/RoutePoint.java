@@ -58,31 +58,46 @@ public class RoutePoint extends DataPoint {
     public RoutePoint(String[] currentLine) {
         super();
 
-        if (currentLine.length == 9 || currentLine.length == 13){
+//        if (currentLine.length == 9 || currentLine.length == 14){
 
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {
-                //this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
-                this.airline = currentLine[0];	//let people name airline whatever they want
-                //System.out.println("I EXPECT AN INT: " +currentLine[0]);
-                //if (currentLine)
-                this.airlineID = Integer.parseInt(currentLine[1]);
-                // System.out.println("");
-                this.srcAirport= currentLine[2];
-                this.srcAirportID = Integer.parseInt(currentLine[3]);
-                this.dstAirport = currentLine[4];
-                this.dstAirportID = Integer.parseInt(currentLine[5]);
+                if (currentLine.length == 9) {
+                    //this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
+                    this.airline = currentLine[0];    //let people name airline whatever they want
+                    //System.out.println("I EXPECT AN INT: " +currentLine[0]);
+                    //if (currentLine)
+                    this.airlineID = Integer.parseInt(currentLine[1]);
+                    // System.out.println("");
+                    this.srcAirport = currentLine[2];
+                    this.srcAirportID = Integer.parseInt(currentLine[3]);
+                    this.dstAirport = currentLine[4];
+                    this.dstAirportID = Integer.parseInt(currentLine[5]);
 
-                this.codeshare = currentLine[6];    //should not be null, handle by parser later
-                this.stops = Integer.parseInt(currentLine[7]);
-                this.equipment = currentLine[8];
-                //
+                    this.codeshare = currentLine[6];    //should not be null, handle by parser later
+                    this.stops = Integer.parseInt(currentLine[7]);
+                    this.equipment = currentLine[8];
+                } else if (currentLine.length == 10 || currentLine.length == 14) {
+                    this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
+                    this.airline = currentLine[1];    //let people name airline whatever they want
+                    //System.out.println("I EXPECT AN INT: " +currentLine[0]);
+                    //if (currentLine)
+                    this.airlineID = Integer.parseInt(currentLine[2]);
+                    // System.out.println("");
+                    this.srcAirport = currentLine[3];
+                    this.srcAirportID = Integer.parseInt(currentLine[4]);
+                    this.dstAirport = currentLine[5];
+                    this.dstAirportID = Integer.parseInt(currentLine[6]);
 
-                if (currentLine.length == 13){
-                    this.srcAirportName = currentLine[9];
-                    this.srcAirportCountry = currentLine[10];
-                    this.dstAirportName = currentLine[11];
-                    this.dstAirportCountry = currentLine[12];
+                    this.codeshare = currentLine[7];    //should not be null, handle by parser later
+                    this.stops = Integer.parseInt(currentLine[8]);
+                    this.equipment = currentLine[9];
+                    if (currentLine.length == 14) {
+                        this.srcAirportName = currentLine[10];
+                        this.srcAirportCountry = currentLine[11];
+                        this.dstAirportName = currentLine[12];
+                        this.dstAirportCountry = currentLine[13];
+                    }
                 }
 
                 //System.out.println("here");
@@ -95,7 +110,7 @@ public class RoutePoint extends DataPoint {
                 this.correctEntry = 1;
             }
 
-        }
+//        }
 
     }
 

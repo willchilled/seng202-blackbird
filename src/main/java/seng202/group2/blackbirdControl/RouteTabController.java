@@ -120,6 +120,7 @@ public class RouteTabController {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
             routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
+        updateRoutesDropdowns();
         updateRoutesTable(routePoints);
     }
 
@@ -180,14 +181,14 @@ public class RouteTabController {
             public void handle(MouseEvent event){
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                     RoutePoint myPoint = (RoutePoint) routeTable.getSelectionModel().getSelectedItem();
-                    Stage stage;
+                    Stage stage = new Stage();
                     Parent root;
-                    stage = new Stage();
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/routePopup.fxml"));
                         root = loader.load();
                         RoutePopUpController popUpController = loader.getController();
                         popUpController.setRouteTabController(instance);
+                        popUpController.setStage(stage);
                         popUpController.setRoutePoint(myPoint);
                         popUpController.setUpPopUp();
 
@@ -286,6 +287,7 @@ public class RouteTabController {
             } else {
                 System.err.println("Airline missing IATA and ICAO");
                 //TODO What should be done here?
+                returnString[1] = "";
             }
         }
 
@@ -305,9 +307,9 @@ public class RouteTabController {
             } else {
                 System.err.println("Source Airport missing IATA and ICAO");
                 //TODO What should be done here?
+                returnString[1] = "";
             }
         }
-
         return returnString;
     }
 

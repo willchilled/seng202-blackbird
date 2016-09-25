@@ -192,6 +192,7 @@ public class AirportTabController {
             filteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
         }
 
+        updateAirportFields();
         updateAirportsTable(filteredPoints);
     }
 

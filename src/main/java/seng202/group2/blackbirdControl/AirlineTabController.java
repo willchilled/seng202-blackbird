@@ -32,7 +32,6 @@ public class AirlineTabController{
     private MainController mainController;
     AirlineTabController instance;
 
-
     //Airline Table
     @FXML private TableView<DataPoint> airlineTable;
 
@@ -187,9 +186,6 @@ public class AirlineTabController{
         });
     }
 
-
-
-
     public void airlineFilterButtonPressed() {
         String countrySelection = airlineFilterMenu.getValue().toString();
         String activeSelection = airlineActiveMenu.getValue().toString();
@@ -228,7 +224,6 @@ public class AirlineTabController{
 
     }
 
-
     public void addSingleAirline(ActionEvent actionEvent) {
         //Brings up popup to insert airline values
         try {
@@ -265,5 +260,10 @@ public class AirlineTabController{
     public void exportAirlineData() {
         ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(airlineTable.getItems());
         Exporter.exportData(myPoints);
+    }
+
+    public void deleteSingleAirline(){
+        String sql = "";
+        DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
     }
 }

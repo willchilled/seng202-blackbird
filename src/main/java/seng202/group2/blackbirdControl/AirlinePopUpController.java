@@ -165,6 +165,10 @@ public class AirlinePopUpController {
 
     }
 
+    public void delete(){
+        //TODO delete single airline.
+    }
+
     public void setAirlineTabController(AirlineTabController controller) {
         this.airlineTabController = controller;
     }

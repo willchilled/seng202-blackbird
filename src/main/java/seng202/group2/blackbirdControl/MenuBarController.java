@@ -49,7 +49,7 @@ public class MenuBarController {
      * A method to load a previous database file
      */
     public void loadDb(){
-        //get thier file
+        //get their file
         File theirDB = HelperFunctions.getFile("Choose a Database");
         if (theirDB== null) {
             System.out.println("No File was loaded");
@@ -83,8 +83,7 @@ public class MenuBarController {
      * Makes the export for route data usable
      */
     public void addRouteData() {
-        //TODO change these to use the addDataOptions
-        mainController.addRouteData();
+        showAddOptions(DataTypes.ROUTEPOINT);
         exportRouteMenuButton.setDisable(false); //make export possible
     }
 
@@ -102,7 +101,7 @@ public class MenuBarController {
      * Makes the export for airline data usable
      */
     public void addAirlineData() {
-        mainController.addAirlineData();
+        showAddOptions(DataTypes.AIRLINEPOINT);
         exportAirlineMenuButton.setDisable(false); //make export possible
     }
 
@@ -111,7 +110,7 @@ public class MenuBarController {
      * Makes the export for airport data usable
      */
     public void addAirportData() {
-        mainController.addAirportData();
+        showAddOptions(DataTypes.AIRPORTPOINT);
         exportAirportMenuButton.setDisable(false); //make export possible
     }
 
@@ -174,24 +173,37 @@ public class MenuBarController {
         DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
     }
 
-    public void showAddOptions(){
+
+    /**
+     * Shows alert that allows user to choose to either replace or merge when adding a new data file
+     * Calls mainController.addXXXData for each datatype, and DataBaseRefactor.clearTable when user chooses to replace
+     * @param type
+     */
+    public void showAddOptions(DataTypes type){
 
         ButtonType mergeButton = new ButtonType("Merge");
         ButtonType replaceButton = new ButtonType("Replace");
 
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Testing", mergeButton, replaceButton, ButtonType.CANCEL);
         alert.setTitle("Replace or Merge New Data");
-        alert.setHeaderText("testing");
-        alert.setContentText("testing");
+        alert.setHeaderText("Would you like to merge or replace?");
+        alert.setContentText("Warning: replace deletes existing data in the table");
         alert.showAndWait().ifPresent(response -> {
-            if(response == mergeButton){
-                //TODO method here
-                System.out.println("merge");
-            }
-            else if(response == replaceButton){
-                //TODO method here
-                System.out.println("replace");
+            if(response == mergeButton || response == replaceButton){
+                if(response == replaceButton){
+                    DataBaseRefactor.clearTable(type);
+                }
+                switch(type){
+                    case AIRLINEPOINT:
+                        mainController.addAirlineData();
+                        break;
+                    case ROUTEPOINT:
+                        mainController.addRouteData();
+                        break;
+                    case AIRPORTPOINT:
+                        mainController.addAirportData();
+                        break;
+                }
             }
         });
 

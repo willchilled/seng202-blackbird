@@ -19,9 +19,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
 
-<TabPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <tabs>
-   <Tab text="Errors" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+   <Tab text="Errors" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.ErrorTabController">
        <content>
            <GridPane prefHeight="959.0" prefWidth="1304.0">
                <columnConstraints>
@@ -64,5 +63,3 @@
            </GridPane>
        </content>
    </Tab>
-   </tabs>
-</TabPane>

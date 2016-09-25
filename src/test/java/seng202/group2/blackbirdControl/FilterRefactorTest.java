@@ -150,6 +150,17 @@ public class FilterRefactorTest extends TestCase {
         selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "CR2"));
         dataPoints = FilterRefactor.filterSelections(selectedFields, "EGO", DataTypes.ROUTEPOINT);
         assertEquals(dataPoints.size(), 4);
+
+
+        selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "None"));
+        dataPoints = FilterRefactor.filterSelections(selectedFields, "Narsarsuaq", DataTypes.ROUTEPOINT);
+        assertEquals(dataPoints.size(), 2);
+
+
+
+
+
+
     }
 
     public void testAirportLinkWithRoutes(){

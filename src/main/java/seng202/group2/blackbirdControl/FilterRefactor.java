@@ -104,12 +104,46 @@ public class FilterRefactor {
                 ArrayList<DataPoint> myAirportPoints = DataBaseRefactor.performGenericQuery(myQuery, type);
                 myAirportPoints = linkRoutesandAirports(myAirportPoints);
                 return myAirportPoints;
-            case ROUTEPOINT: myQuery = routeFilter(menusPressed, searchString); break;
+            case ROUTEPOINT: myQuery = routeFilter(menusPressed, searchString); //a special case because we want to filter by selections not in the databaase
+                            ArrayList<DataPoint> myRoutePoints = DataBaseRefactor.performGenericQuery(myQuery, type);
+                            //myRoutePoints = refineRoutesQuery(myRoutePoints, searchString);
+                            return myRoutePoints;
+
+                //break;
             case FLIGHT: myQuery = flightFilter(menusPressed, searchString); break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             default: return null;
         }
         filtered =  DataBaseRefactor.performGenericQuery(myQuery, type);
         return filtered;
+    }
+
+    /**
+     * Filters a list of route points for a search string
+     * @param myRoutePoints list of route points wanting to be filtered
+     * @param searchString the string that we want to match
+     * @return a filtered array list of points
+     */
+    private static ArrayList<DataPoint> refineRoutesQuery(ArrayList<DataPoint> myRoutePoints, String searchString) {
+        System.out.println(searchString + "search string");
+        if (searchString.length() > 1) {
+            ArrayList<DataPoint> refinedPoints = new ArrayList<DataPoint>();
+            for (DataPoint currentPoint : myRoutePoints) {
+                RoutePoint currentRoutePoint = (RoutePoint) currentPoint;
+                System.out.println(currentRoutePoint.toStringWithAirports() + "----" + searchString);
+                ArrayList<String> srcAndDstList = new ArrayList<String>(Arrays.asList(currentRoutePoint.getSrcAirportName(), currentRoutePoint.getSrcAirportCountry(),
+                        currentRoutePoint.getDstAirportName(), currentRoutePoint.getDstAirportCountry()));
+
+                if (srcAndDstList.contains(searchString)) {
+                    DataPoint pointToAdd = currentRoutePoint;
+                    refinedPoints.add(pointToAdd);
+                }
+            }
+            return refinedPoints;
+        }
+        else{
+            return myRoutePoints;
+        }
+
     }
 
 
@@ -177,7 +211,9 @@ public class FilterRefactor {
         if (searchString.length() >0){
             String searchStatement = "(IDnum=\"%1$s\" OR IDnum=\"%1$s\" OR AirlineID=\"%1$s\""
                     + "OR Src=\"%1$s\" OR SrcID=\"%1$s\" OR Dst=\"%1$s\" OR Dstid=\"%1$s\""
-                    + "OR Codeshare=\"%1$s\" OR Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\" );";
+                    + "OR Codeshare=\"%1$s\" OR Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\"" +
+                    " or srcname LIKE \"%%%1$s%%\" or srccountry LIKE  \"%%%1$s%%\" " +
+                    " or dstname LIKE \"%%%1$s%%\" or dstcountry LIKE \"%%%1$s%%\" );";
             search = String.format(searchStatement, searchString);
             if(allNone){
                 sql += " WHERE ";

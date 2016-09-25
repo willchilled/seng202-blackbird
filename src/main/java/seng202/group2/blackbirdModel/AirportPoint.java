@@ -275,5 +275,14 @@ public class AirportPoint extends DataPoint {
     public void setOutgoingRoutes(int outgoingRoutes) {
         this.outgoingRoutes = outgoingRoutes;
     }
+
+    //@Override
+    public int compareTo(AirportPoint another) {
+        if (this.getIncomingRoutes() + this.getOutgoingRoutes() <another.getIncomingRoutes() + another.getOutgoingRoutes()){
+            return -1;
+        }else{
+            return 1;
+        }
+    }
 }
 

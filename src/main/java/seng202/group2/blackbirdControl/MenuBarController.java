@@ -198,31 +198,27 @@ public class MenuBarController {
                     if (response == replaceButton) {
                         DataBaseRefactor.clearTable(type);
                     }
-                    switch (type) {
-                        case AIRLINEPOINT:
-                            mainController.addAirlineData();
-                            break;
-                        case ROUTEPOINT:
-                            mainController.addRouteData();
-                            break;
-                        case AIRPORTPOINT:
-                            mainController.addAirportData();
-                            break;
-                    }
+                    AddDataToController(type);
+
                 }
             });
         } else {
-            switch (type) {
-                case AIRLINEPOINT:
-                    mainController.addAirlineData();
-                    break;
-                case ROUTEPOINT:
-                    mainController.addRouteData();
-                    break;
-                case AIRPORTPOINT:
-                    mainController.addAirportData();
-                    break;
+                AddDataToController(type);
             }
+    }
+
+
+    private void AddDataToController(DataTypes type) {
+        switch (type) {
+            case AIRLINEPOINT:
+                mainController.addAirlineData();
+                break;
+            case ROUTEPOINT:
+                mainController.addRouteData();
+                break;
+            case AIRPORTPOINT:
+                mainController.addAirportData();
+                break;
         }
     }
 

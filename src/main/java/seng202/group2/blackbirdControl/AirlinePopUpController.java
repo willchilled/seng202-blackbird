@@ -7,14 +7,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.DataTypes;
 
 public class AirlinePopUpController {
 
     private AirlinePoint airlinePoint;
 
     private AirlineTabController airlineTabController;
+    private Stage stage;
 
     @FXML private Label nameText;
     @FXML private Label idText;
@@ -165,6 +168,23 @@ public class AirlinePopUpController {
 
     }
 
+    public void delete(){
+        System.out.println("delete");
+        //create sql, send it to database
+        //Want an alert to say "are you sure?"
+        //Want this for all of them though... how to do this?
+        String sql = "";
+        int id = airlinePoint.getAirlineID();
+        sql = String.format("DELETE FROM AIRLINE WHERE ID = %s", id);
+        System.out.println(sql);
+        DataBaseRefactor.editDataEntry(sql);
+        airlineTabController.airlineFilterButtonPressed();
+        stage.close();
+
+
+        //TODO delete single airline.
+    }
+
     public void setAirlineTabController(AirlineTabController controller) {
         this.airlineTabController = controller;
     }
@@ -175,6 +195,10 @@ public class AirlinePopUpController {
         {
             commitEdit();
         }
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
 }

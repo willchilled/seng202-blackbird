@@ -97,9 +97,6 @@ public class AirportTabController {
     }
 
     private void updateAirportFields() {
-
-
-
         airportCountryList = populateAirportCountryList();  //populating from valid data in database
         //System.out.println(airportCountryList);
         airportFilterMenu.setItems(airportCountryList);
@@ -180,7 +177,6 @@ public class AirportTabController {
     }
 
     public void airportFilterButtonPressed() {
-
         //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();
         String searchQuery = airportSearchQuery.getText();

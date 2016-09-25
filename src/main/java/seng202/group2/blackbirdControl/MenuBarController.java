@@ -1,14 +1,14 @@
 package seng202.group2.blackbirdControl;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.DataTypes;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.channels.FileChannel;
-import java.util.ResourceBundle;
 
 /**
  * Created by emr65 on 20/09/16.
@@ -48,7 +48,7 @@ public class MenuBarController {
      * A method to load a previous database file and correct it
      */
     public void loadDb(){
-        //get thier file
+        //get their file
         File theirDB = HelperFunctions.getFile("Choose a Database");
         if (theirDB== null) {
             System.out.println("No File was loaded");
@@ -83,7 +83,7 @@ public class MenuBarController {
      * Makes the export for route data usable
      */
     public void addRouteData() {
-        mainController.addRouteData();
+        showAddOptions(DataTypes.ROUTEPOINT);
         exportRouteMenuButton.setDisable(false); //make export possible
     }
 
@@ -101,7 +101,7 @@ public class MenuBarController {
      * Makes the export for airline data usable
      */
     public void addAirlineData() {
-        mainController.addAirlineData();
+        showAddOptions(DataTypes.AIRLINEPOINT);
         exportAirlineMenuButton.setDisable(false); //make export possible
     }
 
@@ -110,7 +110,7 @@ public class MenuBarController {
      * Makes the export for airport data usable
      */
     public void addAirportData() {
-        mainController.addAirportData();
+        showAddOptions(DataTypes.AIRPORTPOINT);
         exportAirportMenuButton.setDisable(false); //make export possible
     }
 
@@ -143,10 +143,85 @@ public class MenuBarController {
     }
 
     /**
-     * Calls Exporter.exportDatabase
+     * Calls Exporter.exportDatabase()
      */
     public void exportDatabase(){
         Exporter.exportDataBase();
+    }
+
+    /**
+     * Calls DatabaseRefactor.clearTable()
+     * Drops and recreates the table to remove all data
+     */
+    public void deleteAirlineData(){
+        DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);
+    }
+
+    /**
+     * Calls DatabaseRefactor.clearTable
+     * Drops and recreates the table to remove all data
+     */
+    public void deleteAirportData(){
+        DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);
+    }
+
+    /**
+     * Calls DatabaseRefactor.clearTable
+     * Drops and recreates the table to remove all data
+     */
+    public void deleteRouteData(){
+        DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
+    }
+
+
+    /**
+     * Shows alert that allows user to choose to either replace or merge when adding a new data file
+     * Calls mainController.addXXXData for each datatype, and DataBaseRefactor.clearTable when user chooses to replace
+     * @param type
+     */
+    public void showAddOptions(DataTypes type) {
+        //IF TABLE NOT EMPTY
+        int size = FilterRefactor.getAllPoints(type).size();
+        if (size > 0) {
+            ButtonType mergeButton = new ButtonType("Merge");
+            ButtonType replaceButton = new ButtonType("Replace");
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Testing", mergeButton, replaceButton, ButtonType.CANCEL);
+            alert.setTitle("Replace or Merge New Data");
+            alert.setHeaderText("Would you like to merge or replace?");
+            alert.setContentText("Warning: replace deletes existing data in the table");
+            //TODO clean up this so same switch isn't used twice. Any suggestions greatly appreciated
+            alert.showAndWait().ifPresent(response -> {
+                if (response == mergeButton || response == replaceButton) {
+                    if (response == replaceButton) {
+                        DataBaseRefactor.clearTable(type);
+                    }
+                    switch (type) {
+                        case AIRLINEPOINT:
+                            mainController.addAirlineData();
+                            break;
+                        case ROUTEPOINT:
+                            mainController.addRouteData();
+                            break;
+                        case AIRPORTPOINT:
+                            mainController.addAirportData();
+                            break;
+                    }
+                }
+            });
+        } else {
+            switch (type) {
+                case AIRLINEPOINT:
+                    mainController.addAirlineData();
+                    break;
+                case ROUTEPOINT:
+                    mainController.addRouteData();
+                    break;
+                case AIRPORTPOINT:
+                    mainController.addAirportData();
+                    break;
+            }
+        }
     }
 
     private void databaseCorrector(){

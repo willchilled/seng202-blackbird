@@ -41,6 +41,34 @@ public class HelperFunctions {
 
     }
 
+    protected static File makeFile(String message) {
+        File myFile;
+        String cwd = System.getProperty("user.dir");
+        File userDirectory = new File(cwd);
+
+        FileChooser fc = new FileChooser();
+        fc.setTitle(message);
+
+        fc.setInitialDirectory(userDirectory);
+
+        if(!userDirectory.canRead()) {
+            userDirectory = new File("c:/");
+        }
+        fc.setInitialDirectory(userDirectory);
+
+        //Choose the file
+        myFile = fc.showSaveDialog(null);
+        //Make sure a file was selected, if not return default
+
+        if(myFile != null) {
+            return myFile;
+        }
+        else{
+            return null;
+        }
+
+    }
+
     protected static ObservableList<String> addNullValue(ObservableList<String> populatedList){
         //adds a null value at top of list
         populatedList.add(0, "None");

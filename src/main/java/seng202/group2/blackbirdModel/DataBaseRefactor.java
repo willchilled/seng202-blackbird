@@ -16,7 +16,7 @@ public class DataBaseRefactor {
 
     private static int FlightCount = 0;
     private static int flightPointCount = 0;
-    private static String dataBaseName="jdbc:sqlite:default.db";
+    private static String dataBaseName = "jdbc:sqlite:default.db";
 
     /**
      * @return Returns the current database name.
@@ -53,6 +53,7 @@ public class DataBaseRefactor {
     /**
      * Inserts DataPoints into the database, by first preparing the specific sql statements with the help of other
      * database methods.
+     *
      * @param myPoints An arraylist of DataPoints that we want to insert.
      */
     public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
@@ -63,14 +64,14 @@ public class DataBaseRefactor {
             currentConnection.setAutoCommit(false);
             PreparedStatement preparedStatement = null;
 
-            if (myPoints.get(0).getType().equals(DataTypes.FLIGHTPOINT)){
-                FlightCount ++;
+            if (myPoints.get(0).getType().equals(DataTypes.FLIGHTPOINT)) {
+                FlightCount++;
                 addFlight(myPoints, preparedStatement, currentConnection);
                 //System.out.println("HERE");
                 //System.out.println(FlightCount);
             }
 
-            flightPointCount=0;
+            flightPointCount = 0;
             for (DataPoint currentPoint : myPoints) {
                 //addSingleAirline(airline, stmt);
 //                System.out.println(currentPoint.getType());
@@ -691,6 +692,13 @@ public class DataBaseRefactor {
                     sqlDrop = "DROP TABLE ROUTE";
                     sqlCreate = createRouteTable();
                     break;
+                case FLIGHTPOINT:
+                    sqlDrop = "DROP TABLE FLIGHTPOINT";
+                    sqlCreate = createFlightPointTable();
+                    break;
+                case FLIGHT:
+                    sqlDrop = "DROP TABLE  FLIGHT";
+                    sqlCreate = createFlightTable();
             }
                 try{
                     preparedStatement = currentConnection.prepareStatement(sqlDrop);
@@ -712,5 +720,31 @@ public class DataBaseRefactor {
             e.printStackTrace();
         }
     }
+
+    /**
+     * A method to check if the database has a column in  a table
+     */
+    public static boolean checkDBForColumn(String tableName, String columnName) {
+        boolean exists = false;
+        try {
+            Connection currentConnection = makeConnection();
+            Class.forName("org.sqlite.JDBC");
+            currentConnection = DriverManager.getConnection(getDatabaseName());
+            currentConnection.setAutoCommit(false);
+
+            DatabaseMetaData md = currentConnection.getMetaData();
+            ResultSet rs = md.getColumns(null, null, tableName, columnName);
+            if (rs.next()) {
+                exists = true;
+            }
+            currentConnection.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
 }
 

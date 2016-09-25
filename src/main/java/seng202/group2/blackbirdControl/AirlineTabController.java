@@ -168,6 +168,7 @@ public class AirlineTabController{
                         popUpController.setAirlineTabController(instance);
                         popUpController.setAirlinePoint(myPoint);
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("Detailed Airline Data");

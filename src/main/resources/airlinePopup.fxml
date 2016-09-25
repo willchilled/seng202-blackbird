@@ -73,19 +73,19 @@
                                         <Font size="15.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="idText" text="id" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                                <Label fx:id="countryText" text="country" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
-                                <Label fx:id="aliasText" text="alias" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" onKeyPressed="#enterPressed"/>
-                                <Label fx:id="iataText" text="iata" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
-                                <Label fx:id="icaoText" text="icao" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
-                                <Label fx:id="callsignText" text="callsign" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
-                                <Label fx:id="activeText" text="active" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="6" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airlineCountryTextEdit" promptText="eg New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airlineAliasTextEdit" promptText="eg ANZ Air New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" onKeyPressed="#enterPressed" />
-                                <TextField fx:id="airlineIATATextEdit" promptText="eg NZ" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airlineICAOTextEdit" promptText="eg ANZ" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airlineCallsignTextEdit" promptText="eg NEW ZEALAND" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" onKeyPressed="#enterPressed"/>
-                                <TextField fx:id="airlineActiveTextEdit" promptText="eg Y" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6" onKeyPressed="#enterPressed"/>
+                                <Label fx:id="idText" text="id" GridPane.columnIndex="2" GridPane.halignment="LEFT" />
+                                <Label fx:id="countryText" onKeyPressed="#enterPressed" text="country" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                                <Label fx:id="aliasText" onKeyPressed="#enterPressed" text="alias" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+                                <Label fx:id="iataText" onKeyPressed="#enterPressed" text="iata" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
+                                <Label fx:id="icaoText" onKeyPressed="#enterPressed" text="icao" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+                                <Label fx:id="callsignText" onKeyPressed="#enterPressed" text="callsign" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+                                <Label fx:id="activeText" onKeyPressed="#enterPressed" text="active" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
+                                <TextField fx:id="airlineCountryTextEdit" onKeyPressed="#enterPressed" promptText="eg New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                <TextField fx:id="airlineAliasTextEdit" onKeyPressed="#enterPressed" promptText="eg ANZ Air New Zealand" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                <TextField fx:id="airlineIATATextEdit" onKeyPressed="#enterPressed" promptText="eg NZ" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                <TextField fx:id="airlineICAOTextEdit" onKeyPressed="#enterPressed" promptText="eg ANZ" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                <TextField fx:id="airlineCallsignTextEdit" onKeyPressed="#enterPressed" promptText="eg NEW ZEALAND" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                <TextField fx:id="airlineActiveTextEdit" onKeyPressed="#enterPressed" promptText="eg Y" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="6" />
 
                             </children>
                         </GridPane>
@@ -105,7 +105,8 @@
         </Pane>
         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
             <children>
-                <Button fx:id="airlineEditButton" layoutX="181.0" layoutY="12.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
+                <Button fx:id="airlineEditButton" layoutX="154.0" layoutY="11.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
+                <Button fx:id="deleteButton" layoutX="209.0" layoutY="10.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
                 <Button fx:id="airlineFinishButton" layoutX="322.0" layoutY="13.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
                 <Button fx:id="airlineCancelButton" layoutX="20.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
                 <Text fx:id="airlineInvalidDataText" fill="#c61010" layoutX="154.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INVALID DATA!" visible="false" />
@@ -120,4 +121,3 @@
         </Pane>
     </children>
 </GridPane>
-

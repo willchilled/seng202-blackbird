@@ -179,38 +179,49 @@ public class MenuBarController {
      * Calls mainController.addXXXData for each datatype, and DataBaseRefactor.clearTable when user chooses to replace
      * @param type
      */
-    public void showAddOptions(DataTypes type){
+    public void showAddOptions(DataTypes type) {
+        //IF TABLE NOT EMPTY
+        int size = FilterRefactor.getAllPoints(type).size();
+        if (size > 0) {
+            ButtonType mergeButton = new ButtonType("Merge");
+            ButtonType replaceButton = new ButtonType("Replace");
 
-        ButtonType mergeButton = new ButtonType("Merge");
-        ButtonType replaceButton = new ButtonType("Replace");
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Testing", mergeButton, replaceButton, ButtonType.CANCEL);
-        alert.setTitle("Replace or Merge New Data");
-        alert.setHeaderText("Would you like to merge or replace?");
-        alert.setContentText("Warning: replace deletes existing data in the table");
-        alert.showAndWait().ifPresent(response -> {
-            if(response == mergeButton || response == replaceButton){
-                if(response == replaceButton){
-                    DataBaseRefactor.clearTable(type);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Testing", mergeButton, replaceButton, ButtonType.CANCEL);
+            alert.setTitle("Replace or Merge New Data");
+            alert.setHeaderText("Would you like to merge or replace?");
+            alert.setContentText("Warning: replace deletes existing data in the table");
+            //TODO clean up this so same switch isn't used twice. Any suggestions greatly appreciated
+            alert.showAndWait().ifPresent(response -> {
+                if (response == mergeButton || response == replaceButton) {
+                    if (response == replaceButton) {
+                        DataBaseRefactor.clearTable(type);
+                    }
+                    switch (type) {
+                        case AIRLINEPOINT:
+                            mainController.addAirlineData();
+                            break;
+                        case ROUTEPOINT:
+                            mainController.addRouteData();
+                            break;
+                        case AIRPORTPOINT:
+                            mainController.addAirportData();
+                            break;
+                    }
                 }
-                switch(type){
-                    case AIRLINEPOINT:
-                        mainController.addAirlineData();
-                        break;
-                    case ROUTEPOINT:
-                        mainController.addRouteData();
-                        break;
-                    case AIRPORTPOINT:
-                        mainController.addAirportData();
-                        break;
-                }
+            });
+        } else {
+            switch (type) {
+                case AIRLINEPOINT:
+                    mainController.addAirlineData();
+                    break;
+                case ROUTEPOINT:
+                    mainController.addRouteData();
+                    break;
+                case AIRPORTPOINT:
+                    mainController.addAirportData();
+                    break;
             }
-        });
-
+        }
     }
-
-
-
-
 
 }

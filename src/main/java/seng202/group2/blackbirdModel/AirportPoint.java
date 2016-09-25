@@ -110,6 +110,7 @@ public class AirportPoint extends DataPoint {
                 this.tz = currentLine[11];
 
 
+
                 if (currentLine.length == 14){ // We add a special case for when there is data in the array
                     this.outgoingRoutes = Integer.parseInt(currentLine[12]);
                     this.incomingRoutes = Integer.parseInt(currentLine[13]);//check this is the right way round
@@ -127,7 +128,6 @@ public class AirportPoint extends DataPoint {
         }
 
     }
-
 
     /**
      * Increments numberOfRoutes by 1
@@ -274,6 +274,15 @@ public class AirportPoint extends DataPoint {
 
     public void setOutgoingRoutes(int outgoingRoutes) {
         this.outgoingRoutes = outgoingRoutes;
+    }
+
+    //@Override
+    public int compareTo(AirportPoint another) {
+        if (this.getIncomingRoutes() + this.getOutgoingRoutes() <another.getIncomingRoutes() + another.getOutgoingRoutes()){
+            return -1;
+        }else{
+            return 1;
+        }
     }
 }
 

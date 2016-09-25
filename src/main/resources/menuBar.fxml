@@ -12,7 +12,7 @@
                         <items>
                             <MenuItem fx:id="newProjMenu" mnemonicParsing="false" onAction="#show" text="New" />
                             <MenuItem disable="false" mnemonicParsing="false" onAction="#loadDb" text="Load" />
-                            <MenuItem fx:id="exportDatabase" disable="true" mnemonicParsing="false" onAction="#exportDatabase" text="Save" />
+                            <MenuItem fx:id="exportDatabaseButton" disable="true" mnemonicParsing="false" onAction="#exportDatabase" text="Save" />
                         </items>
                     </Menu>
                     <Menu fx:id="addDataMenuButton" disable="true" mnemonicParsing="false" text="Add Data">

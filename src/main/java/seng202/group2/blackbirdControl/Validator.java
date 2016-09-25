@@ -1,6 +1,7 @@
 package seng202.group2.blackbirdControl;
 
 import org.apache.commons.lang3.StringUtils;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 
 /**
  * Created by emr65 on 22/09/16.
@@ -152,7 +153,6 @@ public class Validator {
         return ((!TZ.equals("") && TZ.length() <= 40) || TZ.equals(""));
 
     }
-
 
 
     /**
@@ -334,6 +334,23 @@ public class Validator {
             }
         }
         return true;
+    }
+
+    //IDK if this is the correct place for this function
+    /**
+     * A method to check if a table has the correct columns
+     * @param table the table to check
+     * @param columns the columns to checkare in the table
+     * @return A boolean describing if the has
+     */
+    public static boolean tableColumnchecker(String table, String[] columns){
+        boolean correct = true;
+        for(String column : columns){
+            if(DataBaseRefactor.checkDBForColumn(table, column) == false){
+                correct = false;
+            }
+        }
+        return correct;
     }
 
 }

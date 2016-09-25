@@ -45,27 +45,25 @@ public class Exporter {
      */
     public static void exportDataBase() {
 
-        JFileChooser chooser = new JFileChooser();
-        JPanel mainPanel = new JPanel();
-        chooser.setDialogTitle("Export Data as Text File");
-        int userChoice = chooser.showSaveDialog(mainPanel);
-
-        if (userChoice == JFileChooser.APPROVE_OPTION) {
-            try {
-                File fileToSave = chooser.getSelectedFile();
-                fileToSave.createNewFile();
-                String cwd = System.getProperty("user.dir");
-                String dbFileName = (cwd+"/default.db");
-                FileChannel src = new FileInputStream(dbFileName).getChannel();
-                FileChannel dest = new FileOutputStream(fileToSave).getChannel();
-                dest.transferFrom(src, 0, src.size());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        File theirDB = HelperFunctions.makeFile("Choose a Database");
+        if (theirDB== null) {
+            System.out.println("No File was loaded");
+            return;
         }
 
+        try {
+            File fileToSave = theirDB;
+            fileToSave.createNewFile();
+            String cwd = System.getProperty("user.dir");
+            String dbFileName = (cwd+"/default.db");
+            FileChannel src = new FileInputStream(dbFileName).getChannel();
+            FileChannel dest = new FileOutputStream(fileToSave).getChannel();
+            dest.transferFrom(src, 0, src.size());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

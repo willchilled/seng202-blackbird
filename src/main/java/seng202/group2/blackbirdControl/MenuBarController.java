@@ -24,7 +24,7 @@ public class MenuBarController {
     @FXML
     MenuItem exportDataMenuButton;
     @FXML
-    MenuItem exportDatabase;
+    MenuItem exportDatabaseButton;
     @FXML
     MenuItem exportFlightMenuButton;
     @FXML
@@ -40,13 +40,12 @@ public class MenuBarController {
         mainController.show();
         exportDataMenuButton.setDisable(false);
         exportDataMenuButton.setDisable(false);
-        exportDatabase.setDisable(false);
-        //
+        exportDatabaseButton.setDisable(false);
         DataBaseRefactor.createTables();
     }
 
     /**
-     * A method to load a previous database file
+     * A method to load a previous database file and correct it
      */
     public void loadDb(){
         //get their file
@@ -62,6 +61,7 @@ public class MenuBarController {
             FileChannel src = new FileInputStream(theirDB).getChannel();
             FileChannel dest = new FileOutputStream(dbFileName).getChannel();
             dest.transferFrom(src, 0, src.size());
+            databaseCorrector();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -72,6 +72,8 @@ public class MenuBarController {
         exportAirlineMenuButton.setDisable(false);
         exportAirportMenuButton.setDisable(false);
         mainController.show();
+        addDataMenuButton.setDisable(false);
+        exportDatabaseButton.setDisable(false);
     }
 
     public void setMainController(MainController controller) {
@@ -196,31 +198,63 @@ public class MenuBarController {
                     if (response == replaceButton) {
                         DataBaseRefactor.clearTable(type);
                     }
-                    switch (type) {
-                        case AIRLINEPOINT:
-                            mainController.addAirlineData();
-                            break;
-                        case ROUTEPOINT:
-                            mainController.addRouteData();
-                            break;
-                        case AIRPORTPOINT:
-                            mainController.addAirportData();
-                            break;
-                    }
+                    AddDataToController(type);
+
                 }
             });
         } else {
-            switch (type) {
-                case AIRLINEPOINT:
-                    mainController.addAirlineData();
-                    break;
-                case ROUTEPOINT:
-                    mainController.addRouteData();
-                    break;
-                case AIRPORTPOINT:
-                    mainController.addAirportData();
-                    break;
+                AddDataToController(type);
             }
+    }
+
+
+    private void AddDataToController(DataTypes type) {
+        switch (type) {
+            case AIRLINEPOINT:
+                mainController.addAirlineData();
+                break;
+            case ROUTEPOINT:
+                mainController.addRouteData();
+                break;
+            case AIRPORTPOINT:
+                mainController.addAirportData();
+                break;
+        }
+    }
+
+    /**
+     * Checks if tables in database are in the correct format and correct ones that are not
+     */
+    private void databaseCorrector(){
+        //check flight table
+        String[] flightTableColumns = {"FlightIDNum", "SrcICAO", "DstICAO"};
+        if (!(Validator.tableColumnchecker("FLIGHT" , flightTableColumns))){
+            System.out.println("Flight table was wrong");
+            DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
+        }
+        //check flight point table
+        String[] flightPointTableColumns = {"SeqOrder", "LocaleID", "LocationType", "Altitude", "Latitude", "Longitude", "FlightIDNum"};
+        if (!(Validator.tableColumnchecker("FLIGHTPOINT" , flightPointTableColumns))){
+            System.out.println("flightpoint table was wrong");
+            DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
+        }
+        //check route table
+        String[] routeTableColumns = {"IDnum", "Airline", "Airlineid", "Src", "Srcid", "Dst", "Dstid", "Codeshare", "Stops", "Equipment"};
+        if (!(Validator.tableColumnchecker("ROUTE" , routeTableColumns))) {
+            System.out.println("route table was wrong");
+            DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);//correct if needed
+        }
+        //check airline table
+        String[] airlineTableColumns = {"ID", "NAME", "ALIAS", "IATA", "ICAO", "CALLSIGN", "COUNTRY", "ACTIVE"};
+        if (!(Validator.tableColumnchecker("AIRLINE", airlineTableColumns))) {
+            System.out.println("airline table was wrong");
+            DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);//correct if needed
+        }
+        //check airport table
+        String[] airportTableColumns = {"ID", "NAME", "CITY", "COUNTRY", "IATA", "ICAO", "LATITUDE", "LONGITUDE", "ALTITUDE", "TIMEZONE", "DST", "TZ"};
+        if (!(Validator.tableColumnchecker("AIRPORT", airportTableColumns))){
+            System.out.println("airport table was wrong");
+            DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);//correct if needed
         }
     }
 

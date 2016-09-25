@@ -1,9 +1,12 @@
 package seng202.group2.blackbirdControl;
 
 import seng202.group2.blackbirdModel.AirportPoint;
+import seng202.group2.blackbirdModel.DataPoint;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by mch230 on 30/08/16.
@@ -18,8 +21,14 @@ public class Analyser {
         float lat1 = airport1.getLatitude();
         float long1 = airport1.getLongitude();
 
+
+
+
         float lat2 = airport2.getLatitude();
         float long2 = airport2.getLongitude();
+
+
+
 
         float R = 6371; // Radius of the earth in km
         double dLat = degToRad(lat2-lat1);  // degToRad below
@@ -37,12 +46,39 @@ public class Analyser {
         return deg * (Math.PI/180.0);
     }
 
+
+
     //ranks airports based on the number of routes
-    public static void rankAirports(ArrayList<AirportPoint> airports, boolean mostRoutes) {
-        if (mostRoutes) {   //rank by the most routes
+    public static void rankAirports(ArrayList<DataPoint> airports, boolean mostRoutes) {
+        //To whoever does this just make sure it returns and arraylist of datapoints and not airport poitns doesnt work
 
-        } else {    //rank by the fewest routes
 
+        List<AirportPoint> myPoints = new ArrayList<>();
+        for(DataPoint cp: airports){
+            AirportPoint cp2 = (AirportPoint) cp;
+            myPoints.add(cp2);
+        }
+
+
+        Collections.sort(myPoints, (x, y) -> compareAirportPointSize(x, y));
+
+        if (!mostRoutes) {   //rank by least Routes
+            Collections.reverse(myPoints);
+        }
+
+//        for(AirportPoint cp: myPoints){
+//            //AirportPoint cp2 = (AirportPoint) cp;
+//            System.out.println(cp.toStringWithRoutes());
+//        }
+    }
+
+    public static int compareAirportPointSize(AirportPoint a, AirportPoint another) {
+        if (a.getIncomingRoutes() + a.getOutgoingRoutes() < another.getIncomingRoutes() + another.getOutgoingRoutes()){
+            return 1;
+        }else{
+            return -1;
         }
     }
+
+
 }

@@ -7,6 +7,9 @@ package seng202.group2.blackbirdModel;
  */
 public class FlightPoint extends DataPoint {
 
+
+
+    private int seqno;
     private String localtype;
     private String localeID;
     private int altitude;
@@ -57,6 +60,7 @@ public class FlightPoint extends DataPoint {
             }
             //FOR GRABBING OLD FLIGHTPOINTS FROM DATABASE FOR RECREATION
             if (currentLine.length == 7) {
+                this.seqno = Integer.parseInt(currentLine[0]);
                 this.localtype = currentLine[2];
                 this.localeID = currentLine[1];
                 this.altitude = Integer.parseInt(currentLine[3]);
@@ -69,6 +73,10 @@ public class FlightPoint extends DataPoint {
             correctEntry = 1;   //set as 1 here?
         }
 
+    }
+
+    public int getSeqno() {
+        return seqno;
     }
 
     public String getLocalType() {

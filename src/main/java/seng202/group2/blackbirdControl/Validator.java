@@ -155,7 +155,6 @@ public class Validator {
     }
 
 
-
     /**
      * Checks all attributes of an airline individually for validity. Checks type, length and required attributes.
      * @param attributes the attributes to be made into an airline point in the order:
@@ -337,6 +336,7 @@ public class Validator {
         return true;
     }
 
+    //IDK if this is the correct place for this function
     /**
      * A method to check if a table has the correct columns
      * @param table the table to check

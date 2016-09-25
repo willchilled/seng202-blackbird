@@ -17,7 +17,7 @@ public class DataBaseRefactor {
 
     private static int FlightCount = 0;
     private static int flightPointCount = 0;
-    private static String dataBaseName="jdbc:sqlite:default.db";
+    private static String dataBaseName = "jdbc:sqlite:default.db";
 
     /**
      * @return Returns the current database name.
@@ -35,9 +35,10 @@ public class DataBaseRefactor {
 
     /**
      * Creates a connection to the database.
+     *
      * @return The connection to the database.
      */
-    private static Connection makeConnection(){
+    private static Connection makeConnection() {
         Connection c = null;
         try {
             Class.forName("org.sqlite.JDBC");
@@ -54,6 +55,7 @@ public class DataBaseRefactor {
     /**
      * Inserts DataPoints into the database, by first preparing the specific sql statements with the help of other
      * database methods.
+     *
      * @param myPoints An arraylist of DataPoints that we want to insert.
      */
     public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
@@ -64,14 +66,14 @@ public class DataBaseRefactor {
             currentConnection.setAutoCommit(false);
             PreparedStatement preparedStatement = null;
 
-            if (myPoints.get(0).getType().equals(DataTypes.FLIGHTPOINT)){
-                FlightCount ++;
+            if (myPoints.get(0).getType().equals(DataTypes.FLIGHTPOINT)) {
+                FlightCount++;
                 addFlight(myPoints, preparedStatement, currentConnection);
                 //System.out.println("HERE");
                 //System.out.println(FlightCount);
             }
 
-            flightPointCount=0;
+            flightPointCount = 0;
             for (DataPoint currentPoint : myPoints) {
                 //addSingleAirline(airline, stmt);
 //                System.out.println(currentPoint.getType());
@@ -81,7 +83,7 @@ public class DataBaseRefactor {
                 //DataTypes dataType = currentPoint.getType();
                 //PreparedStatement preparedStatement = null;
 
-                switch (dataType){
+                switch (dataType) {
                     case AIRLINEPOINT:
                         preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
                         break;
@@ -100,12 +102,11 @@ public class DataBaseRefactor {
                         break;
                 }
 
-                try{
+                try {
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
-                }
-                catch (Exception e){
-                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                } catch (Exception e) {
+                    // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                     //System.out.println("Prepared statement failed for: " +  currentPoint);
                     //UNCOMMENT THESE OUT WHEN WE DECIDE HOW TO DEAL WITH ERROR CHECKING IN THE DATBASE
                 }
@@ -124,7 +125,8 @@ public class DataBaseRefactor {
 
     /**
      * Prepares a sql statement for inserting a flightpoint.
-     * @param currentPoint The flightpoint that we want to add to the database.
+     *
+     * @param currentPoint      The flightpoint that we want to add to the database.
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database.
      * @return The prepared sql statement for a flightpoint
@@ -144,7 +146,7 @@ public class DataBaseRefactor {
             // System.out.println(FlightCount);
 
         } catch (SQLException e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.out.println("DataBaseRefactor.prepareInsertFlightPointStatement failed");
             //e.printStackTrace();
         }
@@ -154,25 +156,25 @@ public class DataBaseRefactor {
     /**
      * Helps to create a new flight entry, as flights are made up of their flightpoints, each flight needs to
      * also be added in to another flight table.
-     * @param myPoints The arraylist of DataPoints
+     *
+     * @param myPoints          The arraylist of DataPoints
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      */
     private static void addFlight(ArrayList<DataPoint> myPoints, PreparedStatement preparedStatement, Connection currentConnection) {
         //System.out.println(myPoints.size());
         FlightPoint sourcePoint = (FlightPoint) myPoints.get(0);
-        FlightPoint destPoint = (FlightPoint) myPoints.get(myPoints.size()-1);
+        FlightPoint destPoint = (FlightPoint) myPoints.get(myPoints.size() - 1);
 
-        String flightSource  = sourcePoint.getLocaleID();
+        String flightSource = sourcePoint.getLocaleID();
         String destSource = destPoint.getLocaleID();
         //System.out.println(flightSource + "==" +  destSource);
         preparedStatement = prepareInsertFlightStatement(flightSource, destSource, preparedStatement, currentConnection);
 
-        try{
+        try {
             preparedStatement.executeUpdate();
             preparedStatement.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //System.out.println("Cant add " +  myPoints.toString());
             System.out.println("DataBaseRefactor.addFlight failed");
         }
@@ -180,8 +182,9 @@ public class DataBaseRefactor {
 
     /**
      * Helper function to prepare a sql statement to insert a flight
-     * @param flightSource The source of the flight
-     * @param destSource The destination of the flight
+     *
+     * @param flightSource      The source of the flight
+     * @param destSource        The destination of the flight
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement for a flight
@@ -205,7 +208,8 @@ public class DataBaseRefactor {
 
     /**
      * Prepares a route sql statement to insert a route into the database.
-     * @param currentPoint The route that we are wanting to insert
+     *
+     * @param currentPoint      The route that we are wanting to insert
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement to insert a route into the database.
@@ -250,7 +254,8 @@ public class DataBaseRefactor {
 
     /**
      * Prepares an airport sql statement to insert an airport into the database
-     * @param currentPoint The airport point that we are wanting to insert
+     *
+     * @param currentPoint      The airport point that we are wanting to insert
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement to insert an airport into the database.
@@ -297,7 +302,8 @@ public class DataBaseRefactor {
 
     /**
      * Prepares an airline sql statement to insert an airline into the database
-     * @param currentPoint The airline point that we are wanting to insert
+     *
+     * @param currentPoint      The airline point that we are wanting to insert
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement to insert an airline into the database.
@@ -334,7 +340,7 @@ public class DataBaseRefactor {
         return preparedStatement;
     }
 
-    public static void editDataEntry(String sql){
+    public static void editDataEntry(String sql) {
 
         Connection c = makeConnection();
 
@@ -344,13 +350,13 @@ public class DataBaseRefactor {
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
             stmt = c.createStatement();
-            stmt.executeUpdate( sql );
+            stmt.executeUpdate(sql);
 
             stmt.close();
             c.commit();
             c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
         System.out.println("Performing edit:" + sql);
@@ -360,7 +366,8 @@ public class DataBaseRefactor {
     /**
      * Performs a generic query to the database e.g. for filtering and searching. Calls the static method of
      * Datapoint to recreate it from the database response.
-     * @param sql The sql string to execute
+     *
+     * @param sql      The sql string to execute
      * @param dataType The current data type that we are working with
      * @return The arraylist of DataPoints returned from the database query.
      * @see DataPoint
@@ -379,7 +386,7 @@ public class DataBaseRefactor {
             ResultSetMetaData rsmd = rs.getMetaData();
             String[] attributes = null;
 
-            while(rs.next()) {
+            while (rs.next()) {
 
                 int width = rsmd.getColumnCount();
 
@@ -393,11 +400,11 @@ public class DataBaseRefactor {
 //                    }
 //
 //                } else {
-                    attributes = new String[width];
-                    for (int i = 0; i < width; i++) {
+                attributes = new String[width];
+                for (int i = 0; i < width; i++) {
 
-                        attributes[i] = rs.getString(i + 1);
-                         //System.out.println(i + " " + attributes[i]);
+                    attributes[i] = rs.getString(i + 1);
+                    //System.out.println(i + " " + attributes[i]);
 //                    }
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
@@ -420,10 +427,11 @@ public class DataBaseRefactor {
     /**
      * Helper function to find distinct strings of a specified column with the table. Used to populate
      * the filter dropdown menus.
+     *
      * @param sql The sql string to be executed
      * @return The arraylist of distinct strings
      */
-    public static ArrayList<String> performDistinctQuery(String sql){
+    public static ArrayList<String> performDistinctQuery(String sql) {
 
         ArrayList<String> distinctResults = new ArrayList<>();
 
@@ -437,7 +445,7 @@ public class DataBaseRefactor {
             ResultSetMetaData rsmd = rs.getMetaData();
             int i = 0;
 
-            while(rs.next()) {
+            while (rs.next()) {
                 distinctResults.add(rs.getString(1));
             }
 
@@ -458,11 +466,12 @@ public class DataBaseRefactor {
     /**
      * Grabs the Max value of an attribute in a column. Namely for finding the max ID of an entity in a database for the
      * purpose of incrementing when adding a new value. Note this only works for integer values.
-     * @param tableName The table from which to grab the max value
+     *
+     * @param tableName  The table from which to grab the max value
      * @param columnName The attribute of which you want the max value
      * @return Returns an int of the max value
      */
-    public static int getMaxInColumn(String tableName, String columnName){
+    public static int getMaxInColumn(String tableName, String columnName) {
         //Returns the highest value in a column for a table
         int highID = 0;
         try {
@@ -491,13 +500,13 @@ public class DataBaseRefactor {
     /**
      * Deletes an existing database.
      */
-    public static void deleteDBFile(){
+    public static void deleteDBFile() {
         //deletes pre existing database file
         String cwd = System.getProperty("user.dir");
 
-        File f = new File(cwd+"/default.db");
+        File f = new File(cwd + "/default.db");
 
-        if(f.exists() && f.isFile()){
+        if (f.exists() && f.isFile()) {
             f.delete();
         }
     }
@@ -506,9 +515,10 @@ public class DataBaseRefactor {
 
     /**
      * Prepares the sql string to create a new airport table within the database.
+     *
      * @return The sql string to create a new airport table within the database.
      */
-    private static String createAirportTable(){
+    private static String createAirportTable() {
         //added additional constraints on some of the fields, but i think adding some on parsing as well may simplify things?
         String sql = "CREATE TABLE AIRPORT " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
@@ -518,7 +528,7 @@ public class DataBaseRefactor {
                 " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                 " ICAO           CHAR(4)," +
                 " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
-                " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
+                " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180')," +
                 " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
                 " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
                 " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', ''))," +
@@ -530,9 +540,10 @@ public class DataBaseRefactor {
 
     /**
      * Prepares the sql string to create a new airline table within the database.
+     *
      * @return The sql string to create a new airline table within the database.
      */
-    private static String createAirlineTable(){
+    private static String createAirlineTable() {
         String sql = "CREATE TABLE AIRLINE " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40)   NOT NULL," +
@@ -548,9 +559,10 @@ public class DataBaseRefactor {
 
     /**
      * Prepares the sql string to create a new route table within the database.
+     *
      * @return The sql string to create a new route table within the database.
      */
-    private static String createRouteTable(){
+    private static String createRouteTable() {
         //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER PRIMARY KEY AUTOINCREMENT /*ID number for the route*/," +
@@ -581,9 +593,10 @@ public class DataBaseRefactor {
 
     /**
      * Prepares the sql string to create a new flight table within the database.
+     *
      * @return The sql string to create a new flight table within the database.
      */
-    private static String createFlightTable(){
+    private static String createFlightTable() {
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY AUTOINCREMENT/*incrementing number to identify flight*/," +
                 "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
@@ -595,16 +608,17 @@ public class DataBaseRefactor {
 
     /**
      * Prepares the sql string to create a new flightpoint table within the database.
+     *
      * @return The sql string to create a new flightpoint table within the database.
      */
-    private static String createFlightPointTable(){
+    private static String createFlightPointTable() {
         String sql = "CREATE TABLE FLIGHTPOINT" +
                 "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
-                "LocaleID       VARCHAR(5) NOT NULL, "+
-                "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
+                "LocaleID       VARCHAR(5) NOT NULL, " +
+                "LocationType   CHAR(3) NOT NULL /*Type of location*/, " +
                 "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
                 "Latitude       FLOAT NOT NULL constraint check_lat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      FLOAT NOT NULL constraint check_long check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
+                "Longitude      FLOAT NOT NULL constraint check_long check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, " +
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +
@@ -663,5 +677,28 @@ public class DataBaseRefactor {
         //System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
     }
 
+    /**
+     * A method to check if the database has a column in  a table
+     */
+    public static boolean checkDBForColumn(String tableName, String columnName) {
+        boolean exists = false;
+        try {
+            Connection c = makeConnection();
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection(getDatabaseName());
+            c.setAutoCommit(false);
+
+            DatabaseMetaData md = c.getMetaData();
+            ResultSet rs = md.getColumns(null, null, tableName, columnName);
+            if (rs.next()) {
+                exists = true;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
 }
 

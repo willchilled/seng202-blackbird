@@ -41,12 +41,11 @@ public class MenuBarController {
         exportDataMenuButton.setDisable(false);
         exportDataMenuButton.setDisable(false);
         exportDatabase.setDisable(false);
-        //
         DataBaseRefactor.createTables();
     }
 
     /**
-     * A method to load a previous database file
+     * A method to load a previous database file and correct it
      */
     public void loadDb(){
         //get thier file
@@ -62,6 +61,7 @@ public class MenuBarController {
             FileChannel src = new FileInputStream(theirDB).getChannel();
             FileChannel dest = new FileOutputStream(dbFileName).getChannel();
             dest.transferFrom(src, 0, src.size());
+            databaseCorrector();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -149,5 +149,9 @@ public class MenuBarController {
         Exporter.exportDataBase();
     }
 
+    private void databaseCorrector(){
+        boolean flighTableCorrect = Validator.flightTableChecker();
+        boolean flightPointTableCorrect = Validator.flightPointTableChecker();
 
+    }
 }

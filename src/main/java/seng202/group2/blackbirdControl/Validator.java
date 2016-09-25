@@ -1,6 +1,7 @@
 package seng202.group2.blackbirdControl;
 
 import org.apache.commons.lang3.StringUtils;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 
 /**
  * Created by emr65 on 22/09/16.
@@ -335,5 +336,47 @@ public class Validator {
         }
         return true;
     }
+
+    /**
+     * A method to check if a table has the correct columns
+     * @return a boolean describing if the has
+     */
+    public static boolean flightTableChecker(){
+        boolean correct = true;
+        if (DataBaseRefactor.checkDBForColumn("FLIGHT", "FlightIDNum") == false) {
+            correct =false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHT", "SrcICAO") == false) {
+            correct =false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHT", "DstICAO") == false) {
+            correct =false;
+        }
+        return correct;
+    }
+
+    /**
+     * A method to check if the FLIGHTPOINT table in the database is correct
+     * @return a boolean describing if the the FLIGHTPOINT table is of the correct format
+     */
+    public static boolean flightPointTableChecker(){
+        boolean correct = true;
+        if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "SeqOrder") == false) {
+            correct = false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "LocaleID") == false) {
+            correct =false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "LocationType") == false) {
+            correct =false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "Altitude") == false) {
+            correct =false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "Latitude") == false) {
+            correct =false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "Longitude") == false) {
+            correct = false;
+        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "FlightIDNum") == false) {
+            correct = false;
+        }
+        return correct;
+    }
+
+
 
 }

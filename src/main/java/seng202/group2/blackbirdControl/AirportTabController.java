@@ -83,7 +83,7 @@ public class AirportTabController {
     }
 
     public void addAirportData() {
-        File f = HelperFunctions.getFile("Add Airport Data");
+        File f = HelperFunctions.getFile("Add Airport Data", false);
         if (f == null) {
             return;
         }
@@ -159,6 +159,7 @@ public class AirportTabController {
                         popUpController.setAirportTabController(instance);
                         popUpController.setAirportPoint(myPoint);
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("Detailed Airport Information");

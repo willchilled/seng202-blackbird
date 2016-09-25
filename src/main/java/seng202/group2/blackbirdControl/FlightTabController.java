@@ -17,6 +17,7 @@ import seng202.group2.blackbirdModel.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.logging.Filter;
 
 /**
@@ -25,6 +26,8 @@ import java.util.logging.Filter;
 public class FlightTabController {
 
     private MainController mainController;
+
+    private Flight flight;
 
     //FLIGHT and FLIGHT POINT tables
     @FXML private TableView<DataPoint> flightTable;
@@ -56,6 +59,14 @@ public class FlightTabController {
         flightPointTable.setPlaceholder(new Label("No data in table. Double click on a flight"));
     }
 
+    public void initialize(){
+        flightSrcICAOMenu.setValue(flightSrcICAOList.get(0));
+        flightSrcICAOMenu.setItems(flightSrcICAOList);
+
+        flightDstICAOMenu.setValue(flightDstICAOList.get(0));
+        flightDstICAOMenu.setItems(flightDstICAOList);
+    }
+
 
 
 
@@ -69,7 +80,7 @@ public class FlightTabController {
      * database and then updates the table
      */
     public void addFlightData() {
-        File f = HelperFunctions.getFile("Add Flight Data");
+        File f = HelperFunctions.getFile("Add Flight Data", false);
         if (f == null) {
             return;
         }
@@ -126,18 +137,24 @@ public class FlightTabController {
      * points.
      */
     public void flightFilterButtonPressed() {
+        //TODO this might be why delete flight isn't working
         String srcAirport = flightSrcICAOMenu.getValue().toString();
         String dstAirport = flightDstICAOMenu.getValue().toString();
         String searchQuery = flightSearchQuery.getText().toString();
+        ArrayList<DataPoint> allPoints;
 
-        ArrayList<String> menusPressed  = new ArrayList<String>();
-        menusPressed.add(srcAirport);
-        menusPressed.add(dstAirport);
+        if(srcAirport.equals("No values loaded") && dstAirport.equals("No values loaded")){
+            allPoints = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+        }
+        else {
+            ArrayList<String> menusPressed = new ArrayList<String>();
+            menusPressed.add(srcAirport);
+            menusPressed.add(dstAirport);
 
-        //Returns selected Flights !NOT FLIGHT POINTS!//
-        ArrayList<DataPoint> filteredFlights = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
-
-        updateFlightsTable(filteredFlights);
+            //Returns selected Flights !NOT FLIGHT POINTS!//
+            allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
+        }
+        updateFlightsTable(allPoints);
 
     }
 
@@ -194,6 +211,7 @@ public class FlightTabController {
                     //exportFlightMenuButton.setDisable(false);
 
                     Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
+                    flight = pressedFlight;
 
                     flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
 
@@ -219,5 +237,23 @@ public class FlightTabController {
 
         ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(flightPointTable.getItems());
         Exporter.exportData(myPoints);
+    }
+
+    public void deleteSingleFlight(){
+        //TODO delete single flight isn't working, I think the id is always 0
+        String sql = "";
+        int id = flight.getFlightID();
+        sql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Entry");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+            DataBaseRefactor.editDataEntry(sql);
+            flightFilterButtonPressed();
+        }
     }
 }

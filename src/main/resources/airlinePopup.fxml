@@ -106,7 +106,7 @@
         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
             <children>
                 <Button fx:id="airlineEditButton" layoutX="154.0" layoutY="11.0" mnemonicParsing="false" onAction="#editAirline" text="Edit" />
-                <Button fx:id="deleteButton" layoutX="209.0" layoutY="10.0" mnemonicParsing="false" onAction="#delete" text="Delete" />
+                <Button fx:id="deleteButton" layoutX="209.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteSingleAirline" text="Delete" />
                 <Button fx:id="airlineFinishButton" layoutX="322.0" layoutY="13.0" mnemonicParsing="false" onAction="#commitEdit" text="Finish" visible="false" />
                 <Button fx:id="airlineCancelButton" layoutX="20.0" layoutY="12.0" mnemonicParsing="false" onAction="#cancelEdit" text="Cancel" visible="false" />
                 <Text fx:id="airlineInvalidDataText" fill="#c61010" layoutX="154.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INVALID DATA!" visible="false" />

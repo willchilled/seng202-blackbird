@@ -17,6 +17,7 @@ import seng202.group2.blackbirdModel.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class RoutePopUpController {
 
@@ -247,6 +248,27 @@ public class RoutePopUpController {
         if(ke.getCode() == KeyCode.ENTER)
         {
             commitEdit();
+        }
+    }
+
+    /**
+     * Deletes a single route point. Asks user for confirmation before deleting.
+     */
+    public void deleteSingleRoute(){
+        String sql = "";
+        int id = routePoint.getRouteID();
+        sql = String.format("DELETE FROM ROUTE WHERE IDnum = %s", id);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Entry");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+            DataBaseRefactor.editDataEntry(sql);
+            routeTabController.routesFilterButtonPressed();
+            stage.close();
         }
     }
 

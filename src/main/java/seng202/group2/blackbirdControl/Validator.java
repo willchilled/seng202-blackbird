@@ -339,44 +339,18 @@ public class Validator {
 
     /**
      * A method to check if a table has the correct columns
-     * @return a boolean describing if the has
+     * @param table the table to check
+     * @param columns the columns to checkare in the table
+     * @return A boolean describing if the has
      */
-    public static boolean flightTableChecker(){
+    public static boolean tableColumnchecker(String table, String[] columns){
         boolean correct = true;
-        if (DataBaseRefactor.checkDBForColumn("FLIGHT", "FlightIDNum") == false) {
-            correct =false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHT", "SrcICAO") == false) {
-            correct =false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHT", "DstICAO") == false) {
-            correct =false;
+        for(String column : columns){
+            if(DataBaseRefactor.checkDBForColumn(table, column) == false){
+                correct = false;
+            }
         }
         return correct;
     }
-
-    /**
-     * A method to check if the FLIGHTPOINT table in the database is correct
-     * @return a boolean describing if the the FLIGHTPOINT table is of the correct format
-     */
-    public static boolean flightPointTableChecker(){
-        boolean correct = true;
-        if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "SeqOrder") == false) {
-            correct = false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "LocaleID") == false) {
-            correct =false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "LocationType") == false) {
-            correct =false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "Altitude") == false) {
-            correct =false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "Latitude") == false) {
-            correct =false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "Longitude") == false) {
-            correct = false;
-        }else if (DataBaseRefactor.checkDBForColumn("FLIGHTPOINT", "FlightIDNum") == false) {
-            correct = false;
-        }
-        return correct;
-    }
-
-
 
 }

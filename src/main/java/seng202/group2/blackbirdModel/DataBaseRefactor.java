@@ -692,6 +692,13 @@ public class DataBaseRefactor {
                     sqlDrop = "DROP TABLE ROUTE";
                     sqlCreate = createRouteTable();
                     break;
+                case FLIGHTPOINT:
+                    sqlDrop = "DROP TABLE FLIGHTPOINT";
+                    sqlCreate = createFlightPointTable();
+                    break;
+                case FLIGHT:
+                    sqlDrop = "DROP TABLE  FLIGHT";
+                    sqlCreate = createFlightTable();
             }
                 try{
                     preparedStatement = currentConnection.prepareStatement(sqlDrop);
@@ -720,16 +727,17 @@ public class DataBaseRefactor {
     public static boolean checkDBForColumn(String tableName, String columnName) {
         boolean exists = false;
         try {
-            Connection c = makeConnection();
+            Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection(getDatabaseName());
-            c.setAutoCommit(false);
+            currentConnection = DriverManager.getConnection(getDatabaseName());
+            currentConnection.setAutoCommit(false);
 
-            DatabaseMetaData md = c.getMetaData();
+            DatabaseMetaData md = currentConnection.getMetaData();
             ResultSet rs = md.getColumns(null, null, tableName, columnName);
             if (rs.next()) {
                 exists = true;
             }
+            currentConnection.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -737,5 +745,6 @@ public class DataBaseRefactor {
         }
         return exists;
     }
+
 }
 

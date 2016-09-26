@@ -32,6 +32,9 @@ public class ParserRefactor {
             String [] currentLine;
             while ((currentLine = reader.readNext()) != null) {
                 count++;
+                if (currentLine.length == 0) {
+                    continue;
+                }
                 String[] formattedLine = formatLine(currentLine);
                 DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count, errorTab);
                 allDataPoints.add(currentDataPoint);

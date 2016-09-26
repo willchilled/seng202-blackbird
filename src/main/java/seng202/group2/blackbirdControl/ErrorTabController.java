@@ -1,5 +1,7 @@
 package seng202.group2.blackbirdControl;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,41 +21,40 @@ import java.util.ArrayList;
  * Created by mch230 on 25/09/16.
  */
 public class ErrorTabController {
-    private ArrayList<BadData> badRoutes;
-    private ArrayList<BadData> badAirports;
-    private ArrayList<BadData> badAirlines;
+    private ObservableList<BadData> badRoutes = FXCollections.observableArrayList();
+    private ObservableList<BadData> badAirports = FXCollections.observableArrayList();
+    private ObservableList<BadData> badAirlines = FXCollections.observableArrayList();
 
     ErrorTabController instance;
 
-    @FXML private TableView routeErrors;
-    @FXML private TableColumn routeFileLine;
-    @FXML private TableColumn routeEntry;
+    @FXML private TableView<BadData> routeErrors;
+    @FXML private TableColumn<BadData, Integer> routeFileLine;
+    @FXML private TableColumn<BadData, String> routeEntry;
 
-    @FXML private TableView airportErrors;
-    @FXML private TableColumn airportFileLine;
-    @FXML private TableColumn airportEntry;
+    @FXML private TableView<BadData> airportErrors;
+    @FXML private TableColumn<BadData, Integer> airportFileLine;
+    @FXML private TableColumn<BadData, String> airportEntry;
 
-    @FXML private TableView airlineErrors;
-    @FXML private TableColumn airlineFileLine;
-    @FXML private TableColumn airlineEntry;
+    @FXML private TableView<BadData> airlineErrors;
+    @FXML private TableColumn<BadData, Integer> airlineFileLine;
+    @FXML private TableColumn<BadData, String> airlineEntry;
     private MainController mainController;
 
 
     public void updateBadEntries(BadData badPoint, DataTypes type) {
         switch (type) {
-            case ROUTEPOINT: badRoutes.add(badPoint); updateRouteErrors(); break;
-            case AIRPORTPOINT: badAirports.add(badPoint); updateAirportErrors(); break;
-            case AIRLINEPOINT: badAirlines.add(badPoint); updateAirlineErrors(); break;
+            case ROUTEPOINT: badRoutes.add(badPoint); break;
+            case AIRPORTPOINT: badAirports.add(badPoint); break;
+            case AIRLINEPOINT: badAirlines.add(badPoint); break;
             default: return;
         }
     }
 
-
-    protected void updateRouteErrors() {
-        routeErrors.getItems().setAll(badRoutes);
-        routeFileLine.setCellValueFactory(new PropertyValueFactory<BadData, Integer>("fileLine"));
-        routeEntry.setCellValueFactory(new PropertyValueFactory<BadData, Integer>("entry"));
-
+    @FXML
+    public void initialize() {
+        routeErrors.setItems(badRoutes);
+        routeFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
+        routeEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
         routeErrors.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -77,13 +78,10 @@ public class ErrorTabController {
                 }
             }
         });
-    }
 
-    protected void updateAirportErrors() {
-        airportErrors.getItems().setAll(badAirports);
-        airportFileLine.setCellValueFactory(new PropertyValueFactory<BadData, Integer>("fileLine"));
-        airportEntry.setCellValueFactory(new PropertyValueFactory<BadData, Integer>("entry"));
-
+        airportErrors.setItems(badAirports);
+        airportFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
+        airportEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
         airportErrors.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -107,13 +105,11 @@ public class ErrorTabController {
                 }
             }
         });
-    }
 
-    protected void updateAirlineErrors() {
-        airlineErrors.getItems().setAll(badAirlines);
-        airlineFileLine.setCellValueFactory(new PropertyValueFactory<BadData, Integer>("fileLine"));
-        airlineEntry.setCellValueFactory(new PropertyValueFactory<BadData, Integer>("entry"));
 
+        airlineErrors.setItems(badAirlines);
+        airlineFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
+        airlineEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
         airlineErrors.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

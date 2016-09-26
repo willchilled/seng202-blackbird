@@ -16,10 +16,19 @@ import java.util.ArrayList;
 public class ParserRefactor {
 
     /**
+     *
+     * @param file
+     * @param pointType
+     * @return
+     *
+     */
+
+    /**
      * Parses a given file using CSVReader to generate a string array. This is then passed to the DataPoint
      * static method to create a new DataPoint, and added to an arraylist of DataPoints.
      * @param file The input file
      * @param pointType The type of points that we are wanting to create
+     * @param errorTab The instance of the error tab that needs to be updated when a file is parsed in.
      * @return The arraylist of datapoints that have been parsed from the file.
      * @see DataPoint
      * @see CSVReader

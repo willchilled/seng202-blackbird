@@ -93,6 +93,7 @@ public class AirportTabController {
         ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         //System.out.println(validAirportPoints.get(1));
         updateAirportFields();
+        airportFilterMenu.setValue(airportCountryList.get(0));
         updateAirportsTable(validAirportPoints);
         mainController.updateRoutes();
         mainController.updateTab(DataTypes.AIRPORTPOINT);
@@ -103,7 +104,6 @@ public class AirportTabController {
         airportCountryList = populateAirportCountryList();  //populating from valid data in database
         //System.out.println(airportCountryList);
         airportFilterMenu.setItems(airportCountryList);
-        airportFilterMenu.setValue(airportCountryList.get(0));
     }
 
     private ObservableList<String> populateAirportCountryList(){
@@ -204,6 +204,11 @@ public class AirportTabController {
         //gets all airport points and updates view
         ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT); //airportTable.getItems();
         updateAirportsTable(allPoints);
+        updateAirportFields();
+        airportFilterMenu.setValue(airportCountryList.get(0));
+
+        airportSearchQuery.clear();
+
     }
 
     public void addSingleAirport(ActionEvent actionEvent) {

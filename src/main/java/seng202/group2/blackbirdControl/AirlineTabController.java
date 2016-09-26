@@ -65,13 +65,12 @@ public class AirlineTabController{
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         airlineFilterMenu.setItems(airlineCountryList);
         airlineActiveMenu.setItems(airlineActiveList);
         airlineActiveMenu.setValue(airlineActiveList.get(0));
-
-        }
+    }
 
     public void show(){
         airlineTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airline"));
@@ -101,6 +100,8 @@ public class AirlineTabController{
 
         //Populates DropDowns according to data
         updateAirlineFields();
+        airlineActiveMenu.setValue(airlineActiveList.get(0));
+        airlineFilterMenu.setValue(airlineCountryList.get(0));
 
         // Populates Rows in the Airline Table
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
@@ -112,12 +113,9 @@ public class AirlineTabController{
 
         airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
         airlineActiveMenu.setItems(airlineActiveList);
-        airlineActiveMenu.setValue(airlineActiveList.get(0));
-
 
         airlineCountryList = populateAirlineCountryList();  //populating from valid data in database
         airlineFilterMenu.setItems(airlineCountryList);
-        airlineFilterMenu.setValue(airlineCountryList.get(0));
     }
 
     private ObservableList<String> populateAirlineCountryList(){
@@ -210,7 +208,7 @@ public class AirlineTabController{
             menusPressed.add(activeSelection);
             allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
         }
-        updateAirlineFields();
+        //updateAirlineFields();
         updateAirlinesTable(allPoints);
         
     }
@@ -225,7 +223,7 @@ public class AirlineTabController{
         airlineActiveMenu.setItems(airlineActiveList);
         airlineActiveMenu.setValue(airlineActiveList.get(0));
 
-
+        airlineSearchQuery.clear();
     }
 
     public void addSingleAirline(ActionEvent actionEvent) {

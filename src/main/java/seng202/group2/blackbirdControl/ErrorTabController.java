@@ -25,8 +25,6 @@ public class ErrorTabController {
     private ObservableList<BadData> badAirports = FXCollections.observableArrayList();
     private ObservableList<BadData> badAirlines = FXCollections.observableArrayList();
 
-    ErrorTabController instance;
-
     @FXML private TableView<BadData> routeErrors;
     @FXML private TableColumn<BadData, Integer> routeFileLine;
     @FXML private TableColumn<BadData, String> routeEntry;
@@ -39,6 +37,9 @@ public class ErrorTabController {
     @FXML private TableColumn<BadData, Integer> airlineFileLine;
     @FXML private TableColumn<BadData, String> airlineEntry;
     private MainController mainController;
+    private RouteTabController routeTabController;
+    private AirportTabController airportTabController;
+    private AirlineTabController airlineTabController;
 
 
     public void updateBadEntries(BadData badPoint, DataTypes type) {
@@ -135,7 +136,21 @@ public class ErrorTabController {
         });
     }
 
+
+
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    public void setAirportTabController(AirportTabController airportTabController) {
+        this.airportTabController = airportTabController;
+    }
+
+    public void setAirlineTabController(AirlineTabController airlineTabController) {
+        this.airlineTabController = airlineTabController;
+    }
+
+    public void setRouteTabController(RouteTabController routeTabController) {
+        this.routeTabController = routeTabController;
     }
 }

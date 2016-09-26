@@ -46,15 +46,15 @@ public class FilterRefactorTest extends TestCase {
         // System.out.println(flight.getType() + "--------------------------");
 
         DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airlinePoints);
-        DataBaseRefactor.insertDataPoints(airportPoint);
-        DataBaseRefactor.insertDataPoints(routePoints);
-        DataBaseRefactor.insertDataPoints(myFlight);
+        DataBaseRefactor.insertDataPoints(airlinePoints, null);
+        DataBaseRefactor.insertDataPoints(airportPoint, null);
+        DataBaseRefactor.insertDataPoints(routePoints, null);
+        DataBaseRefactor.insertDataPoints(myFlight, null);
 
 
         // ArrayList<Fl> a= flightPoints;
 
-        DataBaseRefactor.insertDataPoints(flightPoints);
+        DataBaseRefactor.insertDataPoints(flightPoints, null);
 
 
     }
@@ -183,8 +183,8 @@ public class FilterRefactorTest extends TestCase {
         //ArrayList<Flight>
 
         DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airportPoint);
-        DataBaseRefactor.insertDataPoints(routePoints);
+        DataBaseRefactor.insertDataPoints(airportPoint, null);
+        DataBaseRefactor.insertDataPoints(routePoints, null);
 
 
         ArrayList<DataPoint> airportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
@@ -241,10 +241,10 @@ public class FilterRefactorTest extends TestCase {
         // System.out.println(flight.getType() + "--------------------------");
 
         DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airlinePoints);
+        DataBaseRefactor.insertDataPoints(airlinePoints, null);
 
-        DataBaseRefactor.insertDataPoints(myFlight);
-        DataBaseRefactor.insertDataPoints(flightPoints);
+        DataBaseRefactor.insertDataPoints(myFlight, null);
+        DataBaseRefactor.insertDataPoints(flightPoints, null);
 
         double numTrials = 3;
         long totalStart1 =0;
@@ -263,8 +263,8 @@ public class FilterRefactorTest extends TestCase {
 
 
             startTime = System.nanoTime();
-            DataBaseRefactor.insertDataPoints(airportPoint);
-            DataBaseRefactor.insertDataPoints(routePoints);
+            DataBaseRefactor.insertDataPoints(airportPoint, null);
+            DataBaseRefactor.insertDataPoints(routePoints, null);
             endTime = System.nanoTime();
 
             totalStart2 += startTime;

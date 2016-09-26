@@ -91,10 +91,10 @@ public class MainController implements Initializable {
 
         //I moved the create tables feature to the MenuBarController show()
     }
-
-    public AirlineTabController getAirlineTabController() {
-        return airlineTabController;
-    }
+//
+//    public AirlineTabController getAirlineTabController() {
+//        return airlineTabController;
+//    }
 
     public ErrorTabController getErrorTabController() {
         //advised by tutor to make this method

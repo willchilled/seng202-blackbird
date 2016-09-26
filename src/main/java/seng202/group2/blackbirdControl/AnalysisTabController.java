@@ -53,6 +53,8 @@ public class AnalysisTabController {
         airportCountryFilterMenu.setValue(airportCountryList.get(0));
         airportCountryFilterMenu.setItems(airportCountryList);
         //myPoints  = Analyser.rankAirports(myPoints, true);
+        myPoints  = Analyser.rankAirports(myPoints, true);
+        if (myPoints.size() > 1){
 
 
         for(DataPoint currentPoint: myPoints){
@@ -75,6 +77,7 @@ public class AnalysisTabController {
         }
 
         graph1.getData().addAll(series, series2);
+        }
 
     }
 

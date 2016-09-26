@@ -44,15 +44,12 @@ public class DataBaseRefactorTest extends TestCase {
 
 
         DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airlinePoints);
-        DataBaseRefactor.insertDataPoints(airportPoint);
-        DataBaseRefactor.insertDataPoints(routePoints);
-        DataBaseRefactor.insertDataPoints(myFlight);
+        DataBaseRefactor.insertDataPoints(airlinePoints, null);
+        DataBaseRefactor.insertDataPoints(airportPoint, null);
+        DataBaseRefactor.insertDataPoints(routePoints, null);
+        DataBaseRefactor.insertDataPoints(myFlight, null);
 
-
-        // ArrayList<Fl> a= flightPoints;
-
-        DataBaseRefactor.insertDataPoints(flightPoints);
+        DataBaseRefactor.insertDataPoints(flightPoints, null);
 
     }
 

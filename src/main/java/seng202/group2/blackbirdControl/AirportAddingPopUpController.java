@@ -77,7 +77,7 @@ public class AirportAddingPopUpController {
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT, 0, null);
             myAirportData.add(myAirportPoint);
 
-            DataBaseRefactor.insertDataPoints(myAirportData);
+            DataBaseRefactor.insertDataPoints(myAirportData, null);
             airportTabController.airportFilterButtonPressed();
             adderStage.close();
         } else {

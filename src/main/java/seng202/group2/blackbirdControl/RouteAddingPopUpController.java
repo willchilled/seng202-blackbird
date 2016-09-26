@@ -72,7 +72,7 @@ public class RouteAddingPopUpController {
             DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT, 0, null);
             ArrayList<DataPoint> myRouteData = new ArrayList<>();
             myRouteData.add(myRoutePoint);
-            DataBaseRefactor.insertDataPoints(myRouteData);
+            DataBaseRefactor.insertDataPoints(myRouteData, null);
             routeTabController.routesFilterButtonPressed();
 
             adderStage.close();

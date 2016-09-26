@@ -63,7 +63,7 @@ public class AirlinePoint extends DataPoint {
                 this.country = currentLine[6].trim();
                 this.active = currentLine[7].trim().toUpperCase();
             } catch(NumberFormatException e) {
-                BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
+                BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT);
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
                 }
@@ -73,7 +73,7 @@ public class AirlinePoint extends DataPoint {
                 this.correctEntry = 1;
             }
         } else {
-            BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
+            BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT);
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
             }

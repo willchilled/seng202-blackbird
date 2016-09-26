@@ -51,7 +51,7 @@ public class AirlineAddingPopUpController {
             DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT, 0, null);
             myAirlineData.add(myAirlinePoint);
 
-            DataBaseRefactor.insertDataPoints(myAirlineData);
+            DataBaseRefactor.insertDataPoints(myAirlineData, null);
             airlineTabController.airlineFilterButtonPressed();
             adderStage.close();
         } else {

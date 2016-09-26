@@ -60,70 +60,50 @@ public class RoutePoint extends DataPoint {
      */
     public RoutePoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
+        try {
+            if (currentLine.length == 9) {  //parsed from file
+                this.airline = currentLine[0];
+                this.airlineID = Integer.parseInt(currentLine[1]);
+                this.srcAirport = currentLine[2];
+                this.srcAirportID = Integer.parseInt(currentLine[3]);
+                this.dstAirport = currentLine[4];
+                this.dstAirportID = Integer.parseInt(currentLine[5]);
+                this.codeshare = currentLine[6];
+                this.stops = Integer.parseInt(currentLine[7]);
+                this.equipment = currentLine[8];
 
-//        if (currentLine.length == 9 || currentLine.length == 14){
+            } else if (currentLine.length == 10 || currentLine.length == 14) {  //returned from database with route ID
+                this.routeID = Integer.parseInt(currentLine[0]);
+                this.airline = currentLine[1];
+                this.airlineID = Integer.parseInt(currentLine[2]);
+                this.srcAirport = currentLine[3];
+                this.srcAirportID = Integer.parseInt(currentLine[4]);
+                this.dstAirport = currentLine[5];
+                this.dstAirportID = Integer.parseInt(currentLine[6]);
+                this.codeshare = currentLine[7];
+                this.stops = Integer.parseInt(currentLine[8]);
+                this.equipment = currentLine[9];
 
-            //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
-            try {
-                if (currentLine.length == 9) {
-                    //this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
-                    this.airline = currentLine[0];    //let people name airline whatever they want
-                    //System.out.println("I EXPECT AN INT: " +currentLine[0]);
-                    //if (currentLine)
-                    this.airlineID = Integer.parseInt(currentLine[1]);
-                    // System.out.println("");
-                    this.srcAirport = currentLine[2];
-                    this.srcAirportID = Integer.parseInt(currentLine[3]);
-                    this.dstAirport = currentLine[4];
-                    this.dstAirportID = Integer.parseInt(currentLine[5]);
-
-                    this.codeshare = currentLine[6];    //should not be null, handle by parser later
-                    this.stops = Integer.parseInt(currentLine[7]);
-                    this.equipment = currentLine[8];
-                } else if (currentLine.length == 10 || currentLine.length == 14) {
-                    this.routeID = Integer.parseInt(currentLine[0]);	//should not be null
-                    this.airline = currentLine[1];    //let people name airline whatever they want
-                    //System.out.println("I EXPECT AN INT: " +currentLine[0]);
-                    //if (currentLine)
-                    this.airlineID = Integer.parseInt(currentLine[2]);
-                    // System.out.println("");
-                    this.srcAirport = currentLine[3];
-                    this.srcAirportID = Integer.parseInt(currentLine[4]);
-                    this.dstAirport = currentLine[5];
-                    this.dstAirportID = Integer.parseInt(currentLine[6]);
-
-                    this.codeshare = currentLine[7];    //should not be null, handle by parser later
-                    this.stops = Integer.parseInt(currentLine[8]);
-                    this.equipment = currentLine[9];
-                    if (currentLine.length == 14) {
-                        this.srcAirportName = currentLine[10];
-                        this.srcAirportCountry = currentLine[11];
-                        this.dstAirportName = currentLine[12];
-                        this.dstAirportCountry = currentLine[13];
-                    }
-                } else {
-                    BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
-                    if (errorTabController != null) {
-                        errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
-                    }
-                    this.correctEntry = 1;
+                if (currentLine.length == 14) {
+                    this.srcAirportName = currentLine[10];
+                    this.srcAirportCountry = currentLine[11];
+                    this.dstAirportName = currentLine[12];
+                    this.dstAirportCountry = currentLine[13];
                 }
-
-                //System.out.println("here");
-
-            } catch(NumberFormatException e) {
-                BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
+            } else {
+                BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT);
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
                 }
-                //AirlinePoint myAirlinePoint = new
-//                this.routeID = -1;
-//                //this.airline = currentLine.toString();
                 this.correctEntry = 1;
             }
-
-//        }
-
+        } catch(NumberFormatException e) {
+            BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT);
+            if (errorTabController != null) {
+                errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+            }
+            this.correctEntry = 1;
+        }
     }
 
     /**

@@ -121,7 +121,9 @@ public class AirportPoint extends DataPoint {
 
             } catch(NumberFormatException e) {
                 BadData badAirport = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRPORTPOINT);
-                errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
+                if (errorTabController != null) {
+                    errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
+                }
                 //AirlinePoint myAirlinePoint = new
 //                this.airportID = -1;
 //                //this.airportName = currentLine.toString();
@@ -129,7 +131,9 @@ public class AirportPoint extends DataPoint {
             }
         } else {
             BadData badAirport = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRPORTPOINT);
-            errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
+            if (errorTabController != null) {
+                errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
+            }
             this.correctEntry = 1;
         }
     }

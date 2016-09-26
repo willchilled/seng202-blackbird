@@ -103,7 +103,9 @@ public class RoutePoint extends DataPoint {
                     }
                 } else {
                     BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
-                    errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+                    if (errorTabController != null) {
+                        errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+                    }
                     this.correctEntry = 1;
                 }
 
@@ -111,7 +113,9 @@ public class RoutePoint extends DataPoint {
 
             } catch(NumberFormatException e) {
                 BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
-                errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+                if (errorTabController != null) {
+                    errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+                }
                 //AirlinePoint myAirlinePoint = new
 //                this.routeID = -1;
 //                //this.airline = currentLine.toString();

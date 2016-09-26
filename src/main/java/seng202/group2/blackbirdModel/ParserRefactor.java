@@ -3,6 +3,7 @@
 package seng202.group2.blackbirdModel;
 
 import com.opencsv.CSVReader;
+import seng202.group2.blackbirdControl.ErrorTabController;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,15 +16,24 @@ import java.util.ArrayList;
 public class ParserRefactor {
 
     /**
+     *
+     * @param file
+     * @param pointType
+     * @return
+     *
+     */
+
+    /**
      * Parses a given file using CSVReader to generate a string array. This is then passed to the DataPoint
      * static method to create a new DataPoint, and added to an arraylist of DataPoints.
      * @param file The input file
      * @param pointType The type of points that we are wanting to create
+     * @param errorTab The instance of the error tab that needs to be updated when a file is parsed in.
      * @return The arraylist of datapoints that have been parsed from the file.
      * @see DataPoint
      * @see CSVReader
      */
-    public static ArrayList<DataPoint> parseFile(File file, DataTypes pointType){
+    public static ArrayList<DataPoint> parseFile(File file, DataTypes pointType, ErrorTabController errorTab){
         ArrayList<DataPoint> allDataPoints =  new ArrayList<>();
         int count = 0;
         try {
@@ -31,8 +41,11 @@ public class ParserRefactor {
             String [] currentLine;
             while ((currentLine = reader.readNext()) != null) {
                 count++;
+                if (currentLine.length == 0) {
+                    continue;
+                }
                 String[] formattedLine = formatLine(currentLine);
-                DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType);
+                DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count, errorTab);
                 allDataPoints.add(currentDataPoint);
             }
         } catch (FileNotFoundException e) {

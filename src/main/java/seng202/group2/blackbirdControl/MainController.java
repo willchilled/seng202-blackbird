@@ -45,6 +45,7 @@ public class MainController implements Initializable {
     @FXML private RouteTabController routeTabController;
     @FXML private AirportTabController airportTabController;
     @FXML private AirlineTabController airlineTabController;
+    @FXML private ErrorTabController errorTabController;
     @FXML private AnalysisTabController analysisTabController;
 
 
@@ -70,6 +71,10 @@ public class MainController implements Initializable {
         routeTabController.setMainController(this);
         airportTabController.setMainController(this);
         airlineTabController.setMainController(this);
+        errorTabController.setMainController(this);
+        errorTabController.setRouteTabController(routeTabController);
+        errorTabController.setAirportTabController(airportTabController);
+        errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
     }
 
@@ -86,6 +91,16 @@ public class MainController implements Initializable {
 
         //I moved the create tables feature to the MenuBarController show()
     }
+
+    public AirlineTabController getAirlineTabController() {
+        return airlineTabController;
+    }
+
+    public ErrorTabController getErrorTabController() {
+        //advised by tutor to make this method
+        return errorTabController;
+    }
+
 
     /**
      * Calls airlineTabController.addAirlineData() to add airline data from file

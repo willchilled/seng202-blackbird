@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
@@ -28,6 +30,11 @@ public class FlightTabController {
     private MainController mainController;
 
     private Flight flight;
+    private FlightPoint flightPoint;
+
+    //MapShit
+    @FXML private WebView webView;
+    private WebEngine webEngine;
 
     //FLIGHT and FLIGHT POINT tables
     @FXML private TableView<DataPoint> flightTable;
@@ -65,6 +72,7 @@ public class FlightTabController {
 
         flightDstICAOMenu.setValue(flightDstICAOList.get(0));
         flightDstICAOMenu.setItems(flightDstICAOList);
+        initMap();
     }
 
 
@@ -84,7 +92,8 @@ public class FlightTabController {
         if (f == null) {
             return;
         }
-        ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
+        ErrorTabController errorTab = mainController.getErrorTabController();
+        ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myFlightData);
         ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
 
@@ -212,7 +221,9 @@ public class FlightTabController {
 
                     Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
                     flight = pressedFlight;
-                    System.out.println(flight.getFlightID());
+                    Route myRoute = new Route(Route.makeRoutePoints(flight));
+                    displayRoute(myRoute);
+
 
                     flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
 
@@ -223,6 +234,24 @@ public class FlightTabController {
                     flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
                 }
 
+            }
+        });
+
+        flightPointTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+
+                    FlightPoint pressedPoint = (FlightPoint) flightPointTable.getSelectionModel().getSelectedItem();
+                    flightPoint = pressedPoint;
+                    double lat = flightPoint.getLatitude();
+                    double lng = flightPoint.getLongitude();
+                    ArrayList<Position> myWayPoint = new ArrayList<>();
+                    myWayPoint.add(new Position(lat, lng));
+                    Route myMarker = new Route(myWayPoint);
+                    String scriptToExecute = "displayWayPoint(" + myMarker.toJSONArray() + ")";
+                    webEngine.executeScript(scriptToExecute);
+                }
             }
         });
 
@@ -245,7 +274,7 @@ public class FlightTabController {
         String sql = "";
         int id = flight.getFlightID();
         sql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);
-        System.out.println(sql);
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Entry");
         alert.setContentText("Are you sure you want to delete?");
@@ -256,5 +285,24 @@ public class FlightTabController {
             DataBaseRefactor.editDataEntry(sql);
             flightFilterButtonPressed();
         }
+    }
+
+    //______________________MAP STUFf--------------------------------------//
+
+    /**
+     * Initializes the map with the JavaScript
+     */
+    private void initMap() {
+        webEngine = webView.getEngine();
+        webEngine.load(getClass().getClassLoader().getResource("map.html").toExternalForm());
+    }
+
+    /**
+     *Displays a route on the map by way of making a javascript and executing it through the web engine
+     * @param newRoute
+     */
+    private void displayRoute(Route newRoute) {
+        String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
+        webEngine.executeScript(scriptToExecute);
     }
 }

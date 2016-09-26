@@ -16,6 +16,7 @@ public class FlightPoint extends DataPoint {
     private float latitude;
     private float longitude;
     private int correctEntry=0;
+    private int flightIDNum;
 
     /**
      * Creates a FlightPoint with values given
@@ -60,12 +61,13 @@ public class FlightPoint extends DataPoint {
             }
             //FOR GRABBING OLD FLIGHTPOINTS FROM DATABASE FOR RECREATION
             if (currentLine.length == 7) {
-                this.seqno = Integer.parseInt(currentLine[0]);
+                //this.flightIDNum = Integer.parseInt(currentLine[0]);
                 this.localtype = currentLine[2];
                 this.localeID = currentLine[1];
                 this.altitude = Integer.parseInt(currentLine[3]);
                 this.latitude = Float.parseFloat(currentLine[4]);
                 this.longitude = Float.parseFloat(currentLine[5]);
+                this.flightIDNum = Integer.parseInt(currentLine[6]);
             }
         }
         catch(NumberFormatException e){
@@ -75,8 +77,8 @@ public class FlightPoint extends DataPoint {
 
     }
 
-    public int getSeqno() {
-        return seqno;
+    public int getFlightIDNum() {
+        return flightIDNum;
     }
 
     public String getLocalType() {

@@ -1,5 +1,8 @@
 package seng202.group2.blackbirdModel;
 
+import org.apache.commons.lang3.StringUtils;
+import seng202.group2.blackbirdControl.ErrorTabController;
+
 /**
  *  A subclass of Datapoint that stores information about an airport
  */
@@ -62,7 +65,7 @@ public class AirportPoint extends DataPoint {
      *                    10 dst,
      *                    11 tz,
      */
-    public AirportPoint(String[] currentLine) {
+    public AirportPoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
         //System.out.println(currentLine.length);
 
@@ -116,17 +119,23 @@ public class AirportPoint extends DataPoint {
                     this.incomingRoutes = Integer.parseInt(currentLine[13]);//check this is the right way round
                 }
 
-            }
-            catch(NumberFormatException e) {
+            } catch(NumberFormatException e) {
+                BadData badAirport = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRPORTPOINT);
+                if (errorTabController != null) {
+                    errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
+                }
                 //AirlinePoint myAirlinePoint = new
-                this.airportID = -1;
-                //this.airportName = currentLine.toString();
+//                this.airportID = -1;
+//                //this.airportName = currentLine.toString();
                 this.correctEntry = 1;
             }
-
-
+        } else {
+            BadData badAirport = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRPORTPOINT);
+            if (errorTabController != null) {
+                errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
+            }
+            this.correctEntry = 1;
         }
-
     }
 
     /**

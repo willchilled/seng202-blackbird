@@ -127,6 +127,12 @@ public class RouteTabController {
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
         ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         updateRoutesDropdowns();
+        routesFilterBySourceMenu.setValue(routesFilterBySourceList.get(0));
+        routesFilterbyDestMenu.setValue(routesFilterbyDestList.get(0));
+        routesFilterByStopsMenu.setValue(routesFilterByStopsList.get(0));
+        routesFilterbyEquipMenu.setValue(routesFilterbyEquipList.get(0));
+
+        routesSearchMenu.clear();
 
         updateRoutesTable(allPoints);
     }
@@ -137,14 +143,19 @@ public class RouteTabController {
         if (f == null) {
             return;
         }
-
-        ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
+        ErrorTabController errorTab = mainController.getErrorTabController();
+        ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myRouteData);
 
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(validRouteData);
         updateRoutesDropdowns();
+        routesFilterBySourceMenu.setValue(routesFilterBySourceList.get(0));
+        routesFilterbyDestMenu.setValue(routesFilterbyDestList.get(0));
+        routesFilterByStopsMenu.setValue(routesFilterByStopsList.get(0));
+        routesFilterbyEquipMenu.setValue(routesFilterbyEquipList.get(0));
+
         mainController.updateAirports();
         mainController.updateTab(DataTypes.ROUTEPOINT);
 
@@ -225,24 +236,27 @@ public class RouteTabController {
         ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Src", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
+        routesFilterBySourceList = uniqueObservableSources;
         routesFilterBySourceMenu.setItems(uniqueObservableSources);
-        routesFilterBySourceMenu.setValue(uniqueObservableSources.get(0));
+
     }
 
     private void populateRoutesFilterbyDestList(){
         ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Dst", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
+        routesFilterbyDestList = uniqueObservableSources;
         routesFilterbyDestMenu.setItems(uniqueObservableSources);
-        routesFilterbyDestMenu.setValue(uniqueObservableSources.get(0));
+
     }
 
     private void populateRoutesFilterByStopsList(){
         ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Stops", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
+        routesFilterByStopsList = uniqueObservableSources;
         routesFilterByStopsMenu.setItems(uniqueObservableSources);
-        routesFilterByStopsMenu.setValue(uniqueObservableSources.get(0));
+
     }
 
     private void populateRoutesFilterByEquipList(){
@@ -264,8 +278,9 @@ public class RouteTabController {
         Collections.sort(uniqueEquip);
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueEquip);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
+        routesFilterbyEquipList = uniqueObservableSources;
         routesFilterbyEquipMenu.setItems(uniqueObservableSources);
-        routesFilterbyEquipMenu.setValue(uniqueObservableSources.get(0));
+
     }
 
 

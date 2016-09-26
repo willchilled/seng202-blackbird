@@ -400,7 +400,7 @@ public class DataBaseRefactor {
                          //System.out.println(i + " " + attributes[i]);
 //                    }
                 }
-                DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
+                DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
                 // System.out.println(myPoint.toString());
             }
@@ -602,9 +602,9 @@ public class DataBaseRefactor {
                 "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
                 "LocaleID       VARCHAR(5) NOT NULL, "+
                 "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
-                "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
-                "Latitude       FLOAT NOT NULL constraint check_lat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      FLOAT NOT NULL constraint check_long check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
+                "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/ constraint check_flightalt check (Altitude between -1500 and 100000), " +
+                "Latitude       FLOAT NOT NULL constraint check_flightlat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
+                "Longitude      FLOAT NOT NULL constraint check_flightlong check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +

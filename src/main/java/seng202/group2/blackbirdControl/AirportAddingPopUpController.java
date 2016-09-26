@@ -74,7 +74,7 @@ public class AirportAddingPopUpController {
         String[] airportPoint = getValues();
         if(Validator.checkAirport(airportPoint)) {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
-            DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT);
+            DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT, 0, null);
             myAirportData.add(myAirportPoint);
 
             DataBaseRefactor.insertDataPoints(myAirportData);

@@ -50,6 +50,7 @@ public class RoutePopUpController {
 //    @FXML private TextField routeCShareTextEdit;
     @FXML private TextField routeStopsTextEdit;
     @FXML private TextField routeEquipmentTextEdit;
+    @FXML private Button routeDeleteButton;
 
 //    @FXML private TextField routeSrcTextEdit;
 //    @FXML private TextField routeSrcIDTextEdit;
@@ -168,6 +169,7 @@ public class RoutePopUpController {
         routeEditButton.setVisible(false);
         routeFinishButton.setVisible(true);
         routeCancelButton.setVisible(true);
+        routeDeleteButton.setVisible(false);
     }
 
     public void commitEdit(){
@@ -235,6 +237,7 @@ public class RoutePopUpController {
         routeEditButton.setVisible(true);
         routeFinishButton.setVisible(false);
         routeCancelButton.setVisible(false);
+        routeDeleteButton.setVisible(true);
     }
 
     //TODO fix this method here to check values properly

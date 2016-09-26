@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.control.ComboBox;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataPoint;
 import seng202.group2.blackbirdModel.DataTypes;
@@ -25,8 +26,11 @@ public class AnalysisTabController {
     @FXML CategoryAxis xAxis;
     @FXML NumberAxis yAxis;
 
+    @FXML ComboBox airportCountryFilterMenu;
+
     private MainController mainController;
 
+    ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
     private ObservableList<String> monthNames = FXCollections.observableArrayList();
 
 
@@ -45,6 +49,9 @@ public class AnalysisTabController {
 
     protected void setGraphData() {
         ArrayList<DataPoint> myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        airportCountryList = populateAirportCountryList();
+        airportCountryFilterMenu.setValue(airportCountryList.get(0));
+        airportCountryFilterMenu.setItems(airportCountryList);
         //myPoints  = Analyser.rankAirports(myPoints, true);
 
 
@@ -98,5 +105,15 @@ public class AnalysisTabController {
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    private ObservableList<String> populateAirportCountryList(){
+        //Populates the dropdown of airline countries
+        //ArrayList<AirportPoint> allPoints = getAllAirportPoints();
+        ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
+        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
+        countryList = HelperFunctions.addNullValue(countryList);
+
+        return countryList;
     }
 }

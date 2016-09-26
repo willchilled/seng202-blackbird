@@ -212,6 +212,7 @@ public class FlightTabController {
 
                     Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
                     flight = pressedFlight;
+                    System.out.println(flight.getFlightID());
 
                     flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
 
@@ -244,7 +245,7 @@ public class FlightTabController {
         String sql = "";
         int id = flight.getFlightID();
         sql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);
-
+        System.out.println(sql);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Entry");
         alert.setContentText("Are you sure you want to delete?");

@@ -68,7 +68,7 @@ public class ErrorTabController {
 
                         //use controller to control it
                         RouteAddingPopUpController popUpController = loader.getController();
-                        //popUpController.setRouteTabController(instance);
+                        popUpController.setRouteTabController(routeTabController);
                         popUpController.setAdderStage(adderStage);
                         popUpController.setRoot(root);
                         popUpController.control();
@@ -95,7 +95,7 @@ public class ErrorTabController {
 
                         //use controller to control it
                         AirportAddingPopUpController popUpController = loader.getController();
-                        //popUpController.setAirportTabController(instance);
+                        popUpController.setAirportTabController(airportTabController);
                         popUpController.setAdderStage(adderStage);
                         popUpController.setRoot(root);
                         popUpController.control();
@@ -123,7 +123,7 @@ public class ErrorTabController {
 
                         //use controller to control it
                         AirlineAddingPopUpController popUpController = loader.getController();
-                        //popUpController.setAirlineTabController(instance);
+                        popUpController.setAirlineTabController(airlineTabController);
                         popUpController.setAdderStage(adderStage);
                         popUpController.setRoot(root);
                         popUpController.control();

@@ -60,7 +60,7 @@ public class Analyser {
         }
 
 
-        //Collections.sort(myPoints, (x, y) -> compareAirportPointSize(x, y));
+        Collections.sort(myPoints, (x, y) -> compareAirportPointSize(x, y));
 
         if (!mostRoutes) {   //rank by least Routes
             Collections.reverse(myPoints);
@@ -78,11 +78,21 @@ public class Analyser {
 
 
     public static int compareAirportPointSize(AirportPoint a, AirportPoint another) {
-        if (a.getIncomingRoutes() + a.getOutgoingRoutes() < another.getIncomingRoutes() + another.getOutgoingRoutes()){
+        if (a.getIncomingRoutes() + a.getOutgoingRoutes() == another.getIncomingRoutes() + another.getOutgoingRoutes()){
+            if (a.getAirportName().compareTo(another.getAirportName()) >=0 ){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+
+        }
+        else if (a.getIncomingRoutes() + a.getOutgoingRoutes() < another.getIncomingRoutes() + another.getOutgoingRoutes()){
             return 1;
-        }else{
+        }else  {
             return -1;
         }
+
     }
 
 

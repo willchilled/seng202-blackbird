@@ -45,7 +45,8 @@ public class AnalysisTabController {
 
     protected void setGraphData() {
         ArrayList<DataPoint> myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        //myPoints  = Analyser.rankAirports(myPoints, true);
+        myPoints  = Analyser.rankAirports(myPoints, true);
+        if (myPoints.size() > 1){
 
 
         for(DataPoint currentPoint: myPoints){
@@ -68,6 +69,7 @@ public class AnalysisTabController {
         }
 
         graph1.getData().addAll(series, series2);
+        }
 
     }
 

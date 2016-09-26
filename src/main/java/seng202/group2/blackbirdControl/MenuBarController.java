@@ -74,6 +74,7 @@ public class MenuBarController {
         mainController.show();
         addDataMenuButton.setDisable(false);
         exportDatabaseButton.setDisable(false);
+        mainController.showTables();
     }
 
     public void setMainController(MainController controller) {

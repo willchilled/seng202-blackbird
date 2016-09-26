@@ -43,7 +43,7 @@ public class FilterRefactor {
      * @return airport points with number of incoming and outgoing routes set
      */
     private static ArrayList<DataPoint> linkRoutesandAirports(ArrayList<DataPoint> myAirportPoints) {
-        ArrayList<DataPoint> linkedAiportPoints = new ArrayList<DataPoint>();
+        ArrayList<DataPoint> linkedAirportPoints = new ArrayList<DataPoint>();
         ArrayList<DataPoint> myRoutes = getAllPoints(DataTypes.ROUTEPOINT);
         Map<Integer, Integer> incomingRoutesDict = new HashMap<Integer, Integer>();
         Map<Integer, Integer> outgoingRoutesDict = new HashMap<Integer, Integer>();
@@ -66,7 +66,6 @@ public class FilterRefactor {
 
                 int currentIncAmount = incomingRoutesDict.get(incomingRouteKey);
                 incomingRoutesDict.put(incomingRouteKey, currentIncAmount+1);
-
             }
             catch (Exception e){
 
@@ -80,10 +79,10 @@ public class FilterRefactor {
 
             currentPoint.setIncomingRoutes(incomingRoutesDict.get(key));
             DataPoint xPoint = currentPoint;
-            linkedAiportPoints.add(xPoint);
+            linkedAirportPoints.add(xPoint);
         }
 
-        return linkedAiportPoints;
+        return linkedAirportPoints;
     }
 
     /**

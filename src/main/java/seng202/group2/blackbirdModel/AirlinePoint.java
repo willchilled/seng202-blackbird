@@ -2,6 +2,11 @@
 
 package seng202.group2.blackbirdModel;
 
+import seng202.group2.blackbirdControl.ErrorTabController;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * A subclass of datapoint that stores information about an airline
  */
@@ -58,12 +63,13 @@ public class AirlinePoint extends DataPoint {
                 this.active = currentLine[7].trim().toUpperCase();
             }
             catch(NumberFormatException e) {
+                //BadData badAirline = new BadData(count, Arrays.toString(currentLine), DataTypes.AIRLINEPOINT);
+
                 //AirlinePoint myAirlinePoint = new
                 this.airlineID = -1;
                 //this.airlineName = currentLine.toString();
                 this.correctEntry = 1;
             }
-
         }
     }
 

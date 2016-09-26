@@ -21,6 +21,7 @@
                 <fx:include fx:id="routeTab" source="routeTab.fxml" />
                 <fx:include fx:id="airportTab" source="airportTab.fxml" />
                 <fx:include fx:id="airlineTab" source="airlineTab.fxml" />
+                <fx:include fx:id="errorTab" source="errorTab.fxml" />
             </tabs>
           </TabPane>
             <fx:include fx:id="openPane" source="open.fxml" StackPane.alignment="CENTER" />

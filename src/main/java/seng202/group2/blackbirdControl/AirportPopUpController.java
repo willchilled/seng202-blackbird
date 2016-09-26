@@ -3,20 +3,23 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
+
+import java.util.Optional;
 
 public class AirportPopUpController {
 
     private AirportTabController airportTabController;
 
     private AirportPoint airportPoint;
+
+    private Stage stage;
 
     @FXML private Label airportNameText;
     @FXML private Label airportIdText;
@@ -216,6 +219,27 @@ public class AirportPopUpController {
         airportCancelButton.setVisible(false);
     }
 
+    /**
+     * Deletes a single airport point. Asks user for confirmation before deleting.
+     */
+    public void deleteSingleAirport(){
+        String sql = "";
+        int id = airportPoint.getAirportID();
+        sql = String.format("DELETE FROM AIRPORT WHERE ID = %s", id);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Entry");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+            DataBaseRefactor.editDataEntry(sql);
+            airportTabController.airportFilterButtonPressed();
+            stage.close();
+        }
+    }
+
 
     public void enterPressed(KeyEvent ke)
     {
@@ -228,6 +252,10 @@ public class AirportPopUpController {
 
     public void setAirportTabController(AirportTabController controller) {
         this.airportTabController = controller;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
 

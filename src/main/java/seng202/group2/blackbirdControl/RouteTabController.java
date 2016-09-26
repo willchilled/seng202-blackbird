@@ -133,7 +133,7 @@ public class RouteTabController {
 
     public void addRouteData() {
         
-        File f = HelperFunctions.getFile("Add Route Data");
+        File f = HelperFunctions.getFile("Add Route Data", false);
         if (f == null) {
             return;
         }

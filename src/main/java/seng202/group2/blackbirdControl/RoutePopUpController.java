@@ -17,6 +17,7 @@ import seng202.group2.blackbirdModel.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class RoutePopUpController {
 
@@ -113,7 +114,6 @@ public class RoutePopUpController {
     private Integer[] getMenuIndex(ObservableList<String> airlineMenu, ObservableList<String> uniqueAirports) {
         Integer[] returnIndices = new Integer[3];
         String sql = "SELECT * FROM AIRLINE WHERE ID=" + routePoint.getAirlineID();
-        System.out.println(sql);
 
         int myIndex = 0;
         ArrayList<DataPoint> myAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
@@ -128,7 +128,6 @@ public class RoutePopUpController {
         returnIndices[0] = myIndex;
 
         String sql1 = "SELECT * FROM AIRPORT WHERE ID=" + routePoint.getSrcAirportID();
-        System.out.println(sql1);
         int sourceIndex = 0;
         ArrayList<DataPoint> sourceAirport = DataBaseRefactor.performGenericQuery(sql1, DataTypes.AIRPORTPOINT);
         if (sourceAirport.size() > 1) {
@@ -142,7 +141,6 @@ public class RoutePopUpController {
         returnIndices[1] = sourceIndex;
 
         String sql2 = "SELECT * FROM AIRPORT WHERE ID=" + routePoint.getDstAirportID();
-        System.out.println(sql2);
         int destIndex = 0;
         ArrayList<DataPoint> destAirport = DataBaseRefactor.performGenericQuery(sql2, DataTypes.AIRPORTPOINT);
         if (destAirport.size() > 1) {
@@ -174,7 +172,7 @@ public class RoutePopUpController {
 
     public void commitEdit(){
         String[] values = getValues();
-        System.out.println(Arrays.toString(values));
+        //System.out.println(Arrays.toString(values));
         if (Validator.checkRoute(values)) {
             String[] valueFields = RouteTabController.getFields(values);
 
@@ -183,12 +181,12 @@ public class RoutePopUpController {
                             " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s', Equipment=\"%9$s\" WHERE IDnum='%10$s'",
                     valueFields[0], valueFields[1], valueFields[2], valueFields[3], valueFields[4], valueFields[5],
                     valueFields[6], valueFields[7], valueFields[8], routeIDText.getText());
-            System.out.println(sql);
+            //System.out.println(sql);
             DataBaseRefactor.editDataEntry(sql);
             routeTabController.routesFilterButtonPressed();
 
             String sql1 = "SELECT * FROM ROUTE WHERE IDnum='" + routeIDText.getText() + "'";
-            System.out.println(sql1);
+            //System.out.println(sql1);
             ArrayList<DataPoint> myRoute = DataBaseRefactor.performGenericQuery(sql1, DataTypes.ROUTEPOINT);
             System.out.println(myRoute.get(0));
             RoutePoint myEditedRoute = (RoutePoint) myRoute.get(0);
@@ -250,6 +248,27 @@ public class RoutePopUpController {
         if(ke.getCode() == KeyCode.ENTER)
         {
             commitEdit();
+        }
+    }
+
+    /**
+     * Deletes a single route point. Asks user for confirmation before deleting.
+     */
+    public void deleteSingleRoute(){
+        String sql = "";
+        int id = routePoint.getRouteID();
+        sql = String.format("DELETE FROM ROUTE WHERE IDnum = %s", id);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Entry");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+            DataBaseRefactor.editDataEntry(sql);
+            routeTabController.routesFilterButtonPressed();
+            stage.close();
         }
     }
 

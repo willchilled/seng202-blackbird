@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+
+
+   <Tab text="Errors" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.ErrorTabController">
+       <content>
+           <GridPane prefHeight="959.0" prefWidth="1304.0">
+               <columnConstraints>
+                   <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+                   <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                   <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="612.0" minHeight="46.0" prefHeight="46.0" vgrow="NEVER" />
+                   <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="302.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="612.0" minHeight="62.0" prefHeight="62.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="286.0" vgrow="NEVER" />
+                  <RowConstraints maxHeight="612.0" minHeight="44.6666259765625" prefHeight="44.6666259765625" vgrow="NEVER" />
+                  <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="303.3333740234375" vgrow="NEVER" />
+                   <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <TableView fx:id="airportErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <columns>
+                      <TableColumn fx:id="airportFileLine" prefWidth="75.0" text="File Line" />
+                      <TableColumn fx:id="airportEntry" prefWidth="1178.0" resizable="false" text="Entry" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="airlineErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <columns>
+                      <TableColumn fx:id="airlineFileLine" prefWidth="75.0" text="File Line" />
+                      <TableColumn fx:id="airlineEntry" prefWidth="1178.0" resizable="false" text="Entry" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="routeErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <columns>
+                      <TableColumn fx:id="routeFileLine" prefWidth="75.0" text="File Line" />
+                      <TableColumn fx:id="routeEntry" prefWidth="1177.6666259765625" resizable="false" text="Entry" />
+                    </columns>
+                  </TableView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Route Data" GridPane.columnIndex="1" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Airport Data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Airline Data" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+           </GridPane>
+       </content>
+   </Tab>

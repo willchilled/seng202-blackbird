@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdControl;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -14,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
@@ -81,7 +83,7 @@ public class AirportTabController {
     }
 
     public void addAirportData() {
-        File f = HelperFunctions.getFile("Add Airport Data");
+        File f = HelperFunctions.getFile("Add Airport Data", false);
         if (f == null) {
             return;
         }
@@ -129,7 +131,6 @@ public class AirportTabController {
         airportTimeCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("timeZone"));
         airportDSTCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("dst"));
         airportTZCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, String>("tz"));
-        //airportRouteNo.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
         airportIncCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
         airportOutCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("outgoingRoutes"));
 
@@ -158,6 +159,7 @@ public class AirportTabController {
                         popUpController.setAirportTabController(instance);
                         popUpController.setAirportPoint(myPoint);
                         popUpController.setUpPopUp();
+                        popUpController.setStage(stage);
 
                         stage.setScene(new Scene(root));
                         stage.setTitle("Detailed Airport Information");

@@ -58,7 +58,7 @@ public class RoutePoint extends DataPoint {
      *                    7 stops,
      *                    8 equipment,
      */
-    public RoutePoint(String[] currentLine, int count) {
+    public RoutePoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
 
 //        if (currentLine.length == 9 || currentLine.length == 14){
@@ -101,18 +101,21 @@ public class RoutePoint extends DataPoint {
                         this.dstAirportName = currentLine[12];
                         this.dstAirportCountry = currentLine[13];
                     }
+                } else {
+                    BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
+                    errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+                    this.correctEntry = 1;
                 }
 
                 //System.out.println("here");
 
-            }
-            catch(NumberFormatException e) {
-//                BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
-//                ErrorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+            } catch(NumberFormatException e) {
+                BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
+                errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
                 //AirlinePoint myAirlinePoint = new
 //                this.routeID = -1;
 //                //this.airline = currentLine.toString();
-//                this.correctEntry = 1;
+                this.correctEntry = 1;
             }
 
 //        }

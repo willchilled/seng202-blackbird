@@ -137,8 +137,8 @@ public class RouteTabController {
         if (f == null) {
             return;
         }
-
-        ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT);
+        ErrorTabController errorTab = mainController.getErrorTabController();
+        ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myRouteData);
 
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);

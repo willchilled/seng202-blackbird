@@ -84,7 +84,8 @@ public class FlightTabController {
         if (f == null) {
             return;
         }
-        ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT);
+        ErrorTabController errorTab = mainController.getErrorTabController();
+        ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myFlightData);
         ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
 

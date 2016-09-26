@@ -87,7 +87,8 @@ public class AirportTabController {
         if (f == null) {
             return;
         }
-        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT);
+        ErrorTabController errorTab = mainController.getErrorTabController();
+        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myAirportPoints);
         ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         //System.out.println(validAirportPoints.get(1));

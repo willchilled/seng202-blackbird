@@ -49,7 +49,7 @@ public class AirlinePoint extends DataPoint {
      *                      6 country,
      *                      7 active,
      */
-    public AirlinePoint(String[] currentLine, int count) {
+    public AirlinePoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
         if (currentLine.length == 8){
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
@@ -62,18 +62,18 @@ public class AirlinePoint extends DataPoint {
                 this.callsign = currentLine[5];
                 this.country = currentLine[6].trim();
                 this.active = currentLine[7].trim().toUpperCase();
-            }
-            catch(NumberFormatException e) {
-//                BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
-//                errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
+            } catch(NumberFormatException e) {
+                BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
+                errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
                 //AirlinePoint myAirlinePoint = new
                 //this.airlineID = -1;
                 //this.airlineName = currentLine.toString();
                 this.correctEntry = 1;
             }
         } else {
-//            BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
-//            ErrorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
+            BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
+            errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
+            this.correctEntry = 1;
         }
     }
 

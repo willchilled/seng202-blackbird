@@ -3,6 +3,7 @@
 package seng202.group2.blackbirdModel;
 
 import com.opencsv.CSVReader;
+import seng202.group2.blackbirdControl.ErrorTabController;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class ParserRefactor {
      * @see DataPoint
      * @see CSVReader
      */
-    public static ArrayList<DataPoint> parseFile(File file, DataTypes pointType){
+    public static ArrayList<DataPoint> parseFile(File file, DataTypes pointType, ErrorTabController errorTab){
         ArrayList<DataPoint> allDataPoints =  new ArrayList<>();
         int count = 0;
         try {
@@ -32,7 +33,7 @@ public class ParserRefactor {
             while ((currentLine = reader.readNext()) != null) {
                 count++;
                 String[] formattedLine = formatLine(currentLine);
-                DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count);
+                DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count, errorTab);
                 allDataPoints.add(currentDataPoint);
             }
         } catch (FileNotFoundException e) {

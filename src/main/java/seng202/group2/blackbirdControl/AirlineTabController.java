@@ -93,7 +93,8 @@ public class AirlineTabController{
 //            alert.setContentText("Invalid file selected");
 //            return;
 //        }
-        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT);
+        ErrorTabController errorTab = mainController.getErrorTabController();
+        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myPoints);
         ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
         System.out.println(validAirlineData.get(0).toString());
@@ -104,7 +105,7 @@ public class AirlineTabController{
         // Populates Rows in the Airline Table
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
         mainController.updateTab(DataTypes.AIRLINEPOINT);
-        mainController.getErrorTabController();
+
     }
 
     private void updateAirlineFields() {

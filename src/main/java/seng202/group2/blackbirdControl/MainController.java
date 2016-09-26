@@ -87,6 +87,7 @@ public class MainController implements Initializable {
     }
 
     public ErrorTabController getErrorTabController() {
+        //advised by tutor to make this method
         return errorTabController;
     }
 

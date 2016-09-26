@@ -94,7 +94,7 @@ public class FlightTabController {
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT, errorTab);
-        DataBaseRefactor.insertDataPoints(myFlightData);
+        DataBaseRefactor.insertDataPoints(myFlightData, errorTab);
         ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
 
         updateFlightFields();

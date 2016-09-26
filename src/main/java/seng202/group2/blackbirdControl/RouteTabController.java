@@ -145,7 +145,7 @@ public class RouteTabController {
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
-        DataBaseRefactor.insertDataPoints(myRouteData);
+        DataBaseRefactor.insertDataPoints(myRouteData, errorTab);
 
         ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points

@@ -48,10 +48,10 @@ public class AnalyserTest extends TestCase {
         // System.out.println(flight.getType() + "--------------------------");
 
         DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airlinePoints);
-        DataBaseRefactor.insertDataPoints(airportPoint);
-        DataBaseRefactor.insertDataPoints(routePoints);
-        DataBaseRefactor.insertDataPoints(myFlight);
+        DataBaseRefactor.insertDataPoints(airlinePoints, null);
+        DataBaseRefactor.insertDataPoints(airportPoint, null);
+        DataBaseRefactor.insertDataPoints(routePoints, null);
+        DataBaseRefactor.insertDataPoints(myFlight, null);
 
 
 

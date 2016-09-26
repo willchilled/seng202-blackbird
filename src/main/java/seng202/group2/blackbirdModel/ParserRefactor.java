@@ -41,7 +41,7 @@ public class ParserRefactor {
             String [] currentLine;
             while ((currentLine = reader.readNext()) != null) {
                 count++;
-                if (currentLine.length == 0) {
+                if (currentLine.length == 1) {  //empty line with only new line char
                     continue;
                 }
                 String[] formattedLine = formatLine(currentLine);

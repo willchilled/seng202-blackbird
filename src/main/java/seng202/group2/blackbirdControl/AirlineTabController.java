@@ -94,9 +94,8 @@ public class AirlineTabController{
 //        }
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT, errorTab);
-        DataBaseRefactor.insertDataPoints(myPoints);
+        DataBaseRefactor.insertDataPoints(myPoints, errorTab);
         ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
-        System.out.println(validAirlineData.get(0).toString());
 
         //Populates DropDowns according to data
         updateAirlineFields();

@@ -2,6 +2,8 @@
 
 package seng202.group2.blackbirdModel;
 
+import seng202.group2.blackbirdControl.ErrorTabController;
+
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class DataBaseRefactor {
      *
      * @param myPoints An arraylist of DataPoints that we want to insert.
      */
-    public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
+    public static void insertDataPoints(ArrayList<DataPoint> myPoints, ErrorTabController errorTabController) {
         try {
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
@@ -103,18 +105,19 @@ public class DataBaseRefactor {
                 try{
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
-                }
-                catch (Exception e){
-                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    //System.out.println("Prepared statement failed for: " +  currentPoint);
-                    //UNCOMMENT THESE OUT WHEN WE DECIDE HOW TO DEAL WITH ERROR CHECKING IN THE DATBASE
+                } catch (SQLException e){   //failed to put datapoint into database
+                    //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    BadData badPoint = new BadData(0, currentPoint.toString(), currentPoint.getType());
+                    if (errorTabController != null) {
+                        errorTabController.updateBadEntries(badPoint, currentPoint.getType());
+                    }
                 }
             }
             //.close();
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             //System.exit(0);
             System.out.println("Some error occurred when making connection? :");
         }
@@ -534,7 +537,7 @@ public class DataBaseRefactor {
      */
     private static String createAirlineTable(){
         String sql = "CREATE TABLE AIRLINE " +
-                "(ID INTEGER PRIMARY KEY    NOT NULL," +
+                "(ID INTEGER PRIMARY KEY    NOT NULL constraint check_id check (ID > 0)," +
                 " NAME           VARCHAR(40)   NOT NULL," +
                 " ALIAS           VARCHAR(40)," +   //alias can be null
                 " IATA           CHAR(2)," +    //can have either IATA or ICAO

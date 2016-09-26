@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
@@ -43,11 +44,9 @@ public class MainController implements Initializable {
     @FXML private FlightTabController flightTabController;
     @FXML private RouteTabController routeTabController;
     @FXML private AirportTabController airportTabController;
-
-
-
     @FXML private AirlineTabController airlineTabController;
     @FXML private ErrorTabController errorTabController;
+    @FXML private AnalysisTabController analysisTabController;
 
 
     @FXML private Tab airlineTab;
@@ -76,6 +75,7 @@ public class MainController implements Initializable {
         errorTabController.setRouteTabController(routeTabController);
         errorTabController.setAirportTabController(airportTabController);
         errorTabController.setAirlineTabController(airlineTabController);
+        analysisTabController.setMainController(this);
     }
 
     /**
@@ -114,6 +114,7 @@ public class MainController implements Initializable {
      */
     public void addAirportData() {
         airportTabController.addAirportData();
+        analysisTabController.setGraphData();
     }
 
     /**
@@ -128,6 +129,7 @@ public class MainController implements Initializable {
      */
     public void addRouteData() {
         routeTabController.addRouteData();
+        //analysisTabController.setGraphData();
     }
 
     /**

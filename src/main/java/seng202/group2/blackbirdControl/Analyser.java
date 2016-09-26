@@ -3,7 +3,6 @@ package seng202.group2.blackbirdControl;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataPoint;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,9 +48,10 @@ public class Analyser {
 
 
     //ranks airports based on the number of routes
-    public static void rankAirports(ArrayList<DataPoint> airports, boolean mostRoutes) {
+    public static ArrayList<DataPoint> rankAirports(ArrayList<DataPoint> airports, boolean mostRoutes) {
         //To whoever does this just make sure it returns and arraylist of datapoints and not airport poitns doesnt work
 
+        ArrayList<DataPoint> rankedData = new ArrayList<DataPoint>();
 
         List<AirportPoint> myPoints = new ArrayList<>();
         for(DataPoint cp: airports){
@@ -66,18 +66,33 @@ public class Analyser {
             Collections.reverse(myPoints);
         }
 
-//        for(AirportPoint cp: myPoints){
-//            //AirportPoint cp2 = (AirportPoint) cp;
-//            System.out.println(cp.toStringWithRoutes());
-//        }
+        for(AirportPoint currentPoint: myPoints){
+            //AirportPoint cp2 = (AirportPoint) cp;
+            //System.out.println(cp.toStringWithRoutes());
+            DataPoint convertedRoutePoint = currentPoint;
+            rankedData.add(convertedRoutePoint);
+
+        }
+        return rankedData;
     }
 
+
     public static int compareAirportPointSize(AirportPoint a, AirportPoint another) {
-        if (a.getIncomingRoutes() + a.getOutgoingRoutes() < another.getIncomingRoutes() + another.getOutgoingRoutes()){
+        if (a.getIncomingRoutes() + a.getOutgoingRoutes() == another.getIncomingRoutes() + another.getOutgoingRoutes()){
+            if (a.getAirportName().compareTo(another.getAirportName()) >=0 ){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+
+        }
+        else if (a.getIncomingRoutes() + a.getOutgoingRoutes() < another.getIncomingRoutes() + another.getOutgoingRoutes()){
             return 1;
-        }else{
+        }else  {
             return -1;
         }
+
     }
 
 

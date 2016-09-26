@@ -32,7 +32,7 @@ public class ParserRefactor {
             while ((currentLine = reader.readNext()) != null) {
                 count++;
                 String[] formattedLine = formatLine(currentLine);
-                DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType);
+                DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count);
                 allDataPoints.add(currentDataPoint);
             }
         } catch (FileNotFoundException e) {

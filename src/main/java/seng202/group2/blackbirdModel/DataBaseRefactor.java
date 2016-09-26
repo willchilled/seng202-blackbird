@@ -400,7 +400,7 @@ public class DataBaseRefactor {
                          //System.out.println(i + " " + attributes[i]);
 //                    }
                 }
-                DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
+                DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0);
                 resultPoints.add(myPoint);
                 // System.out.println(myPoint.toString());
             }

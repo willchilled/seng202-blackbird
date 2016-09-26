@@ -2,6 +2,9 @@
 
 package seng202.group2.blackbirdModel;
 
+import org.apache.commons.lang3.StringUtils;
+import seng202.group2.blackbirdControl.ErrorTabController;
+
 /**
  * A subclass of dataPoint that stores information about a route
  */
@@ -55,7 +58,7 @@ public class RoutePoint extends DataPoint {
      *                    7 stops,
      *                    8 equipment,
      */
-    public RoutePoint(String[] currentLine) {
+    public RoutePoint(String[] currentLine, int count) {
         super();
 
 //        if (currentLine.length == 9 || currentLine.length == 14){
@@ -104,10 +107,12 @@ public class RoutePoint extends DataPoint {
 
             }
             catch(NumberFormatException e) {
+//                BadData badRoute = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.ROUTEPOINT);
+//                ErrorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
                 //AirlinePoint myAirlinePoint = new
-                this.routeID = -1;
-                //this.airline = currentLine.toString();
-                this.correctEntry = 1;
+//                this.routeID = -1;
+//                //this.airline = currentLine.toString();
+//                this.correctEntry = 1;
             }
 
 //        }

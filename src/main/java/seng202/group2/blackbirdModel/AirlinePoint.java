@@ -2,6 +2,7 @@
 
 package seng202.group2.blackbirdModel;
 
+import org.apache.commons.lang3.StringUtils;
 import seng202.group2.blackbirdControl.ErrorTabController;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class AirlinePoint extends DataPoint {
      *                      6 country,
      *                      7 active,
      */
-    public AirlinePoint(String[] currentLine) {
+    public AirlinePoint(String[] currentLine, int count) {
         super();
         if (currentLine.length == 8){
             //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
@@ -59,17 +60,20 @@ public class AirlinePoint extends DataPoint {
                 this.iata= currentLine[3];
                 this.icao =currentLine[4];
                 this.callsign = currentLine[5];
-                this.country = currentLine[6].trim();    //should not be null, handle by parser later
+                this.country = currentLine[6].trim();
                 this.active = currentLine[7].trim().toUpperCase();
             }
             catch(NumberFormatException e) {
-                //BadData badAirline = new BadData(count, Arrays.toString(currentLine), DataTypes.AIRLINEPOINT);
-
+//                BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
+//                errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
                 //AirlinePoint myAirlinePoint = new
-                this.airlineID = -1;
+                //this.airlineID = -1;
                 //this.airlineName = currentLine.toString();
                 this.correctEntry = 1;
             }
+        } else {
+//            BadData badAirline = new BadData(count, StringUtils.join(currentLine, ","), DataTypes.AIRLINEPOINT);
+//            ErrorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
         }
     }
 

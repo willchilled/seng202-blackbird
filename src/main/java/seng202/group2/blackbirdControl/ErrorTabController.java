@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.BadData;
+import seng202.group2.blackbirdModel.DataTypes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class ErrorTabController {
     private ArrayList<BadData> badRoutes;
     private ArrayList<BadData> badAirports;
-    public ArrayList<BadData> badAirlines;
+    private ArrayList<BadData> badAirlines;
 
     ErrorTabController instance;
 
@@ -35,30 +36,18 @@ public class ErrorTabController {
     @FXML private TableView airlineErrors;
     @FXML private TableColumn airlineFileLine;
     @FXML private TableColumn airlineEntry;
+    private MainController mainController;
 
-    public ArrayList<BadData> getBadRoutes() {
-        return badRoutes;
+
+    public void updateBadEntries(BadData badPoint, DataTypes type) {
+        switch (type) {
+            case ROUTEPOINT: badRoutes.add(badPoint); updateRouteErrors(); break;
+            case AIRPORTPOINT: badAirports.add(badPoint); updateAirportErrors(); break;
+            case AIRLINEPOINT: badAirlines.add(badPoint); updateAirlineErrors(); break;
+            default: return;
+        }
     }
 
-    public ArrayList<BadData> getBadAirports() {
-        return badAirports;
-    }
-
-    public ArrayList<BadData> getBadAirlines() {
-        return badAirlines;
-    }
-
-    public void setBadRoutes(ArrayList<BadData> badRoutes) {
-        this.badRoutes = badRoutes;
-    }
-
-    public void setBadAirports(ArrayList<BadData> badAirports) {
-        this.badAirports = badAirports;
-    }
-
-    public void setBadAirlines(ArrayList<BadData> badAirlines) {
-        this.badAirlines = badAirlines;
-    }
 
     protected void updateRouteErrors() {
         routeErrors.getItems().setAll(badRoutes);
@@ -148,5 +137,9 @@ public class ErrorTabController {
                 }
             }
         });
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 }

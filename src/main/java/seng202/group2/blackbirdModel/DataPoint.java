@@ -45,21 +45,16 @@ public class DataPoint {
      * @param type      The input type the Data point should be set to
      * @return A DataPoint with a specificType
      */
-    public static DataPoint createDataPointFromStringArray(String[] dataArray, DataTypes type) {
-
-        /*
-        This creates a dataPoint from a string array and sets the type
-         */
-
+    public static DataPoint createDataPointFromStringArray(String[] dataArray, DataTypes type, int count) {
         DataPoint currentPoint = new DataPoint(type);
         if (type == DataTypes.AIRLINEPOINT) {
-            currentPoint = new AirlinePoint(dataArray);
+            currentPoint = new AirlinePoint(dataArray, count);
 
         } else if (type == DataTypes.AIRPORTPOINT) {
-            currentPoint = new AirportPoint(dataArray);
+            currentPoint = new AirportPoint(dataArray, count);
 
         } else if (type == DataTypes.ROUTEPOINT) {
-            currentPoint = new RoutePoint(dataArray);
+            currentPoint = new RoutePoint(dataArray, count);
 
         } else if (type == DataTypes.FLIGHTPOINT) {
             currentPoint = new FlightPoint(dataArray);
@@ -82,14 +77,10 @@ public class DataPoint {
      */
     @Override
     public boolean equals(Object obj) {
-        //megan's test for bad data...
         DataPoint mypoint = (DataPoint) obj;
         if (this.getType() == mypoint.getType()) return true;
         else return false;
     }
-
-
-
 
 }
 

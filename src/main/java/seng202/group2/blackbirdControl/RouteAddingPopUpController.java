@@ -69,7 +69,7 @@ public class RouteAddingPopUpController {
         String[] values = getValues();
         if (Validator.checkRoute(values)) {
             String[] valueFields = RouteTabController.getFields(values);
-            DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT);
+            DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT, 0);
             ArrayList<DataPoint> myRouteData = new ArrayList<>();
             myRouteData.add(myRoutePoint);
             DataBaseRefactor.insertDataPoints(myRouteData);

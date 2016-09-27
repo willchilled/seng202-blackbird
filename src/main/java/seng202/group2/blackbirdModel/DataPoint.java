@@ -17,15 +17,7 @@ public class DataPoint {
         However You would then have to set the Type using myPoint.setType*/
 
     private DataTypes type;
-
-    public DataTypes getType() {
-        return type;
-    }
-
-    public void setType(DataTypes type) {
-        this.type = type;
-    }
-
+    private int fileLine;
 
     /**
      * Creates Data Point with type null
@@ -40,6 +32,24 @@ public class DataPoint {
     public DataPoint(DataTypes type) {
         this.type = type;
     }
+
+    public DataTypes getType() {
+        return type;
+    }
+
+    public void setType(DataTypes type) {
+        this.type = type;
+    }
+
+    public void setFileLine(int fileLine) {
+        this.fileLine = fileLine;
+    }
+
+
+    public int getFileLine() {
+        return fileLine;
+    }
+
 
     /**
      * @param dataArray The array of data containing Strings

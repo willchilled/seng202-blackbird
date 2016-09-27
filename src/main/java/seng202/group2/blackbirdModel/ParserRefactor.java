@@ -46,6 +46,7 @@ public class ParserRefactor {
                 }
                 String[] formattedLine = formatLine(currentLine);
                 DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count, errorTab);
+                currentDataPoint.setFileLine(count);
                 allDataPoints.add(currentDataPoint);
             }
         } catch (FileNotFoundException e) {
@@ -69,7 +70,7 @@ public class ParserRefactor {
             if ("\\N".equals(line)){
                 line = "";
             }
-            if (line.matches("([a-zA-Z0-9]+\\\\\\\\'[a-zA-Z0-9]+)+")){
+            if (line.matches("([a-zA-Z0-9]+\\\\'[a-zA-Z0-9]+)+")){
                 line = line.replaceAll("\\\\", "");
             }
             formattedLine[lineCount] = line;

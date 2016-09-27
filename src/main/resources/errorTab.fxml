@@ -19,8 +19,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
 
-
-   <Tab text="Errors" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.ErrorTabController">
+<Tab text="Errors" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.ErrorTabController">
        <content>
            <GridPane prefHeight="959.0" prefWidth="1304.0">
                <columnConstraints>
@@ -42,18 +41,21 @@
                     <columns>
                       <TableColumn fx:id="airportFileLine" prefWidth="75.0" text="File Line" />
                       <TableColumn fx:id="airportEntry" prefWidth="1178.0" resizable="false" text="Entry" />
+                  <TableColumn fx:id="airportErrorMessage" prefWidth="75.0" text="Error" />
                     </columns>
                   </TableView>
                   <TableView fx:id="airlineErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <columns>
                       <TableColumn fx:id="airlineFileLine" prefWidth="75.0" text="File Line" />
                       <TableColumn fx:id="airlineEntry" prefWidth="1178.0" resizable="false" text="Entry" />
+                  <TableColumn fx:id="airlineErrorMessage" prefWidth="75.0" text="Error" />
                     </columns>
                   </TableView>
                   <TableView fx:id="routeErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columns>
                       <TableColumn fx:id="routeFileLine" prefWidth="75.0" text="File Line" />
                       <TableColumn fx:id="routeEntry" prefWidth="1177.6666259765625" resizable="false" text="Entry" />
+                  <TableColumn fx:id="routeErrorMessage" prefWidth="75.0" text="Error" />
                     </columns>
                   </TableView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Route Data" GridPane.columnIndex="1" />

@@ -28,14 +28,18 @@ public class ErrorTabController {
     @FXML private TableView<BadData> routeErrors;
     @FXML private TableColumn<BadData, Integer> routeFileLine;
     @FXML private TableColumn<BadData, String> routeEntry;
+    @FXML private TableColumn<BadData, String> routeErrorMessage;
 
     @FXML private TableView<BadData> airportErrors;
     @FXML private TableColumn<BadData, Integer> airportFileLine;
     @FXML private TableColumn<BadData, String> airportEntry;
+    @FXML private TableColumn<BadData, String> airportErrorMessage;
 
     @FXML private TableView<BadData> airlineErrors;
     @FXML private TableColumn<BadData, Integer> airlineFileLine;
     @FXML private TableColumn<BadData, String> airlineEntry;
+    @FXML private TableColumn<BadData, String> airlineErrorMessage;
+
     private MainController mainController;
     private RouteTabController routeTabController;
     private AirportTabController airportTabController;
@@ -56,6 +60,7 @@ public class ErrorTabController {
         routeErrors.setItems(badRoutes);
         routeFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
         routeEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
+        routeErrorMessage.setCellValueFactory(new PropertyValueFactory<>("errorMessage"));
         routeErrors.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -83,6 +88,7 @@ public class ErrorTabController {
         airportErrors.setItems(badAirports);
         airportFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
         airportEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
+        airportErrorMessage.setCellValueFactory(new PropertyValueFactory<>("errorMessage"));
         airportErrors.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -111,6 +117,7 @@ public class ErrorTabController {
         airlineErrors.setItems(badAirlines);
         airlineFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
         airlineEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
+        airlineErrorMessage.setCellValueFactory(new PropertyValueFactory<>("errorMessage"));
         airlineErrors.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

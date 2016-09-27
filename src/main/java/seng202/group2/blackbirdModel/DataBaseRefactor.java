@@ -2,6 +2,7 @@
 
 package seng202.group2.blackbirdModel;
 
+import javafx.scene.control.Alert;
 import seng202.group2.blackbirdControl.ErrorTabController;
 
 import java.io.File;
@@ -19,6 +20,7 @@ public class DataBaseRefactor {
     private static int FlightCount = 0;
     private static int flightPointCount = 0;
     private static String dataBaseName = "jdbc:sqlite:default.db";
+
 
     /**
      * @return Returns the current database name.
@@ -59,6 +61,7 @@ public class DataBaseRefactor {
      * @param myPoints An arraylist of DataPoints that we want to insert.
      */
     public static void insertDataPoints(ArrayList<DataPoint> myPoints, ErrorTabController errorTabController) {
+        boolean allCorrect = true;
         try {
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
@@ -74,6 +77,7 @@ public class DataBaseRefactor {
             }
 
             flightPointCount = 0;
+
             for (DataPoint currentPoint : myPoints) {
                 //addSingleAirline(airline, stmt);
 //                System.out.println(currentPoint.getType());
@@ -107,10 +111,12 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 } catch (SQLException e){   //failed to put datapoint into database
                     //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    BadData badPoint = new BadData(0, currentPoint.toString(), currentPoint.getType());
+                    BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType());
                     if (errorTabController != null) {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
                     }
+                    allCorrect = false;
+
                 }
             }
             //.close();
@@ -122,6 +128,14 @@ public class DataBaseRefactor {
             System.out.println("Some error occurred when making connection? :");
         }
 
+        if (!allCorrect) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Some file entries could not be added");
+            alert.setContentText("See the Errors tab for more details");
+
+            alert.show();
+        }
         //System.out.println("Records created successfully");
     }
 
@@ -564,9 +578,10 @@ public class DataBaseRefactor {
                 "Dst        VARCHAR(4) NOT NULL /*Destination location for route*/," +   //either the IATA(3) or ICAO(4)
                 "Dstid      INTEGER NOT NULL /*ID number for destination location*/," +
                 "Codeshare  CHAR(1) constraint check_codeshare check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
-                "Stops      INTEGER NOT NULL /*Number of stops the route takes*/," +
+                "Stops      INTEGER constraint check_stops check (Stops >= 0) /*Number of stops the route takes*/," +
                 "Equipment  VARCHAR(50), " +
-                "foreign key (Srcid, Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
+                "foreign key (Srcid) references AIRPORT," +
+                "foreign key (Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
                 ")";
         return sql;
     }

@@ -13,6 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+//import org.controlsfx.control.textfield.TextFields;
 import seng202.group2.blackbirdModel.*;
 
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public class RouteAddingPopUpController {
         airlineMenu = HelperFunctions.addNullValue(airlineMenu);
         airlineSelection.setItems(airlineMenu);
         airlineSelection.setValue(airlineMenu.get(0));
+//        airlineSelection.setEditable(true);
+//        TextFields.bindAutoCompletion(airlineSelection.getEditor(), airlineSelection.getItems());
 
         ArrayList<String> sourceAirports = FilterRefactor.filterDistinct("Name", "Airport");
         ObservableList<String> sourceNames = FXCollections.observableArrayList(sourceAirports);

@@ -1,11 +1,11 @@
 package seng202.group2.blackbirdControl;
 
+import seng202.group2.blackbirdModel.AirlinePoint;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataPoint;
+import seng202.group2.blackbirdModel.DataTypes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by mch230 on 30/08/16.
@@ -49,6 +49,7 @@ public class Analyser {
 
     //ranks airports based on the number of routes
     public static ArrayList<DataPoint> rankAirports(ArrayList<DataPoint> airports, boolean mostRoutes) {
+        //rename this to rank aiports by routes later ok!
         //To whoever does this just make sure it returns and arraylist of datapoints and not airport poitns doesnt work
 
         ArrayList<DataPoint> rankedData = new ArrayList<DataPoint>();
@@ -93,6 +94,84 @@ public class Analyser {
             return -1;
         }
 
+    }
+
+    public static List<Map.Entry> numAirportsPerCountry(){
+        ArrayList<DataPoint> allAirports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airport");
+
+        HashMap<String, Integer> airportsPerCountry = new HashMap<>();
+
+        for(String country: allCountries){
+            airportsPerCountry.put(country, 0);
+        }
+
+        for (DataPoint currentPoint: allAirports){
+            AirportPoint currentAirportPoint = (AirportPoint) currentPoint;
+            String country = currentAirportPoint.getAirportCountry();
+            int counter = airportsPerCountry.get(country);
+
+            airportsPerCountry.put(currentAirportPoint.getAirportCountry(), counter +1);
+        }
+        //List<> list = new ArrayList<>(airportsPerCountry.values());
+        List<Map.Entry> results = new ArrayList(airportsPerCountry.entrySet());
+
+        results = sortDictByValue(results);
+
+
+
+        return results;
+
+    }
+
+    public static List<Map.Entry> numAirlinesPerCountry(){
+        ArrayList<DataPoint> allAirports = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
+        ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airline");
+
+        HashMap<String, Integer> airlinesPerCountry = new HashMap<>();
+
+        for(String country: allCountries){
+            airlinesPerCountry.put(country, 0);
+        }
+
+        for (DataPoint currentPoint: allAirports){
+            AirlinePoint currentAirlinePoint = (AirlinePoint) currentPoint;
+
+            String country = currentAirlinePoint.getCountry();
+            int counter = airlinesPerCountry.get(country);
+
+            airlinesPerCountry.put(currentAirlinePoint.getCountry(), counter +1);
+        }
+
+        List<Map.Entry> results = new ArrayList(airlinesPerCountry.entrySet());
+
+        results = sortDictByValue(results);
+
+
+
+        return results;
+    }
+
+    private static List<Map.Entry> sortDictByValue(List<Map.Entry> results) {
+        Collections.sort(results, new Comparator<Map.Entry>() {
+            @Override
+            public int compare(Map.Entry o1, Map.Entry o2) {
+                int val1 = (int) o1.getValue();
+                int val2 = (int) o2.getValue();
+
+                if (val1 < val2){
+                    return 1;
+                }
+                else if (val1 > val2)
+                {
+                    return -1;
+                }
+                else{
+                    return 0;
+                }
+            }
+        });
+        return results;
     }
 
 

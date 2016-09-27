@@ -27,11 +27,19 @@ import java.util.Locale;
  */
 public class AnalysisTabController {
 
-    @FXML
-    StackedBarChart<String, Integer> routeChart;
+    @FXML StackedBarChart<String, Integer> routeChart;
+    @FXML BarChart<String, Integer> airportChart;
+    @FXML BarChart<String, Integer> airlineChart;
+    @FXML BarChart<String, Integer> equipmentChart;
 
-    @FXML CategoryAxis xAxis;
-    @FXML NumberAxis yAxis;
+    @FXML CategoryAxis xAxisRoute;
+    @FXML NumberAxis yAxisRotue;
+    @FXML CategoryAxis yAxisAirport;
+    @FXML NumberAxis xAxisAirport;
+    @FXML CategoryAxis yAxisAirline;
+    @FXML NumberAxis xAxisAirline;
+    @FXML CategoryAxis xAxisEquipment;
+    @FXML NumberAxis yAxisEquipment;
 
     @FXML ComboBox airportCountryFilterMenu;
 
@@ -45,6 +53,7 @@ public class AnalysisTabController {
 
     @FXML
     private void initialize() {
+        xAxisAirline.setTickLabelRotation(90);
 
     }
     @FXML
@@ -52,7 +61,6 @@ public class AnalysisTabController {
 
         ObservableList<String> airportNames = FXCollections.observableArrayList();
         routeChart.getData().clear();
-
         ArrayList<DataPoint>  myPoints;
 
         if (country.equals("All")){
@@ -63,10 +71,8 @@ public class AnalysisTabController {
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
 
-
         myPoints  = Analyser.rankAirports(myPoints, true);
         ArrayList<AirportPoint> myAirportPoints = new ArrayList<>();
-
 
         for(DataPoint currentPoint: myPoints){
             AirportPoint cp2 = (AirportPoint) currentPoint;
@@ -74,21 +80,15 @@ public class AnalysisTabController {
         }
 
         if (myPoints.size() > 1){
-
-            xAxis.setCategories(airportNames);
-            xAxis.setTickLabelRotation(270);
-           // xAxis.tickLabelFontProperty().set(Font.font(8));
-
-
+            xAxisRoute.setCategories(airportNames);
+            xAxisRoute.setTickLabelRotation(270);
             XYChart.Series<String, Integer> series = new XYChart.Series<>();
             XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
-
             int maxAirports = 20;
+
             if (myAirportPoints.size() < 20){
                 maxAirports = myAirportPoints.size();
             }
-
-
 
             for (int i = 0; i <maxAirports ; i++) {
                 String name = myAirportPoints.get(i).getAirportName();
@@ -98,26 +98,15 @@ public class AnalysisTabController {
                 else{
                     airportNames.add(name + i);
                 }
-
             }
-
-
             for (int i = 0; i < maxAirports; i++) {
                 DataPoint currentPoint = myPoints.get(i);
-
-                //airportNames.add(myAirportPoints.get(i).getAirportName());
-
                 AirportPoint castedPoint = (AirportPoint) currentPoint;
-               // System.out.println();
-
                 series.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getIncomingRoutes()));
                 series2.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getOutgoingRoutes()));
-
             }
-
             routeChart.getData().addAll(series, series2);
         }
-
     }
 
     public void setMainController(MainController mainController) {
@@ -126,7 +115,6 @@ public class AnalysisTabController {
 
     private ObservableList<String> populateAirportCountryList(){
         //Populates the dropdown of airline countries
-        //ArrayList<AirportPoint> allPoints = getAllAirportPoints();
         ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList.add(0,"All");
@@ -143,8 +131,6 @@ public class AnalysisTabController {
 
 
     public void checkData(){
-
-
         ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         if(airports.size() > 0){
             airportCountryFilterMenu.setVisible(true);
@@ -152,9 +138,6 @@ public class AnalysisTabController {
             airportCountryFilterMenu.setValue(airportCountryList.get(0));
             airportCountryFilterMenu.setItems(airportCountryList);
             setCountry("All");
-
-
-
             airportCountryFilterMenu.valueProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue ov, String t, String t1) {
@@ -166,7 +149,6 @@ public class AnalysisTabController {
 
             String currentCountry;
             currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
-            //setCountry(currentCountry);
             setRouteGraphData();
         }
     }

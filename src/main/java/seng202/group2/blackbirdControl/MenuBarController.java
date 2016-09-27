@@ -231,13 +231,17 @@ public class MenuBarController {
         String[] flightTableColumns = {"FlightIDNum", "SrcICAO", "DstICAO"};
         if (!(Validator.tableColumnchecker("FLIGHT" , flightTableColumns))){
             System.out.println("Flight table was wrong");
+            //Must clear both flight and flightpoint table
             DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
+            DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
         }
         //check flight point table
         String[] flightPointTableColumns = {"SeqOrder", "LocaleID", "LocationType", "Altitude", "Latitude", "Longitude", "FlightIDNum"};
         if (!(Validator.tableColumnchecker("FLIGHTPOINT" , flightPointTableColumns))){
             System.out.println("flightpoint table was wrong");
+            //Must clear both flight and flightpoint table
             DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
+            DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
         }
         //check route table
         String[] routeTableColumns = {"IDnum", "Airline", "Airlineid", "Src", "Srcid", "Dst", "Dstid", "Codeshare", "Stops", "Equipment"};

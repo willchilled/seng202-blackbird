@@ -1,12 +1,15 @@
 package seng202.group2.blackbirdControl;
 
 import com.sun.org.apache.xpath.internal.SourceTree;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
 import javafx.scene.text.Font;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
@@ -82,17 +85,25 @@ public class AnalysisTabController {
 
             int maxAirports = 20;
             if (myAirportPoints.size() < 20){
-                maxAirports = myAirportPoints.size()-1;
+                maxAirports = myAirportPoints.size();
             }
-
-            System.out.println(myAirportPoints.size() + "MY SIZE");
+            System.out.println("Country: "+country);
+            System.out.println("Number of airports: "+myAirportPoints.size());
+            System.out.println("Max airports: "+maxAirports);
+            System.out.println("Points:" + myAirportPoints);
 
             for (int i = 0; i < maxAirports; i++) {
                 DataPoint currentPoint = myPoints.get(i);
-                airportNames.add(myAirportPoints.get(i).getAirportName());
+                if (!airportNames.contains(myAirportPoints.get(i).getAirportName())) {
+                    airportNames.add(myAirportPoints.get(i).getAirportName());
+                }
                 AirportPoint castedPoint = (AirportPoint) currentPoint;
-                series.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getIncomingRoutes() ));
-                series2.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getOutgoingRoutes() ));
+                System.out.println("i:"+i);
+               // System.out.println();
+                if (!series.getData().contains(airportNames.get(i))) {
+                    series.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getIncomingRoutes()));
+                    series2.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getOutgoingRoutes()));
+                }
             }
 
             routeChart.getData().addAll(series, series2);
@@ -123,12 +134,32 @@ public class AnalysisTabController {
 
 
     public void checkData(){
+
+
         ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         if(airports.size() > 0){
             airportCountryFilterMenu.setVisible(true);
             airportCountryList = populateAirportCountryList();
             airportCountryFilterMenu.setValue(airportCountryList.get(0));
             airportCountryFilterMenu.setItems(airportCountryList);
+            setCountry("All");
+
+
+
+            airportCountryFilterMenu.valueProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue ov, String t, String t1) {
+                    setCountry(t1);
+                    setRouteGraphData();
+
+                }
+            });
+
+            String currentCountry;
+            currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
+            System.out.println("check data:");
+            System.out.println(currentCountry + " MY COUNTRY");
+            //setCountry(currentCountry);
             setRouteGraphData();
         }
     }

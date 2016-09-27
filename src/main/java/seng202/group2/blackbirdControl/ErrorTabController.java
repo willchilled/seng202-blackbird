@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,7 +16,6 @@ import seng202.group2.blackbirdModel.BadData;
 import seng202.group2.blackbirdModel.DataTypes;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by mch230 on 25/09/16.
@@ -29,16 +29,19 @@ public class ErrorTabController {
     @FXML private TableColumn<BadData, Integer> routeFileLine;
     @FXML private TableColumn<BadData, String> routeEntry;
     @FXML private TableColumn<BadData, String> routeErrorMessage;
+    @FXML private Button clearRoutesButton;
 
     @FXML private TableView<BadData> airportErrors;
     @FXML private TableColumn<BadData, Integer> airportFileLine;
     @FXML private TableColumn<BadData, String> airportEntry;
     @FXML private TableColumn<BadData, String> airportErrorMessage;
+    @FXML private Button clearAirportsButton;
 
     @FXML private TableView<BadData> airlineErrors;
     @FXML private TableColumn<BadData, Integer> airlineFileLine;
     @FXML private TableColumn<BadData, String> airlineEntry;
     @FXML private TableColumn<BadData, String> airlineErrorMessage;
+    @FXML private Button clearAirlinesButton;
 
     private MainController mainController;
     private RouteTabController routeTabController;
@@ -57,6 +60,12 @@ public class ErrorTabController {
 
     @FXML
     public void initialize() {
+        initializeRoutes();
+        initializeAirports();
+        initialiseAirlines();
+    }
+
+    private void initializeRoutes() {
         routeErrors.setItems(badRoutes);
         routeFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
         routeEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
@@ -68,6 +77,7 @@ public class ErrorTabController {
                     try {
                         Stage adderStage = new Stage();
                         Parent root;
+                        BadData myPoint = routeErrors.getSelectionModel().getSelectedItem();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RouteAddingPopUp.fxml"));
                         root = loader.load();
 
@@ -78,13 +88,23 @@ public class ErrorTabController {
                         popUpController.setRoot(root);
                         popUpController.control();
 
+                        adderStage.setOnHidden(e -> {
+                            if (popUpController.isAdded()) {
+                                badRoutes.remove(myPoint);
+                            }
+                        });
+                        //
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
+
+
             }
         });
+    }
 
+    private void initializeAirports() {
         airportErrors.setItems(badAirports);
         airportFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
         airportEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
@@ -96,6 +116,7 @@ public class ErrorTabController {
                     try {
                         Stage adderStage = new Stage();
                         Parent root;
+                        BadData myPoint = airportErrors.getSelectionModel().getSelectedItem();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirportAddingPopUp.fxml"));
                         root = loader.load();
 
@@ -106,14 +127,21 @@ public class ErrorTabController {
                         popUpController.setRoot(root);
                         popUpController.control();
 
+                        adderStage.setOnHidden(e -> {
+                            if (popUpController.isAdded()) {
+                                badAirports.remove(myPoint);
+                            }
+                        });
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         });
+    }
 
-
+    private void initialiseAirlines() {
         airlineErrors.setItems(badAirlines);
         airlineFileLine.setCellValueFactory(new PropertyValueFactory<>("fileLine"));
         airlineEntry.setCellValueFactory(new PropertyValueFactory<>("entry"));
@@ -125,6 +153,7 @@ public class ErrorTabController {
                     try {
                         Stage adderStage = new Stage();
                         Parent root;
+                        BadData myPoint = airlineErrors.getSelectionModel().getSelectedItem();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirlineAddingPopUp.fxml"));
                         root = loader.load();
 
@@ -135,12 +164,33 @@ public class ErrorTabController {
                         popUpController.setRoot(root);
                         popUpController.control();
 
+                        adderStage.setOnHidden(e -> {
+                            if (popUpController.isAdded()) {
+                                badAirlines.remove(myPoint);
+                            }
+                        });
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         });
+    }
+
+    @FXML
+    private void clearRoutes() {
+        badRoutes.clear();
+    }
+
+    @FXML
+    private void clearAirports() {
+        badAirports.clear();
+    }
+
+    @FXML
+    private void clearAirlines() {
+        badAirlines.clear();
     }
 
 

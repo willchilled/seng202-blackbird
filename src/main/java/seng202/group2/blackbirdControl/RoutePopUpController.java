@@ -47,19 +47,10 @@ public class RoutePopUpController {
     @FXML private ComboBox sourceSelection;
     @FXML private ComboBox destSelection;
     @FXML private CheckBox codeshareSelection;
-//    @FXML private TextField routeCShareTextEdit;
     @FXML private TextField routeStopsTextEdit;
     @FXML private TextField routeEquipmentTextEdit;
+
     @FXML private Button routeDeleteButton;
-
-//    @FXML private TextField routeSrcTextEdit;
-//    @FXML private TextField routeSrcIDTextEdit;
-//    @FXML private TextField routeDstTextEdit;
-//    @FXML private TextField routeDstIDTextEdit;
-//    @FXML private TextField routeAirlineTextEdit;
-//    @FXML private TextField routeAirlineIDTextEdit;
-
-
     @FXML private Button routeEditButton;
     @FXML private Button routeFinishButton;
     @FXML private Button routeCancelButton;
@@ -190,9 +181,7 @@ public class RoutePopUpController {
             String sql1 = "SELECT * FROM ROUTE WHERE IDnum='" + routeIDText.getText() + "'";
             //System.out.println(sql1);
             ArrayList<DataPoint> myRoute = DataBaseRefactor.performGenericQuery(sql1, DataTypes.ROUTEPOINT);
-            System.out.println(myRoute.get(0));
             RoutePoint myEditedRoute = (RoutePoint) myRoute.get(0);
-            System.out.println(myEditedRoute);
 
             setRoutePoint(myEditedRoute);
 
@@ -203,6 +192,7 @@ public class RoutePopUpController {
             routeFinishButton.setVisible(false);
             routeCancelButton.setVisible(false);
 
+            //TODO instead of making the window close after editing, get it to display the updated and linked values
             stage.close();
         } else {
             routeInvalidData.setVisible(true);
@@ -240,14 +230,8 @@ public class RoutePopUpController {
         routeDeleteButton.setVisible(true);
     }
 
-    //TODO fix this method here to check values properly
-    public boolean validEntries(List<String> attributes){
-
-        return true;
-    }
-
     public void enterPressed(KeyEvent ke)
-    { //TODO test this when edit routes is working properly
+    {
         if(ke.getCode() == KeyCode.ENTER)
         {
             commitEdit();
@@ -282,4 +266,9 @@ public class RoutePopUpController {
     public void setRouteTabController(RouteTabController controller) {
         routeTabController = controller;
     }
+
+
+
+
+
 }

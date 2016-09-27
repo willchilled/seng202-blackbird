@@ -39,6 +39,7 @@ public class RouteAddingPopUpController {
     private Stage adderStage;
     private Parent root;
     private RouteTabController routeTabController;
+    private boolean added = false;
 
     public void control() {
         adderStage.setScene(new Scene(root));
@@ -74,6 +75,7 @@ public class RouteAddingPopUpController {
             myRouteData.add(myRoutePoint);
             DataBaseRefactor.insertDataPoints(myRouteData, null);
             routeTabController.routesFilterButtonPressed();
+            added = true;
 
             adderStage.close();
         } else {
@@ -131,5 +133,9 @@ public class RouteAddingPopUpController {
 
     public void setRouteTabController(RouteTabController routeTabController) {
         this.routeTabController = routeTabController;
+    }
+
+    public boolean isAdded() {
+        return added;
     }
 }

@@ -281,7 +281,7 @@ public class FlightTabController {
     }
 
     public void deleteSingleFlight(){
-        //TODO delete single flight isn't working, I think the id is always 0
+        //TODO delete single flight isn't working, I think the id is always 0 <- delete seems to work now, but needs to clear waypoints also
         String sql = "";
         int id = flight.getFlightID();
         sql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);

@@ -51,7 +51,6 @@ public class MenuBarController {
         //get their file
         File theirDB = HelperFunctions.getFile("Choose a Database", false);
         if (theirDB== null) {
-            System.out.println("No File was loaded");
             return;
         }
         //get the default database
@@ -231,7 +230,6 @@ public class MenuBarController {
         String[] flightTableColumns = {"FlightIDNum", "SrcICAO", "DstICAO"};
         String[] flightPointTableColumns = {"SeqOrder", "LocaleID", "LocationType", "Altitude", "Latitude", "Longitude", "FlightIDNum"};
         if (!(Validator.tableColumnchecker("FLIGHT", flightTableColumns))) {
-            System.out.println("1");
             //Give Alert
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error in loading File");
@@ -242,8 +240,6 @@ public class MenuBarController {
             DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
             DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
         } else if (!(Validator.tableColumnchecker("FLIGHTPOINT", flightPointTableColumns))) { //check flight point table
-            //Give Alert
-            System.out.println("2");
             //Give Alert
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error in loading File");

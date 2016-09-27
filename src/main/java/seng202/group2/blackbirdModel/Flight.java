@@ -33,7 +33,7 @@ public class Flight extends DataPoint {
         FlightPoint dest = (FlightPoint) flightPoints.get(flightPoints.size() - 1);
         this.srcAirport = source.getLocaleID();
         this.destAirport = dest.getLocaleID();
-        this.flightID = source.getSeqno();
+        this.flightID = source.getFlightIDNum();
     }
 
 

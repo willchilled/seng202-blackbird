@@ -62,6 +62,12 @@ public class Validator {
 
     }
 
+    private static boolean isValidAirlineCountry(String country){
+
+        return (country.length() <= 40 && StringUtils.isAlphaSpace(country));
+
+    }
+
     private static boolean isValidActive(String active){
 
         return ((!active.equals("") && (active.equals("Y") || active.equals("N"))) || active.equals(""));
@@ -214,7 +220,7 @@ public class Validator {
                 isValidIATA(iata) &&
                 isValidICAO(icao) &&
                 isValidAirlineCallsign(callsign) &&
-                isValidCountry(country) &&
+                isValidAirlineCountry(country) &&
                 isValidActive(active));
 
     }

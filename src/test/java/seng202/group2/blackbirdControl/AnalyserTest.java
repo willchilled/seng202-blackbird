@@ -33,11 +33,11 @@ public class AnalyserTest extends TestCase {
         File flightFile = new File(flightFileString);
 
 
-        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT);
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
+        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
 
-        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT);
-        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT);
+        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
+        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
         //ArrayList<Flight>
 
         Flight flight = new Flight(flightPoints);
@@ -48,10 +48,10 @@ public class AnalyserTest extends TestCase {
         // System.out.println(flight.getType() + "--------------------------");
 
         DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airlinePoints);
-        DataBaseRefactor.insertDataPoints(airportPoint);
-        DataBaseRefactor.insertDataPoints(routePoints);
-        DataBaseRefactor.insertDataPoints(myFlight);
+        DataBaseRefactor.insertDataPoints(airlinePoints, null);
+        DataBaseRefactor.insertDataPoints(airportPoint, null);
+        DataBaseRefactor.insertDataPoints(routePoints, null);
+        DataBaseRefactor.insertDataPoints(myFlight, null);
 
 
 

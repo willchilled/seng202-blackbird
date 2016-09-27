@@ -2,6 +2,8 @@
 
 package seng202.group2.blackbirdModel;
 
+import seng202.group2.blackbirdControl.ErrorTabController;
+
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class DataBaseRefactor {
      *
      * @param myPoints An arraylist of DataPoints that we want to insert.
      */
-    public static void insertDataPoints(ArrayList<DataPoint> myPoints) {
+    public static void insertDataPoints(ArrayList<DataPoint> myPoints, ErrorTabController errorTabController) {
         try {
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
@@ -103,18 +105,19 @@ public class DataBaseRefactor {
                 try{
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
-                }
-                catch (Exception e){
-                   // System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    //System.out.println("Prepared statement failed for: " +  currentPoint);
-                    //UNCOMMENT THESE OUT WHEN WE DECIDE HOW TO DEAL WITH ERROR CHECKING IN THE DATBASE
+                } catch (SQLException e){   //failed to put datapoint into database
+                    //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    BadData badPoint = new BadData(0, currentPoint.toString(), currentPoint.getType());
+                    if (errorTabController != null) {
+                        errorTabController.updateBadEntries(badPoint, currentPoint.getType());
+                    }
                 }
             }
             //.close();
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            // System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             //System.exit(0);
             System.out.println("Some error occurred when making connection? :");
         }
@@ -400,7 +403,7 @@ public class DataBaseRefactor {
                          //System.out.println(i + " " + attributes[i]);
 //                    }
                 }
-                DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType);
+                DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
                 // System.out.println(myPoint.toString());
             }
@@ -534,7 +537,7 @@ public class DataBaseRefactor {
      */
     private static String createAirlineTable(){
         String sql = "CREATE TABLE AIRLINE " +
-                "(ID INTEGER PRIMARY KEY    NOT NULL," +
+                "(ID INTEGER PRIMARY KEY    NOT NULL constraint check_id check (ID > 0)," +
                 " NAME           VARCHAR(40)   NOT NULL," +
                 " ALIAS           VARCHAR(40)," +   //alias can be null
                 " IATA           CHAR(2)," +    //can have either IATA or ICAO
@@ -602,9 +605,9 @@ public class DataBaseRefactor {
                 "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
                 "LocaleID       VARCHAR(5) NOT NULL, "+
                 "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
-                "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/, " +
-                "Latitude       FLOAT NOT NULL constraint check_lat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      FLOAT NOT NULL constraint check_long check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
+                "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/ constraint check_flightalt check (Altitude between -1500 and 100000), " +
+                "Latitude       FLOAT NOT NULL constraint check_flightlat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
+                "Longitude      FLOAT NOT NULL constraint check_flightlong check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +

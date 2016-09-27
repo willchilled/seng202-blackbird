@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
@@ -44,6 +45,8 @@ public class MainController implements Initializable {
     @FXML private RouteTabController routeTabController;
     @FXML private AirportTabController airportTabController;
     @FXML private AirlineTabController airlineTabController;
+    @FXML private ErrorTabController errorTabController;
+    @FXML private AnalysisTabController analysisTabController;
 
 
     @FXML private Tab airlineTab;
@@ -68,7 +71,11 @@ public class MainController implements Initializable {
         routeTabController.setMainController(this);
         airportTabController.setMainController(this);
         airlineTabController.setMainController(this);
-
+        errorTabController.setMainController(this);
+        errorTabController.setRouteTabController(routeTabController);
+        errorTabController.setAirportTabController(airportTabController);
+        errorTabController.setAirlineTabController(airlineTabController);
+        analysisTabController.setMainController(this);
     }
 
     /**
@@ -84,6 +91,16 @@ public class MainController implements Initializable {
 
         //I moved the create tables feature to the MenuBarController show()
     }
+//
+//    public AirlineTabController getAirlineTabController() {
+//        return airlineTabController;
+//    }
+
+    public ErrorTabController getErrorTabController() {
+        //advised by tutor to make this method
+        return errorTabController;
+    }
+
 
     /**
      * Calls airlineTabController.addAirlineData() to add airline data from file
@@ -97,6 +114,7 @@ public class MainController implements Initializable {
      */
     public void addAirportData() {
         airportTabController.addAirportData();
+        analysisTabController.setGraphData();
     }
 
     /**
@@ -111,6 +129,7 @@ public class MainController implements Initializable {
      */
     public void addRouteData() {
         routeTabController.addRouteData();
+        //analysisTabController.setGraphData();
     }
 
     /**

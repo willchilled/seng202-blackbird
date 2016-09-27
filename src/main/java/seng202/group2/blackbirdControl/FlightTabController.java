@@ -103,6 +103,17 @@ public class FlightTabController {
     }
 
     /**
+     * A method to display the flights
+     */
+    public void displayFlights(){
+        ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+
+        updateFlightFields();
+        updateFlightsTable(myFlights);
+        mainController.updateTab(DataTypes.FLIGHT);
+    }
+
+    /**
      * Updates all flight filter dropdowns with current data
      */
     private void updateFlightFields() {

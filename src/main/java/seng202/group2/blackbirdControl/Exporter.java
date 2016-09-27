@@ -50,7 +50,6 @@ public class Exporter {
             System.out.println("No File was loaded");
             return;
         }
-
         try {
             File fileToSave = theirDB;
             fileToSave.createNewFile();

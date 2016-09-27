@@ -197,6 +197,15 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * A method that calls the See All methods
+     */
+    public void showTables(){
+        routeTabController.routesSeeAllDataButtonPressed(null);
+        airportTabController.airportSeeAllButtonPressed(null);
+        airlineTabController.airlineSeeAllButtonPressed(null);
+        flightTabController.displayFlights();
+    }
 
 
 }

@@ -94,7 +94,6 @@ public class AirportAddingPopUpController {
         //Gets Values from the inputs
         String airportName = Name.getText().toString();
         String id = airportID.getText().toString();
-        System.out.println("id = " + id);
         String airportCity = City.getText().toString();
         String airportCountry = Country.getText().toString();
         String airportIATA = IATA.getText().toString();

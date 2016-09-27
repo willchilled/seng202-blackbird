@@ -28,6 +28,7 @@ import java.util.logging.Filter;
 public class FlightTabController {
 
     private MainController mainController;
+    private FlightTabController instance;
 
     private Flight flight;
     private FlightPoint flightPoint;
@@ -59,6 +60,10 @@ public class FlightTabController {
     ObservableList<String> flightDstICAOList  = FXCollections.observableArrayList("No values Loaded");
 
 
+
+    public FlightTabController() {
+        instance = this;
+    }
 
     public void show(){
         //mainController.show();
@@ -182,7 +187,7 @@ public class FlightTabController {
 
             //use controller to control it
             FlightCreatorPopUpController popUpController = loader.getController();
-            //popUpController.setFlightTabController(instance);
+            popUpController.setFlightTabController(instance);
             popUpController.setCreatorStage(creatorStage);
             popUpController.setRoot(root);
             popUpController.control();
@@ -198,7 +203,7 @@ public class FlightTabController {
      * upon clicking a row
      * @param filteredFlights A list of the flights with which to update the tables
      */
-    private void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
+    public void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
 
         flightTable.getItems().setAll(filteredFlights);
         flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));

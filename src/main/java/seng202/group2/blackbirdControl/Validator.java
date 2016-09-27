@@ -27,57 +27,46 @@ public class Validator {
     //ID IS A KEY ATTRIBUTE OF AIRLINE SO IS THE ONLY ATTRIBUTE THAT DOES NOT ALLOW CHECKING FOR EMPTY STRING!!!!
 
     private static boolean isValidName(String name){
-
-        return (!name.equals("") && name.length() <= 40);
-
+         return (!name.equals("") && name.length() <= 40 || name.equals(""));
     }
 
     private static boolean isValidAlias(String alias){
-
-        return ((!alias.equals("") && alias.length() <= 40) || alias.equals(""));
-
+        return (!alias.equals("") && alias.length() <= 40 || alias.equals(""));
     }
 
     private static boolean isValidIATA(String iata){
-
-        return ((!iata.equals("") && iata.length() <= 3 && isAllUpper(iata)) || iata.equals(""));
-
+        return (!iata.equals("") && iata.length() <= 3 && isAllUpper(iata)|| iata.equals(""));
     }
 
     private static boolean isValidICAO(String icao){
-
-        return ((!icao.equals("") && icao.length() <= 4 && isAllUpper(icao)) || icao.equals(""));
-
+        return (!icao.equals("") && icao.length() <= 4 && isAllUpper(icao) || icao.equals(""));
     }
 
     private static boolean isValidAirlineCallsign(String callsign){
-
-        return ((!callsign.equals("") && callsign.length() <= 40) || callsign.equals(""));
-
+        return (!callsign.equals("") && callsign.length() <= 40 || callsign.equals(""));
     }
 
     private static boolean isValidCountry(String country){
-
-        return (!country.equals("") && country.length() <= 40);
-
+        return (!country.equals("") && country.length() <= 40 || country.equals(""));
     }
 
     private static boolean isValidAirlineCountry(String country){
-
         return (country.length() <= 40 && StringUtils.isAlphaSpace(country));
-
     }
 
     private static boolean isValidActive(String active){
-
-        return ((!active.equals("") && (active.equals("Y") || active.equals("N"))) || active.equals(""));
-
+        return (!active.equals("") && active.length() == 1 && isAllUpper(active)|| active.equals(""));
     }
 
     private static boolean isValidCity(String city){
+        return (!city.equals("") && city.length() <= 40 || city.equals(""));
+    }
+    private static boolean isValidLocaleID(String localeID){
+        return (!localeID.equals("") && localeID.length() <= 40 || localeID.equals(""));
+    }
 
-        return ((!city.equals("") && city.length() <= 40) || city.equals(""));
-
+    private static boolean isValidType(String type){
+        return (!type.equals("") && type.length() <= 40 || type.equals(""));
     }
 
     private static boolean isValidLat(String lat){
@@ -326,6 +315,22 @@ public class Validator {
             valid = false;
         }
         return valid;
+    }
+
+    public static boolean checkFlightPoint(String[] attributes){ // localeID, wayPointType, alt, lat, long
+
+        String localeid = attributes[0];
+        String type = attributes[1];
+        String alt = attributes[2];
+        String lat = attributes[3];
+        String lng = attributes[4];
+
+        return((isValidLocaleID(localeid) && !localeid.equals("")) &&
+                (isValidType(type) && !type.equals("")) &&
+                (isValidAlt(alt) && !alt.equals("")) &&
+                (isValidLat(lat) && !lat.equals("")) &&
+                (isValidLong(lng) && !lng.equals("")));
+
     }
 
     /**

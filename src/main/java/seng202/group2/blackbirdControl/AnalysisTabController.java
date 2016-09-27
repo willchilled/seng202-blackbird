@@ -77,7 +77,7 @@ public class AnalysisTabController {
 
             xAxis.setCategories(airportNames);
             xAxis.setTickLabelRotation(270);
-            xAxis.tickLabelFontProperty().set(Font.font(8));
+           // xAxis.tickLabelFontProperty().set(Font.font(8));
 
 
             XYChart.Series<String, Integer> series = new XYChart.Series<>();

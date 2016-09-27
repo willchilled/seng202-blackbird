@@ -129,12 +129,12 @@ public class DataBaseRefactor {
         }
 
         if (!allCorrect) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Some file entries could not be added");
-            alert.setContentText("See the Errors tab for more details");
-
-            alert.show();
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Warning");
+//            alert.setHeaderText("Some file entries could not be added");
+//            alert.setContentText("See the Errors tab for more details");
+//
+//            alert.show();
         }
         //System.out.println("Records created successfully");
     }

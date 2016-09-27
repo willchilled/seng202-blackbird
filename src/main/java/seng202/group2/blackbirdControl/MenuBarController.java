@@ -51,7 +51,6 @@ public class MenuBarController {
         //get their file
         File theirDB = HelperFunctions.getFile("Choose a Database", false);
         if (theirDB== null) {
-            System.out.println("No File was loaded");
             return;
         }
         //get the default database
@@ -229,36 +228,59 @@ public class MenuBarController {
     private void databaseCorrector(){
         //check flight table
         String[] flightTableColumns = {"FlightIDNum", "SrcICAO", "DstICAO"};
-        if (!(Validator.tableColumnchecker("FLIGHT" , flightTableColumns))){
-            System.out.println("Flight table was wrong");
+        String[] flightPointTableColumns = {"SeqOrder", "LocaleID", "LocationType", "Altitude", "Latitude", "Longitude", "FlightIDNum"};
+        if (!(Validator.tableColumnchecker("FLIGHT", flightTableColumns))) {
+            //Give Alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error in loading File");
+            alert.setHeaderText("There was a problem with the flight data.");
+            alert.setContentText("It has been removed, this change has not been saved.");
+            alert.showAndWait();
             //Must clear both flight and flightpoint table
             DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
             DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
-        }
-        //check flight point table
-        String[] flightPointTableColumns = {"SeqOrder", "LocaleID", "LocationType", "Altitude", "Latitude", "Longitude", "FlightIDNum"};
-        if (!(Validator.tableColumnchecker("FLIGHTPOINT" , flightPointTableColumns))){
-            System.out.println("flightpoint table was wrong");
+        } else if (!(Validator.tableColumnchecker("FLIGHTPOINT", flightPointTableColumns))) { //check flight point table
+            //Give Alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error in loading File");
+            alert.setHeaderText("There was a problem with the flight data.");
+            alert.setContentText("It has been removed, this change has not been saved.");
+            alert.showAndWait();
             //Must clear both flight and flightpoint table
             DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
             DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
         }
         //check route table
         String[] routeTableColumns = {"IDnum", "Airline", "Airlineid", "Src", "Srcid", "Dst", "Dstid", "Codeshare", "Stops", "Equipment"};
-        if (!(Validator.tableColumnchecker("ROUTE" , routeTableColumns))) {
-            System.out.println("route table was wrong");
+        if (!(Validator.tableColumnchecker("ROUTE", routeTableColumns))) {
+            //Give Alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error in loading File");
+            alert.setHeaderText("There was a problem with the route data.");
+            alert.setContentText("It has been removed, this change has not been saved.");
+            alert.showAndWait();
             DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);//correct if needed
         }
         //check airline table
         String[] airlineTableColumns = {"ID", "NAME", "ALIAS", "IATA", "ICAO", "CALLSIGN", "COUNTRY", "ACTIVE"};
         if (!(Validator.tableColumnchecker("AIRLINE", airlineTableColumns))) {
-            System.out.println("airline table was wrong");
+            //Give Alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error in loading File");
+            alert.setHeaderText("There was a problem with the airline data.");
+            alert.setContentText("It has been removed, this change has not been saved.");
+            alert.showAndWait();
             DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);//correct if needed
         }
         //check airport table
         String[] airportTableColumns = {"ID", "NAME", "CITY", "COUNTRY", "IATA", "ICAO", "LATITUDE", "LONGITUDE", "ALTITUDE", "TIMEZONE", "DST", "TZ"};
-        if (!(Validator.tableColumnchecker("AIRPORT", airportTableColumns))){
-            System.out.println("airport table was wrong");
+        if (!(Validator.tableColumnchecker("AIRPORT", airportTableColumns))) {
+            //Give Alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error in loading File");
+            alert.setHeaderText("There was a problem with the airport data.");
+            alert.setContentText("It has been removed, this change has not been saved.");
+            alert.showAndWait();
             DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);//correct if needed
         }
     }

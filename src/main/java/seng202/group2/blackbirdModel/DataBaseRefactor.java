@@ -759,7 +759,15 @@ public class DataBaseRefactor {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-            e.printStackTrace();
+            //not a db
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error in loading File");
+            alert.setHeaderText("The file was not a database file.");
+            alert.setContentText("A database was create for you");
+            alert.showAndWait();
+            DataBaseRefactor.createTables();
+            //Return true to prevent 2 errors from being displayed
+            return true;
         }
         return exists;
     }

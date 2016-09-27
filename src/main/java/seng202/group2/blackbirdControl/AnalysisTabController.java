@@ -65,7 +65,7 @@ public class AnalysisTabController {
 
 
         myPoints  = Analyser.rankAirports(myPoints, true);
-        ArrayList<AirportPoint> myAirportPoints = new ArrayList<AirportPoint>();
+        ArrayList<AirportPoint> myAirportPoints = new ArrayList<>();
 
 
         for(DataPoint currentPoint: myPoints){
@@ -87,23 +87,32 @@ public class AnalysisTabController {
             if (myAirportPoints.size() < 20){
                 maxAirports = myAirportPoints.size();
             }
-            System.out.println("Country: "+country);
-            System.out.println("Number of airports: "+myAirportPoints.size());
-            System.out.println("Max airports: "+maxAirports);
-            System.out.println("Points:" + myAirportPoints);
+
+
+
+            for (int i = 0; i <maxAirports ; i++) {
+                String name = myAirportPoints.get(i).getAirportName();
+                if (!airportNames.contains(name)){
+                    airportNames.add(name);
+                }
+                else{
+                    airportNames.add(name + i);
+                }
+
+            }
+
 
             for (int i = 0; i < maxAirports; i++) {
                 DataPoint currentPoint = myPoints.get(i);
-                if (!airportNames.contains(myAirportPoints.get(i).getAirportName())) {
-                    airportNames.add(myAirportPoints.get(i).getAirportName());
-                }
+
+                //airportNames.add(myAirportPoints.get(i).getAirportName());
+
                 AirportPoint castedPoint = (AirportPoint) currentPoint;
-                System.out.println("i:"+i);
                // System.out.println();
-                if (!series.getData().contains(airportNames.get(i))) {
-                    series.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getIncomingRoutes()));
-                    series2.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getOutgoingRoutes()));
-                }
+
+                series.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getIncomingRoutes()));
+                series2.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getOutgoingRoutes()));
+
             }
 
             routeChart.getData().addAll(series, series2);
@@ -157,8 +166,6 @@ public class AnalysisTabController {
 
             String currentCountry;
             currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
-            System.out.println("check data:");
-            System.out.println(currentCountry + " MY COUNTRY");
             //setCountry(currentCountry);
             setRouteGraphData();
         }

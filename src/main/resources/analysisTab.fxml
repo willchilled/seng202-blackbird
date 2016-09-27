@@ -7,7 +7,7 @@
 
 <!--<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1024.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>-->
-    <Tab text="Analysis" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.AnalysisTabController">
+    <Tab text="Analysis" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.AnalysisTabController" onSelectionChanged="#countrySwap" >
       <content>
                   <GridPane prefHeight="787.0" prefWidth="993.0">
                     <columnConstraints>
@@ -18,9 +18,9 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints maxHeight="126.0" minHeight="9.0" prefHeight="31.0" vgrow="NEVER" />
-                      <RowConstraints maxHeight="316.0" minHeight="10.0" prefHeight="316.0" vgrow="ALWAYS" />
-                        <RowConstraints maxHeight="270.0" minHeight="0.0" prefHeight="46.0" vgrow="ALWAYS" />
-                      <RowConstraints maxHeight="392.0" minHeight="10.0" prefHeight="360.0" vgrow="ALWAYS" />
+                      <RowConstraints maxHeight="441.0" minHeight="10.0" prefHeight="441.0" vgrow="ALWAYS" />
+                        <RowConstraints maxHeight="270.0" minHeight="0.0" prefHeight="55.0" vgrow="NEVER" />
+                      <RowConstraints maxHeight="392.0" minHeight="10.0" prefHeight="223.0" vgrow="NEVER" />
                         <RowConstraints maxHeight="392.0" minHeight="10.0" prefHeight="38.0" vgrow="NEVER" />
                     </rowConstraints>
                      <children>
@@ -32,7 +32,7 @@
                             <NumberAxis fx:id="yAxis" side="LEFT" />
                           </yAxis>
                         </StackedBarChart>
-                        <ComboBox fx:id="airportCountryFilterMenu" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="airportCountryFilterMenu" onAction="#countrySwap" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                         <BarChart fx:id="equipmentChart" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
@@ -69,5 +69,5 @@
                   </GridPane>
       </content>
     </Tab>
-<!--</tabs>
-</TabPane>-->
+<!--      </tabs>
+    </TabPane>-->

@@ -114,7 +114,7 @@ public class MainController implements Initializable {
      */
     public void addAirportData() {
         airportTabController.addAirportData();
-        analysisTabController.setGraphData();
+        //analysisTabController.setRouteGraphData();
     }
 
     /**

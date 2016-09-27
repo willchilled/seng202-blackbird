@@ -9,6 +9,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Font;
 import seng202.group2.blackbirdModel.AirportPoint;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 import seng202.group2.blackbirdModel.DataPoint;
 import seng202.group2.blackbirdModel.DataTypes;
 
@@ -48,8 +49,10 @@ public class AnalysisTabController {
 
         ObservableList<String> airportNames = FXCollections.observableArrayList();
         routeChart.getData().clear();
-        ArrayList<DataPoint>  myPoints =new ArrayList<>();
-        if ("All".equals(country)){
+
+        ArrayList<DataPoint>  myPoints;
+
+        if (country.equals("All")){
             myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         }
         else{
@@ -58,10 +61,6 @@ public class AnalysisTabController {
         }
 
 
-        airportCountryList = populateAirportCountryList();
-        airportCountryFilterMenu.setValue(airportCountryList.get(0));
-        airportCountryFilterMenu.setItems(airportCountryList);
-        //myPoints  = Analyser.rankAirports(myPoints, true);
         myPoints  = Analyser.rankAirports(myPoints, true);
         ArrayList<AirportPoint> myAirportPoints = new ArrayList<AirportPoint>();
 
@@ -73,13 +72,6 @@ public class AnalysisTabController {
 
         if (myPoints.size() > 1){
 
-//            String[] myAirports = new String[20];
-//            for (int i = 0; i < 20; i++) {
-//                myAirports[i] = myAirportPoints.get(i).getAirportName();
-//            }
-
-           // airportNames.addAll(Arrays.asList(myAirports));
-           // airportNames.add(myAirportPoints.get()
             xAxis.setCategories(airportNames);
             xAxis.setTickLabelRotation(270);
             xAxis.tickLabelFontProperty().set(Font.font(8));
@@ -88,7 +80,14 @@ public class AnalysisTabController {
             XYChart.Series<String, Integer> series = new XYChart.Series<>();
             XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
 
-            for (int i = 0; i < 20; i++) {
+            int maxAirports = 20;
+            if (myAirportPoints.size() < 20){
+                maxAirports = myAirportPoints.size()-1;
+            }
+
+            System.out.println(myAirportPoints.size() + "MY SIZE");
+
+            for (int i = 0; i < maxAirports; i++) {
                 DataPoint currentPoint = myPoints.get(i);
                 airportNames.add(myAirportPoints.get(i).getAirportName());
                 AirportPoint castedPoint = (AirportPoint) currentPoint;
@@ -100,6 +99,7 @@ public class AnalysisTabController {
         }
 
     }
+
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
@@ -119,6 +119,18 @@ public class AnalysisTabController {
         currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
         setCountry(currentCountry);
         setRouteGraphData();
+    }
+
+
+    public void checkData(){
+        ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        if(airports.size() > 0){
+            airportCountryFilterMenu.setVisible(true);
+            airportCountryList = populateAirportCountryList();
+            airportCountryFilterMenu.setValue(airportCountryList.get(0));
+            airportCountryFilterMenu.setItems(airportCountryList);
+            setRouteGraphData();
+        }
     }
 
     public void setCountry(String country) {

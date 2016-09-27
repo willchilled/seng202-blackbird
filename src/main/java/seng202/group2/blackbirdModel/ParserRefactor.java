@@ -46,6 +46,7 @@ public class ParserRefactor {
                 }
                 String[] formattedLine = formatLine(currentLine);
                 DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count, errorTab);
+                currentDataPoint.setFileLine(count);
                 allDataPoints.add(currentDataPoint);
             }
         } catch (FileNotFoundException e) {

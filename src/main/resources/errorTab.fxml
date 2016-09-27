@@ -21,45 +21,63 @@
 
 
    <Tab text="Errors" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.ErrorTabController">
-       <content>
-           <GridPane prefHeight="959.0" prefWidth="1304.0">
-               <columnConstraints>
-                   <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
-                   <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                   <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="612.0" minHeight="46.0" prefHeight="46.0" vgrow="NEVER" />
-                   <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="302.0" vgrow="NEVER" />
-                  <RowConstraints maxHeight="612.0" minHeight="62.0" prefHeight="62.0" vgrow="NEVER" />
-                  <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="286.0" vgrow="NEVER" />
-                  <RowConstraints maxHeight="612.0" minHeight="44.6666259765625" prefHeight="44.6666259765625" vgrow="NEVER" />
-                  <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="303.3333740234375" vgrow="NEVER" />
-                   <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <TableView fx:id="airportErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                    <columns>
-                      <TableColumn fx:id="airportFileLine" prefWidth="75.0" text="File Line" />
-                      <TableColumn fx:id="airportEntry" prefWidth="1178.0" resizable="false" text="Entry" />
-                    </columns>
-                  </TableView>
-                  <TableView fx:id="airlineErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                    <columns>
-                      <TableColumn fx:id="airlineFileLine" prefWidth="75.0" text="File Line" />
-                      <TableColumn fx:id="airlineEntry" prefWidth="1178.0" resizable="false" text="Entry" />
-                    </columns>
-                  </TableView>
-                  <TableView fx:id="routeErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <columns>
-                      <TableColumn fx:id="routeFileLine" prefWidth="75.0" text="File Line" />
-                      <TableColumn fx:id="routeEntry" prefWidth="1177.6666259765625" resizable="false" text="Entry" />
-                    </columns>
-                  </TableView>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Route Data" GridPane.columnIndex="1" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Airport Data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Airline Data" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-               </children>
-           </GridPane>
-       </content>
-   </Tab>
+          <content>
+              <GridPane prefHeight="959.0" prefWidth="1304.0">
+                  <columnConstraints>
+                      <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                      <ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints maxHeight="612.0" minHeight="46.0" prefHeight="46.0" vgrow="NEVER" />
+                      <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="302.0" vgrow="NEVER" />
+                     <RowConstraints maxHeight="612.0" minHeight="62.0" prefHeight="62.0" vgrow="NEVER" />
+                     <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="286.0" vgrow="NEVER" />
+                     <RowConstraints maxHeight="612.0" minHeight="44.6666259765625" prefHeight="44.6666259765625" vgrow="NEVER" />
+                     <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="303.3333740234375" vgrow="NEVER" />
+                      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                  <children>
+                     <TableView fx:id="airportErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                       <columns>
+                         <TableColumn fx:id="airportFileLine" prefWidth="75.0" text="File Line" />
+                         <TableColumn fx:id="airportEntry" prefWidth="1178.0" resizable="false" text="Entry" />
+                     <TableColumn fx:id="airportErrorMessage" prefWidth="75.0" text="Error" />
+                       </columns>
+                     </TableView>
+                     <TableView fx:id="airlineErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                       <columns>
+                         <TableColumn fx:id="airlineFileLine" prefWidth="75.0" text="File Line" />
+                         <TableColumn fx:id="airlineEntry" prefWidth="1178.0" resizable="false" text="Entry" />
+                     <TableColumn fx:id="airlineErrorMessage" prefWidth="75.0" text="Error" />
+                       </columns>
+                     </TableView>
+                     <TableView fx:id="routeErrors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                       <columns>
+                         <TableColumn fx:id="routeFileLine" prefWidth="75.0" text="File Line" />
+                         <TableColumn fx:id="routeEntry" prefWidth="1177.6666259765625" resizable="false" text="Entry" />
+                     <TableColumn fx:id="routeErrorMessage" prefWidth="75.0" text="Error" />
+                       </columns>
+                     </TableView>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Route Data" GridPane.columnIndex="1" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Airport Data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Airline Data" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Pane prefHeight="46.0" prefWidth="1027.0" GridPane.columnIndex="1">
+                     <children>
+                        <Button fx:id="clearRoutesButton" layoutX="199.0" layoutY="10.0" mnemonicParsing="false" onAction="#clearRoutes" text="Clear all bad routes" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <Button fx:id="clearAirportsButton" layoutX="193.0" layoutY="19.0" mnemonicParsing="false" onAction="#clearAirports" text="Clear all bad airports" />
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <Button fx:id="clearAirlinesButton" layoutX="199.0" layoutY="9.0" mnemonicParsing="false" onAction="#clearAirlines" text="Clear all bad airlines" />
+                     </children>
+                  </Pane>
+                  </children>
+              </GridPane>
+          </content>
+      </Tab>

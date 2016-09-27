@@ -21,7 +21,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
 import seng202.group2.blackbirdModel.*;
 
 import javax.swing.*;
@@ -53,6 +52,7 @@ public class MainController implements Initializable {
     @FXML private Tab routeTab;
     @FXML private Tab flightTab;
     @FXML private Tab airportTab;
+    @FXML private Tab analysisTab;
 
     @FXML private TabPane mainTabPane;
     @FXML private GridPane openPane;
@@ -76,6 +76,15 @@ public class MainController implements Initializable {
         errorTabController.setAirportTabController(airportTabController);
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
+
+
+
+        mainTabPane.getSelectionModel().selectedItemProperty()
+                .addListener((obs, oldTab, newTab) -> {
+                    if (newTab == analysisTab) {
+                        analysisTabController.checkData();
+                    }
+                });
     }
 
     /**
@@ -114,7 +123,7 @@ public class MainController implements Initializable {
      */
     public void addAirportData() {
         airportTabController.addAirportData();
-        analysisTabController.setGraphData();
+        //analysisTabController.setRouteGraphData();
     }
 
     /**
@@ -197,8 +206,20 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * A method that calls the See All methods
+     */
+    public void showTables(){
+        routeTabController.routesSeeAllDataButtonPressed(null);
+        airportTabController.airportSeeAllButtonPressed(null);
+        airlineTabController.airlineSeeAllButtonPressed(null);
+        flightTabController.displayFlights();
+    }
 
-
+    public Tab getCurrentTab() {
+        Tab currentTab = mainTabPane.getSelectionModel().getSelectedItem();
+        return currentTab;
+    }
 }
 
 

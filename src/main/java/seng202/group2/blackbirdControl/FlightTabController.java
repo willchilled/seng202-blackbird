@@ -108,6 +108,17 @@ public class FlightTabController {
     }
 
     /**
+     * A method to display the flights
+     */
+    public void displayFlights(){
+        ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+
+        updateFlightFields();
+        updateFlightsTable(myFlights);
+        mainController.updateTab(DataTypes.FLIGHT);
+    }
+
+    /**
      * Updates all flight filter dropdowns with current data
      */
     private void updateFlightFields() {
@@ -275,7 +286,7 @@ public class FlightTabController {
     }
 
     public void deleteSingleFlight(){
-        //TODO delete single flight isn't working, I think the id is always 0
+        //TODO delete single flight isn't working, I think the id is always 0 <- delete seems to work now, but needs to clear waypoints also
         String sql = "";
         int id = flight.getFlightID();
         sql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);

@@ -32,6 +32,7 @@ public class AirlineAddingPopUpController {
     @FXML private CheckBox Active;
     private Stage adderStage;
     private Parent root;
+    private boolean added = false;
 
     public void control() {
         adderStage.setScene(new Scene(root));
@@ -53,6 +54,7 @@ public class AirlineAddingPopUpController {
 
             DataBaseRefactor.insertDataPoints(myAirlineData, null);
             airlineTabController.airlineFilterButtonPressed();
+            added = true;
             adderStage.close();
         } else {
             addAirlineInvalidText.setVisible(true);
@@ -102,5 +104,9 @@ public class AirlineAddingPopUpController {
         {
             createButtonPressed();
         }
+    }
+
+    public boolean isAdded() {
+        return added;
     }
 }

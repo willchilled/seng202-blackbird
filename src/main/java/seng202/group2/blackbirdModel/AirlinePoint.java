@@ -67,9 +67,6 @@ public class AirlinePoint extends DataPoint {
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
                 }
-                //AirlinePoint myAirlinePoint = new
-                //this.airlineID = -1;
-                //this.airlineName = currentLine.toString();
                 this.correctEntry = 1;
             }
         } else {

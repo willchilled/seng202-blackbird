@@ -47,6 +47,7 @@ public class AirportAddingPopUpController {
 
     private Stage adderStage;
     private Parent root;
+    private boolean added = false;
 
     private AirportTabController airportTabController;
 
@@ -79,6 +80,7 @@ public class AirportAddingPopUpController {
 
             DataBaseRefactor.insertDataPoints(myAirportData, null);
             airportTabController.airportFilterButtonPressed();
+            added = true;
             adderStage.close();
         } else {
             addAirportInvalidText.setVisible(true);
@@ -166,5 +168,9 @@ public class AirportAddingPopUpController {
         {
             createButtonPressed();
         }
+    }
+
+    public boolean isAdded() {
+        return added;
     }
 }

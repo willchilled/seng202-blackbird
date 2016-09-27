@@ -171,7 +171,6 @@ public class AirportTabController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        //System.out.println("AH NO!");
                     }
 
                 }

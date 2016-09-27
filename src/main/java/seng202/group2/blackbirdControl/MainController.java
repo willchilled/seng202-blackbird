@@ -53,6 +53,7 @@ public class MainController implements Initializable {
     @FXML private Tab routeTab;
     @FXML private Tab flightTab;
     @FXML private Tab airportTab;
+    @FXML private Tab analysisTab;
 
     @FXML private TabPane mainTabPane;
     @FXML private GridPane openPane;
@@ -76,6 +77,15 @@ public class MainController implements Initializable {
         errorTabController.setAirportTabController(airportTabController);
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
+
+
+
+        mainTabPane.getSelectionModel().selectedItemProperty()
+                .addListener((obs, oldTab, newTab) -> {
+                    if (newTab == analysisTab) {
+                        analysisTabController.checkData();
+                    }
+                });
     }
 
     /**
@@ -114,7 +124,7 @@ public class MainController implements Initializable {
      */
     public void addAirportData() {
         airportTabController.addAirportData();
-        analysisTabController.setGraphData();
+        //analysisTabController.setRouteGraphData();
     }
 
     /**
@@ -207,7 +217,10 @@ public class MainController implements Initializable {
         flightTabController.displayFlights();
     }
 
-
+    public Tab getCurrentTab() {
+        Tab currentTab = mainTabPane.getSelectionModel().getSelectedItem();
+        return currentTab;
+    }
 }
 
 

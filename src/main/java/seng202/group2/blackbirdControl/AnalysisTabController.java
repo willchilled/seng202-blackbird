@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdControl;
 
+import com.sun.javafx.runtime.async.AbstractAsyncOperation;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,10 +18,7 @@ import seng202.group2.blackbirdModel.DataPoint;
 import seng202.group2.blackbirdModel.DataTypes;
 
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by emr65 on 26/09/16.
@@ -63,7 +61,7 @@ public class AnalysisTabController {
         routeChart.getData().clear();
         ArrayList<DataPoint>  myPoints;
 
-        if (country.equals("All")){
+        if (getCountry().equals("All")){
             myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         }
         else{
@@ -109,6 +107,118 @@ public class AnalysisTabController {
         }
     }
 
+    private void setAirportsByCountryGraph() {
+        airportChart.getData().clear();
+        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        yAxisAirport.setCategories(countryNames);
+
+        List<Map.Entry> airportsPerCountry = Analyser.numAirportsPerCountry();
+        xAxisAirport.setTickLabelRotation(270);
+
+        XYChart.Series series = new XYChart.Series();
+
+        int maxAirports =20;
+
+        if (airportsPerCountry.size() < 20){
+            maxAirports = airportsPerCountry.size();
+        }
+
+        for (int i = 0; i <maxAirports ; i++) {
+            String name = (String) airportsPerCountry.get(i).getKey();
+            if (!countryNames.contains(name)){
+                countryNames.add(name);
+            }
+            else{
+                countryNames.add(name + i);
+            }
+        }
+
+        for (int i = 0; i < maxAirports; i++) {
+           // System.out.println(countryNames.get(i) + "--" + airportsPerCountry.get(i).getValue());
+            series.getData().add(new XYChart.Data((Integer) airportsPerCountry.get(i).getValue(), countryNames.get(i)));
+            //TODO Reverse me
+            //TODO choice for number displayed lolol
+        }
+        airportChart.getData().addAll(series);
+    }
+
+    private void setAirlinesPerCountryGraph() {
+        airlineChart.getData().clear();
+        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        yAxisAirline.setCategories(countryNames);
+
+        List<Map.Entry> airlinesPerCountry = Analyser.numAirlinesPerCountry();
+        //xAxisAir.setTickLabelRotation(270);
+
+        XYChart.Series series = new XYChart.Series();
+
+        int maxAirlines = 20;
+
+        if (airlinesPerCountry.size() < 20){
+            maxAirlines = airlinesPerCountry.size();
+        }
+
+        for (int i = 0; i <maxAirlines ; i++) {
+            String name = (String) airlinesPerCountry.get(i).getKey();
+            if (!countryNames.contains(name)){
+                countryNames.add(name);
+            }
+            else{
+                countryNames.add(name + i);
+            }
+        }
+        //System.out.println();
+        for (int i = 0; i < maxAirlines; i++) {
+            //System.out.println(countryNames.get(i) + "--" + airlinesPerCountry.get(i).getValue());
+            series.getData().add(new XYChart.Data((Integer) airlinesPerCountry.get(i).getValue(), countryNames.get(i)));
+            //TODO Reverse me
+            //TODO choice for number displayed lolol
+        }
+        airlineChart.getData().addAll(series);
+    }
+
+
+    private void setEquipmentChartData() {
+        equipmentChart.getData().clear();
+        ObservableList<String> equipmentNames = FXCollections.observableArrayList();
+        xAxisEquipment.setCategories(equipmentNames);
+        xAxisEquipment.setTickLabelRotation(270);
+
+        List<Map.Entry> rotuesPerEquip = Analyser.routesPerEquipment();
+        //xAxisAir.setTickLabelRotation(270);
+
+        XYChart.Series series = new XYChart.Series();
+
+        int maxEquip = 20;
+
+        if (rotuesPerEquip.size() < 20){
+            maxEquip = rotuesPerEquip.size();
+        }
+
+        for (int i = 0; i <maxEquip ; i++) {
+            String name = (String) rotuesPerEquip.get(i).getKey();
+            if (!equipmentNames.contains(name)){
+                equipmentNames.add(name);
+            }
+            else{
+                equipmentNames.add(name + i);
+            }
+        }
+
+
+        for (int i = 0; i < maxEquip; i++) {
+            //System.out.println(equipmentNames.get(i) + "--" + rotuesPerEquip.get(i).getValue());
+            series.getData().add(new XYChart.Data(equipmentNames.get(i), (Integer) rotuesPerEquip.get(i).getValue()));
+
+        }
+        equipmentChart.getData().addAll(series);
+    }
+
+
+
+
+
+
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
@@ -150,8 +260,13 @@ public class AnalysisTabController {
             String currentCountry;
             currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
             setRouteGraphData();
+            setAirlinesPerCountryGraph();
+            setAirportsByCountryGraph();
+            setEquipmentChartData();
         }
     }
+
+
 
     public void setCountry(String country) {
         this.country = country;

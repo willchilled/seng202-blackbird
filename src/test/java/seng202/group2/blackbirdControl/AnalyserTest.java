@@ -95,4 +95,16 @@ public class AnalyserTest extends TestCase {
 
     }
 
+    public void testroutesPerEquipment() throws Exception{
+        List<Map.Entry> result =  Analyser.routesPerEquipment();
+        assertEquals(result.get(0).getValue(), 15463);
+        assertEquals(result.get(0).getKey(), "320");
+    }
+
+    public void testrankAirportsByRoutes() throws Exception{
+        List<Map.Entry> result =  Analyser.rankAirportsByRoutes("All");
+        assertEquals(result.get(0).getKey(), "Canada");
+        assertEquals(result.get(0).getValue(), 80);
+    }
+
 }

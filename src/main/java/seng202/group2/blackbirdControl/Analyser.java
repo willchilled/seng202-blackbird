@@ -1,10 +1,8 @@
 package seng202.group2.blackbirdControl;
 
-import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.DataPoint;
-import seng202.group2.blackbirdModel.DataTypes;
+import seng202.group2.blackbirdModel.*;
 
+import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -45,6 +43,42 @@ public class Analyser {
         return deg * (Math.PI/180.0);
     }
 
+    public static List<Map.Entry> rankAirportsByRoutes(String country) {
+        ArrayList<DataPoint> myPoints = new ArrayList<>();
+        if (country.equals("All")){
+            myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        }
+        else{
+            ArrayList<String> menus = new ArrayList<>(Arrays.asList(country));
+            myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
+        }
+
+
+        ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airport");
+        HashMap<String, Integer> airportsPerCountry = new HashMap<>();
+
+        for(String currentCountry: allCountries){
+            airportsPerCountry.put(currentCountry, 0);
+        }
+
+        for (DataPoint currentPoint: myPoints){
+            AirportPoint currentAirportPoint = (AirportPoint) currentPoint;
+            String newCountry = currentAirportPoint.getAirportCountry();
+            int counter = airportsPerCountry.get(newCountry);
+
+            airportsPerCountry.put(currentAirportPoint.getAirportCountry(), counter +1);
+        }
+        //List<> list = new ArrayList<>(airportsPerCountry.values());
+        List<Map.Entry> results = new ArrayList(airportsPerCountry.entrySet());
+
+        results = sortDictByValue(results);
+
+
+
+        return results;
+
+
+    }
 
 
     //ranks airports based on the number of routes
@@ -152,6 +186,70 @@ public class Analyser {
         return results;
     }
 
+    public static List<Map.Entry> routesPerEquipment(){
+        System.out.println("hi :)");
+
+        ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+
+        ArrayList<String> uniqueEquip = new ArrayList<>();
+        HashSet<String> equipSet = new HashSet<>();
+
+
+        for (int i = 0; i <routePoints.size() ; i++) {
+            RoutePoint currentPoint = (RoutePoint) routePoints.get(i);
+            //System.out.println(currentPoint.getEquipment());
+            String currentEquip = currentPoint.getEquipment();
+            //System.out.println(currentEquip);
+
+
+
+
+
+            if (currentEquip != null) {
+                String[] equipArray = currentEquip.split(" ");
+                //System.out.println("EQUIP "+ equipArray[0]);
+                for (String myEquip : equipArray) {
+                    equipSet.add(myEquip);
+                }
+            }
+
+        }
+
+        uniqueEquip.addAll(equipSet);
+
+        HashMap<String, Integer> routesPerEquip = new HashMap<>();
+
+        for(String country: uniqueEquip){
+            routesPerEquip.put(country, 0);
+        }
+
+        for (DataPoint currentPoint: routePoints){
+            RoutePoint currentRoute = (RoutePoint) currentPoint;
+            String currentEquip = currentRoute.getEquipment();
+
+            if (currentEquip != null) {
+                String[] equipArray = currentEquip.split(" ");
+                //System.out.println("EQUIP "+ equipArray[0]);
+                for (String myEquip : equipArray) {
+                    routesPerEquip.put(myEquip, routesPerEquip.get(myEquip) + 1);
+                }
+            }
+
+
+
+        }
+
+        //System.out.println(routesPerEquip);
+
+        List<Map.Entry> results = new ArrayList(routesPerEquip.entrySet());
+        results = sortDictByValue(results);
+        //System.out.println(results);
+
+        return results;
+
+
+    }
+
     private static List<Map.Entry> sortDictByValue(List<Map.Entry> results) {
         Collections.sort(results, new Comparator<Map.Entry>() {
             @Override
@@ -173,6 +271,8 @@ public class Analyser {
         });
         return results;
     }
+
+
 
 
 }

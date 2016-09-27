@@ -1,104 +1,276 @@
 package seng202.group2.blackbirdControl;
 
+import com.sun.javafx.runtime.async.AbstractAsyncOperation;
+import com.sun.org.apache.xpath.internal.SourceTree;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
+import javafx.scene.text.Font;
 import seng202.group2.blackbirdModel.AirportPoint;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
 import seng202.group2.blackbirdModel.DataPoint;
 import seng202.group2.blackbirdModel.DataTypes;
 
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by emr65 on 26/09/16.
  */
 public class AnalysisTabController {
 
-    @FXML
-    StackedBarChart<String, Integer> graph1;
+    @FXML StackedBarChart<String, Integer> routeChart;
+    @FXML BarChart<String, Integer> airportChart;
+    @FXML BarChart<String, Integer> airlineChart;
+    @FXML BarChart<String, Integer> equipmentChart;
 
-    @FXML CategoryAxis xAxis;
-    @FXML NumberAxis yAxis;
+    @FXML CategoryAxis xAxisRoute;
+    @FXML NumberAxis yAxisRotue;
+    @FXML CategoryAxis yAxisAirport;
+    @FXML NumberAxis xAxisAirport;
+    @FXML CategoryAxis yAxisAirline;
+    @FXML NumberAxis xAxisAirline;
+    @FXML CategoryAxis xAxisEquipment;
+    @FXML NumberAxis yAxisEquipment;
+
+    @FXML ComboBox airportCountryFilterMenu;
+
+    private String country;
 
     private MainController mainController;
 
+    ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
     private ObservableList<String> monthNames = FXCollections.observableArrayList();
 
 
     @FXML
     private void initialize() {
-        // Get an array with the English month names.
-        String[] months =  {"a","b","c","d","e","f","g","h","i","j","k","l"};
-        // Convert it to a list and add it to our ObservableList of months.
-        monthNames.addAll(Arrays.asList(months));
+        xAxisAirline.setTickLabelRotation(90);
 
-        // Assign the month names as categories for the horizontal axis.
-        xAxis.setCategories(monthNames);
-        //setPersonData();
-        //setGraphData();
     }
+    @FXML
+    protected void setRouteGraphData() {
 
-    protected void setGraphData() {
-        ArrayList<DataPoint> myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ObservableList<String> airportNames = FXCollections.observableArrayList();
+        routeChart.getData().clear();
+        ArrayList<DataPoint>  myPoints;
+
+        if (getCountry().equals("All")){
+            myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        }
+        else{
+            ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
+            myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
+        }
+
         myPoints  = Analyser.rankAirports(myPoints, true);
-        if (myPoints.size() > 1){
-
+        ArrayList<AirportPoint> myAirportPoints = new ArrayList<>();
 
         for(DataPoint currentPoint: myPoints){
             AirportPoint cp2 = (AirportPoint) currentPoint;
-            System.out.println(cp2.toStringWithRoutes());
-            //DataPoint convertedRoutePoint = currentPoint;
-            //rankedData.add(convertedRoutePoint);
+            myAirportPoints.add(cp2);
         }
 
+        if (myPoints.size() > 1){
+            xAxisRoute.setCategories(airportNames);
+            xAxisRoute.setTickLabelRotation(270);
+            XYChart.Series<String, Integer> series = new XYChart.Series<>();
+            XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
+            int maxAirports = 20;
 
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-        XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
+            if (myAirportPoints.size() < 20){
+                maxAirports = myAirportPoints.size();
+            }
 
-        for (int i = 0; i < 10; i++) {
-            DataPoint currentPoint = myPoints.get(i);
-            AirportPoint castedPoint = (AirportPoint) currentPoint;
-            System.out.println(castedPoint.getIncomingRoutes() + "--" + castedPoint.getOutgoingRoutes());
-            series.getData().add(new XYChart.Data<>(monthNames.get(i), castedPoint.getIncomingRoutes() ));
-            series2.getData().add(new XYChart.Data<>(monthNames.get(i), castedPoint.getOutgoingRoutes() ));
+            for (int i = 0; i <maxAirports ; i++) {
+                String name = myAirportPoints.get(i).getAirportName();
+                if (!airportNames.contains(name)){
+                    airportNames.add(name);
+                }
+                else{
+                    airportNames.add(name + i);
+                }
+            }
+            for (int i = 0; i < maxAirports; i++) {
+                DataPoint currentPoint = myPoints.get(i);
+                AirportPoint castedPoint = (AirportPoint) currentPoint;
+                series.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getIncomingRoutes()));
+                series2.getData().add(new XYChart.Data<>(airportNames.get(i), castedPoint.getOutgoingRoutes()));
+            }
+            routeChart.getData().addAll(series, series2);
         }
-
-        graph1.getData().addAll(series, series2);
-        }
-
     }
 
-    /**
-     * Sets the persons to show the statistics for.
-     *
-     */
-    public void setPersonData() {
-        // Count the number of people having their birthday in a specific month.
-        int[] monthCounter = new int[]{1,2,3,4,5,6,7,8,9,10,11,12};
-        int[] pooCounter = new int[]{2,4,6,8,10,12,14,16,18,20,22,24};
-        
-        
-        
+    private void setAirportsByCountryGraph() {
+        airportChart.getData().clear();
+        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        yAxisAirport.setCategories(countryNames);
 
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-        XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
+        List<Map.Entry> airportsPerCountry = Analyser.numAirportsPerCountry();
+        xAxisAirport.setTickLabelRotation(270);
 
-        // Create a XYChart.Data object for each month. Add it to the series.
-        for (int i = 0; i < monthCounter.length; i++) {
-            series.getData().add(new XYChart.Data<>(monthNames.get(i), monthCounter[i]));
-            series2.getData().add(new XYChart.Data<>(monthNames.get(i), pooCounter[i]));
+        XYChart.Series series = new XYChart.Series();
+
+        int maxAirports =20;
+
+        if (airportsPerCountry.size() < 20){
+            maxAirports = airportsPerCountry.size();
+        }
+
+        for (int i = 0; i <maxAirports ; i++) {
+            String name = (String) airportsPerCountry.get(i).getKey();
+            if (!countryNames.contains(name)){
+                countryNames.add(name);
+            }
+            else{
+                countryNames.add(name + i);
+            }
+        }
+
+        for (int i = 0; i < maxAirports; i++) {
+           // System.out.println(countryNames.get(i) + "--" + airportsPerCountry.get(i).getValue());
+            series.getData().add(new XYChart.Data((Integer) airportsPerCountry.get(i).getValue(), countryNames.get(i)));
+            //TODO Reverse me
+            //TODO choice for number displayed lolol
+        }
+        airportChart.getData().addAll(series);
+    }
+
+    private void setAirlinesPerCountryGraph() {
+        airlineChart.getData().clear();
+        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        yAxisAirline.setCategories(countryNames);
+
+        List<Map.Entry> airlinesPerCountry = Analyser.numAirlinesPerCountry();
+        //xAxisAir.setTickLabelRotation(270);
+
+        XYChart.Series series = new XYChart.Series();
+
+        int maxAirlines = 20;
+
+        if (airlinesPerCountry.size() < 20){
+            maxAirlines = airlinesPerCountry.size();
+        }
+
+        for (int i = 0; i <maxAirlines ; i++) {
+            String name = (String) airlinesPerCountry.get(i).getKey();
+            if (!countryNames.contains(name)){
+                countryNames.add(name);
+            }
+            else{
+                countryNames.add(name + i);
+            }
+        }
+        //System.out.println();
+        for (int i = 0; i < maxAirlines; i++) {
+            //System.out.println(countryNames.get(i) + "--" + airlinesPerCountry.get(i).getValue());
+            series.getData().add(new XYChart.Data((Integer) airlinesPerCountry.get(i).getValue(), countryNames.get(i)));
+            //TODO Reverse me
+            //TODO choice for number displayed lolol
+        }
+        airlineChart.getData().addAll(series);
+    }
+
+
+    private void setEquipmentChartData() {
+        equipmentChart.getData().clear();
+        ObservableList<String> equipmentNames = FXCollections.observableArrayList();
+        xAxisEquipment.setCategories(equipmentNames);
+        xAxisEquipment.setTickLabelRotation(270);
+
+        List<Map.Entry> rotuesPerEquip = Analyser.routesPerEquipment();
+        //xAxisAir.setTickLabelRotation(270);
+
+        XYChart.Series series = new XYChart.Series();
+
+        int maxEquip = 20;
+
+        if (rotuesPerEquip.size() < 20){
+            maxEquip = rotuesPerEquip.size();
+        }
+
+        for (int i = 0; i <maxEquip ; i++) {
+            String name = (String) rotuesPerEquip.get(i).getKey();
+            if (!equipmentNames.contains(name)){
+                equipmentNames.add(name);
+            }
+            else{
+                equipmentNames.add(name + i);
+            }
         }
 
 
-        graph1.getData().addAll(series, series2);
+        for (int i = 0; i < maxEquip; i++) {
+            //System.out.println(equipmentNames.get(i) + "--" + rotuesPerEquip.get(i).getValue());
+            series.getData().add(new XYChart.Data(equipmentNames.get(i), (Integer) rotuesPerEquip.get(i).getValue()));
+
+        }
+        equipmentChart.getData().addAll(series);
     }
+
+
+
+
+
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
+
+    private ObservableList<String> populateAirportCountryList(){
+        //Populates the dropdown of airline countries
+        ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
+        ObservableList<String> countryList = FXCollections.observableArrayList(countries);
+        countryList.add(0,"All");
+
+        return countryList;
+    }
+
+    public void countrySwap() {
+        String currentCountry;
+        currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
+        setCountry(currentCountry);
+        setRouteGraphData();
+    }
+
+
+    public void checkData(){
+        ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        if(airports.size() > 0){
+            airportCountryFilterMenu.setVisible(true);
+            airportCountryList = populateAirportCountryList();
+            airportCountryFilterMenu.setValue(airportCountryList.get(0));
+            airportCountryFilterMenu.setItems(airportCountryList);
+            setCountry("All");
+            airportCountryFilterMenu.valueProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue ov, String t, String t1) {
+                    setCountry(t1);
+                    setRouteGraphData();
+
+                }
+            });
+
+            String currentCountry;
+            currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
+            setRouteGraphData();
+            setAirlinesPerCountryGraph();
+            setAirportsByCountryGraph();
+            setEquipmentChartData();
+        }
+    }
+
+
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCountry(){return this.country;}
 }

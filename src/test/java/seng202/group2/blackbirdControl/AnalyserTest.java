@@ -6,6 +6,8 @@ import seng202.group2.blackbirdModel.*;
 import javax.xml.crypto.Data;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Filter;
 
 /**
@@ -53,6 +55,8 @@ public class AnalyserTest extends TestCase {
         DataBaseRefactor.insertDataPoints(routePoints, null);
         DataBaseRefactor.insertDataPoints(myFlight, null);
 
+        System.out.println("HERE");
+
 
 
 
@@ -77,6 +81,30 @@ public class AnalyserTest extends TestCase {
         ArrayList<DataPoint> airports =  FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         Analyser.rankAirports(airports, true);
 
+    }
+
+    public void testnumAirportsPerCountry() throws Exception{
+        List<Map.Entry> a = Analyser.numAirportsPerCountry();
+        assertEquals(a.get(0).getValue(), 80);
+        assertEquals(a.get(0).getKey(), "Canada");
+    }
+
+    public void testnumAirlinesPerCountry() throws Exception{
+       List<Map.Entry> result =  Analyser.numAirlinesPerCountry();
+        assertEquals(result.get(0).getValue(), 18); //Max value is usa with 18 airlines
+
+    }
+
+    public void testroutesPerEquipment() throws Exception{
+        List<Map.Entry> result =  Analyser.routesPerEquipment();
+        assertEquals(result.get(0).getValue(), 15463);
+        assertEquals(result.get(0).getKey(), "320");
+    }
+
+    public void testrankAirportsByRoutes() throws Exception{
+        List<Map.Entry> result =  Analyser.rankAirportsByRoutes("All");
+        assertEquals(result.get(0).getKey(), "Canada");
+        assertEquals(result.get(0).getValue(), 80);
     }
 
 }

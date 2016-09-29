@@ -187,8 +187,6 @@ public class Analyser {
     }
 
     public static List<Map.Entry> routesPerEquipment(){
-        System.out.println("hi :)");
-
         ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
 
         ArrayList<String> uniqueEquip = new ArrayList<>();

@@ -79,12 +79,12 @@ public class MainController implements Initializable {
 
 
 
-        mainTabPane.getSelectionModel().selectedItemProperty()
+       /* mainTabPane.getSelectionModel().selectedItemProperty()
                 .addListener((obs, oldTab, newTab) -> {
                     if (newTab == analysisTab) {
                         analysisTabController.checkData();
                     }
-                });
+                });*/
     }
 
     /**

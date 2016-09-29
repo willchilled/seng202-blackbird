@@ -11,7 +11,7 @@
          <content>
             <Accordion>
               <panes>
-                <TitledPane animated="false" text="Number of Routes per Airport">
+                <TitledPane animated="false" text="Number of Routes per Airport" onMouseClicked="#checkData">
                      <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
@@ -42,7 +42,7 @@
                         </AnchorPane>
                      </content>
                 </TitledPane>
-                <TitledPane animated="false" text="Number of Airlines Per Country">
+                <TitledPane animated="false" text="Number of Airlines Per Country" onMouseClicked="#setAirlinesPerCountryGraph">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -71,7 +71,7 @@
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="35.0" text="Number of Routes for Each Plane Type">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="35.0" text="Number of Routes for Each Plane Type" onMouseClicked="#setEquipmentChartData">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -101,7 +101,7 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Number of Airports by Country">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Number of Airports by Country" onMouseClicked="#setAirportsByCountryGraph">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>

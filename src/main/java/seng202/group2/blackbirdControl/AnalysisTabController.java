@@ -107,6 +107,7 @@ public class AnalysisTabController {
         }
     }
 
+    @FXML
     private void setAirportsByCountryGraph() {
         airportChart.getData().clear();
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -142,6 +143,7 @@ public class AnalysisTabController {
         airportChart.getData().addAll(series);
     }
 
+    @FXML
     private void setAirlinesPerCountryGraph() {
         airlineChart.getData().clear();
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -178,6 +180,7 @@ public class AnalysisTabController {
     }
 
 
+    @FXML
     private void setEquipmentChartData() {
         equipmentChart.getData().clear();
         ObservableList<String> equipmentNames = FXCollections.observableArrayList();
@@ -260,9 +263,9 @@ public class AnalysisTabController {
             String currentCountry;
             currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
             setRouteGraphData();
-            setAirlinesPerCountryGraph();
-            setAirportsByCountryGraph();
-            setEquipmentChartData();
+            //setAirlinesPerCountryGraph();
+            //setAirportsByCountryGraph();
+            //setEquipmentChartData();
         }
     }
 

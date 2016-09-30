@@ -101,7 +101,7 @@ public class RouteTabController {
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();
-
+            mainController.singleExportHelper(DataTypes.ROUTEPOINT);
         } catch (IOException e) {
             e.printStackTrace();
         }

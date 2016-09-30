@@ -224,6 +224,7 @@ public class AirportTabController {
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();
+            mainController.singleExportHelper(DataTypes.AIRPORTPOINT);
         } catch (IOException e) {
             e.printStackTrace();
         }

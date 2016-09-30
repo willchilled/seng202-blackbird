@@ -135,7 +135,7 @@ public class DataBaseRefactor {
             alert.setHeaderText("Some file entries could not be added");
             alert.setContentText("See the Errors tab for more details");
 
-            alert.show();
+            alert.showAndWait();
         }
         //System.out.println("Records created successfully");
     }
@@ -398,6 +398,7 @@ public class DataBaseRefactor {
             String[] attributes = null;
 
             while(rs.next()) {
+                //some error occurring here, preventing retrieval of flight points
 
                 int width = rsmd.getColumnCount();
 
@@ -420,7 +421,7 @@ public class DataBaseRefactor {
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
-                // System.out.println(myPoint.toString());
+                //System.out.println(myPoint.toString());
             }
             preparedStatement.close();
             currentConnection.close();
@@ -628,7 +629,7 @@ public class DataBaseRefactor {
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +
-                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +
+                "REFERENCES FLIGHT(FlightIDNum) ON DELETE CASCADE" +
                 ")";
         return sql;
     }

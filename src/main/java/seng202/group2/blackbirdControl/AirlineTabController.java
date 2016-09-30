@@ -106,6 +106,7 @@ public class AirlineTabController{
         updateAirlinesTable(validAirlineData);    //update with all airline data, including bad data
         mainController.updateTab(DataTypes.AIRLINEPOINT);
 
+
     }
 
     private void updateAirlineFields() {
@@ -239,11 +240,10 @@ public class AirlineTabController{
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();
-
+            mainController.singleExportHelper(DataTypes.AIRLINEPOINT);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
     }
 
     public void enterPressed(KeyEvent ke)

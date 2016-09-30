@@ -175,7 +175,7 @@ public class FlightTabController {
             allPoints = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
         }
         else {
-            ArrayList<String> menusPressed = new ArrayList<String>();
+            ArrayList<String> menusPressed = new ArrayList<>();
             menusPressed.add(srcAirport);
             menusPressed.add(dstAirport);
 
@@ -205,7 +205,7 @@ public class FlightTabController {
             popUpController.setCreatorStage(creatorStage);
             popUpController.setRoot(root);
             popUpController.control();
-
+            mainController.singleExportHelper(DataTypes.FLIGHT);
         } catch (IOException e) {
             e.printStackTrace();
         }

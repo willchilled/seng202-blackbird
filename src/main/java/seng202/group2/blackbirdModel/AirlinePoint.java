@@ -63,14 +63,14 @@ public class AirlinePoint extends DataPoint {
                 this.country = currentLine[6].trim();
                 this.active = currentLine[7].trim().toUpperCase();
             } catch(NumberFormatException e) {
-                BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT);
+                BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT, "Invalid Airline ID given");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
                 }
                 this.correctEntry = 1;
             }
         } else {
-            BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT);
+            BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT, "Invalid line length, expecting 8 comma separated values");
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
             }

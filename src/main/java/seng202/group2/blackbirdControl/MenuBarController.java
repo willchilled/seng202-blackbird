@@ -68,7 +68,6 @@ public class MenuBarController {
             if (result.get() == ButtonType.OK) {
                 DataBaseRefactor.createTables();
                 mainController.showTables();
-                //TODO get the errors table to clear here
                 mainController.clearErrors(DataTypes.AIRPORTPOINT);
                 mainController.clearErrors(DataTypes.AIRLINEPOINT);
                 mainController.clearErrors(DataTypes.ROUTEPOINT);

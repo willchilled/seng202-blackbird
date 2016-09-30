@@ -120,7 +120,7 @@ public class AirportPoint extends DataPoint {
                 }
 
             } catch(NumberFormatException e) {
-                BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT);
+                BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT, "Invalid numeric values given (within Airport ID or altitude, longitude, latitude fields)");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
                 }
@@ -130,7 +130,7 @@ public class AirportPoint extends DataPoint {
                 this.correctEntry = 1;
             }
         } else {
-            BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT);
+            BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT, "Invalid file line length, expecting 12 comma separated values");
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
             }

@@ -258,6 +258,16 @@ public class MainController implements Initializable {
     public void clearErrors(DataTypes errorType) {
         errorTabController.clearEntries(errorType);
     }
+
+    public void singleExportHelper(DataTypes pointType) {
+        switch (pointType) {
+            case AIRLINEPOINT: menuBarController.exportMenusHelper(false, true, false, false); break;
+            case AIRPORTPOINT: menuBarController.exportMenusHelper(true, false, false, false); break;
+            case ROUTEPOINT: menuBarController.exportMenusHelper(false, false, true, false); break;
+            case FLIGHT: menuBarController.exportMenusHelper(false, false, false, true); break;
+            default: return;
+        }
+    }
 }
 
 

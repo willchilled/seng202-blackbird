@@ -39,11 +39,12 @@ public class MenuBarController {
     public void show(){
         addDataMenuButton.setDisable(false);
         mainController.show();
+        //TODO called from main controller setting the main displays
         exportDataMenuButton.setDisable(false);
         exportDataMenuButton.setDisable(false);
         exportDatabaseButton.setDisable(false);
 
-        //TODO clear the database on close so that information does not carry over
+        //TODO have a look at main.fxml to set displays correctly
 
         int size1 = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
         int size2 = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();

@@ -73,16 +73,6 @@ public class RoutePopUpController {
         routeStopsText.setText(String.valueOf(routePoint.getStops()));
         routeEquipText.setText(routePoint.getEquipment());
 
-        System.out.println(routeCSText.getText() + " | " + routeEquipText.getText());
-//        if(!(routeCSText.getText().isEmpty() || routeCSText.getText().equals("null"))) {
-//            codeshareSelection.setSelected(true);
-//        }
-//
-////        if(!(routeStopsText.getText() == null)){
-////            routeStopsTextEdit.setText(routeStopsText.getText());
-////        }
-
-
         if(!(routeCSText.getText() == null)) {
             if (!routeCSText.getText().isEmpty()) {
                 codeshareSelection.setSelected(true);

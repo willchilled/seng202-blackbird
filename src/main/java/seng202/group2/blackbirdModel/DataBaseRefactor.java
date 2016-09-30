@@ -515,6 +515,7 @@ public class DataBaseRefactor {
         File f = new File(cwd+"/default.db");
 
         if(f.exists() && f.isFile()){
+            System.out.println("Deleted db");
             f.delete();
         }
     }

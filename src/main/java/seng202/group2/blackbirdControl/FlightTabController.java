@@ -321,4 +321,12 @@ public class FlightTabController {
         String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
         webEngine.executeScript(scriptToExecute);
     }
+
+    public void flightseeAllButtonPressed(ActionEvent actionEvent) {
+
+        ArrayList<DataPoint> allPoints;
+        allPoints = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+        updateFlightsTable(allPoints);
+
+    }
 }

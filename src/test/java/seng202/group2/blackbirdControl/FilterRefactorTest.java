@@ -210,22 +210,7 @@ public class FilterRefactorTest extends TestCase {
 
     }
 
-    public void testAirport(){
-        DataBaseRefactor.createTables();
-        ArrayList<DataPoint> myPoint = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        System.out.println(myPoint + "HI");
-        String airportsFileString;
-        String cwd = System.getProperty("user.dir");
-        airportsFileString = cwd + "/JUnitTesting/airports.txt";
-        File airportsFile = new File(airportsFileString);
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
-        DataBaseRefactor.insertDataPoints(airportPoint, null);
-        myPoint = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        System.out.println(myPoint + "HI");
 
-
-
-    }
 
 //    public void testBenchmarkFilterSpeeds(){
 //        int benchMarkTime = 5;

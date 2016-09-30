@@ -76,6 +76,7 @@ public class MainController implements Initializable {
         errorTabController.setAirportTabController(airportTabController);
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
+        DataBaseRefactor.createTables();
 
         int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
         int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();

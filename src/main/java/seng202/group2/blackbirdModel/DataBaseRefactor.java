@@ -398,6 +398,7 @@ public class DataBaseRefactor {
             String[] attributes = null;
 
             while(rs.next()) {
+                //some error occurring here, preventing retrieval of flight points
 
                 int width = rsmd.getColumnCount();
 
@@ -420,7 +421,7 @@ public class DataBaseRefactor {
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
-                // System.out.println(myPoint.toString());
+                System.out.println(myPoint.toString());
             }
             preparedStatement.close();
             currentConnection.close();

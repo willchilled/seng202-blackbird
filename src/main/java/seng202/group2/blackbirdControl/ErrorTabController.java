@@ -58,6 +58,18 @@ public class ErrorTabController {
         }
     }
 
+    public void clearEntries(boolean routes, boolean airports, boolean airlines) {
+        if (routes) {
+            badRoutes.clear();
+        }
+        if (airports) {
+            badAirports.clear();
+        }
+        if (airlines) {
+            badAirlines.clear();
+        }
+    }
+
     @FXML
     public void initialize() {
         initializeRoutes();

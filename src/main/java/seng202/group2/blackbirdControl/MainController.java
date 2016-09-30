@@ -77,6 +77,7 @@ public class MainController implements Initializable {
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
 
+        //check the existing database for persistent data
         int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
         int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
         int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
@@ -89,25 +90,30 @@ public class MainController implements Initializable {
             show();
             showTables();
             menuBarController.setOpened(true);
-            System.out.println("Here");
             menuBarController.showMenus();
 
+            boolean flightsPresent=false;
+            boolean airlinesPresent=false;
+            boolean airportsPresent=false;
+            boolean routesPresent=false;
+            if (flightSize > 0) {
+                flightsPresent = true;
+                updateTab(DataTypes.FLIGHT);
+            }
             if (airlineSize > 0) {
+                airlinesPresent = true;
                 updateTab(DataTypes.AIRLINEPOINT);
             }
             if (airportSize > 0) {
+                airportsPresent = true;
                 updateTab(DataTypes.AIRPORTPOINT);
             }
             if (routeSize > 0) {
+                routesPresent = true;
                 updateTab(DataTypes.ROUTEPOINT);
             }
-            if (flightSize > 0) {
-                updateTab(DataTypes.FLIGHT);
-            }
+            menuBarController.exportMenusHelper(airportsPresent, airlinesPresent, routesPresent, flightsPresent);
         }
-
-
-
        /* mainTabPane.getSelectionModel().selectedItemProperty()
                 .addListener((obs, oldTab, newTab) -> {
                     if (newTab == analysisTab) {
@@ -129,10 +135,6 @@ public class MainController implements Initializable {
 
         //I moved the create tables feature to the MenuBarController show()
     }
-//
-//    public AirlineTabController getAirlineTabController() {
-//        return airlineTabController;
-//    }
 
     public ErrorTabController getErrorTabController() {
         //advised by tutor to make this method

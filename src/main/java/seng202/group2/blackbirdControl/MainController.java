@@ -253,6 +253,10 @@ public class MainController implements Initializable {
         Tab currentTab = mainTabPane.getSelectionModel().getSelectedItem();
         return currentTab;
     }
+
+    public void clearErrors(DataTypes errorType) {
+        errorTabController.clearEntries(errorType);
+    }
 }
 
 

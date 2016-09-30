@@ -58,15 +58,12 @@ public class ErrorTabController {
         }
     }
 
-    public void clearEntries(boolean routes, boolean airports, boolean airlines) {
-        if (routes) {
-            badRoutes.clear();
-        }
-        if (airports) {
-            badAirports.clear();
-        }
-        if (airlines) {
-            badAirlines.clear();
+    public void clearEntries(DataTypes errorTypeToClear) {
+        switch (errorTypeToClear) {
+            case AIRLINEPOINT: badAirlines.clear(); break;
+            case AIRPORTPOINT: badAirports.clear(); break;
+            case ROUTEPOINT: badRoutes.clear(); break;
+            default: return;
         }
     }
 

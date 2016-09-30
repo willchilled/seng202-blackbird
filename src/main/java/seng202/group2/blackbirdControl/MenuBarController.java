@@ -69,6 +69,9 @@ public class MenuBarController {
                 DataBaseRefactor.createTables();
                 mainController.showTables();
                 //TODO get the errors table to clear here
+                mainController.clearErrors(DataTypes.AIRPORTPOINT);
+                mainController.clearErrors(DataTypes.AIRLINEPOINT);
+                mainController.clearErrors(DataTypes.ROUTEPOINT);
             }
         }
     }
@@ -218,8 +221,7 @@ public class MenuBarController {
             DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRLINEPOINT);
-            //airlineFilterButtonPressed();
-            //TODO find a way to refresh tables here;
+            mainController.clearErrors(DataTypes.AIRLINEPOINT);
         }
     }
 
@@ -238,6 +240,7 @@ public class MenuBarController {
             DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRPORTPOINT);
+            mainController.clearErrors(DataTypes.AIRPORTPOINT);
         }
     }
 
@@ -256,6 +259,7 @@ public class MenuBarController {
             DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.ROUTEPOINT);
+            mainController.clearErrors(DataTypes.ROUTEPOINT);
         }
     }
 

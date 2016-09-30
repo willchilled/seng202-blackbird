@@ -332,6 +332,27 @@ public class FilterRefactor {
     }
 
 
+    protected static DataPoint findAirportPointForDistance(String airportToCalc){
+        String sql = "SELECT * FROM AIRPORT WHERE name = \"%s\" AND icao = \"%s\"";
+        String name = "";
+        String icao = "";
+
+        int i = airportToCalc.length()-1;
+
+        while (airportToCalc.charAt(i) != ' '){
+            i-=1;
+        }
+
+        name = airportToCalc.substring(0, i);
+        icao = airportToCalc.substring(i+1, airportToCalc.length());
+
+        sql = String.format(sql, name, icao);
+        DataPoint airport = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRPORTPOINT).get(0);
+
+        return airport;
+    }
+
+
     //------------------------------------------HELPER FUNCTIONS----------------------------------------------------//
 
     private static String getJoinForAirportsTableSql(){

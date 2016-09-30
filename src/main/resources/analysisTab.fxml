@@ -4,26 +4,26 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<!--<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1024.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<!--
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1024.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <tabs>-->
     <Tab text="Analysis" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.AnalysisTabController">
          <content>
             <Accordion>
               <panes>
-                <TitledPane animated="false" text="Number of Routes per Airport">
+                <TitledPane animated="false" text="Number of Routes per Airport" onMouseClicked="#checkData">
                      <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
                               <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                  <children>
                                     <ComboBox fx:id="airportCountryFilterMenu" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                                    <StackedBarChart fx:id="routeChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <StackedBarChart fx:id="routeChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Airports by Most Incoming and Outgoing Routes" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <xAxis>
-                                          <CategoryAxis side="BOTTOM" fx:id="xAxisRoute" />
+                                          <CategoryAxis label="Airport" side="BOTTOM" fx:id="xAxisRoute" />
                                        </xAxis>
                                        <yAxis>
-                                          <NumberAxis fx:id="yAxisRotue" side="LEFT" />
+                                          <NumberAxis fx:id="yAxisRotue" label="Number of Routes" side="LEFT" />
                                        </yAxis>
                                     </StackedBarChart>
                                  </children>
@@ -42,18 +42,18 @@
                         </AnchorPane>
                      </content>
                 </TitledPane>
-                <TitledPane animated="false" text="Number of Airlines Per Country">
+                <TitledPane animated="false" text="Number of Airlines Per Country" onMouseClicked="#setAirlinesPerCountryGraph">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                  <children>
-                                    <BarChart fx:id="airlineChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <BarChart fx:id="airlineChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airlines" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <xAxis>
-                                          <NumberAxis fx:id="xAxisAirline" side="LEFT" />
+                                          <NumberAxis label="Number of Airlines" fx:id="xAxisAirline" />
                                        </xAxis>
                                        <yAxis>
-                                          <CategoryAxis side="BOTTOM" fx:id="yAxisAirline" />
+                                          <CategoryAxis fx:id="yAxisAirline" label="Country" side="LEFT" />
                                        </yAxis>
                                     </BarChart>
                                  </children>
@@ -71,18 +71,18 @@
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="35.0" text="Number of Routes for Each Plane Type">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="35.0" text="Number of Routes for Each Plane Type" onMouseClicked="#setEquipmentChartData">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                  <children>
-                                    <BarChart fx:id="equipmentChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <BarChart fx:id="equipmentChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Number of Routes for Common Plane Types" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <xAxis>
-                                          <CategoryAxis side="BOTTOM" fx:id="xAxisEquipment" />
+                                          <CategoryAxis label="Type of Plane" side="BOTTOM" fx:id="xAxisEquipment" />
                                        </xAxis>
                                        <yAxis>
-                                          <NumberAxis fx:id="yAxisEquipment" side="LEFT" />
+                                          <NumberAxis fx:id="yAxisEquipment" label="Number of Routes" side="LEFT" />
                                        </yAxis>
                                     </BarChart>
                                  </children>
@@ -101,18 +101,18 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Number of Airports by Country">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Number of Airports by Country" onMouseClicked="#setAirportsByCountryGraph">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                  <children>
-                                    <BarChart fx:id="airportChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <BarChart fx:id="airportChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airports" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <xAxis>
-                                          <NumberAxis fx:id="xAxisAirport" side="LEFT" />
+                                          <NumberAxis label="Number of Airports" fx:id="xAxisAirport" />
                                        </xAxis>
                                        <yAxis>
-                                          <CategoryAxis side="BOTTOM" fx:id="yAxisAirport" />
+                                          <CategoryAxis fx:id="yAxisAirport" label="Country" side="LEFT" />
                                        </yAxis>
                                     </BarChart>
                                  </children>

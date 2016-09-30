@@ -60,8 +60,11 @@ public class AnalysisTabController {
         ObservableList<String> airportNames = FXCollections.observableArrayList();
         routeChart.getData().clear();
         ArrayList<DataPoint>  myPoints;
-
-        if (getCountry().equals("All")){
+        if(getCountry() == null){
+            ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
+            myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
+        }
+        else if (getCountry().equals("All")){
             myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         }
         else{
@@ -107,6 +110,7 @@ public class AnalysisTabController {
         }
     }
 
+    @FXML
     private void setAirportsByCountryGraph() {
         airportChart.getData().clear();
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -134,7 +138,6 @@ public class AnalysisTabController {
         }
 
         for (int i = 0; i < maxAirports; i++) {
-           // System.out.println(countryNames.get(i) + "--" + airportsPerCountry.get(i).getValue());
             series.getData().add(new XYChart.Data((Integer) airportsPerCountry.get(i).getValue(), countryNames.get(i)));
             //TODO Reverse me
             //TODO choice for number displayed lolol
@@ -142,6 +145,7 @@ public class AnalysisTabController {
         airportChart.getData().addAll(series);
     }
 
+    @FXML
     private void setAirlinesPerCountryGraph() {
         airlineChart.getData().clear();
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -167,9 +171,7 @@ public class AnalysisTabController {
                 countryNames.add(name + i);
             }
         }
-        //System.out.println();
         for (int i = 0; i < maxAirlines; i++) {
-            //System.out.println(countryNames.get(i) + "--" + airlinesPerCountry.get(i).getValue());
             series.getData().add(new XYChart.Data((Integer) airlinesPerCountry.get(i).getValue(), countryNames.get(i)));
             //TODO Reverse me
             //TODO choice for number displayed lolol
@@ -178,6 +180,7 @@ public class AnalysisTabController {
     }
 
 
+    @FXML
     private void setEquipmentChartData() {
         equipmentChart.getData().clear();
         ObservableList<String> equipmentNames = FXCollections.observableArrayList();
@@ -207,7 +210,6 @@ public class AnalysisTabController {
 
 
         for (int i = 0; i < maxEquip; i++) {
-            //System.out.println(equipmentNames.get(i) + "--" + rotuesPerEquip.get(i).getValue());
             series.getData().add(new XYChart.Data(equipmentNames.get(i), (Integer) rotuesPerEquip.get(i).getValue()));
 
         }
@@ -260,9 +262,6 @@ public class AnalysisTabController {
             String currentCountry;
             currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
             setRouteGraphData();
-            setAirlinesPerCountryGraph();
-            setAirportsByCountryGraph();
-            setEquipmentChartData();
         }
     }
 

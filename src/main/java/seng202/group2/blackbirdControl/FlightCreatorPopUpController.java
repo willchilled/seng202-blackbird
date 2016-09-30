@@ -34,8 +34,8 @@ public class FlightCreatorPopUpController {
     @FXML private TableColumn flightAdderLongCol;
 
     @FXML private Text flightAdderErrorText;
+    @FXML private Text flightCreatorMapErrorText;
 
-    @FXML private TextField wayPointSeqNoText;
     @FXML private TextField wayPointIDText;
     @FXML private ComboBox wayPointTypeComboBox;
     @FXML private TextField wayPointAltText;
@@ -167,8 +167,13 @@ public class FlightCreatorPopUpController {
      * @param newRoute
      */
     private void displayRoute(Route newRoute) {
-        String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
-        webEngine.executeScript(scriptToExecute);
+        try {
+            String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
+            webEngine.executeScript(scriptToExecute);
+            flightCreatorMapErrorText.setVisible(false);
+        } catch (netscape.javascript.JSException e){
+            flightCreatorMapErrorText.setVisible(true);
+        }
     }
 
 

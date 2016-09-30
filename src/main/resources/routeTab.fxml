@@ -24,7 +24,7 @@
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="612.0" minHeight="90.0" prefHeight="174.0" vgrow="NEVER" />
-                <RowConstraints maxHeight="632.0" minHeight="10.0" prefHeight="568.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="568.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
@@ -77,14 +77,14 @@
                                             </rowConstraints>
                                             <children>
                                                 <Button fx:id="routesSeeallDataButton" layoutX="1053.0" layoutY="24.0" mnemonicParsing="false" onAction="#routesSeeAllDataButtonPressed" prefHeight="25.0" prefWidth="120.0" text="See All Points" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                                <TextField fx:id="routesSearchMenu" onKeyPressed="#enterPressed" layoutX="699.0" layoutY="24.0" prefHeight="25.0" prefWidth="141.0" promptText="Search..." GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                                                <ComboBox fx:id="routesFilterBySourceMenu" layoutX="26.0" layoutY="26.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
-                                                <ComboBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
-                                                <ComboBox fx:id="routesFilterbyDestMenu" layoutX="195.0" layoutY="25.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" onKeyPressed="#enterPressed"/>
+                                                <TextField fx:id="routesSearchMenu" layoutX="699.0" layoutY="24.0" onKeyPressed="#enterPressed" prefHeight="25.0" prefWidth="141.0" promptText="Search..." GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="routesFilterBySourceMenu" layoutX="26.0" layoutY="26.0" onKeyPressed="#enterPressed" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="routesFilterByStopsMenu" layoutX="364.0" layoutY="25.0" onKeyPressed="#enterPressed" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                                                <ComboBox fx:id="routesFilterbyDestMenu" layoutX="195.0" layoutY="25.0" onKeyPressed="#enterPressed" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
                                                 <Text layoutX="35.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Source" />
                                                 <Text layoutX="364.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stops" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                                                 <Text layoutX="529.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Equipment" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-                                                <ComboBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" onKeyPressed="#enterPressed"/>
+                                                <ComboBox fx:id="routesFilterbyEquipMenu" layoutX="529.0" layoutY="24.0" onKeyPressed="#enterPressed" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
                                                 <Text layoutX="196.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" GridPane.columnIndex="1" />
                                                 <Button fx:id="routesFilterButton1" mnemonicParsing="false" onAction="#routesFilterButtonPressed" prefHeight="25.0" prefWidth="121.0" text="Filter" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                                             </children>

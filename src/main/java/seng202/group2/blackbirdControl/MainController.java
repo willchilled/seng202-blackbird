@@ -58,6 +58,7 @@ public class MainController implements Initializable {
     @FXML private GridPane openPane;
 
 
+
     /**
      * Sets up connection between the controllers
      * Calls methods to set the main controller of other controllers to this instance.
@@ -137,7 +138,9 @@ public class MainController implements Initializable {
      * Calls routeTabController.addRouteData() to add route data from file
      */
     public void addRouteData() {
+
         routeTabController.addRouteData();
+        //myStage.close();
         //analysisTabController.setGraphData();
     }
 

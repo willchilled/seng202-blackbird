@@ -19,11 +19,8 @@ public class MenuBarController {
     private MainController mainController;
     private boolean opened = false;
 
-
-
     @FXML
     MenuItem addDataMenuButton;
-    //export menu stuff
     @FXML
     MenuItem exportDataMenuButton;
     @FXML
@@ -56,21 +53,25 @@ public class MenuBarController {
 //            DataBaseRefactor.createTables();
 //            opened = true;
 //        } else {
-            if (opened == false) {
-                showMenus();
-                DataBaseRefactor.createTables();
-                opened = true;
-            } else {
-                opened = true;
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("New Project");
-                alert.setHeaderText("Create new project?");
-                alert.setContentText("Warning: this will overwrite any unsaved data.");
+        if (opened == false) {
+            showMenus();
+            DataBaseRefactor.createTables();
+            opened = true;
+        } else {
+            opened = true;
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("New Project");
+            alert.setHeaderText("Create new project?");
+            alert.setContentText("Warning: this will overwrite any unsaved data.");
 
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    DataBaseRefactor.createTables();
-//                }
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                DataBaseRefactor.createTables();
+                mainController.showTables();
+                //TODO get the errors table to clear here
+                mainController.clearErrors(DataTypes.AIRPORTPOINT);
+                mainController.clearErrors(DataTypes.AIRLINEPOINT);
+                mainController.clearErrors(DataTypes.ROUTEPOINT);
             }
         }
     }
@@ -146,6 +147,21 @@ public class MenuBarController {
         exportAirlineMenuButton.setDisable(false); //make export possible
     }
 
+    public void exportMenusHelper(boolean airport, boolean airline, boolean route, boolean flight) {
+        if (airport) {
+            exportAirportMenuButton.setDisable(false);
+        }
+        if (airline) {
+            exportAirlineMenuButton.setDisable(false);
+        }
+        if (route) {
+            exportRouteMenuButton.setDisable(false);
+        }
+        if (flight) {
+            exportFlightMenuButton.setDisable(false);
+        }
+    }
+
     /**
      * Calls mainController.addAirportData()
      * Makes the export for airport data usable
@@ -203,6 +219,9 @@ public class MenuBarController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);
+            mainController.showTables();
+            mainController.updateTab(DataTypes.AIRLINEPOINT);
+            mainController.clearErrors(DataTypes.AIRLINEPOINT);
         }
     }
 
@@ -219,6 +238,9 @@ public class MenuBarController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);
+            mainController.showTables();
+            mainController.updateTab(DataTypes.AIRPORTPOINT);
+            mainController.clearErrors(DataTypes.AIRPORTPOINT);
         }
     }
 
@@ -235,8 +257,13 @@ public class MenuBarController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
+            mainController.showTables();
+            mainController.updateTab(DataTypes.ROUTEPOINT);
+            mainController.clearErrors(DataTypes.ROUTEPOINT);
         }
     }
+
+    //TODO adding a delete flights menu button?
 
 
     /**

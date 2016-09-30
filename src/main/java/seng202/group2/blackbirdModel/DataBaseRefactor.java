@@ -628,7 +628,7 @@ public class DataBaseRefactor {
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +
-                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +
+                "REFERENCES FLIGHT(FlightIDNum) ON DELETE CASCADE" +
                 ")";
         return sql;
     }

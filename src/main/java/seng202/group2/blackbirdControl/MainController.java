@@ -47,7 +47,6 @@ public class MainController implements Initializable {
     @FXML private ErrorTabController errorTabController;
     @FXML private AnalysisTabController analysisTabController;
 
-
     @FXML private Tab airlineTab;
     @FXML private Tab routeTab;
     @FXML private Tab flightTab;
@@ -56,6 +55,7 @@ public class MainController implements Initializable {
 
     @FXML private TabPane mainTabPane;
     @FXML private GridPane openPane;
+
 
 
     /**
@@ -76,6 +76,35 @@ public class MainController implements Initializable {
         errorTabController.setAirportTabController(airportTabController);
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
+
+        int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
+        int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
+        int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
+        int flightSize = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
+        System.out.println(airlineSize);
+        System.out.println(airportSize);
+        System.out.println(routeSize);
+        System.out.println(flightSize);
+        if (airlineSize > 0 || airportSize > 0 || routeSize > 0 || flightSize > 0) {
+            show();
+            showTables();
+            menuBarController.setOpened(true);
+            System.out.println("Here");
+            menuBarController.showMenus();
+
+            if (airlineSize > 0) {
+                updateTab(DataTypes.AIRLINEPOINT);
+            }
+            if (airportSize > 0) {
+                updateTab(DataTypes.AIRPORTPOINT);
+            }
+            if (routeSize > 0) {
+                updateTab(DataTypes.ROUTEPOINT);
+            }
+            if (flightSize > 0) {
+                updateTab(DataTypes.FLIGHT);
+            }
+        }
 
 
 
@@ -137,7 +166,9 @@ public class MainController implements Initializable {
      * Calls routeTabController.addRouteData() to add route data from file
      */
     public void addRouteData() {
+
         routeTabController.addRouteData();
+        //myStage.close();
         //analysisTabController.setGraphData();
     }
 

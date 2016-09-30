@@ -244,8 +244,6 @@ public class AirlineTabController{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //TODO get the export buttons showing here
-
     }
 
     public void enterPressed(KeyEvent ke)

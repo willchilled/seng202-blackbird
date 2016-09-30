@@ -135,7 +135,7 @@ public class DataBaseRefactor {
             alert.setHeaderText("Some file entries could not be added");
             alert.setContentText("See the Errors tab for more details");
 
-            alert.show();
+            alert.showAndWait();
         }
         //System.out.println("Records created successfully");
     }
@@ -421,7 +421,7 @@ public class DataBaseRefactor {
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
-                System.out.println(myPoint.toString());
+                //System.out.println(myPoint.toString());
             }
             preparedStatement.close();
             currentConnection.close();

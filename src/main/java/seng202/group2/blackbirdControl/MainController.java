@@ -78,7 +78,7 @@ public class MainController implements Initializable {
         analysisTabController.setMainController(this);
 
         //check the existing database for persistent data
-        DataBaseRefactor.createTables();
+        DataBaseRefactor.createTables();    //comment this out for persistent data storage tests
         int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
         int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
         int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();

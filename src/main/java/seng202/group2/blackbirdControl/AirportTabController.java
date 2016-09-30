@@ -228,9 +228,6 @@ public class AirportTabController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //TODO get the export bar showing here
-
     }
 
 

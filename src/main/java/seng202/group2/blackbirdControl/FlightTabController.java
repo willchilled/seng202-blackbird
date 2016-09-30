@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -55,6 +56,8 @@ public class FlightTabController {
     @FXML private ComboBox flightSrcICAOMenu;
     @FXML private ComboBox flightDstICAOMenu;
     @FXML private TextField flightSearchQuery;
+
+    @FXML private Text flightTabMapErrorText;
 
     ObservableList<String> flightSrcICAOList = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> flightDstICAOList  = FXCollections.observableArrayList("No values Loaded");
@@ -265,8 +268,7 @@ public class FlightTabController {
                     ArrayList<Position> myWayPoint = new ArrayList<>();
                     myWayPoint.add(new Position(lat, lng));
                     Route myMarker = new Route(myWayPoint);
-                    String scriptToExecute = "displayWayPoint(" + myMarker.toJSONArray() + ")";
-                    webEngine.executeScript(scriptToExecute);
+                    displayWayPoint(myMarker);
                 }
             }
         });
@@ -318,8 +320,23 @@ public class FlightTabController {
      * @param newRoute
      */
     private void displayRoute(Route newRoute) {
-        String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
-        webEngine.executeScript(scriptToExecute);
+        try {
+            String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
+            webEngine.executeScript(scriptToExecute);
+            flightTabMapErrorText.setVisible(false);
+        } catch (netscape.javascript.JSException e){
+            flightTabMapErrorText.setVisible(true);
+        }
+    }
+
+    private void displayWayPoint(Route newWayPoint) {
+        try{
+            String scriptToExecute = "displayWayPoint(" + newWayPoint.toJSONArray() + ")";
+            webEngine.executeScript(scriptToExecute);
+            flightTabMapErrorText.setVisible(false);
+        } catch (netscape.javascript.JSException e){
+            flightTabMapErrorText.setVisible(true);
+        }
     }
 
     public void flightseeAllButtonPressed(ActionEvent actionEvent) {

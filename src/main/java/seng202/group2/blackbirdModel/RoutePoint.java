@@ -91,14 +91,14 @@ public class RoutePoint extends DataPoint {
                     this.dstAirportCountry = currentLine[13];
                 }
             } else {
-                BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT);
+                BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT, "Invalid file line length, expecting 9 comma separated values");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
                 }
                 this.correctEntry = 1;
             }
         } catch(NumberFormatException e) {
-            BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT);
+            BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT, "Invalid Airline or Airport IDs were given (all must be present), or number of stops was non-numeric");
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
             }

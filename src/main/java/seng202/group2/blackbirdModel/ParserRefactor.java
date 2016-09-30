@@ -46,9 +46,34 @@ public class ParserRefactor {
                 }
                 String[] formattedLine = formatLine(currentLine);
                 DataPoint currentDataPoint = DataPoint.createDataPointFromStringArray(formattedLine, pointType, count, errorTab);
-                //System.out.println(currentDataPoint.getType());
                 currentDataPoint.setFileLine(count);
-                allDataPoints.add(currentDataPoint);
+                //System.out.println(currentDataPoint.getType());
+                boolean correctPoint = true;
+                switch (pointType) {
+                    case AIRLINEPOINT:
+                        AirlinePoint myNewAirline = (AirlinePoint) currentDataPoint;
+                        if (myNewAirline.getCorrectEntry() == 1) {
+                            correctPoint = false;
+                        }
+                        break;
+                    case AIRPORTPOINT:
+                        AirportPoint myNewAirport = (AirportPoint) currentDataPoint;
+                        if (myNewAirport.getCorrectEntry() == 1) {
+                            correctPoint = false;
+                        }
+                        break;
+                    case ROUTEPOINT:
+                        RoutePoint myNewRoute = (RoutePoint) currentDataPoint;
+                        if (myNewRoute.getCorrectEntry() == 1) {
+                            correctPoint = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (correctPoint) {
+                    allDataPoints.add(currentDataPoint);
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

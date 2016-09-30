@@ -32,18 +32,18 @@
 						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
 					</columnConstraints>
 					<rowConstraints>
-						<RowConstraints maxHeight="587.0" minHeight="10.0" prefHeight="304.0" vgrow="SOMETIMES" />
+						<RowConstraints maxHeight="587.0" minHeight="10.0" prefHeight="304.0" vgrow="ALWAYS" />
 						<RowConstraints maxHeight="361.0" minHeight="10.0" prefHeight="317.0" vgrow="NEVER" />
 					</rowConstraints>
 					<children>
 						<GridPane hgap="10.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
 							<columnConstraints>
 								<ColumnConstraints hgrow="SOMETIMES" minWidth="342.0" prefWidth="342.0" />
-								<ColumnConstraints hgrow="SOMETIMES" minWidth="775.0" prefWidth="775.0" />
+								<ColumnConstraints hgrow="ALWAYS" minWidth="775.0" prefWidth="775.0" />
 							</columnConstraints>
 							<rowConstraints>
 								<RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-								<RowConstraints maxHeight="573.0" minHeight="10.0" prefHeight="304.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="573.0" minHeight="10.0" prefHeight="304.0" vgrow="ALWAYS" />
 							</rowConstraints>
 							<children>
 								<TableView fx:id="flightTable" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">

@@ -111,7 +111,8 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 } catch (SQLException e){   //failed to put datapoint into database
                     //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType());
+                    BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType(), e.getMessage() );
+                    //System.out.println(badPoint.getErrorMessage());
                     if (errorTabController != null) {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
                     }

@@ -17,6 +17,8 @@ import java.util.Optional;
 public class MenuBarController {
 
     private MainController mainController;
+    private boolean opened = false;
+
 
 
     @FXML
@@ -36,39 +38,49 @@ public class MenuBarController {
     MenuItem exportAirlineMenuButton;
 
 
-    public void show(){
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+    }
+
+    public void show() {
+//        int size1 = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
+//        int size2 = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
+//        int size3 = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
+//        int size4 = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
+//        System.out.println(size1);
+//        System.out.println(size2);
+//        System.out.println(size3);
+//        System.out.println(size4);
+//        if (size1 == 0 && size2 == 0 && size3 == 0 && size4 == 0) {
+//            showMenus();
+//            DataBaseRefactor.createTables();
+//            opened = true;
+//        } else {
+            if (opened == false) {
+                showMenus();
+                DataBaseRefactor.createTables();
+                opened = true;
+            } else {
+                opened = true;
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("New Project");
+                alert.setHeaderText("Create new project?");
+                alert.setContentText("Warning: this will overwrite any unsaved data.");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    DataBaseRefactor.createTables();
+//                }
+            }
+        }
+    }
+
+    public void showMenus() {
         addDataMenuButton.setDisable(false);
         mainController.show();
-        //TODO called from main controller setting the main displays
         exportDataMenuButton.setDisable(false);
         exportDataMenuButton.setDisable(false);
         exportDatabaseButton.setDisable(false);
-
-        //TODO have a look at main.fxml to set displays correctly
-
-        int size1 = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
-        int size2 = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
-        int size3 = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
-        int size4 = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
-        System.out.println(size1);
-        System.out.println(size2);
-        System.out.println(size3);
-        System.out.println(size4);
-        if (size1 == 0 && size2 == 0 && size3 == 0 && size4 == 0) {
-            DataBaseRefactor.createTables();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("New Project");
-            alert.setHeaderText("Create new project?");
-            alert.setContentText("Warning: this will overwrite any unsaved data.");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
-                DataBaseRefactor.createTables();
-            } else { //user cancelled creating a new project
-                // do nothing
-            }
-        }
     }
 
     /**

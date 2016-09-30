@@ -71,18 +71,22 @@ public class RoutePopUpController {
         routeDestCountryText.setText(routePoint.getDstAirportCountry());
         routeCSText.setText(routePoint.getCodeshare());
         routeStopsText.setText(String.valueOf(routePoint.getStops()));
-        routeEquipText.setText(String.valueOf(routePoint.getEquipment()));
+        routeEquipText.setText(routePoint.getEquipment());
 
-        if(!routeCSText.getText().isEmpty()) {
-            codeshareSelection.setSelected(true);
+        if(!(routeCSText.getText() == null)) {
+            if (!routeCSText.getText().isEmpty()) {
+                codeshareSelection.setSelected(true);
+            }
         }
 
-        if(!routeStopsText.getText().isEmpty()){
+        if(!(routeStopsText.getText() == null)) {
             routeStopsTextEdit.setText(routeStopsText.getText());
         }
-        if(!routeEquipText.getText().isEmpty()){
+
+        if(!(routeEquipText.getText() == null)) {
             routeEquipmentTextEdit.setText(routeEquipText.getText());
         }
+
 
         ArrayList<String> airlineNames = FilterRefactor.filterDistinct("Name", "Airline");
         ObservableList<String> airlineMenu = FXCollections.observableArrayList(airlineNames);
@@ -204,8 +208,8 @@ public class RoutePopUpController {
         String mySource = sourceSelection.getValue().toString();
         String myDest = destSelection.getValue().toString();
         String routeCodeshare = "";
-        String routeStops = routeStopsTextEdit.getText().toString();
-        String routeEquipment = routeEquipmentTextEdit.getText().toString();
+        String routeStops = routeStopsTextEdit.getText();
+        String routeEquipment = routeEquipmentTextEdit.getText();
 
         boolean codeshareChecked = codeshareSelection.isSelected();
         if (codeshareChecked){

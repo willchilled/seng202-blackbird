@@ -734,7 +734,7 @@ public class DataBaseRefactor {
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            System.out.println("Some error occurred when making connection? :");
+            //System.out.println("Some error occurred when making connection? :");
             e.printStackTrace();
         }
     }

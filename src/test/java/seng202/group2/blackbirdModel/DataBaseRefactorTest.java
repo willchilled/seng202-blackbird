@@ -20,7 +20,7 @@ public class DataBaseRefactorTest extends TestCase {
 
         airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
         airportsFileString = cwd + "/JUnitTesting/airports.txt";
-        routesFileString = cwd + "/JUnitTesting/route.txt";
+        routesFileString = cwd + "/JUnitTesting/routesWithNoFailing";
         flightFileString = cwd + "/JUnitTesting/flight.txt";
 
         File airlinesFile = new File(airlinesFileString);

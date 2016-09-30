@@ -111,7 +111,8 @@ public class DataBaseRefactor {
                     preparedStatement.close();
                 } catch (SQLException e){   //failed to put datapoint into database
                     //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType());
+                    BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType(), e.getMessage() );
+                    //System.out.println(badPoint.getErrorMessage());
                     if (errorTabController != null) {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
                     }
@@ -134,7 +135,7 @@ public class DataBaseRefactor {
             alert.setHeaderText("Some file entries could not be added");
             alert.setContentText("See the Errors tab for more details");
 
-            alert.show();
+            alert.showAndWait();
         }
         //System.out.println("Records created successfully");
     }
@@ -397,6 +398,7 @@ public class DataBaseRefactor {
             String[] attributes = null;
 
             while(rs.next()) {
+                //some error occurring here, preventing retrieval of flight points
 
                 int width = rsmd.getColumnCount();
 
@@ -419,7 +421,7 @@ public class DataBaseRefactor {
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
-                // System.out.println(myPoint.toString());
+                //System.out.println(myPoint.toString());
             }
             preparedStatement.close();
             currentConnection.close();
@@ -515,6 +517,7 @@ public class DataBaseRefactor {
         File f = new File(cwd+"/default.db");
 
         if(f.exists() && f.isFile()){
+            System.out.println("Deleted db");
             f.delete();
         }
     }
@@ -626,7 +629,7 @@ public class DataBaseRefactor {
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +
-                "REFERENCES FLIGHT (FlightIDNum) ON DELETE CASCADE" +
+                "REFERENCES FLIGHT(FlightIDNum) ON DELETE CASCADE" +
                 ")";
         return sql;
     }

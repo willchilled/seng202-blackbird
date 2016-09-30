@@ -58,6 +58,15 @@ public class ErrorTabController {
         }
     }
 
+    public void clearEntries(DataTypes errorTypeToClear) {
+        switch (errorTypeToClear) {
+            case AIRLINEPOINT: badAirlines.clear(); break;
+            case AIRPORTPOINT: badAirports.clear(); break;
+            case ROUTEPOINT: badRoutes.clear(); break;
+            default: return;
+        }
+    }
+
     @FXML
     public void initialize() {
         initializeRoutes();

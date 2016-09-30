@@ -47,7 +47,6 @@ public class MainController implements Initializable {
     @FXML private ErrorTabController errorTabController;
     @FXML private AnalysisTabController analysisTabController;
 
-
     @FXML private Tab airlineTab;
     @FXML private Tab routeTab;
     @FXML private Tab flightTab;
@@ -78,8 +77,44 @@ public class MainController implements Initializable {
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
 
+        //check the existing database for persistent data
+        DataBaseRefactor.createTables();    //comment this out for persistent data storage tests
+        int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
+        int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
+        int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
+        int flightSize = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
+        System.out.println(airlineSize);
+        System.out.println(airportSize);
+        System.out.println(routeSize);
+        System.out.println(flightSize);
+        if (airlineSize > 0 || airportSize > 0 || routeSize > 0 || flightSize > 0) {
+            show();
+            showTables();
+            menuBarController.setOpened(true);
+            menuBarController.showMenus();
 
-
+            boolean flightsPresent=false;
+            boolean airlinesPresent=false;
+            boolean airportsPresent=false;
+            boolean routesPresent=false;
+            if (flightSize > 0) {
+                flightsPresent = true;
+                updateTab(DataTypes.FLIGHT);
+            }
+            if (airlineSize > 0) {
+                airlinesPresent = true;
+                updateTab(DataTypes.AIRLINEPOINT);
+            }
+            if (airportSize > 0) {
+                airportsPresent = true;
+                updateTab(DataTypes.AIRPORTPOINT);
+            }
+            if (routeSize > 0) {
+                routesPresent = true;
+                updateTab(DataTypes.ROUTEPOINT);
+            }
+            menuBarController.exportMenusHelper(airportsPresent, airlinesPresent, routesPresent, flightsPresent);
+        }
        /* mainTabPane.getSelectionModel().selectedItemProperty()
                 .addListener((obs, oldTab, newTab) -> {
                     if (newTab == analysisTab) {
@@ -101,10 +136,6 @@ public class MainController implements Initializable {
 
         //I moved the create tables feature to the MenuBarController show()
     }
-//
-//    public AirlineTabController getAirlineTabController() {
-//        return airlineTabController;
-//    }
 
     public ErrorTabController getErrorTabController() {
         //advised by tutor to make this method
@@ -222,6 +253,20 @@ public class MainController implements Initializable {
     public Tab getCurrentTab() {
         Tab currentTab = mainTabPane.getSelectionModel().getSelectedItem();
         return currentTab;
+    }
+
+    public void clearErrors(DataTypes errorType) {
+        errorTabController.clearEntries(errorType);
+    }
+
+    public void singleExportHelper(DataTypes pointType) {
+        switch (pointType) {
+            case AIRLINEPOINT: menuBarController.exportMenusHelper(false, true, false, false); break;
+            case AIRPORTPOINT: menuBarController.exportMenusHelper(true, false, false, false); break;
+            case ROUTEPOINT: menuBarController.exportMenusHelper(false, false, true, false); break;
+            case FLIGHT: menuBarController.exportMenusHelper(false, false, false, true); break;
+            default: return;
+        }
     }
 }
 

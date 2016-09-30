@@ -9,6 +9,7 @@ import seng202.group2.blackbirdModel.DataTypes;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.util.Optional;
 
 /**
  * Created by emr65 on 20/09/16.
@@ -16,11 +17,10 @@ import java.nio.channels.FileChannel;
 public class MenuBarController {
 
     private MainController mainController;
-
+    private boolean opened = false;
 
     @FXML
     MenuItem addDataMenuButton;
-    //export menu stuff
     @FXML
     MenuItem exportDataMenuButton;
     @FXML
@@ -35,13 +35,52 @@ public class MenuBarController {
     MenuItem exportAirlineMenuButton;
 
 
-    public void show(){
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+    }
+
+    public void show() {
+//        int size1 = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
+//        int size2 = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
+//        int size3 = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
+//        int size4 = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
+//        System.out.println(size1);
+//        System.out.println(size2);
+//        System.out.println(size3);
+//        System.out.println(size4);
+//        if (size1 == 0 && size2 == 0 && size3 == 0 && size4 == 0) {
+//            showMenus();
+//            DataBaseRefactor.createTables();
+//            opened = true;
+//        } else {
+        if (opened == false) {
+            showMenus();
+            DataBaseRefactor.createTables();
+            opened = true;
+        } else {
+            opened = true;
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("New Project");
+            alert.setHeaderText("Create new project?");
+            alert.setContentText("Warning: this will overwrite any unsaved data.");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                DataBaseRefactor.createTables();
+                mainController.showTables();
+                mainController.clearErrors(DataTypes.AIRPORTPOINT);
+                mainController.clearErrors(DataTypes.AIRLINEPOINT);
+                mainController.clearErrors(DataTypes.ROUTEPOINT);
+            }
+        }
+    }
+
+    public void showMenus() {
         addDataMenuButton.setDisable(false);
         mainController.show();
         exportDataMenuButton.setDisable(false);
         exportDataMenuButton.setDisable(false);
         exportDatabaseButton.setDisable(false);
-        DataBaseRefactor.createTables();
     }
 
     /**
@@ -107,6 +146,21 @@ public class MenuBarController {
         exportAirlineMenuButton.setDisable(false); //make export possible
     }
 
+    public void exportMenusHelper(boolean airport, boolean airline, boolean route, boolean flight) {
+        if (airport) {
+            exportAirportMenuButton.setDisable(false);
+        }
+        if (airline) {
+            exportAirlineMenuButton.setDisable(false);
+        }
+        if (route) {
+            exportRouteMenuButton.setDisable(false);
+        }
+        if (flight) {
+            exportFlightMenuButton.setDisable(false);
+        }
+    }
+
     /**
      * Calls mainController.addAirportData()
      * Makes the export for airport data usable
@@ -156,7 +210,18 @@ public class MenuBarController {
      * Drops and recreates the table to remove all data
      */
     public void deleteAirlineData(){
-        DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Airline Data");
+        alert.setHeaderText("Delete All Airline Data");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);
+            mainController.showTables();
+            mainController.updateTab(DataTypes.AIRLINEPOINT);
+            mainController.clearErrors(DataTypes.AIRLINEPOINT);
+        }
     }
 
     /**
@@ -164,7 +229,18 @@ public class MenuBarController {
      * Drops and recreates the table to remove all data
      */
     public void deleteAirportData(){
-        DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Airport Data");
+        alert.setHeaderText("Delete All Airport Data");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);
+            mainController.showTables();
+            mainController.updateTab(DataTypes.AIRPORTPOINT);
+            mainController.clearErrors(DataTypes.AIRPORTPOINT);
+        }
     }
 
     /**
@@ -172,8 +248,21 @@ public class MenuBarController {
      * Drops and recreates the table to remove all data
      */
     public void deleteRouteData(){
-        DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Route Data");
+        alert.setHeaderText("Delete All Route Data");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
+            mainController.showTables();
+            mainController.updateTab(DataTypes.ROUTEPOINT);
+            mainController.clearErrors(DataTypes.ROUTEPOINT);
+        }
     }
+
+    //TODO adding a delete flights menu button?
 
 
     /**
@@ -204,7 +293,7 @@ public class MenuBarController {
             });
         } else {
                 AddDataToController(type);
-            }
+        }
     }
 
 

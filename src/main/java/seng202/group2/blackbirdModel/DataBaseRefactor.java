@@ -110,12 +110,11 @@ public class DataBaseRefactor {
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
                 } catch (SQLException e){   //failed to put datapoint into database
-                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                    //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                     BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType());
                     if (errorTabController != null) {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
                     }
-                    //System.out.println();
                     allCorrect = false;
 
                 }

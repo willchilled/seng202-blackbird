@@ -26,7 +26,8 @@ public class AnalyserTest extends TestCase {
 
         airlinesFileString = cwd + "/JUnitTesting/airlines.txt";
         airportsFileString = cwd + "/JUnitTesting/airports.txt";
-        routesFileString = cwd + "/JUnitTesting/route60000.txt";
+        routesFileString = cwd + "/JUnitTesting/routesWithNoFailing";
+        //routesFileString = cwd + "/JUnitTesting/route60000.txt";
         flightFileString = cwd + "/JUnitTesting/flight.txt";
 
         File airlinesFile = new File(airlinesFileString);
@@ -55,7 +56,6 @@ public class AnalyserTest extends TestCase {
         DataBaseRefactor.insertDataPoints(routePoints, null);
         DataBaseRefactor.insertDataPoints(myFlight, null);
 
-        System.out.println("HERE");
 
 
 

@@ -219,7 +219,7 @@ public class RoutePoint extends DataPoint {
      */
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s",
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",
                 airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
 
     }

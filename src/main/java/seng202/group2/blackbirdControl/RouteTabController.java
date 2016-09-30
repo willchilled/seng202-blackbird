@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static javafx.application.Application.launch;
+
 /**
  * Created by emr65 on 20/09/16.
  */
@@ -143,6 +145,8 @@ public class RouteTabController {
         if (f == null) {
             return;
         }
+
+
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myRouteData, errorTab);
@@ -158,6 +162,7 @@ public class RouteTabController {
 
         mainController.updateAirports();
         mainController.updateTab(DataTypes.ROUTEPOINT);
+        //myStage.close();
 
     }
 

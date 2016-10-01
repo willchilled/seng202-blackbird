@@ -164,6 +164,15 @@ public class FilterRefactorTest extends TestCase {
 
     }
 
+
+    public void testFindAirportPointForDistance(){
+        FilterRefactor.findAirportPointForDistance("Goroka AYGA");
+
+
+
+
+    }
+
     public void testAirportLinkWithRoutes(){
         DataBaseRefactor.createTables();
 
@@ -306,6 +315,8 @@ public class FilterRefactorTest extends TestCase {
 
         return ((totalFinishTime - totalStartTime)/ numTrials)/1000000000.0;
     }
+
+
 
 
 }

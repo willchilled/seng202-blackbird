@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -42,12 +43,22 @@ public class AnalysisTabController {
 
     @FXML ComboBox airportCountryFilterMenu;
 
+
+    @FXML ComboBox airportDistanceCB1;
+    @FXML ComboBox airportDistanceCB2;
+    @FXML Label calculatedDistance;
+    @FXML Label distanceHeader;
+
     private String country;
+
+    private String airport1;
+    private String airport2;
 
     private MainController mainController;
 
     ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
-    private ObservableList<String> monthNames = FXCollections.observableArrayList();
+    ObservableList<String> airportDistanceList = FXCollections.observableArrayList("No values Loaded");
+
 
     private boolean routeChartOpen = false;
     private boolean airportChartOpen = false;
@@ -63,14 +74,10 @@ public class AnalysisTabController {
     @FXML
     protected void setRouteGraphData() {
 
-//TODO either fix or remove this loading progress thing. I think it needs to use threading
-       /* LoaderPopUp myLoader = new LoaderPopUp();
-        Stage myStage = new Stage();
-        myLoader.start(myStage);*/
-
-        ObservableList<String> airportNames = FXCollections.observableArrayList();
         routeChart.getData().clear();
+        ObservableList<String> airportNames = FXCollections.observableArrayList();
         ArrayList<DataPoint>  myPoints;
+
         if(getCountry() == null){
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
@@ -256,12 +263,33 @@ public class AnalysisTabController {
         return countryList;
     }
 
-    public void countrySwap() {
+    private ObservableList<String> populateAirportDistanceList(){
+        //Populates the dropdown of airline countries
+        ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<String> nameIcaoAirport = new ArrayList<String>();
+        for(DataPoint curAirport: airports){
+            AirportPoint castedPoint = (AirportPoint) curAirport;
+            if(castedPoint.getIcao().length() > 0 && castedPoint.getAirportName().length() > 0) {
+                String pair = castedPoint.getAirportName() + " " + castedPoint.getIcao();
+                if (!nameIcaoAirport.contains(pair)) {
+                    nameIcaoAirport.add(pair);
+                }
+            }
+        }
+        ObservableList<String> airportDistList = FXCollections.observableArrayList(nameIcaoAirport);
+        Collections.sort(airportDistList, String.CASE_INSENSITIVE_ORDER);
+        airportDistList.add(0,"Select Airport");
+
+        return airportDistList;
+    }
+
+    //TODO this might not be necessary. Check how it runs without it. Delete if possible
+/*    public void countrySwap() {
         String currentCountry;
         currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
         setCountry(currentCountry);
         setRouteGraphData();
-    }
+    }*/
 
     public void checkData(){
         if(!routeChartOpen){
@@ -290,9 +318,79 @@ public class AnalysisTabController {
         }
     }
 
+
+    public void setAirportDistanceCalculator(){
+        ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        String airport1 = "";
+        String airport2 = "";
+        if(airports.size() > 0) {
+            airportDistanceList = populateAirportDistanceList();
+            airportDistanceCB1.setValue(airportDistanceList.get(0));
+            airportDistanceCB2.setValue(airportDistanceList.get(0));
+            airportDistanceCB1.setItems(airportDistanceList);
+            airportDistanceCB2.setItems(airportDistanceList);
+
+            airportDistanceCB1.valueProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue ov, String t, String t1) {
+                    setAirport1(t1);
+                    calculateDistance();
+
+                }
+            });
+
+            airportDistanceCB2.valueProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue ov, String t, String t1) {
+                    setAirport2(t1);
+                    calculateDistance();
+
+
+                }
+            });
+
+        }
+
+    }
+
+    private void calculateDistance() {
+        if(getAirport1() == null || getAirport2() == null){
+
+        }
+
+        else if(!(getAirport1().equals("Select Airport") || getAirport2().equals("Select Airport"))){
+
+            AirportPoint d1 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport1());
+            AirportPoint d2 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport2());
+
+            double distance = Analyser.calculateDistance(d1, d2);
+            String header = "Distance between " + d1.getAirportName() + " and " + d2.getAirportName() + ": ";
+            distanceHeader.setText(header);
+            calculatedDistance.setText(String.valueOf(distance).format("%1$,.2f", distance) + " km.");
+
+
+        }
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }
 
     public String getCountry(){return this.country;}
+
+    public String getAirport2() {
+        return airport2;
+    }
+
+    public void setAirport2(String airport2) {
+        this.airport2 = airport2;
+    }
+
+    public String getAirport1() {
+        return airport1;
+    }
+
+    public void setAirport1(String airport1) {
+        this.airport1 = airport1;
+    }
 }

@@ -147,7 +147,7 @@ public class FilterRefactor {
         }
 
         sql += search;
-        System.out.println("sql flight search; " + sql);
+        //System.out.println("sql flight search; " + sql);
         return sql; //return an arraylist
     }
 
@@ -348,6 +348,9 @@ public class FilterRefactor {
         }
         return sqlString;
     }
+
+
+
 
 
 }

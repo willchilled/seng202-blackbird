@@ -70,7 +70,7 @@ public class DataBaseRefactor {
             PreparedStatement preparedStatement = null;
 
             if (myPoints.get(0).getType().equals(DataTypes.FLIGHTPOINT)) {
-                FlightCount++;
+                FlightCount = getMaxInColumn("FLIGHT", "FlightIDnum") + 1;
                 addFlight(myPoints, preparedStatement, currentConnection);
                 //System.out.println("HERE");
                 //System.out.println(FlightCount);

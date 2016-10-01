@@ -76,7 +76,6 @@ public class MainController implements Initializable {
         errorTabController.setAirportTabController(airportTabController);
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
-        DataBaseRefactor.createTables();
 
         //check the existing database for persistent data
         DataBaseRefactor.createTables();    //comment this out for persistent data storage tests

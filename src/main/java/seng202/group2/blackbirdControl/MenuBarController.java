@@ -328,6 +328,7 @@ public class MenuBarController {
             //Must clear both flight and flightpoint table
             DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
             DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
+            DataBaseRefactor.createTables();
         } else if (!(Validator.tableColumnchecker("FLIGHTPOINT", flightPointTableColumns))) { //check flight point table
             //Give Alert
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -338,6 +339,7 @@ public class MenuBarController {
             //Must clear both flight and flightpoint table
             DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
             DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
+            DataBaseRefactor.createTables();
         }
         //check route table
         String[] routeTableColumns = {"IDnum", "Airline", "Airlineid", "Src", "Srcid", "Dst", "Dstid", "Codeshare", "Stops", "Equipment"};
@@ -349,6 +351,7 @@ public class MenuBarController {
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
             DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);//correct if needed
+            DataBaseRefactor.createTables();
         }
         //check airline table
         String[] airlineTableColumns = {"ID", "NAME", "ALIAS", "IATA", "ICAO", "CALLSIGN", "COUNTRY", "ACTIVE"};
@@ -360,6 +363,7 @@ public class MenuBarController {
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
             DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);//correct if needed
+            DataBaseRefactor.createTables();
         }
         //check airport table
         String[] airportTableColumns = {"ID", "NAME", "CITY", "COUNTRY", "IATA", "ICAO", "LATITUDE", "LONGITUDE", "ALTITUDE", "TIMEZONE", "DST", "TZ"};
@@ -371,6 +375,7 @@ public class MenuBarController {
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
             DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);//correct if needed
+            DataBaseRefactor.createTables();
         }
     }
 

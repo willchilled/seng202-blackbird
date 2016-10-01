@@ -13,7 +13,7 @@
     <content>
             <Accordion>
               <panes>
-                <TitledPane animated="false" text="Number of Routes per Airport" onMouseClicked="#checkData">
+                <TitledPane animated="false" text="Number of Routes per Airport" onMouseClicked="#prepareRouteChart">
                      <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
@@ -133,7 +133,7 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" text="Distance Between Airports" onMouseClicked="#setAirportDistanceCalculator">
+                  <TitledPane animated="false" text="Distance Between Airports" onMouseClicked="#airportDistanceSetup">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>

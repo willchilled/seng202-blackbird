@@ -137,7 +137,7 @@ public class FilterRefactor {
 
         String search = "";
         if (searchString.length() >0){
-            search = String.format("(SrcICAO='%1$s' OR DstICAO='%1$s')", searchString);
+            search = String.format("(SrcICAO LIKE '%%%1$s%%' OR DstICAO LIKE '%%%1$s%%')", searchString);
             if(allNone){
                 sql += " WHERE ";
             }
@@ -172,9 +172,9 @@ public class FilterRefactor {
 
         String search = "";
         if (searchString.length() >0){
-            String searchStatement = "(IDnum=\"%1$s\" OR IDnum=\"%1$s\" OR AirlineID=\"%1$s\""
-                    + "OR Src=\"%1$s\" OR SrcID=\"%1$s\" OR Dst=\"%1$s\" OR Dstid=\"%1$s\""
-                    + "OR Codeshare=\"%1$s\" OR Stops=\"%1$s\" OR EQUIPMENT LIKE \"%%%1$s%%\"" +
+            String searchStatement = "(IDnum LIKE \"%%%1$s%%\" OR IDnum LIKE \"%%%1$s%%\" OR AirlineID LIKE \"%%%1$s%%\""
+                    + "OR Src LIKE \"%%%1$s%%\" OR SrcID LIKE \"%%%1$s%%\" OR Dst LIKE \"%%%1$s%%\" OR Dstid LIKE \"%%%1$s%%\""
+                    + "OR Codeshare LIKE \"%%%1$s%%\" OR Stops LIKE \"%%%1$s%%\" OR EQUIPMENT LIKE \"%%%1$s%%\"" +
                     " or srcname LIKE \"%%%1$s%%\" or srccountry LIKE  \"%%%1$s%%\" " +
                     " or dstname LIKE \"%%%1$s%%\" or dstcountry LIKE \"%%%1$s%%\" );";
             search = String.format(searchStatement, searchString);
@@ -211,9 +211,9 @@ public class FilterRefactor {
             else{
                 sql += " WHERE ";
             }
-            search = String.format("(ID='%1$s' OR NAME='%1$s' OR CITY='%1$s' OR COUNTRY='%1$s'" +
-                    " OR IATA='%1$s' OR ICAO='%1$s' OR LATITUDE='%1$s' OR LONGITUDE='%1$s' OR ALTITUDE='%1$s'" +
-                    " OR TIMEZONE='%1$s' OR DST='%1$s' OR TZ='%1$s');", searchString);
+            search = String.format("(ID LIKE \"%%%1$s%%\" OR NAME LIKE \"%%%1$s%%\" OR CITY LIKE \"%%%1$s%%\" OR COUNTRY LIKE \"%%%1$s%%\"" +
+                    " OR IATA LIKE \"%%%1$s%%\" OR ICAO LIKE \"%%%1$s%%\" OR LATITUDE LIKE \"%%%1$s%%\" OR LONGITUDE LIKE \"%%%1$s%%\" OR ALTITUDE LIKE \"%%%1$s%%\"" +
+                    " OR TIMEZONE LIKE \"%%%1$s%%\" OR DST LIKE \"%%%1$s%%\" OR TZ LIKE \"%%%1$s%%\");", searchString);
         }
 
         sql += search;
@@ -243,8 +243,8 @@ public class FilterRefactor {
 
         String search = "";
         if (searchString.length() >0){
-            search = String.format("(ID='%1$s' OR NAME='%1$s' OR ALIAS='%1$s' " +
-                    "OR IATA='%1$s' OR ICAO='%1$s' OR CALLSIGN='%1$s' OR COUNTRY='%1$s' OR ACTIVE='%1$s');", searchString);
+            search = String.format("(ID LIKE \"%%%1$s%%\" OR NAME LIKE \"%%%1$s%%\" OR ALIAS LIKE \"%%%1$s%%\" " +
+                    "OR IATA LIKE \"%%%1$s%%\" OR ICAO LIKE \"%%%1$s%%\" OR CALLSIGN LIKE \"%%%1$s%%\" OR COUNTRY LIKE \"%%%1$s%%\" OR ACTIVE LIKE \"%%%1$s%%\");", searchString);
             if(allNone){
                 sql += " WHERE ";
             }

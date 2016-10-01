@@ -89,7 +89,7 @@ public class FilterRefactorTest extends TestCase {
 
         selectedFields = new ArrayList<>(Arrays.asList("Iceland"));
         dataPoints = FilterRefactor.filterSelections(selectedFields, "AEY", DataTypes.AIRPORTPOINT);
-        assertEquals(dataPoints.size(), 1); //Both lines are None
+        assertEquals(dataPoints.size(), 2); //Both lines are None
     }
 
     public void testFilterSelectionsWithAirlines() throws Exception{

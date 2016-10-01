@@ -78,7 +78,7 @@ public class MainController implements Initializable {
         analysisTabController.setMainController(this);
 
         //check the existing database for persistent data
-        DataBaseRefactor.createTables();    //comment this out for persistent data storage tests
+        //DataBaseRefactor.createTables();    //comment this out for persistent data storage tests
         int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
         int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
         int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
@@ -97,21 +97,22 @@ public class MainController implements Initializable {
             boolean airlinesPresent=false;
             boolean airportsPresent=false;
             boolean routesPresent=false;
-            if (flightSize > 0) {
-                flightsPresent = true;
-                updateTab(DataTypes.FLIGHT);
-            }
-            if (airlineSize > 0) {
-                airlinesPresent = true;
-                updateTab(DataTypes.AIRLINEPOINT);
+
+            if (routeSize > 0) {
+                routesPresent = true;
+                updateTab(DataTypes.ROUTEPOINT);
             }
             if (airportSize > 0) {
                 airportsPresent = true;
                 updateTab(DataTypes.AIRPORTPOINT);
             }
-            if (routeSize > 0) {
-                routesPresent = true;
-                updateTab(DataTypes.ROUTEPOINT);
+            if (airlineSize > 0) {
+                airlinesPresent = true;
+                updateTab(DataTypes.AIRLINEPOINT);
+            }
+            if (flightSize > 0) {
+                flightsPresent = true;
+                updateTab(DataTypes.FLIGHT);
             }
             menuBarController.exportMenusHelper(airportsPresent, airlinesPresent, routesPresent, flightsPresent);
         }
@@ -147,14 +148,18 @@ public class MainController implements Initializable {
      * Calls airlineTabController.addAirlineData() to add airline data from file
      */
     public void addAirlineData(){
+        errorTabController.setAllCorrect(true);
         airlineTabController.addAirlineData();
+        errorTabController.showAddingErrorMessage();    //shows only if an error was found
     }
 
     /**
      * Calls airportTabController.addAirportData() to add airport data from file
      */
     public void addAirportData() {
+        errorTabController.setAllCorrect(true);
         airportTabController.addAirportData();
+        errorTabController.showAddingErrorMessage();
         //analysisTabController.setRouteGraphData();
     }
 
@@ -169,8 +174,9 @@ public class MainController implements Initializable {
      * Calls routeTabController.addRouteData() to add route data from file
      */
     public void addRouteData() {
-
+        errorTabController.setAllCorrect(true);
         routeTabController.addRouteData();
+        errorTabController.showAddingErrorMessage();
         //myStage.close();
         //analysisTabController.setGraphData();
     }

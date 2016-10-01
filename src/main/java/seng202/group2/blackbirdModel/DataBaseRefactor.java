@@ -115,6 +115,7 @@ public class DataBaseRefactor {
                     //System.out.println(badPoint.getErrorMessage());
                     if (errorTabController != null) {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
+                        errorTabController.setAllCorrect(false);
                     }
                     allCorrect = false;
 
@@ -129,14 +130,9 @@ public class DataBaseRefactor {
             System.out.println("Some error occurred when making connection? :");
         }
 
-        if (!allCorrect) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Some file entries could not be added");
-            alert.setContentText("See the Errors tab for more details");
-
-            alert.showAndWait();
-        }
+//        if (!allCorrect) {
+//
+//        }
         //System.out.println("Records created successfully");
     }
 

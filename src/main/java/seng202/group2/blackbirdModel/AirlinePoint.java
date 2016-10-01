@@ -66,6 +66,7 @@ public class AirlinePoint extends DataPoint {
                 BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT, "Invalid Airline ID given");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
+                    errorTabController.setAllCorrect(false);
                 }
                 this.correctEntry = 1;
             }
@@ -73,6 +74,7 @@ public class AirlinePoint extends DataPoint {
             BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT, "Invalid line length, expecting 8 comma separated values");
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
+                errorTabController.setAllCorrect(false);
             }
             this.correctEntry = 1;
         }

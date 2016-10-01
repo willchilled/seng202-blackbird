@@ -44,7 +44,7 @@
                         </AnchorPane>
                      </content>
                 </TitledPane>
-                <TitledPane animated="false" text="Number of Airlines Per Country" onMouseClicked="#setAirlinesPerCountryGraph">
+                <TitledPane animated="false" text="Number of Airlines Per Country" onMouseClicked="#populateAirlinesPerCountryGraph">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -73,7 +73,7 @@
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="35.0" text="Number of Routes for Each Plane Type" onMouseClicked="#setEquipmentChartData">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="35.0" text="Number of Routes for Each Plane Type" onMouseClicked="#populateEquipmentChartData">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -103,7 +103,7 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Number of Airports by Country" onMouseClicked="#setAirportsByCountryGraph">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Number of Airports by Country" onMouseClicked="#populateAirportsByCountryGraph">
                       <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>

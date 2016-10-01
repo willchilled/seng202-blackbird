@@ -57,7 +57,7 @@ public class AnalysisTabController {
     //TODO can this go, and move airline xaxis thing into airline method?
     @FXML
     private void initialize() {
-        xAxisAirline.setTickLabelRotation(90);
+       // xAxisAirline.setTickLabelRotation(90);
     }
 
     /**
@@ -172,6 +172,7 @@ public class AnalysisTabController {
     private void populateAirlinesPerCountryGraph() {
         if(!airlineChartOpen) {
             airlineChart.getData().clear();
+            xAxisAirline.setTickLabelRotation(90);
             ObservableList<String> countryNames = FXCollections.observableArrayList();
             yAxisAirline.setCategories(countryNames);
             List<Map.Entry> airlinesPerCountry = Analyser.numAirlinesPerCountry();

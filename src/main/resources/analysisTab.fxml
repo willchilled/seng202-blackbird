@@ -14,7 +14,7 @@
    <content>
       <Accordion>
          <panes>
-            <TitledPane animated="false" onMouseClicked="#checkData" text="Number of Routes per Airport">
+            <TitledPane animated="false" onMouseClicked="#prepareRouteChart" text="Number of Routes per Airport">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
@@ -45,7 +45,7 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" onMouseClicked="#setAirlinesPerCountryGraph" text="Number of Airlines Per Country">
+            <TitledPane animated="false" onMouseClicked="#populateAirlinesPerCountryGraph" text="Number of Airlines Per Country">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -74,7 +74,7 @@
                      </children></AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" layoutX="10.0" layoutY="35.0" onMouseClicked="#setEquipmentChartData" text="Number of Routes for Each Plane Type">
+            <TitledPane animated="false" layoutX="10.0" layoutY="35.0" onMouseClicked="#populateEquipmentChartData" text="Number of Routes for Each Plane Type">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -104,7 +104,7 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" layoutX="10.0" layoutY="60.0" onMouseClicked="#setAirportsByCountryGraph" text="Number of Airports by Country">
+            <TitledPane animated="false" layoutX="10.0" layoutY="60.0" onMouseClicked="#populateAirportsByCountryGraph" text="Number of Airports by Country">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -134,7 +134,7 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" onMouseClicked="#setAirportDistanceCalculator" text="Distance Between Airports">
+            <TitledPane animated="false" onMouseClicked="#airportDistanceSetup" text="Distance Between Airports">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

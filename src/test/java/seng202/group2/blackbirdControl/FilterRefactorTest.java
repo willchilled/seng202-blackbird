@@ -127,6 +127,9 @@ public class FilterRefactorTest extends TestCase {
         dataPoints = FilterRefactor.filterSelections(selectedFields, "Russia", DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 5); //One selection and Search
 
+        dataPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
+        assertEquals(dataPoints.size(), 100);
+
     }
 
     public void testRouteFilterSelections() throws  Exception{
@@ -164,6 +167,30 @@ public class FilterRefactorTest extends TestCase {
 
     }
 
+    public void testFlightFilter() throws Exception{
+        ArrayList<String> menusPressed = new ArrayList<>();
+        menusPressed.add("None");
+        menusPressed.add("None");
+        ArrayList<DataPoint> mp = FilterRefactor.filterSelections(menusPressed, "", DataTypes.FLIGHT);
+        assertEquals(mp.size(), 1);
+
+        menusPressed = new ArrayList<>();
+        menusPressed.add("None");
+        menusPressed.add("WSSS");
+        mp = FilterRefactor.filterSelections(menusPressed, "NZCH", DataTypes.FLIGHT);
+        assertEquals(mp.size(), 1);
+
+        menusPressed = new ArrayList<>();
+        menusPressed.add("None");
+        menusPressed.add("None");
+        mp = FilterRefactor.filterSelections(menusPressed, "NZCH", DataTypes.FLIGHT);
+        assertEquals(mp.size(), 1);
+
+        mp = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+        assertEquals(mp.size(), 1);
+
+    }
+
 
     public void testFindAirportPointForDistance(){
         FilterRefactor.findAirportPointForDistance("Goroka AYGA");
@@ -172,6 +199,12 @@ public class FilterRefactorTest extends TestCase {
 
 
     }
+
+    public void testFilterDistinct(){
+        ArrayList<String> conutries = FilterRefactor.filterDistinct("Country", "Airline");
+        assertEquals(conutries.size(), 46);
+    }
+
 
     public void testAirportLinkWithRoutes(){
         DataBaseRefactor.createTables();
@@ -221,84 +254,74 @@ public class FilterRefactorTest extends TestCase {
 
 
 
-//    public void testBenchmarkFilterSpeeds(){
-//        int benchMarkTime = 5;
-//        String cwd = System.getProperty("user.dir");
-//        String airlinesFileString;
-//        String airportsFileString;
-//        String routesFileString;
-//        String flightFileString;
-//
-//
-//        DataBaseRefactor.createTables();
-//
-//        airlinesFileString = cwd + "/JUnitTesting/airlinesLargeWithNoFailing";
-//        airportsFileString = cwd + "/JUnitTesting/airports.txt";
-//        routesFileString = cwd + "/JUnitTesting/routesWithNoFailing";
-//        flightFileString = cwd + "/JUnitTesting/flight.txt";
-//
-//        File airlinesFile = new File(airlinesFileString);
-//        File airportsFile = new File(airportsFileString);
-//        File routesFile = new File(routesFileString);
-//        File flightFile = new File(flightFileString);
-//
-//
-//        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
-//
-//        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
-//        //ArrayList<Flight>
-//
-//        Flight flight = new Flight(flightPoints);
-//        flight.setType(DataTypes.FLIGHT);
-//        DataPoint f = flight;
-//        ArrayList<DataPoint> myFlight = new ArrayList<>();
-//        myFlight.add(f);
-//        // System.out.println(flight.getType() + "--------------------------");
-//
-//        DataBaseRefactor.createTables();
-//        DataBaseRefactor.insertDataPoints(airlinePoints, null);
-//
-//        DataBaseRefactor.insertDataPoints(myFlight, null);
-//        DataBaseRefactor.insertDataPoints(flightPoints, null);
-//
-//        double numTrials = 3;
-//        long totalStart1 =0;
-//        long totalFinish1 = 0;
-//        long totalStart2 =0;
-//        long totalFinish2 = 0;
-//        for (int i = 0; i < numTrials; i++) {
-//            //System.out.println(i);
-//            long startTime = System.nanoTime();
-//            ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
-//            ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
-//            long endTime = System.nanoTime();
-//
-//            totalStart1 += startTime;
-//            totalFinish1 += endTime;
-//
-//
-//            startTime = System.nanoTime();
-//            DataBaseRefactor.insertDataPoints(airportPoint, null);
-//            DataBaseRefactor.insertDataPoints(routePoints, null);
-//            endTime = System.nanoTime();
-//
-//            totalStart2 += startTime;
-//            totalFinish2 += endTime;
-//
-//        }
-//
-//        assertTrue(((totalFinish1 - totalStart1)/1000000000.0)/ numTrials < benchMarkTime); //Ensuring parsing airports and routes takes under 3 seconds
-//        assertTrue(((totalFinish2 - totalStart2)/1000000000.0)/ numTrials < benchMarkTime); //Adding airports and routes should take less than 3 seconds
-//
-//
-//        //System.out.println(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT));
-//        assertTrue(findTimeTakes(numTrials, DataTypes.ROUTEPOINT) < benchMarkTime); //Ensuring Filtering routes can be done in under 3 seconds
-//        //assertTrue(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT) < benchMarkTime);
-//        assertTrue(findTimeTakes(numTrials, DataTypes.AIRLINEPOINT) < benchMarkTime);
-////        assertTrue(findTimeTakes(numTrials, DataTypes.FLIGHT) < 3);
-//
-//
-//    }
+    public void testBenchmarkFilterSpeeds(){
+        int benchMarkTime = 5;
+        String cwd = System.getProperty("user.dir");
+        String airlinesFileString;
+        String airportsFileString;
+        String routesFileString;
+        String flightFileString;
+        DataBaseRefactor.createTables();
+
+        airlinesFileString = cwd + "/JUnitTesting/airlinesLargeWithNoFailing";
+        airportsFileString = cwd + "/JUnitTesting/airports.txt";
+        routesFileString = cwd + "/JUnitTesting/routesWithNoFailing";
+        flightFileString = cwd + "/JUnitTesting/flight.txt";
+
+        File airlinesFile = new File(airlinesFileString);
+        File airportsFile = new File(airportsFileString);
+        File routesFile = new File(routesFileString);
+        File flightFile = new File(flightFileString);
+
+
+        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
+
+        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
+
+
+        Flight flight = new Flight(flightPoints);
+        flight.setType(DataTypes.FLIGHT);
+        DataPoint f = flight;
+        ArrayList<DataPoint> myFlight = new ArrayList<>();
+        myFlight.add(f);
+
+        DataBaseRefactor.insertDataPoints(airlinePoints, null);
+
+        DataBaseRefactor.insertDataPoints(myFlight, null);
+        DataBaseRefactor.insertDataPoints(flightPoints, null);
+        double numTrials = 3;
+        long totalStart1 =0;
+        long totalFinish1 = 0;
+        long totalStart2 =0;
+        long totalFinish2 = 0;
+        for (int i = 0; i < numTrials; i++) {
+            long startTime = System.nanoTime();
+            ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
+            ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
+            long endTime = System.nanoTime();
+
+            totalStart1 += startTime;
+            totalFinish1 += endTime;
+
+            DataBaseRefactor.createTables();
+            startTime = System.nanoTime();
+
+            DataBaseRefactor.insertDataPoints(airportPoint, null);
+            DataBaseRefactor.insertDataPoints(routePoints, null);
+            endTime = System.nanoTime();
+
+            totalStart2 += startTime;
+            totalFinish2 += endTime;
+
+        }
+
+        assertTrue(((totalFinish1 - totalStart1)/1000000000.0)/ numTrials < benchMarkTime); //Ensuring parsing airports and routes takes under 3 seconds
+        assertTrue(((totalFinish2 - totalStart2)/1000000000.0)/ numTrials < benchMarkTime); //Adding airports and routes should take less than 3 seconds
+        assertTrue(findTimeTakes(numTrials, DataTypes.ROUTEPOINT) < benchMarkTime); //Ensuring Filtering routes can be done in under 3 seconds
+        assertTrue(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT) < benchMarkTime);
+        assertTrue(findTimeTakes(numTrials, DataTypes.AIRLINEPOINT) < benchMarkTime);
+        assertTrue(findTimeTakes(numTrials, DataTypes.FLIGHT) < 3);
+    }
 
     public double findTimeTakes(double numTrials, DataTypes type){
         long totalStartTime=0;
@@ -315,7 +338,6 @@ public class FilterRefactorTest extends TestCase {
 
         return ((totalFinishTime - totalStartTime)/ numTrials)/1000000000.0;
     }
-
 
 
 

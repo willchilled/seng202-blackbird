@@ -10,22 +10,20 @@ import java.util.*;
  */
 public class Analyser {
 
-    //calculate distance between two airports
-    //may need to convert the input parameters to be strings instead, if that's easier for the GUI?
+
+    /**
+     * Finds the distance between two airports
+     * @param airport1 the source airport
+     * @param airport2 the destination airport
+     * @return the distance between airport 1 and 2
+     */
     public static double calculateDistance(AirportPoint airport1, AirportPoint airport2) {
         //based off the haversine formula: http://www.movable-type.co.uk/scripts/latlong.html
         //issue- apparently this is slow. Google maps has a function to calculate distance between two points which might be better?
         float lat1 = airport1.getLatitude();
         float long1 = airport1.getLongitude();
-
-
-
-
         float lat2 = airport2.getLatitude();
         float long2 = airport2.getLongitude();
-
-
-
 
         float R = 6371; // Radius of the earth in km
         double dLat = degToRad(lat2-lat1);  // degToRad below
@@ -36,13 +34,18 @@ public class Analyser {
         double d = R * c; // Distance in km
 
         return d;
-        }
+    }
 
     private static double degToRad(float deg) {
         //helper function to convert from degrees to radians
         return deg * (Math.PI/180.0);
     }
 
+    /**
+     *Finds all of the airports in a county and ranks the airports by num of routes
+     * @param country the country you want to rank
+     * @return dictionary containing string of airports as key and number of routes as value
+     */
     public static List<Map.Entry> rankAirportsByRoutes(String country) {
         ArrayList<DataPoint> myPoints = new ArrayList<>();
         if (country.equals("All")){
@@ -68,12 +71,8 @@ public class Analyser {
 
             airportsPerCountry.put(currentAirportPoint.getAirportCountry(), counter +1);
         }
-        //List<> list = new ArrayList<>(airportsPerCountry.values());
         List<Map.Entry> results = new ArrayList(airportsPerCountry.entrySet());
-
         results = sortDictByValue(results);
-
-
 
         return results;
 
@@ -81,11 +80,16 @@ public class Analyser {
     }
 
 
-    //ranks airports based on the number of routes
-    public static ArrayList<DataPoint> rankAirports(ArrayList<DataPoint> airports, boolean mostRoutes) {
-        //rename this to rank aiports by routes later ok!
-        //To whoever does this just make sure it returns and arraylist of datapoints and not airport poitns doesnt work
-
+    /**
+     * Analyses all of given airports and ranks them according to most or least incoming
+     * or outgoing routes
+     * @param airports the list of airports needing to be filtered
+     * @param mostRoutes if you want the airports to to be filtered by most or least routes
+     * @return the list of airports points filtered by number of incoming and outgoing routes
+     */
+    public static ArrayList<DataPoint> rankAirportsByRoutes(ArrayList<DataPoint> airports, boolean mostRoutes) {
+        //technically most routes is deprecated as we dont want to filter by least routes as it will return
+        //lots of 0's, but its not worth the time to change just means you have to parse in an extra value
         ArrayList<DataPoint> rankedData = new ArrayList<DataPoint>();
 
         List<AirportPoint> myPoints = new ArrayList<>();
@@ -94,16 +98,12 @@ public class Analyser {
             myPoints.add(cp2);
         }
 
-
         Collections.sort(myPoints, (x, y) -> compareAirportPointSize(x, y));
-
         if (!mostRoutes) {   //rank by least Routes
             Collections.reverse(myPoints);
         }
 
         for(AirportPoint currentPoint: myPoints){
-            //AirportPoint cp2 = (AirportPoint) cp;
-            //System.out.println(cp.toStringWithRoutes());
             DataPoint convertedRoutePoint = currentPoint;
             rankedData.add(convertedRoutePoint);
 
@@ -112,7 +112,7 @@ public class Analyser {
     }
 
 
-    public static int compareAirportPointSize(AirportPoint a, AirportPoint another) {
+    private static int compareAirportPointSize(AirportPoint a, AirportPoint another) {
         if (a.getIncomingRoutes() + a.getOutgoingRoutes() == another.getIncomingRoutes() + another.getOutgoingRoutes()){
             if (a.getAirportName().compareTo(another.getAirportName()) >=0 ){
                 return 1;
@@ -130,10 +130,13 @@ public class Analyser {
 
     }
 
+    /**
+     * Finds the number of airports in each country
+     * @return a dict with number of country as key and number of airports in it as value
+     */
     public static List<Map.Entry> numAirportsPerCountry(){
         ArrayList<DataPoint> allAirports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airport");
-
         HashMap<String, Integer> airportsPerCountry = new HashMap<>();
 
         for(String country: allCountries){
@@ -147,21 +150,20 @@ public class Analyser {
 
             airportsPerCountry.put(currentAirportPoint.getAirportCountry(), counter +1);
         }
-        //List<> list = new ArrayList<>(airportsPerCountry.values());
-        List<Map.Entry> results = new ArrayList(airportsPerCountry.entrySet());
 
+        List<Map.Entry> results = new ArrayList(airportsPerCountry.entrySet());
         results = sortDictByValue(results);
 
-
-
         return results;
-
     }
 
+    /**
+     * Ranks the number of airlines in all of the countries
+     * @return a dict with countries as the key and number of airlines in that country as the value
+     */
     public static List<Map.Entry> numAirlinesPerCountry(){
         ArrayList<DataPoint> allAirports = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
         ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airline");
-
         HashMap<String, Integer> airlinesPerCountry = new HashMap<>();
 
         for(String country: allCountries){
@@ -178,43 +180,34 @@ public class Analyser {
         }
 
         List<Map.Entry> results = new ArrayList(airlinesPerCountry.entrySet());
-
         results = sortDictByValue(results);
-
-
 
         return results;
     }
 
+
+    /**
+     * Finds the routes that involves each type of equipment
+     * @return dictionary where the key is the equipment name and value is the number of route that use it
+     */
     public static List<Map.Entry> routesPerEquipment(){
         ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
-
         ArrayList<String> uniqueEquip = new ArrayList<>();
         HashSet<String> equipSet = new HashSet<>();
 
-
         for (int i = 0; i <routePoints.size() ; i++) {
             RoutePoint currentPoint = (RoutePoint) routePoints.get(i);
-            //System.out.println(currentPoint.getEquipment());
             String currentEquip = currentPoint.getEquipment();
-            //System.out.println(currentEquip);
-
-
-
-
 
             if (currentEquip != null) {
                 String[] equipArray = currentEquip.split(" ");
-                //System.out.println("EQUIP "+ equipArray[0]);
                 for (String myEquip : equipArray) {
                     equipSet.add(myEquip);
                 }
             }
-
         }
 
         uniqueEquip.addAll(equipSet);
-
         HashMap<String, Integer> routesPerEquip = new HashMap<>();
 
         for(String country: uniqueEquip){
@@ -227,28 +220,19 @@ public class Analyser {
 
             if (currentEquip != null) {
                 String[] equipArray = currentEquip.split(" ");
-                //System.out.println("EQUIP "+ equipArray[0]);
                 for (String myEquip : equipArray) {
                     routesPerEquip.put(myEquip, routesPerEquip.get(myEquip) + 1);
                 }
             }
-
-
-
         }
-
-        //System.out.println(routesPerEquip);
-
         List<Map.Entry> results = new ArrayList(routesPerEquip.entrySet());
         results = sortDictByValue(results);
-        //System.out.println(results);
 
         return results;
-
-
     }
 
     private static List<Map.Entry> sortDictByValue(List<Map.Entry> results) {
+        // sorts dictionary by the value
         Collections.sort(results, new Comparator<Map.Entry>() {
             @Override
             public int compare(Map.Entry o1, Map.Entry o2) {

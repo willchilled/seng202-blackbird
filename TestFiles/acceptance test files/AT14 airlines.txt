@@ -1,0 +1,6 @@
+3052,"Jetstar Airways",\N,"JQ","JST","JETSTAR","Australia","Y"
+345,"Air New Zealand",\N,"NZ","ANZ","NEW ZEALAND","New Zealand","Y"
+458,"Air Napier",\N,"","NPR","","New Zealand","N"
+555,"Airwork",\N,"","AWK","AIRWORK","New Zealand","N"
+71,"Advanced Air Co.",\N,"","ADD","","Japan","N"
+55,"Astral Aviation",\N,"8V","ACP","ASTRAL CARGO","Kenya","Y"

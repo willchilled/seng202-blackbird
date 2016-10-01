@@ -1,0 +1,2 @@
+2006,"Auckland Intl","Auckland","New Zealand","AKL","NZAA",-37.008056,174.791667,23,12,"Z","Pacific/Auckland"
+2009,"Christchurch Intl","Christchurch","New Zealand","CHC","NZCH",-43.489358,172.532225,123,12,"Z","Pacific/Auckland"

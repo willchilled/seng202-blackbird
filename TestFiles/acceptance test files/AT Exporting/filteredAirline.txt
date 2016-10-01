@@ -1,0 +1,4 @@
+345, Air New Zealand, , NZ, null, NEW ZEALAND, New Zealand, Y
+787, Air Chathams, , CV, null, CHATHAM, New Zealand, Y
+3814, Origin Pacific Airways, , QO, null, ORIGIN, New Zealand, Y
+13242, Air2there, , F8, null, , New Zealand, Y

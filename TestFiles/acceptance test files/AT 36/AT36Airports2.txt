@@ -1,0 +1,2 @@
+6860,"Bungle Bungle Airport","Bungle Bungle","Australia","","YBUU",-17.5453,128.307,0,8,"U","Australia/Perth"
+3361,"Sydney Intl","Sydney","Australia","SYD","YSSY",-33.946111,151.177222,21,10,"O","Australia/Sydney"

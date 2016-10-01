@@ -1,0 +1,4 @@
+43,"Abaet",\N,"","ABJ","Abaet","Brazil","N"
+44,"Alberta Citylink",\N,"","ABK","ALBERTA CITYLINK","Canada","N"
+45,"APSA Colombia",\N,"","ABO","AEROEXPRESO","Colombia","N"
+46,"Aerovias Bueno",\N,"","ABU","AEROBUENO","Colombia","N"

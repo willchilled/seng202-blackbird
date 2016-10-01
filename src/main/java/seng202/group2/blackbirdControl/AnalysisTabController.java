@@ -53,18 +53,11 @@ public class AnalysisTabController {
     private boolean airlineChartOpen = false;
     private boolean equipmentChartOpen = false;
 
-
-    //TODO can this go, and move airline xaxis thing into airline method?
-    @FXML
-    private void initialize() {
-       // xAxisAirline.setTickLabelRotation(90);
-    }
-
     /**
      * Method that clears data from the Airports by Incoming/Outgoing Routes chart,
      * then re-populates it depending on the selected country.
      */
-    protected void populateRouteGraph() {
+    private void populateRouteGraph() {
         routeChart.getData().clear();
         ObservableList<String> airportNames = FXCollections.observableArrayList();
         ArrayList<DataPoint>  myPoints;
@@ -172,7 +165,6 @@ public class AnalysisTabController {
     private void populateAirlinesPerCountryGraph() {
         if(!airlineChartOpen) {
             airlineChart.getData().clear();
-            xAxisAirline.setTickLabelRotation(90);
             ObservableList<String> countryNames = FXCollections.observableArrayList();
             yAxisAirline.setCategories(countryNames);
             List<Map.Entry> airlinesPerCountry = Analyser.numAirlinesPerCountry();

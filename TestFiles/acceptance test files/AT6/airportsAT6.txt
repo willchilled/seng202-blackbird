@@ -1,0 +1,6 @@
+2009,"Christchurch Intl","Christchurch","New Zealand","CHC","NZCH",-43.489358,172.532225,123,12,"Z","Pacific/Auckland"
+2006,"Auckland Intl","Auckland","New Zealand","AKL","NZAA",-37.008056,174.791667,23,12,"Z","Pacific/Auckland"
+6860,"Bungle Bungle Airport","Bungle Bungle","Australia","","YBUU",-17.5453,128.307,0,8,"U","Australia/Perth"
+507,"Heathrow","London","United Kingdom","LHR","EGLL",51.4775,-0.461389,83,0,"E","Europe/London"
+29,"Baker Lake","Baker Lake","Canada","YBK","CYBK",64.298889,-96.077778,59,-6,"A","America/Winnipeg"
+44,"Princeton","Princeton","Canada","YDC","CYDC",49.468056,-120.511389,2298,-8,"A","America/Vancouver"

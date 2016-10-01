@@ -530,11 +530,11 @@ public class DataBaseRefactor {
                 " COUNTRY        VARCHAR(40)   NOT NULL," +
                 " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                 " ICAO           CHAR(4)," +
-                " LATITUDE       FLOAT constraint check_lat check (LATITUDE between '-90' and '90')," +
-                " LONGITUDE      FLOAT constraint check_long check (LONGITUDE between '-180' and '180'),"+
-                " ALTITUDE       FLOAT constraint check_alt check (ALTITUDE between '-1500' and '15000')," +
-                " TIMEZONE       FLOAT constraint check_time check (TIMEZONE between '-12.00' and '14.00')," +
-                " DST            CHAR(1) constraint check_dst check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', ''))," +
+                " LATITUDE       FLOAT constraint invalid_latitude check (LATITUDE between '-90' and '90')," +
+                " LONGITUDE      FLOAT constraint invalid_longitude check (LONGITUDE between '-180' and '180'),"+
+                " ALTITUDE       FLOAT constraint invalid_altitude check (ALTITUDE between '-1500' and '15000')," +
+                " TIMEZONE       FLOAT constraint invalid_timezone check (TIMEZONE between '-12.00' and '14.00')," +
+                " DST            CHAR(1) constraint invalid_daylight_savings_time check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', ''))," +
                 " TZ             VARCHAR(40))";
         //System.out.println(sql);
         return sql;
@@ -547,14 +547,14 @@ public class DataBaseRefactor {
      */
     private static String createAirlineTable(){
         String sql = "CREATE TABLE AIRLINE " +
-                "(ID INTEGER PRIMARY KEY    NOT NULL constraint check_id check (ID > 0)," +
+                "(ID INTEGER PRIMARY KEY    NOT NULL constraint invalid_id check (ID > 0)," +
                 " NAME           VARCHAR(40)   NOT NULL," +
                 " ALIAS           VARCHAR(40)," +   //alias can be null
                 " IATA           CHAR(2)," +    //can have either IATA or ICAO
                 " ICAO           CHAR(3)," +
                 " CALLSIGN           VARCHAR(40)," +
                 " COUNTRY           VARCHAR(40)," + //not null?
-                " ACTIVE           CHAR(1) constraint check_active check (ACTIVE in ('Y', 'N')) )";
+                " ACTIVE           CHAR(1) constraint invalid_active_code check (ACTIVE in ('Y', 'N')) )";
         //System.out.println(sql);
         return sql;
     }
@@ -573,8 +573,8 @@ public class DataBaseRefactor {
                 "Srcid      INTEGER NOT NULL /*ID number for source location location*/," +
                 "Dst        VARCHAR(4) NOT NULL /*Destination location for route*/," +   //either the IATA(3) or ICAO(4)
                 "Dstid      INTEGER NOT NULL /*ID number for destination location*/," +
-                "Codeshare  CHAR(1) constraint check_codeshare check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
-                "Stops      INTEGER constraint check_stops check (Stops >= 0) /*Number of stops the route takes*/," +
+                "Codeshare  CHAR(1) constraint invalid_codeshare_field check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
+                "Stops      INTEGER constraint invalid_stop_number check (Stops >= 0) /*Number of stops the route takes*/," +
                 "Equipment  VARCHAR(50), " +
                 "foreign key (Srcid) references AIRPORT," +
                 "foreign key (Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
@@ -616,9 +616,9 @@ public class DataBaseRefactor {
                 "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
                 "LocaleID       VARCHAR(5) NOT NULL, "+
                 "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
-                "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/ constraint check_flightalt check (Altitude between -1500 and 100000), " +
-                "Latitude       FLOAT NOT NULL constraint check_flightlat check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      FLOAT NOT NULL constraint check_flightlong check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
+                "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/ constraint invalid_flight_altitude check (Altitude between -1500 and 100000), " +
+                "Latitude       FLOAT NOT NULL constraint invalid_flight_latitude check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
+                "Longitude      FLOAT NOT NULL constraint invalid_flight_longitude check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +

@@ -120,7 +120,7 @@ public class AirportPoint extends DataPoint {
                 }
 
             } catch(NumberFormatException e) {
-                BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT, "Invalid numeric values given (within Airport ID or altitude, longitude, latitude fields)");
+                BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT, "Invalid numeric values given (within Airport ID, altitude, longitude or latitude fields)");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
                     errorTabController.setAllCorrect(false);

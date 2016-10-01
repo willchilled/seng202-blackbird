@@ -56,4 +56,28 @@ public class ValidatorTest extends TestCase {
 
     }
 
+    public void testCheckRoute() throws Exception{
+        String[] attributes = new String[] {"2B", "410", "AER", "Y", "1", "CR2"};
+        boolean valid = Validator.checkRoute(attributes);
+        assertEquals(true, valid);
+
+        attributes = new String[] {"None", "410", "AER", "7", "KZN", "7", "hi"};
+        assertEquals(false, Validator.checkRoute(attributes));
+
+        attributes = new String[] {"2B", "410", "AER", "7", "KZN", "NOT_VALID"};
+        assertEquals(false, Validator.checkRoute(attributes));
+    }
+
+    public void testCheckFlightPont() throws Exception{
+        String[] attributes = new String[] {"1", "BAN", "1.23", "2.34", "3.45"};
+        boolean valid = Validator.checkFlightPoint(attributes);
+        assertEquals(true, valid);
+
+        attributes = new String[] {"HI", "BAN", "apple", "2.34", "3.45"};
+        valid = Validator.checkFlightPoint(attributes);
+        assertEquals(false, valid);
+
+
+    }
+
 }

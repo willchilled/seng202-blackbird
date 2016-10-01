@@ -32,6 +32,7 @@ public class AirportTabController {
 
     private MainController mainController;
     AirportTabController instance;
+    private boolean allcorrect;
 
     //Airport Table
     @FXML private TableView<DataPoint> airportTable;
@@ -97,8 +98,9 @@ public class AirportTabController {
         updateAirportsTable(validAirportPoints);
         mainController.updateRoutes();
         mainController.updateTab(DataTypes.AIRPORTPOINT);
-
     }
+
+
 
     private void updateAirportFields() {
         airportCountryList = populateAirportCountryList();  //populating from valid data in database

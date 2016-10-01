@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,6 +25,8 @@ public class ErrorTabController {
     private ObservableList<BadData> badRoutes = FXCollections.observableArrayList();
     private ObservableList<BadData> badAirports = FXCollections.observableArrayList();
     private ObservableList<BadData> badAirlines = FXCollections.observableArrayList();
+
+    private boolean allCorrect = true;
 
     @FXML private TableView<BadData> routeErrors;
     @FXML private TableColumn<BadData, Integer> routeFileLine;
@@ -218,5 +221,19 @@ public class ErrorTabController {
 
     public void setRouteTabController(RouteTabController routeTabController) {
         this.routeTabController = routeTabController;
+    }
+
+    public void setAllCorrect(boolean allCorrect) {
+        this.allCorrect = allCorrect;
+    }
+
+    public void showAddingErrorMessage() {
+        if (!allCorrect) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Some file entries could not be added");
+            alert.setContentText("See the Errors tab for more details");
+            alert.showAndWait();
+        }
     }
 }

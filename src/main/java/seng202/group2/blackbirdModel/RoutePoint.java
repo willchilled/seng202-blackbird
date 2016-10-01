@@ -94,6 +94,7 @@ public class RoutePoint extends DataPoint {
                 BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT, "Invalid file line length, expecting 9 comma separated values");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+                    errorTabController.setAllCorrect(false);
                 }
                 this.correctEntry = 1;
             }
@@ -101,6 +102,7 @@ public class RoutePoint extends DataPoint {
             BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT, "Invalid Airline or Airport IDs were given (all must be present), or number of stops was non-numeric");
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
+                errorTabController.setAllCorrect(false);
             }
             this.correctEntry = 1;
         }

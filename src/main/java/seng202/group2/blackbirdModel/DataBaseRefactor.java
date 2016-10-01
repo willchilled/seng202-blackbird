@@ -61,7 +61,6 @@ public class DataBaseRefactor {
      * @param myPoints An arraylist of DataPoints that we want to insert.
      */
     public static void insertDataPoints(ArrayList<DataPoint> myPoints, ErrorTabController errorTabController) {
-        boolean allCorrect = true;
         try {
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
@@ -115,9 +114,8 @@ public class DataBaseRefactor {
                     //System.out.println(badPoint.getErrorMessage());
                     if (errorTabController != null) {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
+                        errorTabController.setAllCorrect(false);
                     }
-                    allCorrect = false;
-
                 }
             }
             //.close();
@@ -129,14 +127,9 @@ public class DataBaseRefactor {
             //System.out.println("Some error occurred when making connection? :");
         }
 
-        if (!allCorrect) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Warning");
-            alert.setHeaderText("Some file entries could not be added");
-            alert.setContentText("See the Errors tab for more details");
-
-            alert.showAndWait();
-        }
+//        if (!allCorrect) {
+//
+//        }
         //System.out.println("Records created successfully");
     }
 
@@ -191,6 +184,7 @@ public class DataBaseRefactor {
             preparedStatement.close();
         }
         catch (Exception e){
+            //System.out.println(e.getClass().getName() + ", "+ e.getMessage());
             //System.out.println("Cant add " +  myPoints.toString());
             System.out.println("DataBaseRefactor.addFlight failed");
         }
@@ -421,7 +415,6 @@ public class DataBaseRefactor {
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
-                //System.out.println(myPoint.toString());
             }
             preparedStatement.close();
             currentConnection.close();

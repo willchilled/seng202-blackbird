@@ -38,6 +38,7 @@ public class AirlinePopUpController {
     @FXML private Button airlineFinishButton;
     @FXML private Button airlineEditButton;
     @FXML private Button airlineCancelButton;
+    @FXML private Button airlineDeleteButton;
 
     @FXML
     void setUpPopUp(){
@@ -72,6 +73,7 @@ public class AirlinePopUpController {
         airlineFinishButton.setVisible(true);
         airlineCancelButton.setVisible(true);
         airlineEditButton.setVisible(false);
+        airlineDeleteButton.setVisible(false);
 
         if(nameText.getText() != ""){
             airlineNameTextEdit.setText((nameText.getText()));
@@ -142,6 +144,7 @@ public class AirlinePopUpController {
             activeText.setText(active);
 
             airlineTabController.airlineFilterButtonPressed();
+            airlineDeleteButton.setVisible(true);
 
         }else{
             airlineInvalidDataText.setVisible(true);
@@ -165,6 +168,7 @@ public class AirlinePopUpController {
         airlineInvalidDataText.setVisible(false);
         airlineEditButton.setVisible(true);
         nameText.setVisible(true);
+        airlineDeleteButton.setVisible(true);
 
     }
 

@@ -8,6 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import seng202.group2.blackbirdModel.*;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataPoint;
 import seng202.group2.blackbirdModel.DataTypes;
@@ -39,6 +46,10 @@ public class AnalysisTabController {
 
     @FXML Label calculatedDistance;
     @FXML Label distanceHeader;
+    @FXML WebView webView;
+    @FXML Text analysisTabMapErrorText;
+
+    private WebEngine webEngine;
 
     ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
     ObservableList<String> airportDistanceList = FXCollections.observableArrayList("No values Loaded");
@@ -52,6 +63,14 @@ public class AnalysisTabController {
     private boolean airportChartOpen = false;
     private boolean airlineChartOpen = false;
     private boolean equipmentChartOpen = false;
+
+
+    //TODO can this go, and move airline xaxis thing into airline method?
+    @FXML
+    private void initialize() {
+        initMap();
+       // xAxisAirline.setTickLabelRotation(90);
+    }
 
     /**
      * Method that clears data from the Airports by Incoming/Outgoing Routes chart,
@@ -359,6 +378,19 @@ public class AnalysisTabController {
 
             AirportPoint d1 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport1());
             AirportPoint d2 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport2());
+            ArrayList<Position> positions = new ArrayList<>();
+            double d1Lat = d1.getLatitude();
+            double d1Long = d1.getLongitude();
+            double d2Lat = d2.getLatitude();
+            double d2Long = d2.getLongitude();
+            Position p1 = new Position(d1Lat, d1Long);
+            Position p2 = new Position(d2Lat, d2Long);
+            positions.add(p1);
+            positions.add(p2);
+            Route newRoute = new Route(positions);
+            displayRoute(newRoute);
+
+
 
             double distance = Analyser.calculateDistance(d1, d2);
             String header = "Distance between " + d1.getAirportName() + " and " + d2.getAirportName() + ": ";
@@ -376,6 +408,29 @@ public class AnalysisTabController {
      * Method to set country to the value selected in the airportCountryFilterMenu Combobox
      * @param country
      */
+
+    /**
+     * Initializes the map with the JavaScript
+     */
+    private void initMap() {
+        webEngine = webView.getEngine();
+        webEngine.load(getClass().getClassLoader().getResource("map.html").toExternalForm());
+    }
+
+    /**
+     *Displays a route on the map by way of making a javascript and executing it through the web engine
+     * @param newRoute
+     */
+    private void displayRoute(Route newRoute) {
+        try {
+            String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
+            webEngine.executeScript(scriptToExecute);
+            analysisTabMapErrorText.setVisible(false);
+        } catch (netscape.javascript.JSException e){
+            analysisTabMapErrorText.setVisible(true);
+        }
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }

@@ -47,6 +47,7 @@ public class AirportPopUpController {
     @FXML private Button airportEditButton;
     @FXML private Button airportFinishButton;
     @FXML private Button airportCancelButton;
+    @FXML private Button airportDeleteButton;
     @FXML private Text airportInvalidDataText;
 
     @FXML
@@ -92,6 +93,8 @@ public class AirportPopUpController {
         airportEditButton.setVisible(false);
         airportFinishButton.setVisible(true);
         airportCancelButton.setVisible(true);
+        airportDeleteButton.setVisible(false);
+
 
         if(airportNameText.getText() != ""){
             airportNameTextEdit.setText(airportNameText.getText());
@@ -188,6 +191,7 @@ public class AirportPopUpController {
             airportTzText.setText(tz);
 
             airportTabController.airportFilterButtonPressed();
+            airportDeleteButton.setVisible(true);
 
         }else{
             airportInvalidDataText.setVisible(true);
@@ -217,6 +221,7 @@ public class AirportPopUpController {
         airportEditButton.setVisible(true);
         airportFinishButton.setVisible(false);
         airportCancelButton.setVisible(false);
+        airportDeleteButton.setVisible(true);
     }
 
     /**

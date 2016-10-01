@@ -30,7 +30,6 @@ public class FilterRefactor {
                 return myAirportPoints;
 
             case ROUTEPOINT: sql = getJoinForRoutesTableSql(); break;
-            case FLIGHTPOINT: sql = "SELECT * FROM FLIGHTPOINT;"; break;   //FLIGHTS UNABLE TO BE FILTERED ATM
             case FLIGHT: sql = "SELECT * FROM FLIGHT;"; break;
             default: return null;
         }
@@ -116,35 +115,6 @@ public class FilterRefactor {
         return filtered;
     }
 
-    /**
-     * Filters a list of route points for a search string
-     * @param myRoutePoints list of route points wanting to be filtered
-     * @param searchString the string that we want to match
-     * @return a filtered array list of points
-     */
-    private static ArrayList<DataPoint> refineRoutesQuery(ArrayList<DataPoint> myRoutePoints, String searchString) {
-        System.out.println(searchString + "search string");
-        if (searchString.length() > 1) {
-            ArrayList<DataPoint> refinedPoints = new ArrayList<DataPoint>();
-            for (DataPoint currentPoint : myRoutePoints) {
-                RoutePoint currentRoutePoint = (RoutePoint) currentPoint;
-                System.out.println(currentRoutePoint.toStringWithAirports() + "----" + searchString);
-                ArrayList<String> srcAndDstList = new ArrayList<String>(Arrays.asList(currentRoutePoint.getSrcAirportName(), currentRoutePoint.getSrcAirportCountry(),
-                        currentRoutePoint.getDstAirportName(), currentRoutePoint.getDstAirportCountry()));
-
-                if (srcAndDstList.contains(searchString)) {
-                    DataPoint pointToAdd = currentRoutePoint;
-                    refinedPoints.add(pointToAdd);
-                }
-            }
-            return refinedPoints;
-        }
-        else{
-            return myRoutePoints;
-        }
-
-    }
-
 
     /**
      * Returns the sql string for the filters specified
@@ -177,12 +147,6 @@ public class FilterRefactor {
         }
 
         sql += search;
-        //sql = removeLastWHERE(sql);
-        //System.out.println(sql);
-        //sql = sql.replaceAll()
-        // System.out.println("Performing query:"+ sql);
-        //ArrayList<DataPoint> allPoints = DataBaseRefactor.performGenericQuery(sql, type);    //DB METHOD HERE
-        //System.out.println("SIZE: " + allPoints.size());
         System.out.println("sql flight search; " + sql);
         return sql; //return an arraylist
     }
@@ -294,29 +258,6 @@ public class FilterRefactor {
     }
 
 
-//    public static ArrayList<DataPoint> filterRouteEquipment(ArrayList<DataPoint> routes, String equipment) {
-//        ArrayList<DataPoint> equipmentRoutes = new ArrayList<>();
-//        String patternString;
-//        if (equipment.isEmpty()) {
-//            patternString = "^$";
-//        } else {
-//            String[] newString = equipment.split(" ");
-//            patternString = "\\b(" + String.join("|", newString) + ")\\b";
-//        }
-//
-//        Pattern pattern = Pattern.compile(patternString);
-//
-//        for (DataPoint route : routes) {
-//            RoutePoint myroute = (RoutePoint) route;    //casting here
-//            Matcher matcher = pattern.matcher(myroute.getEquipment());
-//            if (matcher.find()) {
-//                equipmentRoutes.add(route);
-//            }
-//        }
-//        return equipmentRoutes;
-//    }
-
-
     /**
      * Method that helps us to filter unique entries within a specified column from a table. Used to populate
      * the filter dropdown menus.
@@ -355,12 +296,6 @@ public class FilterRefactor {
 
     //------------------------------------------HELPER FUNCTIONS----------------------------------------------------//
 
-    private static String getJoinForAirportsTableSql(){
-        String sql = " SELECT * FROM (select *, (select count(*) from route where route.Srcid = airport.id)  as incoming,\n" +
-                "(select count(*) from route where route.dstid=airport.id)\n" +
-                "as outgoing from airport\n)  ";
-        return sql;
-    }
 
     private static String getJoinForRoutesTableSql(){
         return " SELECT * FROM (SELECT route.*, a1.name as srcname, a1.country as srccountry, a2.name as dstname, a2.country as dstcountry\n" +
@@ -414,19 +349,6 @@ public class FilterRefactor {
         return sqlString;
     }
 
-    /**
-     * Helper function to remove the last 'where' of a sql string, if 'where' is the last word.
-     * @param sqlString The current sql string
-     * @return The sql string with the last 'where' removed, if 'and' is the last word.
-     */
-    private static String removeLastWHERE(String sqlString) {
-        //System.out.println(sqlString.substring(sqlString.length()-6, sqlString.length()-1));
-        String substring = sqlString.substring(sqlString.length()-6, sqlString.length()-1);
-        if (substring.equals("WHERE")){
-            sqlString = sqlString.substring(0, sqlString.length()-6);
-        }
-        return sqlString;
-    }
 
 }
 

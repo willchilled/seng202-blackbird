@@ -217,6 +217,7 @@ public class AirlineTabController{
         // gets all airline points and populates list
         ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT); //airportTable.getItems()
         updateAirlinesTable(allPoints);
+        updateAirlineFields();
         airlineFilterMenu.setValue(airlineCountryList.get(0));
         airlineFilterMenu.setItems(airlineCountryList);
 

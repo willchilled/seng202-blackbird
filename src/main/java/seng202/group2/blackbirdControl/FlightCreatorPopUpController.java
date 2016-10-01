@@ -65,7 +65,7 @@ public class FlightCreatorPopUpController {
         creatorStage.initModality(Modality.NONE);
         creatorStage.initOwner(null);
         flightAdderTable.setPlaceholder(new Label("Add Intermediate WayPoints by filling the fields above and pressing 'Add WayPoint'"));
-        wayPointTypeComboBox.setItems(FXCollections.observableArrayList("APT", "VOR", "FIX", "NDB"));
+        wayPointTypeComboBox.setItems(FXCollections.observableArrayList("APT", "VOR", "FIX", "NDB", "DME", "LATLON"));
         initMap();
 
 

@@ -184,6 +184,7 @@ public class DataBaseRefactor {
             preparedStatement.close();
         }
         catch (Exception e){
+            //System.out.println(e.getClass().getName() + ", "+ e.getMessage());
             //System.out.println("Cant add " +  myPoints.toString());
             System.out.println("DataBaseRefactor.addFlight failed");
         }

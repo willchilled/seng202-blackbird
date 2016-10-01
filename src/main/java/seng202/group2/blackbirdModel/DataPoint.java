@@ -45,7 +45,6 @@ public class DataPoint {
         this.fileLine = fileLine;
     }
 
-
     public int getFileLine() {
         return fileLine;
     }

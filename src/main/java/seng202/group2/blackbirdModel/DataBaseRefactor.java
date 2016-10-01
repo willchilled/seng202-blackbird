@@ -122,9 +122,9 @@ public class DataBaseRefactor {
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
             //System.exit(0);
-            System.out.println("Some error occurred when making connection? :");
+            //System.out.println("Some error occurred when making connection? :");
         }
 
 //        if (!allCorrect) {
@@ -509,7 +509,7 @@ public class DataBaseRefactor {
         File f = new File(cwd+"/default.db");
 
         if(f.exists() && f.isFile()){
-            System.out.println("Deleted db");
+            //System.out.println("Deleted db");
             f.delete();
         }
     }

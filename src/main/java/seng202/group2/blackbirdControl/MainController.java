@@ -119,7 +119,7 @@ public class MainController implements Initializable {
        /* mainTabPane.getSelectionModel().selectedItemProperty()
                 .addListener((obs, oldTab, newTab) -> {
                     if (newTab == analysisTab) {
-                        analysisTabController.checkData();
+                        analysisTabController.prepareRouteChart();
                     }
                 });*/
     }
@@ -160,7 +160,7 @@ public class MainController implements Initializable {
         errorTabController.setAllCorrect(true);
         airportTabController.addAirportData();
         errorTabController.showAddingErrorMessage();
-        //analysisTabController.setRouteGraphData();
+        //analysisTabController.populateRouteGraph();
     }
 
     /**

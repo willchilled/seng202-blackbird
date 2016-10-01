@@ -81,7 +81,7 @@ public class AnalysisTabController {
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
 
-        myPoints  = Analyser.rankAirports(myPoints, true);
+        myPoints  = Analyser.rankAirportsByRoutes(myPoints, true);
         ArrayList<AirportPoint> myAirportPoints = new ArrayList<>();
 
         for(DataPoint currentPoint: myPoints){

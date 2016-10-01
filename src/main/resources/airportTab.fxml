@@ -58,23 +58,23 @@
                 <GridPane hgap="5.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                     <columnConstraints>
                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="375.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TitledPane prefHeight="89.0" prefWidth="735.0">
+                        <TitledPane collapsible="false" prefHeight="89.0" prefWidth="735.0">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0">
                                     <children>
                                         <GridPane hgap="5.0" layoutX="10.399999618530273" layoutY="7.0" prefHeight="63.0" prefWidth="752.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="NEVER" />
-                                                <ColumnConstraints hgrow="ALWAYS" />
-                                                <ColumnConstraints hgrow="ALWAYS" maxWidth="193.0" minWidth="0.0" prefWidth="193.0" />
-                                                <ColumnConstraints hgrow="NEVER" maxWidth="354.0" minWidth="10.0" prefWidth="79.0" />
-                                                <ColumnConstraints hgrow="NEVER" maxWidth="514.0" minWidth="0.0" prefWidth="113.0" />
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="161.0" minWidth="87.99999237060547" prefWidth="128.00000762939453" />
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="297.00000762939453" minWidth="224.0" prefWidth="257.0" />
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="374.0" minWidth="10.0" />
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="419.9999694824219" minWidth="10.0" />
+                                                <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" />
+                                                <ColumnConstraints hgrow="NEVER" maxWidth="230.0" minWidth="0.0" />
                                                 <ColumnConstraints hgrow="NEVER" />
                                             </columnConstraints>
                                             <rowConstraints>
@@ -86,29 +86,9 @@
                                                 <ComboBox fx:id="airportFilterMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" onKeyPressed="#enterPressed" prefWidth="120.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                 <TextField fx:id="airportSearchQuery" layoutX="165.39999961853027" layoutY="23.399999618530273" onKeyPressed="#enterPressed" promptText="Search..." GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                 <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
-                                                <Button fx:id="filterButton1" mnemonicParsing="false" onAction="#airportFilterButtonPressed" prefHeight="25.0" prefWidth="82.0" text="Filter" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                                <Button fx:id="airportSeeAllButton" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" prefHeight="25.0" prefWidth="114.0" text="See All Points" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                                            </children>
-                                        </GridPane>
-                                    </children>
-                                </AnchorPane>
-                            </content>
-                        </TitledPane>
-                        <TitledPane alignment="TOP_CENTER" animated="false" collapsible="false" text="Other" GridPane.columnIndex="1">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="63.0" prefWidth="319.0">
-                                    <children>
-                                        <GridPane layoutX="30.399999618530273" layoutY="28.399999618530273" prefHeight="63.0" prefWidth="373.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                            <children>
-                                                <Button fx:id="updateButton" layoutX="136.39999961853027" layoutY="28.399999618530273" mnemonicParsing="false" onAction="#airportFilterButtonPressed" style="-fx-base: #E81F00;" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                                <Button fx:id="addSingleAirport" layoutX="30.399999618530273" layoutY="28.399999618530273" mnemonicParsing="false" onAction="#addSingleAirport" prefHeight="25.0" prefWidth="113.0" text="Add Airport" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                <Button fx:id="filterButton1" mnemonicParsing="false" onAction="#airportFilterButtonPressed" prefHeight="25.0" prefWidth="82.0" text="Filter" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                                <Button fx:id="airportSeeAllButton" mnemonicParsing="false" onAction="#airportSeeAllButtonPressed" prefHeight="25.0" prefWidth="114.0" text="See All Points" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                <Button fx:id="addSingleAirport" mnemonicParsing="false" onAction="#addSingleAirport" prefHeight="25.0" prefWidth="113.0" text="Add Airport" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                                             </children>
                                         </GridPane>
                                     </children>

@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
@@ -17,6 +19,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -193,6 +196,7 @@ public class FlightTabController {
             allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
         }
         updateFlightsTable(allPoints);
+        flightPointTable.getItems().setAll();
 
     }
 
@@ -220,6 +224,14 @@ public class FlightTabController {
             e.printStackTrace();
         }
 
+    }
+
+    public void enterPressed(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ENTER)
+        {
+            flightFilterButtonPressed();
+        }
     }
 
     /**
@@ -299,9 +311,11 @@ public class FlightTabController {
 
     public void deleteSingleFlight(){
         //TODO delete single flight isn't working, I think the id is always 0 <- delete seems to work now, but needs to clear waypoints also
-        String sql = "";
+        String flightSql = "";
+        String flightPointSql = "";
         int id = flight.getFlightID();
-        sql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);
+        flightSql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);
+        flightPointSql = String.format("DELETE FROM FLIGHTPOINT WHERE FlightIDNum = %s", id);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Entry");
@@ -310,12 +324,12 @@ public class FlightTabController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if((result.isPresent()) && (result.get() == ButtonType.OK)) {
-            DataBaseRefactor.editDataEntry(sql);
+            DataBaseRefactor.editDataEntry(flightSql);
+            DataBaseRefactor.editDataEntry(flightPointSql);
             flightFilterButtonPressed();
         }
     }
 
-    //______________________MAP STUFf--------------------------------------//
 
     /**
      * Initializes the map with the JavaScript

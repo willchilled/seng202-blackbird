@@ -61,7 +61,6 @@ public class DataBaseRefactor {
      * @param myPoints An arraylist of DataPoints that we want to insert.
      */
     public static void insertDataPoints(ArrayList<DataPoint> myPoints, ErrorTabController errorTabController) {
-        boolean allCorrect = true;
         try {
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
@@ -117,8 +116,6 @@ public class DataBaseRefactor {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
                         errorTabController.setAllCorrect(false);
                     }
-                    allCorrect = false;
-
                 }
             }
             //.close();
@@ -417,7 +414,6 @@ public class DataBaseRefactor {
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
-                //System.out.println(myPoint.toString());
             }
             preparedStatement.close();
             currentConnection.close();

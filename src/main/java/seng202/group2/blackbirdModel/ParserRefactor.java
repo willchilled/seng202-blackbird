@@ -3,6 +3,7 @@
 package seng202.group2.blackbirdModel;
 
 import com.opencsv.CSVReader;
+import javafx.scene.control.Alert;
 import seng202.group2.blackbirdControl.ErrorTabController;
 
 import java.io.*;
@@ -68,6 +69,25 @@ public class ParserRefactor {
                             correctPoint = false;
                         }
                         break;
+                    case FLIGHTPOINT:
+                        FlightPoint myNewFlightPoint = (FlightPoint) currentDataPoint;
+                        if (myNewFlightPoint.getCorrectEntry() == 1) {
+                            return null;
+                        }
+                        break;
+//                    case FLIGHT:
+//                        Flight myFlight = (Flight) currentDataPoint;
+//                        System.out.println(myFlight.getCorrectEntry());
+//                        if (myFlight.getCorrectEntry() == 1) {
+//                            System.out.println("here");
+//                            Alert alert = new Alert(Alert.AlertType.ERROR);
+//                            alert.setTitle("Flight Error");
+//                            alert.setHeaderText("An invalid flight was found");
+//                            alert.setContentText("Flights must begin and end at an airport (APT)");
+//                            alert.showAndWait();
+//                            correctPoint = false;
+//                        }
+//                        break;
                     default:
                         break;
                 }

@@ -102,8 +102,18 @@ public class FlightTabController {
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT, errorTab);
+        if (myFlightData == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Flight Error");
+            alert.setHeaderText("Invalid flight file");
+            alert.setContentText("Invalid entries were found, please check your file");
+            alert.showAndWait();
+            return;
+        }
         DataBaseRefactor.insertDataPoints(myFlightData, errorTab);
         ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+
+        //TODO prevent a flight that doesn't begin/end in APT from being added to database, with error message
 
         updateFlightFields();
         updateFlightsTable(myFlights);

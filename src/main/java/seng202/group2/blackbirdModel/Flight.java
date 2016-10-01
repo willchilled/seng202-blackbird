@@ -14,6 +14,8 @@ public class Flight extends DataPoint {
     private final ArrayList<DataPoint> flightPoints;
     private int flightID;
 
+    private int correctEntry=0;
+
 //    public Flight(List<FlightPoint> flightPoints) {
 //        this.flightPoints = flightPoints;
 //        FlightPoint source = flightPoints.get(0);
@@ -31,11 +33,19 @@ public class Flight extends DataPoint {
         this.flightPoints = flightPoints;
         FlightPoint source = (FlightPoint) flightPoints.get(0);
         FlightPoint dest = (FlightPoint) flightPoints.get(flightPoints.size() - 1);
+        System.out.println(source.getLocalType() + ", " + dest.getLocalType());
+        if (!source.getLocalType().equals("APT") || !dest.getLocalType().equals("APT")) {   //flight begins and ends at invalid locations
+            this.correctEntry = 1;
+            //flight has correct entry 1 in this case
+        }
         this.srcAirport = source.getLocaleID();
         this.destAirport = dest.getLocaleID();
         this.flightID = source.getFlightIDNum();
     }
 
+    public int getCorrectEntry() {
+        return correctEntry;
+    }
 
     public int getFlightID() {
         return flightID;

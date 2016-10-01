@@ -1,25 +1,17 @@
 package seng202.group2.blackbirdControl;
 
-import com.sun.javafx.runtime.async.AbstractAsyncOperation;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
 import seng202.group2.blackbirdModel.DataPoint;
 import seng202.group2.blackbirdModel.DataTypes;
 
-import java.text.DateFormatSymbols;
 import java.util.*;
 
 /**
@@ -90,7 +82,7 @@ public class AnalysisTabController {
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
 
-        myPoints  = Analyser.rankAirports(myPoints, true);
+        myPoints  = Analyser.rankAirportsByRoutes(myPoints, true);
         ArrayList<AirportPoint> myAirportPoints = new ArrayList<>();
 
         for(DataPoint currentPoint: myPoints){

@@ -8,7 +8,7 @@ import java.util.*;
  * Performs the analysis of data in the BlackBird program
  *
  * @author Team2
- * @version 1.0
+ * @version 2.0
  * @since 19/9/2016
  */
 class Analyser {

@@ -10,7 +10,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.*;
+import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.DataPoint;
+import seng202.group2.blackbirdModel.DataTypes;
 
 import java.util.ArrayList;
 
@@ -21,15 +23,24 @@ public class AirlineAddingPopUpController {
 
     private AirlineTabController airlineTabController;
 
-    @FXML private TextField Name;
-    @FXML private Text airlineID;
-    @FXML private TextField Alias;
-    @FXML private TextField IATA;
-    @FXML private TextField ICAO;
-    @FXML private TextField Callsign;
-    @FXML private TextField Country;
-    @FXML private Text addAirlineInvalidText;
-    @FXML private CheckBox Active;
+    @FXML
+    private TextField Name;
+    @FXML
+    private Text airlineID;
+    @FXML
+    private TextField Alias;
+    @FXML
+    private TextField IATA;
+    @FXML
+    private TextField ICAO;
+    @FXML
+    private TextField Callsign;
+    @FXML
+    private TextField Country;
+    @FXML
+    private Text addAirlineInvalidText;
+    @FXML
+    private CheckBox Active;
     private Stage adderStage;
     private Parent root;
     private boolean added = false;
@@ -44,10 +55,11 @@ public class AirlineAddingPopUpController {
         adderStage.show();
     }
 
-    public void createButtonPressed(){;
+    public void createButtonPressed() {
+        ;
 
         String[] airlinePoint = getValues();
-        if(Validator.checkAirline(airlinePoint)) {
+        if (Validator.checkAirline(airlinePoint)) {
             ArrayList<DataPoint> myAirlineData = new ArrayList<>();
             DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT, 0, null);
             myAirlineData.add(myAirlinePoint);
@@ -61,14 +73,14 @@ public class AirlineAddingPopUpController {
         }
     }
 
-    public void cancelButtonPressed(){
+    public void cancelButtonPressed() {
         //just closes the stage
         adderStage.close();
     }
 
-    private String[] getValues(){
+    private String[] getValues() {
         String airlineName = Name.getText().toString();
-        String id= airlineID.getText().toString();
+        String id = airlineID.getText().toString();
         String airlineAlias = Alias.getText().toString();
         String airlineIATA = IATA.getText().toString();
         String airlineICAO = ICAO.getText().toString();
@@ -76,14 +88,14 @@ public class AirlineAddingPopUpController {
         String airlineCountry = Country.getText().toString();
         boolean ActiveChecked = Active.isSelected();
         String airlineActive;
-        if (ActiveChecked){
+        if (ActiveChecked) {
             airlineActive = "Y";
-        }else{
+        } else {
             airlineActive = "N";
         }
 
-        return new String[] {id, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
-                                airlineActive};
+        return new String[]{id, airlineName, airlineAlias, airlineIATA, airlineICAO, airlineCallsign, airlineCountry,
+                airlineActive};
     }
 
     public void setRoot(Parent root) {
@@ -98,10 +110,8 @@ public class AirlineAddingPopUpController {
         airlineTabController = controller;
     }
 
-    public void enterPressed(KeyEvent ke)
-    {
-        if(ke.getCode() == KeyCode.ENTER)
-        {
+    public void enterPressed(KeyEvent ke) {
+        if (ke.getCode() == KeyCode.ENTER) {
             createButtonPressed();
         }
     }

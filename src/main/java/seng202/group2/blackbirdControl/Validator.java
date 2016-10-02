@@ -330,20 +330,20 @@ public class Validator {
         return badData;
     }
 
-    public static String[] checkFlightPoint(String[] attributes){ // localeID, wayPointType, alt, lat, long
+    public static String[] checkFlightPoint(String[] attributes){ // type, id, alt, lat, long
         String[] badData = new String[5];
 
-        String localeid = attributes[0];
-        String type = attributes[1];
+        String type = attributes[0];
+        String localeID = attributes[1];
         String alt = attributes[2];
         String lat = attributes[3];
         String lng = attributes[4];
 
-        if(!(isValidLocaleID(localeid) && !localeid.equals(""))) {
-            badData[0] = "LocaleID";
+        if(!(isValidLocaleID(type) && !type.equals(""))) {
+            badData[0] = "Type";
         }
-        if(!(isValidType(type) && !type.equals(""))) {
-            badData[1] = "Type";
+        if(!(isValidType(localeID) && !localeID.equals(""))) {
+            badData[1] = "LocaleID";
         }
         if(!(isValidAlt(alt) && !alt.equals(""))) {
             badData[2] = "Altitude";

@@ -241,7 +241,7 @@ public class AirlineTabController{
             popUpController.setAdderStage(adderStage);
             popUpController.setRoot(root);
             popUpController.control();
-            mainController.singleExportHelper(DataTypes.AIRLINEPOINT);
+            mainController.mainMenuHelper();
         } catch (IOException e) {
             e.printStackTrace();
         }

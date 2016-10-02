@@ -23,11 +23,11 @@ public class MenuBarController {
     private boolean opened = false;
 
     @FXML
+    MenuItem exportDatabaseButton;
+    @FXML
     MenuItem addDataMenuButton;
     @FXML
     MenuItem exportDataMenuButton;
-    @FXML
-    MenuItem exportDatabaseButton;
     @FXML
     MenuItem exportFlightMenuButton;
     @FXML
@@ -36,6 +36,12 @@ public class MenuBarController {
     MenuItem exportAirportMenuButton;
     @FXML
     MenuItem exportAirlineMenuButton;
+
+    @FXML MenuItem deleteDataMenuButton;
+    @FXML MenuItem deleteFlightMenuButton;
+    @FXML MenuItem deleteRouteMenuButton;
+    @FXML MenuItem deleteAirportMenuButton;
+    @FXML MenuItem deleteAirlineMenuButton;
 
 
     public void setOpened(boolean opened) {
@@ -82,8 +88,8 @@ public class MenuBarController {
         addDataMenuButton.setDisable(false);
         mainController.show();
         exportDataMenuButton.setDisable(false);
-        exportDataMenuButton.setDisable(false);
         exportDatabaseButton.setDisable(false);
+        deleteDataMenuButton.setDisable(false);
     }
 
     /**
@@ -108,13 +114,10 @@ public class MenuBarController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        exportRouteMenuButton.setDisable(false);
-        exportFlightMenuButton.setDisable(false);
-        exportAirlineMenuButton.setDisable(false);
-        exportAirportMenuButton.setDisable(false);
+
         mainController.show();
-        addDataMenuButton.setDisable(false);
-        exportDatabaseButton.setDisable(false);
+        showMenuHelper();
+        showMenus();
         mainController.showTables();
     }
 
@@ -128,7 +131,7 @@ public class MenuBarController {
      */
     public void addRouteData() {
         showAddOptions(DataTypes.ROUTEPOINT);
-        exportRouteMenuButton.setDisable(false); //make export possible
+        showMenuHelper();
     }
 
     /**
@@ -137,7 +140,7 @@ public class MenuBarController {
      */
     public void addFlightData() {
         mainController.addFlightData();
-        exportFlightMenuButton.setDisable(false); //make export possible
+        showMenuHelper();
     }
 
     /**
@@ -146,21 +149,50 @@ public class MenuBarController {
      */
     public void addAirlineData() {
         showAddOptions(DataTypes.AIRLINEPOINT);
-        exportAirlineMenuButton.setDisable(false); //make export possible
+        showMenuHelper();
     }
 
-    public void exportMenusHelper(boolean airport, boolean airline, boolean route, boolean flight) {
-        if (airport) {
-            exportAirportMenuButton.setDisable(false);
-        }
-        if (airline) {
-            exportAirlineMenuButton.setDisable(false);
-        }
-        if (route) {
+    public void showMenuHelper() {
+        int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
+        int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
+        int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
+        int flightSize = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
+        System.out.println(airlineSize);
+        System.out.println(airportSize);
+        System.out.println(routeSize);
+        System.out.println(flightSize);
+        if (routeSize > 0) {
             exportRouteMenuButton.setDisable(false);
+            deleteRouteMenuButton.setDisable(false);
+            //mainController.updateTab(DataTypes.ROUTEPOINT);
+        } else {
+            exportRouteMenuButton.setDisable(true);
+            deleteRouteMenuButton.setDisable(true);
         }
-        if (flight) {
+
+        if (airportSize > 0) {
+            exportAirportMenuButton.setDisable(false);
+            deleteAirportMenuButton.setDisable(false);
+            //mainController.updateTab(DataTypes.AIRPORTPOINT);
+        } else {
+            exportAirportMenuButton.setDisable(true);
+            deleteAirportMenuButton.setDisable(true);
+        }
+        if (airlineSize > 0) {
+            exportAirlineMenuButton.setDisable(false);
+            deleteAirlineMenuButton.setDisable(false);
+            //mainController.updateTab(DataTypes.AIRLINEPOINT);
+        } else {
+            exportAirlineMenuButton.setDisable(true);
+            deleteAirlineMenuButton.setDisable(true);
+        }
+        if (flightSize > 0) {
             exportFlightMenuButton.setDisable(false);
+            deleteFlightMenuButton.setDisable(false);
+            //mainController.updateTab(DataTypes.FLIGHT);
+        } else {
+            exportFlightMenuButton.setDisable(true);
+            deleteFlightMenuButton.setDisable(true);
         }
     }
 
@@ -170,7 +202,7 @@ public class MenuBarController {
      */
     public void addAirportData() {
         showAddOptions(DataTypes.AIRPORTPOINT);
-        exportAirportMenuButton.setDisable(false); //make export possible
+        showMenuHelper();
     }
 
     /**
@@ -224,6 +256,7 @@ public class MenuBarController {
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRLINEPOINT);
             mainController.clearErrors(DataTypes.AIRLINEPOINT);
+            showMenuHelper();
         }
     }
 
@@ -243,6 +276,7 @@ public class MenuBarController {
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRPORTPOINT);
             mainController.clearErrors(DataTypes.AIRPORTPOINT);
+            showMenuHelper();
         }
     }
 
@@ -262,6 +296,7 @@ public class MenuBarController {
             mainController.showTables();
             mainController.updateTab(DataTypes.ROUTEPOINT);
             mainController.clearErrors(DataTypes.ROUTEPOINT);
+            showMenuHelper();
         }
     }
 
@@ -280,9 +315,9 @@ public class MenuBarController {
         if (result.get() == ButtonType.OK){
             DataBaseRefactor.clearTable(DataTypes.FLIGHT);
             DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);
-            
             mainController.showTables();
             mainController.updateTab(DataTypes.FLIGHT);
+            showMenuHelper();
         }
     }
 
@@ -308,13 +343,15 @@ public class MenuBarController {
                 if (response == mergeButton || response == replaceButton) {
                     if (response == replaceButton) {
                         DataBaseRefactor.clearTable(type);
+                        //mainController.updateTab(type);
                     }
                     AddDataToController(type);
 
                 }
             });
         } else {
-                AddDataToController(type);
+            AddDataToController(type);
+            //mainController.updateTab(type);
         }
     }
 
@@ -419,7 +456,6 @@ public class MenuBarController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            //System.out.println("AH NO!");
         }
     }
 

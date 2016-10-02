@@ -219,7 +219,7 @@ public class FlightTabController {
             popUpController.setCreatorStage(creatorStage);
             popUpController.setRoot(root);
             popUpController.control();
-            mainController.singleExportHelper(DataTypes.FLIGHT);
+            mainController.mainMenuHelper();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -16,8 +16,8 @@ import seng202.group2.blackbirdModel.*;
 import java.util.ArrayList;
 
 /**
- * Adds the feature to be able to create individual flights point by point, in order to plan out a flight plan
- * in detail.
+ * This Flight creator pop up class allows enters to manually add
+ * a flight point to the program.
  *
  * @author Team2
  * @version 1.0

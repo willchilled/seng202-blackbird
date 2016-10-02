@@ -167,6 +167,7 @@ public class MenuBarController {
 
     /**
      * Calls the relevant tab that data is being added to, via the main controller.
+     *
      * @param type The data type that we are adding to
      */
     private void AddDataToController(DataTypes type) {
@@ -309,10 +310,7 @@ public class MenuBarController {
         int airportSize = Filter.getAllPoints(DataTypes.AIRPORTPOINT).size();
         int routeSize = Filter.getAllPoints(DataTypes.ROUTEPOINT).size();
         int flightSize = Filter.getAllPoints(DataTypes.FLIGHT).size();
-        System.out.println(airlineSize);
-        System.out.println(airportSize);
-        System.out.println(routeSize);
-        System.out.println(flightSize);
+
         if (routeSize > 0) {
             exportRouteMenuButton.setDisable(false);
             deleteRouteMenuButton.setDisable(false);

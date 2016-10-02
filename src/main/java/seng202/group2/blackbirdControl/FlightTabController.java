@@ -261,7 +261,11 @@ public class FlightTabController {
                     //exportFlightMenuButton.setDisable(false);
 
                     Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
-                    flight = pressedFlight;
+                    if (!(pressedFlight == null)) {
+                        flight = pressedFlight;
+                    } else {
+                        return;
+                    }
                     Route myRoute = new Route(Route.makeRoutePoints(flight));
                     displayRoute(myRoute);
 
@@ -284,7 +288,11 @@ public class FlightTabController {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 1) {
 
                     FlightPoint pressedPoint = (FlightPoint) flightPointTable.getSelectionModel().getSelectedItem();
-                    flightPoint = pressedPoint;
+                    if (!(pressedPoint == null)) {
+                        flightPoint = pressedPoint;
+                    } else {
+                        return;
+                    }
                     double lat = flightPoint.getLatitude();
                     double lng = flightPoint.getLongitude();
                     ArrayList<Position> myWayPoint = new ArrayList<>();

@@ -265,7 +265,26 @@ public class MenuBarController {
         }
     }
 
-    //TODO adding a delete flights menu button?
+    /**
+     * Calls DatabaseRefactor.clearTable
+     * Drops and recreates the table to remove all data
+     */
+    public void deleteFlightData() {
+        //TODO adding a delete flights menu button?
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Flight Data");
+        alert.setHeaderText("Delete All Flight Data");
+        alert.setContentText("Are you sure you want to delete?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            DataBaseRefactor.clearTable(DataTypes.FLIGHT);
+            DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);
+            
+            mainController.showTables();
+            mainController.updateTab(DataTypes.FLIGHT);
+        }
+    }
 
 
     /**

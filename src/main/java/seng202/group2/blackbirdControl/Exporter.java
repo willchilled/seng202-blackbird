@@ -14,6 +14,7 @@ class Exporter {
 
     /**
      * Exports a dataset as a text file
+     *
      * @param points The arraylist of datapoints in the current data set
      */
     static void exportData(ArrayList<DataPoint> points) {

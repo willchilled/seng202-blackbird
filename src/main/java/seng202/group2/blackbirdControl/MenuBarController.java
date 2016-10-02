@@ -141,10 +141,10 @@ public class MenuBarController {
     }
 
     public void showMenuHelper() {
-        int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
-        int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
-        int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
-        int flightSize = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
+        int airlineSize = Filter.getAllPoints(DataTypes.AIRLINEPOINT).size();
+        int airportSize = Filter.getAllPoints(DataTypes.AIRPORTPOINT).size();
+        int routeSize = Filter.getAllPoints(DataTypes.ROUTEPOINT).size();
+        int flightSize = Filter.getAllPoints(DataTypes.FLIGHT).size();
         System.out.println(airlineSize);
         System.out.println(airportSize);
         System.out.println(routeSize);
@@ -317,7 +317,7 @@ public class MenuBarController {
      */
     public void showAddOptions(DataTypes type) {
         //IF TABLE NOT EMPTY
-        int size = FilterRefactor.getAllPoints(type).size();
+        int size = Filter.getAllPoints(type).size();
         if (size > 0) {
             ButtonType mergeButton = new ButtonType("Merge");
             ButtonType replaceButton = new ButtonType("Replace");

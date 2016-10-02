@@ -78,12 +78,12 @@ public class AnalysisTabController {
 
         if (getCountry() == null) {
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
-            myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
+            myPoints = Filter.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         } else if (getCountry().equals("All") || getCountry().equals("Select Country")) {
-            myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+            myPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         } else {
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
-            myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
+            myPoints = Filter.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
 
         myPoints = Analyser.rankAirportsByRoutes(myPoints);
@@ -251,7 +251,7 @@ public class AnalysisTabController {
      * @return Observable list of the country names of the airports loaded
      */
     private ObservableList<String> populateAirportCountryList() {
-        ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
+        ArrayList<String> countries = Filter.filterDistinct("country", "Airport");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList.add(0, "All");
         countryList.add(0, "Select Country");
@@ -266,7 +266,7 @@ public class AnalysisTabController {
      */
     private ObservableList<String> populateAirportDistanceList() {
         //Populates the dropdown of airline countries
-        ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> airports = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         ArrayList<String> nameIcaoAirport = new ArrayList<>();
         for (DataPoint curAirport : airports) {
             AirportPoint castedPoint = (AirportPoint) curAirport;
@@ -290,7 +290,7 @@ public class AnalysisTabController {
      */
     public void prepareRouteChart() {
         if (!routeChartOpen) {
-            ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+            ArrayList<DataPoint> airports = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
             if (airports.size() > 0) {
                 airportCountryFilterMenu.setVisible(true);
                 ObservableList<String> airportCountryList = populateAirportCountryList();
@@ -318,7 +318,7 @@ public class AnalysisTabController {
      * airports.
      */
     public void airportDistanceSetup() {
-        ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> airports = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         if (airports.size() > 0) {
             ObservableList<String> airportDistanceList = populateAirportDistanceList();
             airportDistanceCB1.setValue(airportDistanceList.get(0));
@@ -354,8 +354,8 @@ public class AnalysisTabController {
         if (getAirport1() == null || getAirport2() == null) {
             //empty
         } else if (!(getAirport1().equals("Select Airport") || getAirport2().equals("Select Airport"))) {
-            AirportPoint d1 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport1());
-            AirportPoint d2 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport2());
+            AirportPoint d1 = (AirportPoint) Filter.findAirportPointForDistance(getAirport1());
+            AirportPoint d2 = (AirportPoint) Filter.findAirportPointForDistance(getAirport2());
             ArrayList<Position> positions = new ArrayList<>();
 
             double d1Lat = d1.getLatitude();

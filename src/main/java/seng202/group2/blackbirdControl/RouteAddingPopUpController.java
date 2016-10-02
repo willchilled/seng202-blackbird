@@ -49,7 +49,7 @@ public class RouteAddingPopUpController {
         adderStage.initOwner(null);
 
         //populates the drop down boxes
-        ArrayList<String> airlineNames = FilterRefactor.filterDistinct("Name", "Airline");
+        ArrayList<String> airlineNames = Filter.filterDistinct("Name", "Airline");
         ObservableList<String> airlineMenu = FXCollections.observableArrayList(airlineNames);
         airlineMenu = HelperFunctions.addNullValue(airlineMenu);
         airlineSelection.setItems(airlineMenu);
@@ -57,7 +57,7 @@ public class RouteAddingPopUpController {
 //        airlineSelection.setEditable(true);
 //        TextFields.bindAutoCompletion(airlineSelection.getEditor(), airlineSelection.getItems());
 
-        ArrayList<String> sourceAirports = FilterRefactor.filterDistinct("Name", "Airport");
+        ArrayList<String> sourceAirports = Filter.filterDistinct("Name", "Airport");
 
 
 

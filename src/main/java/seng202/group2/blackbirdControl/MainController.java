@@ -1,38 +1,15 @@
 package seng202.group2.blackbirdControl;
 
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
-import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Filter;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -77,10 +54,10 @@ public class MainController implements Initializable {
 
         //check the existing database for persistent data
         DataBaseRefactor.createTables();    //comment this out for persistent data storage tests
-        int airlineSize = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
-        int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
-        int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
-        int flightSize = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
+        int airlineSize = Filter.getAllPoints(DataTypes.AIRLINEPOINT).size();
+        int airportSize = Filter.getAllPoints(DataTypes.AIRPORTPOINT).size();
+        int routeSize = Filter.getAllPoints(DataTypes.ROUTEPOINT).size();
+        int flightSize = Filter.getAllPoints(DataTypes.FLIGHT).size();
         if (airlineSize > 0 || airportSize > 0 || routeSize > 0 || flightSize > 0) {
             show();
             showTables();
@@ -201,13 +178,13 @@ public class MainController implements Initializable {
 
     public void updateRoutes() {
         //GET POINTS
-        ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> routePoints = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         routeTabController.updateRoutesTable(routePoints);
     }
 
     public void updateAirports() {
         //getpoints
-        ArrayList<DataPoint> airportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> airportPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         airportTabController.updateAirportsTable(airportPoints);
     }
 

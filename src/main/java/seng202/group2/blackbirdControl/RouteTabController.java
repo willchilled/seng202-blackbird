@@ -127,18 +127,18 @@ public class RouteTabController {
         ArrayList<DataPoint> routePoints;
 
         if(sourceSelection.equals("No values Loaded") && destSelection.equals("No values Loaded") && stopsSelection.equals("No values Loaded") && equipSelection.equals("No values Loaded")){
-            routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+            routePoints = Filter.getAllPoints(DataTypes.ROUTEPOINT);
             //updateRoutesTable(routePoints);
         } else {
             ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(sourceSelection, destSelection, stopsSelection, equipSelection));
-            routePoints = FilterRefactor.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
+            routePoints = Filter.filterSelections(menusPressed, searchQuery,DataTypes.ROUTEPOINT);
         }
         updateRoutesDropdowns();
         updateRoutesTable(routePoints);
     }
 
     public void routesSeeAllDataButtonPressed(ActionEvent actionEvent) {
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> allPoints = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         updateRoutesDropdowns();
         routesFilterBySourceMenu.setValue(routesFilterBySourceList.get(0));
         routesFilterbyDestMenu.setValue(routesFilterbyDestList.get(0));
@@ -162,7 +162,7 @@ public class RouteTabController {
         ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myRouteData, errorTab);
 
-        ArrayList<DataPoint> validRouteData = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> validRouteData = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points
         updateRoutesTable(validRouteData);
         updateRoutesDropdowns();
@@ -249,7 +249,7 @@ public class RouteTabController {
      * Populates route source dropdown
      */
     private void populateRoutesFilterBySourceList(){
-        ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Src", "ROUTE");
+        ArrayList<String> uniqueSources = Filter.filterDistinct("Src", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterBySourceList = uniqueObservableSources;
@@ -258,7 +258,7 @@ public class RouteTabController {
     }
 
     private void populateRoutesFilterbyDestList(){
-        ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Dst", "ROUTE");
+        ArrayList<String> uniqueSources = Filter.filterDistinct("Dst", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterbyDestList = uniqueObservableSources;
@@ -267,7 +267,7 @@ public class RouteTabController {
     }
 
     private void populateRoutesFilterByStopsList(){
-        ArrayList<String> uniqueSources = FilterRefactor.filterDistinct("Stops", "ROUTE");
+        ArrayList<String> uniqueSources = Filter.filterDistinct("Stops", "ROUTE");
         ObservableList<String> uniqueObservableSources = FXCollections.observableArrayList(uniqueSources);
         uniqueObservableSources = HelperFunctions.addNullValue(uniqueObservableSources);
         routesFilterByStopsList = uniqueObservableSources;
@@ -277,7 +277,7 @@ public class RouteTabController {
 
     private void populateRoutesFilterByEquipList(){
         ArrayList<String> uniqueEquip = new ArrayList<>();
-        ArrayList<DataPoint> myRoutes = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> myRoutes = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         for (DataPoint route : myRoutes) {
             RoutePoint myRoute = (RoutePoint) route;
             if (myRoute.getEquipment() == null) {

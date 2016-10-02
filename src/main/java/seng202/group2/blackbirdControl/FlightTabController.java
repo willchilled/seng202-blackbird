@@ -19,12 +19,10 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.logging.Filter;
 
 /**
  * Created by emr65 on 20/09/16.
@@ -114,7 +112,7 @@ public class FlightTabController {
             return;
         }
         DataBaseRefactor.insertDataPoints(myFlightData, errorTab);
-        ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+        ArrayList<DataPoint> myFlights = Filter.getAllPoints(DataTypes.FLIGHT);
 
         //TODO prevent a flight that doesn't begin/end in APT from being added to database, with error message
 
@@ -127,7 +125,7 @@ public class FlightTabController {
      * A method to display the flights
      */
     public void displayFlights(){
-        ArrayList<DataPoint> myFlights = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+        ArrayList<DataPoint> myFlights = Filter.getAllPoints(DataTypes.FLIGHT);
 
         updateFlightFields();
         updateFlightsTable(myFlights);
@@ -154,7 +152,7 @@ public class FlightTabController {
      * @return The list of current SrcICAOs in the database for flights
      */
     private ObservableList<String> populateFlightSrcList(){
-        ArrayList<String> srcICAOs = FilterRefactor.filterDistinct("SrcICAO", "FLIGHT");
+        ArrayList<String> srcICAOs = Filter.filterDistinct("SrcICAO", "FLIGHT");
         ObservableList<String> srcICAOList = FXCollections.observableArrayList(srcICAOs);
         srcICAOList = HelperFunctions.addNullValue(srcICAOList); //we need to add a null value
         return srcICAOList;
@@ -165,7 +163,7 @@ public class FlightTabController {
      * @return The list of current DstICAOs in the database for flights
      */
     private ObservableList<String> populateFlightDstList(){
-        ArrayList<String> dstICAOs = FilterRefactor.filterDistinct("DstICAO", "FLIGHT");
+        ArrayList<String> dstICAOs = Filter.filterDistinct("DstICAO", "FLIGHT");
         ObservableList<String> dstICAOList = FXCollections.observableArrayList(dstICAOs);
         dstICAOList = HelperFunctions.addNullValue(dstICAOList); //we need to add a null value
         return dstICAOList;
@@ -185,7 +183,7 @@ public class FlightTabController {
         ArrayList<DataPoint> allPoints;
 
         if(srcAirport.equals("No values loaded") && dstAirport.equals("No values loaded")){
-            allPoints = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+            allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
         }
         else {
             ArrayList<String> menusPressed = new ArrayList<>();
@@ -193,7 +191,7 @@ public class FlightTabController {
             menusPressed.add(dstAirport);
 
             //Returns selected Flights !NOT FLIGHT POINTS!//
-            allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
+            allPoints = Filter.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
         }
         updateFlightsTable(allPoints);
 
@@ -386,7 +384,7 @@ public class FlightTabController {
     public void flightseeAllButtonPressed(ActionEvent actionEvent) {
 
         ArrayList<DataPoint> allPoints;
-        allPoints = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+        allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
         updateFlightsTable(allPoints);
 
     }

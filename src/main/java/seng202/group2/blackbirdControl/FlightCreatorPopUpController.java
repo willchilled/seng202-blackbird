@@ -13,9 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by wmu16 on 24/09/16.
@@ -91,7 +89,7 @@ public class FlightCreatorPopUpController {
             flightAdderErrorText.setVisible(false);
             ArrayList<DataPoint> myFlightData = new ArrayList<>(flightAdderTable.getItems());
             DataBaseRefactor.insertDataPoints(myFlightData, null);
-            ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.FLIGHT);
+            ArrayList<DataPoint> allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
             flightTabController.updateFlightsTable(allPoints);
             creatorStage.close();
         } else {

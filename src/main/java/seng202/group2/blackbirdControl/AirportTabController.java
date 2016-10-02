@@ -92,7 +92,7 @@ public class AirportTabController {
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myAirportPoints, errorTab);
-        ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> validAirportPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
 
         updateAirportFields();
         airportFilterMenu.setValue(airportCountryList.get(0));
@@ -116,7 +116,7 @@ public class AirportTabController {
      * @return The observable list to populate the combobox
      */
     private ObservableList<String> populateAirportCountryList() {
-        ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
+        ArrayList<String> countries = Filter.filterDistinct("country", "Airport");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = HelperFunctions.addNullValue(countryList);
         return countryList;
@@ -193,9 +193,9 @@ public class AirportTabController {
 
         ArrayList<DataPoint> filteredPoints;
         if (countrySelection.equals("No values Loaded")) {
-            filteredPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+            filteredPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         } else {
-            filteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
+            filteredPoints = Filter.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
         }
         updateAirportFields();
         updateAirportsTable(filteredPoints);
@@ -205,7 +205,7 @@ public class AirportTabController {
      * Shows all the airport points currently stored within the database.
      */
     public void airportSeeAllButtonPressed() {
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> allPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         updateAirportsTable(allPoints);
         updateAirportFields();
         airportFilterMenu.setValue(airportCountryList.get(0));

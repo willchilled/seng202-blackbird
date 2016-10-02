@@ -53,13 +53,13 @@ class Analyser {
     static List<Map.Entry> rankAirportsByRoutes(String country) {
         ArrayList<DataPoint> myPoints;
         if (country.equals("All")) {
-            myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+            myPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         } else {
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(country));
-            myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
+            myPoints = Filter.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
 
-        ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airport");
+        ArrayList<String> allCountries = Filter.filterDistinct("country", "Airport");
         HashMap<String, Integer> airportsPerCountry = new HashMap<>();
 
         for (String currentCountry : allCountries) {
@@ -130,8 +130,8 @@ class Analyser {
      * @return a dict with number of country as key and number of airports in it as value
      */
     static List<Map.Entry> numAirportsPerCountry() {
-        ArrayList<DataPoint> allAirports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airport");
+        ArrayList<DataPoint> allAirports = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<String> allCountries = Filter.filterDistinct("country", "Airport");
         HashMap<String, Integer> airportsPerCountry = new HashMap<>();
 
         for (String country : allCountries) {
@@ -155,8 +155,8 @@ class Analyser {
      * @return a dict with countries as the key and number of airlines in that country as the value
      */
     public static List<Map.Entry> numAirlinesPerCountry() {
-        ArrayList<DataPoint> allAirports = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
-        ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airline");
+        ArrayList<DataPoint> allAirports = Filter.getAllPoints(DataTypes.AIRLINEPOINT);
+        ArrayList<String> allCountries = Filter.filterDistinct("country", "Airline");
         HashMap<String, Integer> airlinesPerCountry = new HashMap<>();
 
         for (String country : allCountries) {
@@ -184,7 +184,7 @@ class Analyser {
      * @return dictionary where the key is the equipment name and value is the number of route that use it
      */
     static List<Map.Entry> routesPerEquipment() {
-        ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
+        ArrayList<DataPoint> routePoints = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         ArrayList<String> uniqueEquip = new ArrayList<>();
         HashSet<String> equipSet = new HashSet<>();
 

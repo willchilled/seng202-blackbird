@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 
-<MenuBar xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.MenuBarController">
+<MenuBar xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.MenuBarController">
     <menus>
         <Menu mnemonicParsing="false" text="File">
             <items>
-                <Menu mnemonicParsing="false" text="Project">
-                    <items>
-                        <MenuItem fx:id="newProjMenu" mnemonicParsing="false" onAction="#show" text="New" />
-                        <MenuItem disable="false" mnemonicParsing="false" onAction="#loadDb" text="Load" />
-                        <MenuItem fx:id="exportDatabaseButton" disable="true" mnemonicParsing="false" onAction="#exportDatabase" text="Save" />
-                    </items>
-                </Menu>
-                <Menu fx:id="addDataMenuButton" disable="true" mnemonicParsing="false" text="Add Data">
+                  <MenuItem fx:id="newProjMenu" mnemonicParsing="false" onAction="#show" text="New Project" />
+                  <MenuItem disable="false" mnemonicParsing="false" onAction="#loadDb" text="Load Project" />
+                  <MenuItem fx:id="exportDatabaseButton" disable="true" mnemonicParsing="false" onAction="#exportDatabase" text="Save Project" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+                <Menu fx:id="addDataMenuButton" disable="true" mnemonicParsing="false" text="Add Data Set">
                     <items>
                         <MenuItem fx:id="flightMenuItem" mnemonicParsing="false" onAction="#addFlightData" text="Flight" />
                         <MenuItem fx:id="routeMenuItem" mnemonicParsing="false" onAction="#addRouteData" text="Route" />
@@ -23,7 +22,7 @@
                         <MenuItem fx:id="airlineMenuItem" mnemonicParsing="false" onAction="#addAirlineData" text="Airline" />
                     </items>
                 </Menu>
-                <Menu fx:id="exportDataMenuButton" disable="true" mnemonicParsing="false" text="Export Data">
+                <Menu fx:id="exportDataMenuButton" disable="true" mnemonicParsing="false" text="Export Data Set">
                     <items>
                         <MenuItem fx:id="exportFlightMenuButton" disable="true" mnemonicParsing="false" onAction="#exportFlightData" text="Flight" visible="true" />
                         <MenuItem fx:id="exportRouteMenuButton" disable="true" mnemonicParsing="false" onAction="#exportRouteData" text="Route" visible="true" />
@@ -31,11 +30,12 @@
                         <MenuItem fx:id="exportAirlineMenuButton" disable="true" mnemonicParsing="false" onAction="#exportAirlineData" text="Airline" />
                     </items>
                 </Menu>
-                <Menu fx:id="deleteDataMenuButton" mnemonicParsing="false" text="Delete Data">
+                <Menu fx:id="deleteDataMenuButton" disable="true" mnemonicParsing="false" text="Delete Data Set">
                     <items>
-                        <MenuItem fx:id="deleteAirlineMenuButton" mnemonicParsing="false" onAction="#deleteAirlineData" text="Airline" />
-                        <MenuItem fx:id="deleteRouteMenuButton"  mnemonicParsing="false" onAction="#deleteRouteData" text="Route" visible="true" />
-                        <MenuItem fx:id="deleteAirportMenuButton" mnemonicParsing="false" onAction="#deleteAirportData" text="Airport" />
+                  <MenuItem fx:id="deleteFlightMenuButton" disable="true" mnemonicParsing="false" onAction="#deleteFlightData" text="Flight" />
+                        <MenuItem fx:id="deleteRouteMenuButton" disable="true" mnemonicParsing="false" onAction="#deleteRouteData" text="Route" visible="true" />
+                        <MenuItem fx:id="deleteAirportMenuButton" disable="true" mnemonicParsing="false" onAction="#deleteAirportData" text="Airport" />
+                        <MenuItem fx:id="deleteAirlineMenuButton" disable="true" mnemonicParsing="false" onAction="#deleteAirlineData" text="Airline" />
                     </items>
                 </Menu>
             </items>

@@ -56,8 +56,6 @@ public class MainController implements Initializable {
     @FXML private TabPane mainTabPane;
     @FXML private GridPane openPane;
 
-
-
     /**
      * Sets up connection between the controllers
      * Calls methods to set the main controller of other controllers to this instance.
@@ -83,39 +81,28 @@ public class MainController implements Initializable {
         int airportSize = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
         int routeSize = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
         int flightSize = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
-        System.out.println(airlineSize);
-        System.out.println(airportSize);
-        System.out.println(routeSize);
-        System.out.println(flightSize);
         if (airlineSize > 0 || airportSize > 0 || routeSize > 0 || flightSize > 0) {
             show();
             showTables();
             menuBarController.setOpened(true);
             menuBarController.showMenus();
-
-            boolean flightsPresent=false;
-            boolean airlinesPresent=false;
-            boolean airportsPresent=false;
-            boolean routesPresent=false;
-
-            if (routeSize > 0) {
-                routesPresent = true;
+            menuBarController.showMenuHelper();
+            if (routeSize > 0) {    //switch to a populated tab
                 updateTab(DataTypes.ROUTEPOINT);
             }
             if (airportSize > 0) {
-                airportsPresent = true;
                 updateTab(DataTypes.AIRPORTPOINT);
             }
             if (airlineSize > 0) {
-                airlinesPresent = true;
                 updateTab(DataTypes.AIRLINEPOINT);
             }
             if (flightSize > 0) {
-                flightsPresent = true;
                 updateTab(DataTypes.FLIGHT);
             }
-            menuBarController.exportMenusHelper(airportsPresent, airlinesPresent, routesPresent, flightsPresent);
         }
+
+
+
        /* mainTabPane.getSelectionModel().selectedItemProperty()
                 .addListener((obs, oldTab, newTab) -> {
                     if (newTab == analysisTab) {
@@ -265,14 +252,15 @@ public class MainController implements Initializable {
         errorTabController.clearEntries(errorType);
     }
 
-    public void singleExportHelper(DataTypes pointType) {
-        switch (pointType) {
-            case AIRLINEPOINT: menuBarController.exportMenusHelper(false, true, false, false); break;
-            case AIRPORTPOINT: menuBarController.exportMenusHelper(true, false, false, false); break;
-            case ROUTEPOINT: menuBarController.exportMenusHelper(false, false, true, false); break;
-            case FLIGHT: menuBarController.exportMenusHelper(false, false, false, true); break;
-            default: return;
-        }
+    public void mainMenuHelper() {
+//        switch (pointType) {
+//            case AIRLINEPOINT: menuBarController.exportMenusHelper(false, true, false, false); break;
+//            case AIRPORTPOINT: menuBarController.exportMenusHelper(true, false, false, false); break;
+//            case ROUTEPOINT: menuBarController.exportMenusHelper(false, false, true, false); break;
+//            case FLIGHT: menuBarController.exportMenusHelper(false, false, false, true); break;
+//            default: return;
+//        }
+        menuBarController.showMenuHelper();
     }
 }
 

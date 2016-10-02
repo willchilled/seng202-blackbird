@@ -196,7 +196,7 @@ public class FlightTabController {
             allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
         }
         updateFlightsTable(allPoints);
-        flightPointTable.getItems().setAll();
+
 
     }
 
@@ -219,7 +219,7 @@ public class FlightTabController {
             popUpController.setCreatorStage(creatorStage);
             popUpController.setRoot(root);
             popUpController.control();
-            mainController.singleExportHelper(DataTypes.FLIGHT);
+            mainController.mainMenuHelper();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -241,6 +241,7 @@ public class FlightTabController {
      */
     public void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
 
+        flightPointTable.getItems().setAll();
         flightTable.getItems().setAll(filteredFlights);
         flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
         flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
@@ -261,7 +262,11 @@ public class FlightTabController {
                     //exportFlightMenuButton.setDisable(false);
 
                     Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
-                    flight = pressedFlight;
+                    if (!(pressedFlight == null)) {
+                        flight = pressedFlight;
+                    } else {
+                        return;
+                    }
                     Route myRoute = new Route(Route.makeRoutePoints(flight));
                     displayRoute(myRoute);
 
@@ -284,7 +289,11 @@ public class FlightTabController {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 1) {
 
                     FlightPoint pressedPoint = (FlightPoint) flightPointTable.getSelectionModel().getSelectedItem();
-                    flightPoint = pressedPoint;
+                    if (!(pressedPoint == null)) {
+                        flightPoint = pressedPoint;
+                    } else {
+                        return;
+                    }
                     double lat = flightPoint.getLatitude();
                     double lng = flightPoint.getLongitude();
                     ArrayList<Position> myWayPoint = new ArrayList<>();

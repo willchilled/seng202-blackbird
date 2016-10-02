@@ -85,7 +85,7 @@ public class AnalysisTabController {
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
-        else if (getCountry().equals("All")){
+        else if (getCountry().equals("All") || getCountry().equals("Select Country")){
             myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         }
         else{
@@ -269,6 +269,7 @@ public class AnalysisTabController {
         ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList.add(0,"All");
+        countryList.add(0, "Select Country");
 
         return countryList;
     }

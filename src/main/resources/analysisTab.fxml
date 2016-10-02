@@ -1,57 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<!--<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1024.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <tabs>-->
 <?import javafx.scene.web.WebView?>
-<Tab text="Analysis" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.AnalysisTabController">
+
+<!--<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1024.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">-->
+  <!--<tabs>-->
+
+
+<Tab text="Analysis" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.AnalysisTabController"> <!--fx:controller="seng202.group2.blackbirdControl.AnalysisTabController"-->
    <content>
       <Accordion>
          <panes>
-            <TitledPane animated="false" onMouseClicked="#prepareRouteChart" text="Number of Routes per Airport">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-                           <children>
-                              <ComboBox fx:id="airportCountryFilterMenu" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                              <StackedBarChart fx:id="routeChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Airports by Most Incoming and Outgoing Routes" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <xAxis>
-                                    <CategoryAxis label="Airport" side="BOTTOM" fx:id="xAxisRoute" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <NumberAxis fx:id="yAxisRotue" label="Number of Routes" side="LEFT" />
-                                 </yAxis>
-                              </StackedBarChart>
-                           </children>
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="324.0" minWidth="0.0" prefWidth="0.0" />
-                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="927.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="0.0" prefWidth="0.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="229.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="608.0" minHeight="10.0" prefHeight="608.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="126.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                        </GridPane>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
             <TitledPane animated="false" onMouseClicked="#populateAirlinesPerCountryGraph" text="Number of Airlines Per Country">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                            <children>
-                              <BarChart fx:id="airlineChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airlines" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <BarChart fx:id="airlineChart" animated="false" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airlines" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <xAxis>
                                     <NumberAxis label="Number of Airlines" fx:id="xAxisAirline" />
                                  </xAxis>
@@ -74,13 +46,84 @@
                      </children></AnchorPane>
                </content>
             </TitledPane>
+            <TitledPane animated="false" onMouseClicked="#prepareRouteChart" text="Number of Routes per Airport">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                                    <GridPane GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                    <ComboBox fx:id="airportCountryFilterMenu" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                             <GridPane.margin>
+                                                <Insets top="15.0" />
+                                             </GridPane.margin>
+                                          </ComboBox>
+                                          <GridPane>
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.0" minWidth="10.0" prefWidth="281.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.0000076293945" minWidth="10.0" prefWidth="124.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.0" minWidth="0.0" prefWidth="52.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="406.0" minWidth="5.000030517578125" prefWidth="35.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="544.9999694824219" minWidth="10.0" prefWidth="133.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="544.9999694824219" minWidth="10.0" prefWidth="35.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="544.9999694824219" minWidth="10.0" prefWidth="278.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Pane prefHeight="29.0" prefWidth="51.0" style="-fx-background-color: #F0602C;" GridPane.columnIndex="5" />
+                                                <Pane prefHeight="29.0" prefWidth="28.0" style="-fx-background-color: Orange;" GridPane.columnIndex="2" />
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Outgoing Routes" GridPane.columnIndex="4">
+                                                   <GridPane.margin>
+                                                      <Insets left="5.0" />
+                                                   </GridPane.margin>
+                                                </Text>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incoming Routes" GridPane.columnIndex="1" />
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </GridPane>
+                              <StackedBarChart fx:id="routeChart" animated="false" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Airports by Most Incoming and Outgoing Routes" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <xAxis>
+                                    <CategoryAxis label="Airport" side="BOTTOM" fx:id="xAxisRoute" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis fx:id="yAxisRotue" label="Number of Routes" side="LEFT" />
+                                 </yAxis>
+                              </StackedBarChart>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="324.0" minWidth="0.0" prefWidth="0.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="927.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="0.0" prefWidth="0.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="229.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="608.0" minHeight="10.0" prefHeight="548.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="126.0" minHeight="0.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
             <TitledPane animated="false" layoutX="10.0" layoutY="35.0" onMouseClicked="#populateEquipmentChartData" text="Number of Routes for Each Plane Type">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                            <children>
-                              <BarChart fx:id="equipmentChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Number of Routes for Common Plane Types" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <BarChart fx:id="equipmentChart" animated="false" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Number of Routes for Common Plane Types" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <xAxis>
                                     <CategoryAxis label="Type of Plane" side="BOTTOM" fx:id="xAxisEquipment" />
                                  </xAxis>
@@ -110,7 +153,7 @@
                      <children>
                         <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                            <children>
-                              <BarChart fx:id="airportChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airports" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <BarChart fx:id="airportChart" animated="false" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airports" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <xAxis>
                                     <NumberAxis label="Number of Airports" fx:id="xAxisAirport" />
                                  </xAxis>
@@ -218,6 +261,6 @@
       </Accordion>
    </content>
 </Tab>
- <!--     </tabs>
-    </TabPane>
--->
+
+  <!--</tabs>-->
+<!--</TabPane>-->

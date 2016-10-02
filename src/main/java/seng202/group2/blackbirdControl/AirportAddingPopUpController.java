@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -73,7 +75,8 @@ public class AirportAddingPopUpController {
     public void createButtonPressed(){
 
         String[] airportPoint = getValues();
-        if(Validator.checkAirport(airportPoint)) {
+        String[] checkData = Validator.checkAirport(airportPoint);
+        if(HelperFunctions.allValid(checkData)) {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT, 0, null);
             myAirportData.add(myAirportPoint);
@@ -83,6 +86,7 @@ public class AirportAddingPopUpController {
             added = true;
             adderStage.close();
         } else {
+            Validator.displayAirportError(checkData);
             addAirportInvalidText.setVisible(true);
         }
     }
@@ -173,4 +177,6 @@ public class AirportAddingPopUpController {
     public boolean isAdded() {
         return added;
     }
+
+
 }

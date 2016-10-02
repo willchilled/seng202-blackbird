@@ -150,8 +150,9 @@ public class AirportPopUpController {
         String tz = airportTZTextEdit.getText();
 
         String[] attributes = new String[] {airportIdText.getText(), name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
+        String[] checkData = Validator.checkAirport(attributes);
 
-        if(Validator.checkAirport(attributes)) {
+        if(HelperFunctions.allValid(checkData)) {
 
             airportNameText.setVisible(true);
             airportNameTextEdit.setVisible(false);
@@ -194,6 +195,7 @@ public class AirportPopUpController {
             airportDeleteButton.setVisible(true);
 
         }else{
+            Validator.displayAirportError(checkData);
             airportInvalidDataText.setVisible(true);
         }
     }

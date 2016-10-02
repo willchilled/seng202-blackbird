@@ -112,4 +112,16 @@ public class HelperFunctions {
         //DO THE QUERY
     }
 
+    public static boolean allValid(String[] checkData){
+        boolean allValid = true;
+        for(String data : checkData){
+            if(data != null){
+                allValid = false;
+            }
+        }
+
+        return allValid;
+
+    }
+
 }

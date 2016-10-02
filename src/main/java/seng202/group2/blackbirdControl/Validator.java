@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdControl;
 
+import javafx.scene.control.Alert;
 import org.apache.commons.lang3.StringUtils;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
 
@@ -27,7 +28,7 @@ public class Validator {
     //ID IS A KEY ATTRIBUTE OF AIRLINE SO IS THE ONLY ATTRIBUTE THAT DOES NOT ALLOW CHECKING FOR EMPTY STRING!!!!
 
     private static boolean isValidName(String name){
-         return (!name.equals("") && name.length() <= 40 || name.equals(""));
+         return (!name.equals("") && name.length() <= 40);
     }
 
     private static boolean isValidAlias(String alias){
@@ -47,11 +48,11 @@ public class Validator {
     }
 
     private static boolean isValidCountry(String country){
-        return (!country.equals("") && country.length() <= 40 || country.equals(""));
+        return (!country.equals("") && country.length() <= 40);
     }
 
     private static boolean isValidAirlineCountry(String country){
-        return (country.length() <= 40 && StringUtils.isAlphaSpace(country));
+        return (country.length() <= 40 && StringUtils.isAlphaSpace(country) || country.equals(""));
     }
 
     private static boolean isValidActive(String active){
@@ -232,8 +233,9 @@ public class Validator {
      *                   tz
      * @return A boolean indicating whether the data is valid or not
      */
-    public static boolean checkAirport(String[] attributes){
+    public static String[] checkAirport(String[] attributes){
 
+        String[] badData = new String[11];
         String id = attributes[0];
         String name = attributes[1];
         String city = attributes[2];
@@ -247,56 +249,58 @@ public class Validator {
         String dst = attributes[10];
         String tz = attributes[11];
 
-//        System.out.println("----VALIDATING AIRPORT----");
-//        if(!isValidID(id)){
-//            System.out.println("BAD ID");
-//        }
-//        if(!isValidName(name)){
-//            System.out.println("BAD name");
-//        }
-//        if(!isValidCity(city)){
-//            System.out.println("BAD city");
-//        }
-//        if(!isValidCountry(country)){
-//            System.out.println("BAD country");
-//        }
-//        if(!isValidIATA(iata)){
-//            System.out.println("BAD iata");
-//        }
-//        if(!isValidICAO(icao)){
-//            System.out.println("BAD icao");
-//        }
-//        if(!isValidLat(lat)){
-//            System.out.println("BAD lat");
-//        }
-//        if(!isValidLong(lon)){
-//            System.out.println("BAD lon");
-//        }
-//        if(!isValidAlt(alt)){
-//            System.out.println("BAD alt");
-//        }
-//        if(!isValidTimeZone(timeZone)){
-//            System.out.println("BAD timeZone");
-//        }
-//        if(!isValidDST(dst)){
-//            System.out.println("BAD dst");
-//        }
-//        if(!isValidTZ(tz)){
-//            System.out.println("BAD tz");
-//        }
-//        System.out.println("------------------");
+        //System.out.println("----VALIDATING AIRPORT----");
+        if(!isValidID(id)){
+            badData[0] = "ID";
+            //System.out.println("BAD ID");
+        }
+        if(!isValidName(name)){
+            badData[1] = "name";
+            //System.out.println("BAD name");
+        }
+        if(!isValidCity(city)){
+            badData[2] = "city";
+            //System.out.println("BAD city");
+        }
+        if(!isValidCountry(country)){
+            badData[3] = "country";
+            //System.out.println("BAD country");
+        }
+        if(!isValidIATA(iata)){
+            badData[4] = "iata";
+            //System.out.println("BAD iata");
+        }
+        if(!isValidICAO(icao)){
+            badData[5] = "icao";
+            //System.out.println("BAD icao");
+        }
+        if(!isValidLat(lat)){
+            badData[6] = "lat";
+            //System.out.println("BAD lat");
+        }
+        if(!isValidLong(lon)){
+            badData[7] = "lon";
+            //System.out.println("BAD lon");
+        }
+        if(!isValidAlt(alt)){
+            badData[8] = "alt";
+            //System.out.println("BAD alt");
+        }
+        if(!isValidTimeZone(timeZone)){
+            badData[9] = "timeZone";
+            //System.out.println("BAD timeZone");
+        }
+        if(!isValidDST(dst)){
+            badData[10] = "dst";
+            //System.out.println("BAD dst");
+        }
+        if(!isValidTZ(tz)){
+            badData[11] = "tz";
+            //System.out.println("BAD tz");
+        }
+        //System.out.println("------------------");
 
-        return (isValidID(id) &&
-                isValidName(name) &&
-                isValidCity(city) &&
-                isValidCountry(country) &&
-                (isValidIATA(iata) || isValidICAO(icao)) &&
-                isValidLat(lat) &&
-                isValidLong(lon) &&
-                isValidAlt(alt) &&
-                isValidTimeZone(timeZone) &&
-                isValidDST(dst) &&
-                isValidTZ(tz));
+        return badData;
 
     }
 
@@ -362,6 +366,32 @@ public class Validator {
             }
         }
         return correct;
+    }
+
+    public static void displayAirportError(String[] checkData) {
+        String errorMessage = "Errors with: ";
+        for (String error : checkData) {
+            if (error != null) {
+                errorMessage += (error + ", ");
+            }
+        }
+        errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("IVALID DATA");
+        alert.setHeaderText(errorMessage);
+        alert.setContentText("Constraints:\n\n" +
+                "*REQUIRED*:\tName, Country\n\n" +
+                "Name:\t\tAny word\n" +
+                "City:\t\t\tAny word\n" +
+                "Country:\t\tAny word\n" +
+                "IATA:\t\t3 Letters, UpperCase\n" +
+                "ICAO:\t\t3 Letters, UpperCase\n" +
+                "Latitude:\t\t-90.0 < Decimal < +90.0\n" +
+                "Longitude:\t-180.0 < Decimal < +180.0\n" +
+                "Altitude:\t\tDecimal > 0\n" +
+                "Time Zone:\tAny word");
+
+        alert.showAndWait();
     }
 
 }

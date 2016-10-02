@@ -47,11 +47,13 @@ public class ValidatorTest extends TestCase {
 
 
         String[] attributes = new String[] {id, name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
-        assertTrue(Validator.checkAirport(attributes));
+        String[] checkData = Validator.checkAirport(attributes);
+        assertTrue(HelperFunctions.allValid(checkData));
 
         lat = "9999999";
         attributes = new String[] {id, name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
-        assertFalse(Validator.checkAirport(attributes));
+        checkData = Validator.checkAirport(attributes);
+        assertFalse(HelperFunctions.allValid(checkData));
 
 
     }

@@ -104,9 +104,10 @@ public class AirportTabController {
     /**
      * Updates the filtering dropdown menus
      */
-    private void updateAirportFields() {
+    public void updateAirportFields() {
         airportCountryList = populateAirportCountryList();
         airportFilterMenu.setItems(airportCountryList);
+
     }
 
     /**
@@ -178,14 +179,20 @@ public class AirportTabController {
     }
 
     /**
-     * Helps to filter airports, obtaining the values from the filter dropdowns
+     * Helps to filter airports, obtaining the values from the filter dropdownsx
      */
     public void airportFilterButtonPressed() {
-        String countrySelection = airportFilterMenu.getValue().toString();
+        String countrySelection;
+        try {
+            countrySelection = airportFilterMenu.getValue().toString();
+        } catch (java.lang.NullPointerException e) {
+                countrySelection = "No values Loaded";
+        }
         String searchQuery = airportSearchQuery.getText();
         ArrayList<String> menusPressed = new ArrayList<>(Collections.singletonList(countrySelection));
 
         ArrayList<DataPoint> filteredPoints;
+        System.out.println("countrySelection: " + countrySelection);
         if (countrySelection.equals("No values Loaded")) {
             filteredPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         } else {

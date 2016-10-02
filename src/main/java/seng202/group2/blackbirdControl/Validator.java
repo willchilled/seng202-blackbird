@@ -386,8 +386,8 @@ public class Validator {
                 "Country:\t\tAny word\n" +
                 "IATA:\t\t3 Letters, UpperCase\n" +
                 "ICAO:\t\t3 Letters, UpperCase\n" +
-                "Latitude:\t\t-90.0 < Decimal < +90.0\n" +
-                "Longitude:\t-180.0 < Decimal < +180.0\n" +
+                "Latitude:\t\t-90.0 < Latitude < +90.0\n" +
+                "Longitude:\t-180.0 < Longitude < +180.0\n" +
                 "Altitude:\t\tDecimal > 0\n" +
                 "Time Zone:\tAny word");
 

@@ -320,6 +320,17 @@ public class FlightTabController {
 
     public void deleteSingleFlight(){
         //TODO delete single flight isn't working, I think the id is always 0 <- delete seems to work now, but needs to clear waypoints also
+        Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
+        if (!(pressedFlight == null)) {
+            flight = pressedFlight;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No flight selected to delete");
+            alert.setContentText("Please select a flight first");
+            alert.showAndWait();
+            return;
+        }
         String flightSql = "";
         String flightPointSql = "";
         int id = flight.getFlightID();
@@ -336,6 +347,7 @@ public class FlightTabController {
             DataBaseRefactor.editDataEntry(flightSql);
             DataBaseRefactor.editDataEntry(flightPointSql);
             flightFilterButtonPressed();
+            mainController.mainMenuHelper();
         }
     }
 

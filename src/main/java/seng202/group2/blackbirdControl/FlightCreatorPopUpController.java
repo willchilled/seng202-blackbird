@@ -144,6 +144,7 @@ public class FlightCreatorPopUpController {
 
     /**
      * Helper function to obtain the waypoint values entered
+     *
      * @return A string array containing the values obtained from input fields
      */
     private String[] getWayPointValues() {
@@ -162,6 +163,7 @@ public class FlightCreatorPopUpController {
 
     /**
      * Updates the waypoint table to display entered waypoints
+     *
      * @param point The current waypoints
      */
     private void updateWayPointTable(ArrayList<DataPoint> point) {
@@ -181,6 +183,7 @@ public class FlightCreatorPopUpController {
 
     /**
      * Initializes the map using the class WebView to render HTML content
+     *
      * @see WebView
      */
     private void initMap() {

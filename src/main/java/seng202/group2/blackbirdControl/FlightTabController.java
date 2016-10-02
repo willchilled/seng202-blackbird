@@ -23,6 +23,10 @@ import java.util.Optional;
 
 /**
  * Controller for the flight tab. Handles displaying of data, and acts as a controller for adding and deleting data.
+ *
+ * @author Team2
+ * @version 1.0
+ * @since 22/9/2016
  */
 public class FlightTabController {
 
@@ -81,7 +85,6 @@ public class FlightTabController {
     }
 
     /**
-     *
      * @param controller
      */
     void setMainController(MainController controller) {
@@ -310,6 +313,7 @@ public class FlightTabController {
 
     /**
      * Initializes the map using the class WebView to render HTML content
+     *
      * @see WebView
      */
     private void initMap() {
@@ -335,6 +339,7 @@ public class FlightTabController {
 
     /**
      * Displays a particular waypoint
+     *
      * @param newWayPoint The waypoint to display
      */
     private void displayWayPoint(Route newWayPoint) {

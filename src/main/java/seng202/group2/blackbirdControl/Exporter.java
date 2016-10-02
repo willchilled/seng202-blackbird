@@ -47,7 +47,7 @@ class Exporter {
      * A method to save the current project, saving as a database file.
      */
     static void exportDataBase() {
-        File theirDB = HelperFunctions.makeFile("Save Project");
+        File theirDB = HelperFunctions.getFile("Save Project", true);
         if (theirDB == null) {  //user cancelled
             return;
         }

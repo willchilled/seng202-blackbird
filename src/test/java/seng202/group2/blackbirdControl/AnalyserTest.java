@@ -78,7 +78,7 @@ public class AnalyserTest extends TestCase {
         //Cool because it doesnt actually depend on data you put, just checks the relative results
 
         ArrayList<DataPoint> airports =  FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        airports  = Analyser.rankAirportsByRoutes(airports, true);
+        airports  = Analyser.rankAirportsByRoutes(airports);
 
         int max_size = airports.size();
         int current = 0;
@@ -91,19 +91,6 @@ public class AnalyserTest extends TestCase {
             assertTrue(curIncAndOutRoutes>= nextIncAndOutRoutes);
             current++;
         }
-
-        airports  = Analyser.rankAirportsByRoutes(airports, false);
-        max_size = airports.size();
-        current = 0;
-        while (current < max_size-1){
-            AirportPoint currentPoint = (AirportPoint) airports.get(current);
-            AirportPoint nextPoint = (AirportPoint) airports.get(current+1);
-            int curIncAndOutRoutes = currentPoint.getIncomingRoutes() + currentPoint.getOutgoingRoutes();
-            int nextIncAndOutRoutes =  nextPoint.getIncomingRoutes() + nextPoint.getOutgoingRoutes();
-            assertTrue(curIncAndOutRoutes<= nextIncAndOutRoutes);
-            current++;
-        }
-
     }
 
 

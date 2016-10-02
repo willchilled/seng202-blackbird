@@ -8,12 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 import seng202.group2.blackbirdModel.AirportPoint;
 import seng202.group2.blackbirdModel.DataPoint;
@@ -22,15 +19,29 @@ import seng202.group2.blackbirdModel.DataTypes;
 import java.util.*;
 
 /**
- * Created by emr65 on 26/09/16.
+ * Controller for the analyser tab. Handles generation of graphs
+ *
+ * @author Team2
+ * @version 1.0
+ * @since 19/9/2016
  */
 public class AnalysisTabController {
+
+    private WebEngine webEngine;
+    private String country;
+    private String airport1;
+    private String airport2;
+    private MainController mainController;
+
+    private boolean routeChartOpen = false;
+    private boolean airportChartOpen = false;
+    private boolean airlineChartOpen = false;
+    private boolean equipmentChartOpen = false;
 
     @FXML StackedBarChart<String, Integer> routeChart;
     @FXML BarChart<String, Integer> airportChart;
     @FXML BarChart<String, Integer> airlineChart;
     @FXML BarChart<String, Integer> equipmentChart;
-
     @FXML CategoryAxis xAxisRoute;
     @FXML NumberAxis yAxisRotue;
     @FXML CategoryAxis yAxisAirport;
@@ -43,33 +54,17 @@ public class AnalysisTabController {
     @FXML ComboBox airportCountryFilterMenu;
     @FXML ComboBox airportDistanceCB1;
     @FXML ComboBox airportDistanceCB2;
-
     @FXML Label calculatedDistance;
     @FXML Label distanceHeader;
     @FXML WebView webView;
     @FXML Text analysisTabMapErrorText;
 
-    private WebEngine webEngine;
-
-    ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airportDistanceList = FXCollections.observableArrayList("No values Loaded");
-
-    private String country;
-    private String airport1;
-    private String airport2;
-    private MainController mainController;
-
-    private boolean routeChartOpen = false;
-    private boolean airportChartOpen = false;
-    private boolean airlineChartOpen = false;
-    private boolean equipmentChartOpen = false;
-
-
-    //TODO can this go, and move airline xaxis thing into airline method?
+    /**
+     * Initializes the analysis tab
+     */
     @FXML
     private void initialize() {
         initMap();
-       // xAxisAirline.setTickLabelRotation(90);
     }
 
     /**
@@ -79,45 +74,40 @@ public class AnalysisTabController {
     private void populateRouteGraph() {
         routeChart.getData().clear();
         ObservableList<String> airportNames = FXCollections.observableArrayList();
-        ArrayList<DataPoint>  myPoints;
+        ArrayList<DataPoint> myPoints;
 
-        if(getCountry() == null){
+        if (getCountry() == null) {
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
-        }
-        else if (getCountry().equals("All") || getCountry().equals("Select Country")){
+        } else if (getCountry().equals("All") || getCountry().equals("Select Country")) {
             myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        }
-        else{
+        } else {
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(getCountry()));
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
 
-        myPoints  = Analyser.rankAirportsByRoutes(myPoints, true);
+        myPoints = Analyser.rankAirportsByRoutes(myPoints);
         ArrayList<AirportPoint> myAirportPoints = new ArrayList<>();
-
-        for(DataPoint currentPoint: myPoints){
+        for (DataPoint currentPoint : myPoints) {
             AirportPoint cp2 = (AirportPoint) currentPoint;
             myAirportPoints.add(cp2);
         }
 
-        if (myPoints.size() > 1){
+        if (myPoints.size() > 1) {
             xAxisRoute.setCategories(airportNames);
             xAxisRoute.setTickLabelRotation(270);
             XYChart.Series<String, Integer> series = new XYChart.Series<>();
             XYChart.Series<String, Integer> series2 = new XYChart.Series<>();
             int maxAirports = 20;
-
-            if (myAirportPoints.size() < 20){
+            if (myAirportPoints.size() < 20) {
                 maxAirports = myAirportPoints.size();
             }
 
-            for (int i = 0; i <maxAirports ; i++) {
+            for (int i = 0; i < maxAirports; i++) {
                 String name = myAirportPoints.get(i).getAirportName();
-                if (!airportNames.contains(name)){
+                if (!airportNames.contains(name)) {
                     airportNames.add(name);
-                }
-                else{
+                } else {
                     airportNames.add(name + i);
                 }
             }
@@ -134,23 +124,20 @@ public class AnalysisTabController {
     /**
      * Method that populates the graph with the 20 countries with the most airports
      * as attained from the numAirportsPerCountry in the Analyser class.
+     *
      * @see Analyser
      */
     @FXML
     private void populateAirportsByCountryGraph() {
-        if(!airportChartOpen) {
-            System.out.println("opening");
+        if (!airportChartOpen) {
             airportChart.getData().clear();
             ObservableList<String> countryNames = FXCollections.observableArrayList();
             yAxisAirport.setCategories(countryNames);
-
             List<Map.Entry> airportsPerCountry = Analyser.numAirportsPerCountry();
             xAxisAirport.setTickLabelRotation(270);
-
             XYChart.Series series = new XYChart.Series();
 
             int maxAirports = 20;
-
             if (airportsPerCountry.size() < 20) {
                 maxAirports = airportsPerCountry.size();
             }
@@ -163,14 +150,12 @@ public class AnalysisTabController {
                     countryNames.add(name + i);
                 }
             }
-
             for (int i = 0; i < maxAirports; i++) {
-                series.getData().add(new XYChart.Data((Integer) airportsPerCountry.get(i).getValue(), countryNames.get(i)));
+                series.getData().add(new XYChart.Data(airportsPerCountry.get(i).getValue(), countryNames.get(i)));
             }
             airportChart.getData().addAll(series);
             airportChartOpen = true;
-        }
-        else{
+        } else {
             airportChartOpen = false;
         }
     }
@@ -178,11 +163,12 @@ public class AnalysisTabController {
     /**
      * Method that populates the graph with the 20 countries with the most airlines
      * as attained from the numAirlinesPerCountry in the Analyser class.
+     *
      * @see Analyser
      */
     @FXML
     private void populateAirlinesPerCountryGraph() {
-        if(!airlineChartOpen) {
+        if (!airlineChartOpen) {
             airlineChart.getData().clear();
             ObservableList<String> countryNames = FXCollections.observableArrayList();
             yAxisAirline.setCategories(countryNames);
@@ -202,12 +188,11 @@ public class AnalysisTabController {
                 }
             }
             for (int i = 0; i < maxAirlines; i++) {
-                series.getData().add(new XYChart.Data((Integer) airlinesPerCountry.get(i).getValue(), countryNames.get(i)));
+                series.getData().add(new XYChart.Data(airlinesPerCountry.get(i).getValue(), countryNames.get(i)));
             }
             airlineChart.getData().addAll(series);
             airlineChartOpen = true;
-        }
-        else {
+        } else {
             airlineChartOpen = false;
         }
     }
@@ -215,21 +200,20 @@ public class AnalysisTabController {
     /**
      * Method that populates the graph with the 20 plane types (equipment) with the most routes
      * using these planes as attained from the routesPerEquipment in the Analyser class.
+     *
      * @see Analyser
      */
     @FXML
     private void populateEquipmentChartData() {
-        if(!equipmentChartOpen) {
+        if (!equipmentChartOpen) {
             equipmentChart.getData().clear();
             ObservableList<String> equipmentNames = FXCollections.observableArrayList();
             xAxisEquipment.setCategories(equipmentNames);
             xAxisEquipment.setTickLabelRotation(270);
-
             List<Map.Entry> rotuesPerEquip = Analyser.routesPerEquipment();
             XYChart.Series series = new XYChart.Series();
 
             int maxEquip = 20;
-
             if (rotuesPerEquip.size() < 20) {
                 maxEquip = rotuesPerEquip.size();
             }
@@ -242,50 +226,51 @@ public class AnalysisTabController {
                 }
             }
             for (int i = 0; i < maxEquip; i++) {
-                series.getData().add(new XYChart.Data(equipmentNames.get(i), (Integer) rotuesPerEquip.get(i).getValue()));
+                series.getData().add(new XYChart.Data(equipmentNames.get(i), rotuesPerEquip.get(i).getValue()));
             }
             equipmentChart.getData().addAll(series);
             equipmentChartOpen = true;
-        }
-        else{
+        } else {
             equipmentChartOpen = false;
         }
     }
 
     /**
      * Creates link between the AnalysisTab and the MainController
-     * @param mainController
+     *
+     * @param mainController The controller for this tab window
      */
-    public void setMainController(MainController mainController) {
+    void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
     /**
      * Method to create the list of countries that will populate the ComboBox used
      * to control the data shown by the RouteChart
-     * @return  Observable list of the country names of the airports loaded
+     *
+     * @return Observable list of the country names of the airports loaded
      */
-    private ObservableList<String> populateAirportCountryList(){
+    private ObservableList<String> populateAirportCountryList() {
         ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
-        countryList.add(0,"All");
+        countryList.add(0, "All");
         countryList.add(0, "Select Country");
-
         return countryList;
     }
 
     /**
      * Method to create a list of airports as strings. This list is later used to populate the
      * calculating distance comoboxes.
-     * @return  Observable list of airport name and ICAO pairs
+     *
+     * @return Observable list of airport name and ICAO pairs
      */
-    private ObservableList<String> populateAirportDistanceList(){
+    private ObservableList<String> populateAirportDistanceList() {
         //Populates the dropdown of airline countries
         ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        ArrayList<String> nameIcaoAirport = new ArrayList<String>();
-        for(DataPoint curAirport: airports){
+        ArrayList<String> nameIcaoAirport = new ArrayList<>();
+        for (DataPoint curAirport : airports) {
             AirportPoint castedPoint = (AirportPoint) curAirport;
-            if(castedPoint.getIcao().length() > 0 && castedPoint.getAirportName().length() > 0) {
+            if (castedPoint.getIcao().length() > 0 && castedPoint.getAirportName().length() > 0) {
                 String pair = castedPoint.getAirportName() + " " + castedPoint.getIcao();
                 if (!nameIcaoAirport.contains(pair)) {
                     nameIcaoAirport.add(pair);
@@ -294,8 +279,7 @@ public class AnalysisTabController {
         }
         ObservableList<String> airportDistList = FXCollections.observableArrayList(nameIcaoAirport);
         Collections.sort(airportDistList, String.CASE_INSENSITIVE_ORDER);
-        airportDistList.add(0,"Select Airport");
-
+        airportDistList.add(0, "Select Airport");
         return airportDistList;
     }
 
@@ -304,30 +288,26 @@ public class AnalysisTabController {
      * Gets the selected country from the airportCountryFilterMenu ComoboBox
      * Then calls the populateRouteGraph method
      */
-    public void prepareRouteChart(){
-        if(!routeChartOpen){
-        ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        if(airports.size() > 0) {
-            airportCountryFilterMenu.setVisible(true);
-            airportCountryList = populateAirportCountryList();
-            airportCountryFilterMenu.setValue(airportCountryList.get(0));
-            airportCountryFilterMenu.setItems(airportCountryList);
-            setCountry("All");
-            airportCountryFilterMenu.valueProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue ov, String t, String t1) {
-                    setCountry(t1);
-                    populateRouteGraph();
-                }
-            });
-            //TODO maybe able to delete this code?
-            String currentCountry;
-            currentCountry = (String) airportCountryFilterMenu.getSelectionModel().getSelectedItem();
-            populateRouteGraph();
-            routeChartOpen = true;
+    public void prepareRouteChart() {
+        if (!routeChartOpen) {
+            ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+            if (airports.size() > 0) {
+                airportCountryFilterMenu.setVisible(true);
+                ObservableList<String> airportCountryList = populateAirportCountryList();
+                airportCountryFilterMenu.setValue(airportCountryList.get(0));
+                airportCountryFilterMenu.setItems(airportCountryList);
+                setCountry("All");
+                airportCountryFilterMenu.valueProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue ov, String t, String t1) {
+                        setCountry(t1);
+                        populateRouteGraph();
+                    }
+                });
+                populateRouteGraph();
+                routeChartOpen = true;
             }
-        }
-        else{
+        } else {
             routeChartOpen = false;
         }
     }
@@ -337,10 +317,10 @@ public class AnalysisTabController {
      * user selection. CalculateDistance() is then called to find the distance between the 2
      * airports.
      */
-    public void airportDistanceSetup(){
+    public void airportDistanceSetup() {
         ArrayList<DataPoint> airports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        if(airports.size() > 0) {
-            airportDistanceList = populateAirportDistanceList();
+        if (airports.size() > 0) {
+            ObservableList<String> airportDistanceList = populateAirportDistanceList();
             airportDistanceCB1.setValue(airportDistanceList.get(0));
             airportDistanceCB2.setValue(airportDistanceList.get(0));
             airportDistanceCB1.setItems(airportDistanceList);
@@ -353,14 +333,11 @@ public class AnalysisTabController {
                     calculateDistance();
                 }
             });
-
             airportDistanceCB2.valueProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue ov, String t, String t1) {
                     setAirport2(t1);
                     calculateDistance();
-
-
                 }
             });
         }
@@ -370,16 +347,17 @@ public class AnalysisTabController {
      * Method to get the AirportPoints corresponding to the ICAO and name of the selected
      * airports, then call Analyser.calculateDistance, and update the display in the GUI to show the
      * distance.
+     *
      * @see Analyser
      */
     private void calculateDistance() {
-        if(getAirport1() == null || getAirport2() == null){ }
-
-        else if(!(getAirport1().equals("Select Airport") || getAirport2().equals("Select Airport"))){
-
+        if (getAirport1() == null || getAirport2() == null) {
+            //empty
+        } else if (!(getAirport1().equals("Select Airport") || getAirport2().equals("Select Airport"))) {
             AirportPoint d1 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport1());
             AirportPoint d2 = (AirportPoint) FilterRefactor.findAirportPointForDistance(getAirport2());
             ArrayList<Position> positions = new ArrayList<>();
+
             double d1Lat = d1.getLatitude();
             double d1Long = d1.getLongitude();
             double d2Lat = d2.getLatitude();
@@ -391,8 +369,6 @@ public class AnalysisTabController {
             Route newRoute = new Route(positions);
             displayRoute(newRoute);
 
-
-
             double distance = Analyser.calculateDistance(d1, d2);
             String header = "Distance between " + d1.getAirportName() + " and " + d2.getAirportName() + ": ";
             distanceHeader.setText(header);
@@ -403,12 +379,9 @@ public class AnalysisTabController {
     /**
      * @return the country selected in the airportCountryFilterMenu ComboBox
      */
-    public String getCountry(){return this.country;}
-
-    /**
-     * Method to set country to the value selected in the airportCountryFilterMenu Combobox
-     * @param country
-     */
+    public String getCountry() {
+        return this.country;
+    }
 
     /**
      * Initializes the map with the JavaScript
@@ -419,52 +392,60 @@ public class AnalysisTabController {
     }
 
     /**
-     *Displays a route on the map by way of making a javascript and executing it through the web engine
-     * @param newRoute
+     * Displays a route on the map by way of making a javascript and executing it through the web engine
+     *
+     * @param newRoute Route to be displayed
      */
     private void displayRoute(Route newRoute) {
         try {
             String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
             webEngine.executeScript(scriptToExecute);
             analysisTabMapErrorText.setVisible(false);
-        } catch (netscape.javascript.JSException e){
+        } catch (netscape.javascript.JSException e) {
             analysisTabMapErrorText.setVisible(true);
         }
     }
 
+    /**
+     * Method to set country to the value selected in the airportCountryFilterMenu Combobox
+     * @param country The country selected
+     */
     public void setCountry(String country) {
         this.country = country;
     }
 
     /**
      * @return String containing the name and ICAO of the airport selected in the
-     * airportDistanceCB2 ComoboBox
-     */
-    public String getAirport2() {
-        return airport2;
-    }
-
-    /**
-     * Method to set airport2 to the value selected in the airportDistanceCB2 Combobox
-     * @param airport2
-     */
-    public void setAirport2(String airport2) {
-        this.airport2 = airport2;
-    }
-
-    /**
-     * @return String containing the name and ICAO of the airport selected in the
      * airportDistanceCB1 ComoboBox
      */
-    public String getAirport1() {
+    private String getAirport1() {
         return airport1;
     }
 
     /**
      * Method to set airport1 to the value selected in the airportDistanceCB1 Combobox
-     * @param airport1
+     *
+     * @param airport1 The first airport
      */
-    public void setAirport1(String airport1) {
+    private void setAirport1(String airport1) {
         this.airport1 = airport1;
     }
+
+    /**
+     * @return String containing the name and ICAO of the airport selected in the
+     * airportDistanceCB2 ComoboBox
+     */
+    private String getAirport2() {
+        return airport2;
+    }
+
+    /**
+     * Method to set airport2 to the value selected in the airportDistanceCB2 Combobox
+     *
+     * @param airport2 The second airport
+     */
+    private void setAirport2(String airport2) {
+        this.airport2 = airport2;
+    }
+
 }

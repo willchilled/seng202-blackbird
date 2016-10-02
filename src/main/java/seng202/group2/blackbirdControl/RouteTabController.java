@@ -108,10 +108,21 @@ public class RouteTabController {
     }
 
     public void routesFilterButtonPressed() {
-        String sourceSelection = routesFilterBySourceMenu.getValue().toString();
-        String destSelection = routesFilterbyDestMenu.getValue().toString();
-        String stopsSelection = routesFilterByStopsMenu.getValue().toString();
-        String equipSelection = routesFilterbyEquipMenu.getValue().toString();
+        String sourceSelection;
+        String destSelection;
+        String stopsSelection;
+        String equipSelection;
+        try {
+        sourceSelection = routesFilterBySourceMenu.getValue().toString();
+        destSelection = routesFilterbyDestMenu.getValue().toString();
+        stopsSelection = routesFilterByStopsMenu.getValue().toString();
+        equipSelection = routesFilterbyEquipMenu.getValue().toString();
+        } catch (java.lang.NullPointerException e) {
+            sourceSelection = "No values Loaded";
+            destSelection = "No values Loaded";
+            stopsSelection = "No values Loaded";
+            equipSelection = "No values Loaded";
+        }
         String searchQuery = routesSearchMenu.getText().toString();
         ArrayList<DataPoint> routePoints;
 

@@ -166,7 +166,7 @@ public class Validator {
      */
     public static String[] checkAirline(String[] attributes){
 
-        String[] badData = new String[7];
+        String[] badData = new String[8];
         String id = attributes[0];
         String name = attributes[1];
         String alias = attributes[2];
@@ -237,7 +237,7 @@ public class Validator {
      */
     public static String[] checkAirport(String[] attributes){
 
-        String[] badData = new String[11];
+        String[] badData = new String[12];
         String id = attributes[0];
         String name = attributes[1];
         String city = attributes[2];
@@ -306,21 +306,28 @@ public class Validator {
 
     }
 
-    public static boolean checkRoute(String[] attributes){  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
-        boolean valid = true;
-        if (attributes[0].equals("None") || attributes[1].equals("None") || attributes[2].equals("None")) {
-            valid = false;
+    public static String[] checkRoute(String[] attributes){  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
+        String[] badData = new String[6];
+        if (attributes[0].equals("None")){
+            badData[0] = "Airline";
         }
+        if (attributes[1].equals("None")) {
+            badData[1] = "Src Airport";
+        }
+        if (attributes[2].equals("None")){
+            badData[2] = "Dst Airport";
+        }
+
         boolean num = StringUtils.isNumeric(attributes[4]);
         if (!num) {
-            valid = false;
+            badData[4] = "Codeshare";
         }
 
         boolean validEquip = StringUtils.isAlphanumericSpace(attributes[5]);
         if (!validEquip) {
-            valid = false;
+            badData[5] = "Equipment";
         }
-        return valid;
+        return badData;
     }
 
     public static boolean checkFlightPoint(String[] attributes){ // localeID, wayPointType, alt, lat, long
@@ -415,6 +422,29 @@ public class Validator {
                 "ICAO:\t\t3 Letters, UpperCase\n" +
                 "Callsign:\t\tAny word\n" +
                 "Country:\t\tAny word");
+
+        alert.showAndWait();
+
+    }
+
+    public static void displayRouteError(String[] checkData) {
+        String errorMessage = "Errors with: ";
+        for (String error : checkData) {
+            if (error != null) {
+                errorMessage += (error + ", ");
+            }
+        }
+        errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("IVALID DATA");
+        alert.setHeaderText(errorMessage);
+        alert.setContentText("Constraints:\n\n" +
+                "*REQUIRED*:\tSrc Airport, Airline, Dst Airport\n\n" +
+                "Src Airport:\t\tAny Selection\n" +
+                "Dst Airport:\t\tAny Selection\n" +
+                "Airline:\t\t\tAny Selection\n" +
+                "Stops:\t\t\tSingle Integer\n" +
+                "Equipment:\t\tAny Alphanumeric Sequence");
 
         alert.showAndWait();
 

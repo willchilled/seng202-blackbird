@@ -77,7 +77,8 @@ public class RouteAddingPopUpController {
     public void createButtonPressed(){
 
         String[] values = getValues();
-        if (Validator.checkRoute(values)) {
+        String[] checkData = Validator.checkRoute(values);
+        if (HelperFunctions.allValid(checkData)) {
             String[] valueFields = RouteTabController.getFields(values);
             DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT, 0, null);
             ArrayList<DataPoint> myRouteData = new ArrayList<>();
@@ -88,6 +89,7 @@ public class RouteAddingPopUpController {
 
             adderStage.close();
         } else {
+            Validator.displayRouteError(checkData);
             addRouteInvalidText.setVisible(true);
         }
 

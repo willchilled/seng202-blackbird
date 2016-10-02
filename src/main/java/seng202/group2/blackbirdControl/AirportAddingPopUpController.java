@@ -78,13 +78,15 @@ public class AirportAddingPopUpController {
         String[] airportPoint = getValues();
         String[] checkData = Validator.checkAirport(airportPoint);
         ArrayList<String> airport = FilterRefactor.filterDistinct("Name", "Airport");
-        if(HelperFunctions.allValid(checkData) && (!airport.contains(airportPoint[1])) {
+        if(HelperFunctions.allValid(checkData) && (!airport.contains(airportPoint[1]))) {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT, 0, null);
             myAirportData.add(myAirportPoint);
 
             DataBaseRefactor.insertDataPoints(myAirportData, null);
+
             airportTabController.airportFilterButtonPressed();
+            airportTabController.updateAirportFields();
             added = true;
             adderStage.close();
         } else {

@@ -192,6 +192,7 @@ public class AirportPopUpController {
             airportTzText.setText(tz);
 
             airportTabController.airportFilterButtonPressed();
+            airportTabController.updateAirportFields();
             airportDeleteButton.setVisible(true);
 
         }else{

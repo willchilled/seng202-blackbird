@@ -102,7 +102,7 @@ public class AirportTabController {
 
 
 
-    private void updateAirportFields() {
+    public void updateAirportFields() {
         airportCountryList = populateAirportCountryList();  //populating from valid data in database
         //System.out.println(airportCountryList);
         airportFilterMenu.setItems(airportCountryList);

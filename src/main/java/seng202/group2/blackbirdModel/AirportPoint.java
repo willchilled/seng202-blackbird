@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import seng202.group2.blackbirdControl.ErrorTabController;
 
 /**
- *  A subclass of Datapoint that stores information about an airport
+ * A subclass of Datapoint that stores information about an airport
  */
 public class AirportPoint extends DataPoint {
 
@@ -20,24 +20,15 @@ public class AirportPoint extends DataPoint {
     private float timeZone;
     private String dst;
     private String tz;
-    private int incomingRoutes=0;
-    private int outgoingRoutes=0;
+    private int incomingRoutes = 0;
+    private int outgoingRoutes = 0;
+    private int correctEntry = 0;
 
-    private int correctEntry=0;
-
-    private int numberOfRoutes;
-
-//	@Override
-//	public boolean equals(Object obj){
-//		//megan's test for bad data...
-//		AirportPoint mypoint = (AirportPoint) obj;
-//		if(this.getAirportID() == mypoint.getAirportID()) return true;
-//		else return false;
-//	}
 
     /**
      * Creates an AirportPoint with an ID and Name
-     * @param airportID The ID number for the airport
+     *
+     * @param airportID   The ID number for the airport
      * @param airportName The Name of the airport
      */
     public AirportPoint(int airportID, String airportName) {
@@ -51,6 +42,7 @@ public class AirportPoint extends DataPoint {
      * Attempts to create an AirportPoint with a list of strings of length 12.
      * If successful it creates an AirportPoint with values from list and correctEntry as 0.
      * If unsuccessful it creates am AirportPoint with airportID -1, airportName as currentLine.toString() and correctEntry 1.
+     *
      * @param currentLine The list of strings holding the information for the airport in index of:
      *                    0 airportID,
      *                    1 airportName,
@@ -67,67 +59,49 @@ public class AirportPoint extends DataPoint {
      */
     public AirportPoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
-        //System.out.println(currentLine.length);
 
-        if (currentLine.length == 12 || currentLine.length == 14){
-            //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
+        if (currentLine.length == 12 || currentLine.length == 14) {
             try {
-                // System.out.println("Int AID: " + currentLine[0]);
-                this.airportID = Integer.parseInt(currentLine[0]);	//should not be null
-                //System.out.println("STRING ANAME: " + currentLine[1]);
-                this.airportName = currentLine[1];	//let people name airline whatever they want
-                //System.out.println("STRING ACITY: " + currentLine[2]);
+                this.airportID = Integer.parseInt(currentLine[0]);    //should not be null
+                this.airportName = currentLine[1];    //let people name airline whatever they want
                 this.airportCity = currentLine[2];
-                //System.out.println("STRING ACOUNTRY: " + currentLine[3]);
-                this.airportCountry= currentLine[3];
-                //System.out.println("STRING IATA: " + currentLine[4]);
-                this.iata =currentLine[4];
-                //System.out.println("STRING ICAO: " + currentLine[5]);
+                this.airportCountry = currentLine[3];
+                this.iata = currentLine[4];
                 this.icao = currentLine[5];
-                if(currentLine[6].isEmpty()){
+                if (currentLine[6].isEmpty()) {
                     this.latitude = 0;
                 } else {
                     this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
                 }
-                //System.out.println("FLOAT LONG: " + currentLine[7]);
-                if(currentLine[7].isEmpty()){
+                if (currentLine[7].isEmpty()) {
                     this.longitude = 0;
                 } else {
                     this.longitude = Float.parseFloat(currentLine[7].trim());
                 }
-                //System.out.println("INT ALT: " + currentLine[8]);
-                if(currentLine[8].isEmpty()){
+                if (currentLine[8].isEmpty()) {
                     this.altitude = 0;
                 } else {
                     this.altitude = Float.parseFloat(currentLine[8]);
                 }
-                //System.out.println("FLOAT TIMEZONE: " + currentLine[9]);
-                if(currentLine[9].isEmpty()){
+                if (currentLine[9].isEmpty()) {
                     timeZone = 0;
                 } else {
                     this.timeZone = Float.parseFloat(currentLine[9]);
                 }
-                //System.out.println("STRING DST: " + currentLine[10]);
                 this.dst = currentLine[10];
-                //System.out.println("STRING TZ: " + currentLine[11]);
                 this.tz = currentLine[11];
 
-
-
-                if (currentLine.length == 14){ // We add a special case for when there is data in the array
+                if (currentLine.length == 14) { // We add a special case for when there is data in the array
                     this.outgoingRoutes = Integer.parseInt(currentLine[12]);
                     this.incomingRoutes = Integer.parseInt(currentLine[13]);//check this is the right way round
                 }
 
-            } catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT, "Invalid numeric values given (within Airport ID, altitude, longitude or latitude fields)");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
                     errorTabController.setAllCorrect(false);
                 }
-                //AirlinePoint myAirlinePoint = new
-//                this.airportID = -1;
-//                //this.airportName = currentLine.toString();
                 this.correctEntry = 1;
             }
         } else {
@@ -139,14 +113,6 @@ public class AirportPoint extends DataPoint {
             this.correctEntry = 1;
         }
     }
-
-    /**
-     * Increments numberOfRoutes by 1
-     */
-    public void incrementRoutes() {
-        numberOfRoutes++;
-    }
-
 
     public int getAirportID() {
         return airportID;
@@ -244,7 +210,6 @@ public class AirportPoint extends DataPoint {
         this.tz = tz;
     }
 
-
     public int getCorrectEntry() {
         return correctEntry;
     }
@@ -255,6 +220,7 @@ public class AirportPoint extends DataPoint {
 
     /**
      * Returns the AirportPoint in the form of a string
+     *
      * @return airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz
      */
     @Override
@@ -263,13 +229,6 @@ public class AirportPoint extends DataPoint {
                 airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
 
     }
-
-    public String toStringWithRoutes() {
-        return String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s",
-                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz, incomingRoutes, outgoingRoutes);
-
-    }
-
 
     public int getIncomingRoutes() {
         return incomingRoutes;
@@ -287,13 +246,6 @@ public class AirportPoint extends DataPoint {
         this.outgoingRoutes = outgoingRoutes;
     }
 
-    //@Override
-    public int compareTo(AirportPoint another) {
-        if (this.getIncomingRoutes() + this.getOutgoingRoutes() <another.getIncomingRoutes() + another.getOutgoingRoutes()){
-            return -1;
-        }else{
-            return 1;
-        }
-    }
+
 }
 

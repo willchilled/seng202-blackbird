@@ -1,12 +1,7 @@
-
-
 package seng202.group2.blackbirdModel;
 
 import org.apache.commons.lang3.StringUtils;
 import seng202.group2.blackbirdControl.ErrorTabController;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A subclass of datapoint that stores information about an airline
@@ -52,7 +47,6 @@ public class AirlinePoint extends DataPoint {
     public AirlinePoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
         if (currentLine.length == 8){
-            //AirlinePoint myAirlinePoint = new AirlinePoint(-1, "");
             try {
                 this.airlineID = Integer.parseInt(currentLine[0]);	//should not be null
                 this.airlineName = currentLine[1];	//let people name airline whatever they want
@@ -150,12 +144,9 @@ public class AirlinePoint extends DataPoint {
      */
     @Override
     public String toString() {
-
-        return String.format("%s, %s, %s, %s, %s, %s, %s, %s",
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s",
                 airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
-
     }
-
 
     public int getCorrectEntry() {
         return correctEntry;

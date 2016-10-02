@@ -597,7 +597,7 @@ public class DatabaseInterface {
      */
     public static void clearTable(DataTypes type) {
         try {
-            System.out.println("In the drop table method");
+            //System.out.println("In the drop table method");
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
             currentConnection = DriverManager.getConnection(getDatabaseName());

@@ -1,7 +1,8 @@
 package seng202.group2.blackbirdModel;
 
 /**
- * Created by mch230 on 25/09/16.
+ *
+ * Class for displaying bad data
  */
 public class BadData {
     private int fileLine;
@@ -9,12 +10,14 @@ public class BadData {
     private DataTypes type;
     private String errorMessage;
 
-    public BadData(int fileLine, String entry, DataTypes type) {
-        this.fileLine = fileLine;
-        this.entry = entry;
-        this.type = type;
-    }
-
+    /**
+     * Constructor for the bad data type
+     *
+     * @param fileLine the line where the error occured
+     * @param entry all of the data for that line
+     * @param type  the datatype of the point
+     * @param message the error message that will be displayed
+     */
     public BadData(int fileLine, String entry, DataTypes type, String message) {
         this.fileLine = fileLine;
         this.entry = entry;

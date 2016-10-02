@@ -196,7 +196,7 @@ public class FlightTabController {
             allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
         }
         updateFlightsTable(allPoints);
-        flightPointTable.getItems().setAll();
+
 
     }
 
@@ -241,6 +241,7 @@ public class FlightTabController {
      */
     public void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
 
+        flightPointTable.getItems().setAll();
         flightTable.getItems().setAll(filteredFlights);
         flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
         flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));

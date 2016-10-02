@@ -49,19 +49,6 @@ public class MenuBarController {
     }
 
     public void show() {
-//        int size1 = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT).size();
-//        int size2 = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT).size();
-//        int size3 = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT).size();
-//        int size4 = FilterRefactor.getAllPoints(DataTypes.FLIGHT).size();
-//        System.out.println(size1);
-//        System.out.println(size2);
-//        System.out.println(size3);
-//        System.out.println(size4);
-//        if (size1 == 0 && size2 == 0 && size3 == 0 && size4 == 0) {
-//            showMenus();
-//            DataBaseRefactor.createTables();
-//            opened = true;
-//        } else {
         if (opened == false) {
             showMenus();
             DataBaseRefactor.createTables();
@@ -77,6 +64,7 @@ public class MenuBarController {
             if (result.get() == ButtonType.OK) {
                 DataBaseRefactor.createTables();
                 mainController.showTables();
+                showMenuHelper();
                 mainController.clearErrors(DataTypes.AIRPORTPOINT);
                 mainController.clearErrors(DataTypes.AIRLINEPOINT);
                 mainController.clearErrors(DataTypes.ROUTEPOINT);

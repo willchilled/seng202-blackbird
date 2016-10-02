@@ -7,6 +7,10 @@ import java.util.*;
 /**
  * This class helps us to perform filters on the inputted data by generating sql strings to be performed for
  * a filter query, then performing this query via the database methods.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class Filter {
 

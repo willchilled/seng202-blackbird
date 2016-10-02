@@ -16,13 +16,19 @@ import seng202.group2.blackbirdModel.*;
 import java.util.ArrayList;
 
 /**
- * Created by wmu16 on 24/09/16.
+ * Adds the feature to be able to create individual flights point by point, in order to plan out a flight plan
+ * in detail.
+ *
+ * @author Team2
+ * @version 1.0
+ * @since 28/9/2016
  */
 public class FlightCreatorPopUpController {
 
     private Stage creatorStage;
     private Parent root;
     private FlightTabController flightTabController;
+    private WebEngine webEngine;
 
     @FXML private TableView<DataPoint> flightAdderTable;
     @FXML private TableColumn flightAdderLocaleIDCol;
@@ -33,6 +39,7 @@ public class FlightCreatorPopUpController {
 
     @FXML private Text flightAdderErrorText;
     @FXML private Text flightCreatorMapErrorText;
+    @FXML private WebView webView;
 
     @FXML private TextField wayPointIDText;
     @FXML private ComboBox wayPointTypeComboBox;
@@ -40,23 +47,36 @@ public class FlightCreatorPopUpController {
     @FXML private TextField wayPointLatText;
     @FXML private TextField wayPointLongText;
 
-    @FXML private WebView webView;
-    private WebEngine webEngine;
-
-
-
+    /**
+     * Sets the root for the pop up
+     *
+     * @param root The parent root
+     */
     public void setRoot(Parent root) {
         this.root = root;
     }
 
-    public void setCreatorStage(Stage creatorStage) {
+    /**
+     * Sets the stage for the pop up
+     *
+     * @param creatorStage The stage for the pop up
+     */
+    void setCreatorStage(Stage creatorStage) {
         this.creatorStage = creatorStage;
     }
 
-    public void setFlightTabController(FlightTabController controller) {
+    /**
+     * Sets the related flight tab for the pop up
+     *
+     * @param controller The flight tab invoking the pop up
+     */
+    void setFlightTabController(FlightTabController controller) {
         flightTabController = controller;
     }
 
+    /**
+     * Initialises the flight creator pop up.
+     */
     public void control() {
         creatorStage.setScene(new Scene(root));
         creatorStage.setTitle("Create Flight");
@@ -65,27 +85,27 @@ public class FlightCreatorPopUpController {
         flightAdderTable.setPlaceholder(new Label("Add Intermediate WayPoints by filling the fields above and pressing 'Add WayPoint'"));
         wayPointTypeComboBox.setItems(FXCollections.observableArrayList("APT", "VOR", "FIX", "NDB", "DME", "LATLON"));
         initMap();
-
-
-
         creatorStage.show();
     }
 
-    public void flightCreatorCancelButtonPressed(){
-
+    /**
+     * User cancels making a flight, closes the pop up
+     */
+    public void flightCreatorCancelButtonPressed() {
         creatorStage.close();
     }
 
-    public void flightCreatorCreateButtonPressed(){
-
-        //This is damn gross ill fix this up later there's probably a better method for getting a specific row in a table -W
-        if(flightAdderTable.getItems().size() == 0){
-            flightAdderErrorText.setText("YOU MUST HAVE AT LEAST 2 POINTS!");
+    /**
+     * User clicks the create button to create a flight.
+     */
+    public void flightCreatorCreateButtonPressed() {
+        if (flightAdderTable.getItems().size() == 0) {
+            flightAdderErrorText.setText("A flight must have at least two points");
             flightAdderErrorText.setVisible(true);
             return;
         }
         FlightPoint finalPoint = (FlightPoint) flightAdderTable.getItems().get(flightAdderTable.getItems().size() - 1);
-        if(finalPoint.getLocalType().equals("APT") && flightAdderTable.getItems().size() > 1) {
+        if (finalPoint.getLocalType().equals("APT") && flightAdderTable.getItems().size() > 1) {
             flightAdderErrorText.setVisible(false);
             ArrayList<DataPoint> myFlightData = new ArrayList<>(flightAdderTable.getItems());
             DataBaseRefactor.insertDataPoints(myFlightData, null);
@@ -93,21 +113,22 @@ public class FlightCreatorPopUpController {
             flightTabController.updateFlightsTable(allPoints);
             creatorStage.close();
         } else {
-            flightAdderErrorText.setText("FINAL POINT MUST BE OF TYPE APT!");
+            flightAdderErrorText.setText("Final point must be of type APT");
             flightAdderErrorText.setVisible(true);
         }
-
     }
 
-    public void addWayPointButtonPressed(){
-
+    /**
+     * User clicks the add waypoint button to create a waypoint within the flight.
+     */
+    public void addWayPointButtonPressed() {
         String[] flightPoint = getWayPointValues();
-        if(flightAdderTable.getItems().size() == 0 && !flightPoint[0].equals("APT")) {
-            flightAdderErrorText.setText("FIRST POINT MUST BE OF TYPE APT!");
+        if (flightAdderTable.getItems().size() == 0 && !flightPoint[0].equals("APT")) {
+            flightAdderErrorText.setText("First point must be of type APT");
             flightAdderErrorText.setVisible(true);
         } else {
             String[] checkData = Validator.checkFlightPoint(flightPoint);
-            if(HelperFunctions.allValid(checkData)) {
+            if (HelperFunctions.allValid(checkData)) {
                 flightAdderErrorText.setVisible(false);
                 ArrayList<DataPoint> myFlightPointData = new ArrayList<>();
                 DataPoint myFlightPoint = DataPoint.createDataPointFromStringArray(flightPoint, DataTypes.FLIGHTPOINT, 0, null);
@@ -115,30 +136,35 @@ public class FlightCreatorPopUpController {
                 updateWayPointTable(myFlightPointData);
             } else {
                 Validator.displayFlightPointError(checkData);
-                flightAdderErrorText.setText("BAD DATA! PLEASE CHECK CONSTRAINTS");
+                flightAdderErrorText.setText("Bad data! Please check constraints");
                 flightAdderErrorText.setVisible(true);
             }
         }
     }
 
-    private String[] getWayPointValues(){
-
-        String wayPointID = wayPointIDText.getText().toString();
+    /**
+     * Helper function to obtain the waypoint values entered
+     * @return A string array containing the values obtained from input fields
+     */
+    private String[] getWayPointValues() {
+        String wayPointID = wayPointIDText.getText();
         String type;
-        if(wayPointTypeComboBox.getSelectionModel().isEmpty()) {
+        if (wayPointTypeComboBox.getSelectionModel().isEmpty()) {
             type = "";
         } else {
             type = wayPointTypeComboBox.getValue().toString();
         }
-        String alt = wayPointAltText.getText().toString();
-        String lat = wayPointLatText.getText().toString();
-        String lng = wayPointLongText.getText().toString();
-
-        return new String[] {type, wayPointID, alt, lat, lng};
+        String alt = wayPointAltText.getText();
+        String lat = wayPointLatText.getText();
+        String lng = wayPointLongText.getText();
+        return new String[]{type, wayPointID, alt, lat, lng};
     }
 
+    /**
+     * Updates the waypoint table to display entered waypoints
+     * @param point The current waypoints
+     */
     private void updateWayPointTable(ArrayList<DataPoint> point) {
-
         flightAdderTable.getItems().addAll(point);
         FlightPoint myPoint = (FlightPoint) point.get(0);
 
@@ -151,11 +177,11 @@ public class FlightCreatorPopUpController {
         Flight myFlight = new Flight(new ArrayList<>(flightAdderTable.getItems()));
         Route myRoute = new Route(Route.makeRoutePoints(myFlight));
         displayRoute(myRoute);
-
     }
 
     /**
-     * Initializes the map with the JavaScript
+     * Initializes the map using the class WebView to render HTML content
+     * @see WebView
      */
     private void initMap() {
         webEngine = webView.getEngine();
@@ -163,19 +189,19 @@ public class FlightCreatorPopUpController {
     }
 
     /**
-     *Displays a route on the map by way of making a javascript and executing it through the web engine
-     * @param newRoute
+     * Displays a route on the map using a JSON query executed by the web engine
+     *
+     * @param newRoute The route to be displayed on the map
+     * @see WebView
      */
     private void displayRoute(Route newRoute) {
         try {
             String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
             webEngine.executeScript(scriptToExecute);
             flightCreatorMapErrorText.setVisible(false);
-        } catch (netscape.javascript.JSException e){
+        } catch (netscape.javascript.JSException e) {
             flightCreatorMapErrorText.setVisible(true);
         }
     }
-
-
 
 }

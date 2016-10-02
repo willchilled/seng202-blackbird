@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 /**
  * Exports data sets for the user to view later, and import to a different project later if they desire.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 class Exporter {
 

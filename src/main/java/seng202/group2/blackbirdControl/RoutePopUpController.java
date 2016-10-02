@@ -167,22 +167,19 @@ public class RoutePopUpController {
 
     public void commitEdit(){
         String[] values = getValues();
-        //System.out.println(Arrays.toString(values));
         String[] checkData = Validator.checkRoute(values);
         if (HelperFunctions.allValid(checkData)) {
             String[] valueFields = RouteTabController.getFields(values);
 
             //DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT);
-            String sql = String.format("UPDATE ROUTE SET Airline='%1$s', Airlineid='%2$s', Src='%3$s', Srcid='%4$s'," +
-                            " Dst='%5$s', Dstid='%6$s', Codeshare='%7$s', Stops='%8$s', Equipment=\"%9$s\" WHERE IDnum='%10$s'",
+            String sql = String.format("UPDATE ROUTE SET Airline=\"%1$s\", Airlineid=\"%2$s\", Src=\"%3$s\", Srcid=\"%4$s\"," +
+                            " Dst=\"%5$s\", Dstid=\"%6$s\", Codeshare=\"%7$s\", Stops=\"%8$s\", Equipment=\"%9$s\" WHERE IDnum=\"%10$s\"",
                     valueFields[0], valueFields[1], valueFields[2], valueFields[3], valueFields[4], valueFields[5],
                     valueFields[6], valueFields[7], valueFields[8], routeIDText.getText());
-            //System.out.println(sql);
             DataBaseRefactor.editDataEntry(sql);
             routeTabController.routesFilterButtonPressed();
 
             String sql1 = "SELECT * FROM ROUTE WHERE IDnum='" + routeIDText.getText() + "'";
-            //System.out.println(sql1);
             ArrayList<DataPoint> myRoute = DataBaseRefactor.performGenericQuery(sql1, DataTypes.ROUTEPOINT);
             RoutePoint myEditedRoute = (RoutePoint) myRoute.get(0);
 

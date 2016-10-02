@@ -139,8 +139,24 @@ public class AirlinePopUpController {
             airlineEditButton.setVisible(true);
             nameText.setVisible(true);
 
-            String sql = String.format("UPDATE AIRLINE SET NAME='%1$s', COUNTRY='%2$s', ALIAS='%3$s'," +
-                            " IATA='%4$s', ICAO='%5$s', CALLSIGN='%6$s', ACTIVE='%7$s' WHERE ID='%8$s'",
+            for(int i=0; i<attributes.length; i++){
+                String current = attributes[i];
+                current = current.replaceAll("\"", "");
+                attributes[i] = current;
+            }
+
+            name = attributes[1];
+            alias =  attributes[2];
+            iata=attributes[3];
+            icao =  attributes[4];
+            callsign = attributes[5];
+            country = attributes[6];
+            active = attributes[7];
+
+
+
+            String sql = String.format("UPDATE AIRLINE SET NAME=\"%1$s\", COUNTRY=\"%2$s\", ALIAS=\"%3$s\"," +
+                            " IATA=\"%4$s\", ICAO=\"%5$s\", CALLSIGN=\"%6$s\", ACTIVE=\"%7$s\" WHERE ID=\"%8$s\"",
                     name, country, alias, iata, icao, callsign, active, idText.getText());
             DataBaseRefactor.editDataEntry(sql);
 

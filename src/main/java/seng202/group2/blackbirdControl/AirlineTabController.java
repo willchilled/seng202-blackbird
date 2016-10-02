@@ -79,8 +79,8 @@ public class AirlineTabController {
     /**
      * Adds airline data using a file chooser. Only valid data will be added into the persistent database.
      *
-     * @see ParserRefactor
-     * @see DataBaseRefactor
+     * @see Parser
+     * @see Database
      */
     void addAirlineData() {
         File f = HelperFunctions.getFile("Add Airline Data", false);
@@ -88,8 +88,8 @@ public class AirlineTabController {
             return;
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
-        ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT, errorTab);
-        DataBaseRefactor.insertDataPoints(myPoints, errorTab);
+        ArrayList<DataPoint> myPoints = Parser.parseFile(f, DataTypes.AIRLINEPOINT, errorTab);
+        Database.insertDataPoints(myPoints, errorTab);
         ArrayList<DataPoint> validAirlineData = Filter.getAllPoints(DataTypes.AIRLINEPOINT);
 
         //Populates DropDowns according to data

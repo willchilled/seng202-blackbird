@@ -8,7 +8,7 @@ public class Position {
     public double lng;
 
     /**
-     * A constructor for creating positioni objects with lat and long
+     * A constructor for creating position objects with lat and long
      * @param lat double Latitude
      * @param lng double Longitude
      */

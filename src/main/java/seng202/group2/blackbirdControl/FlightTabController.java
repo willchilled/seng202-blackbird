@@ -103,7 +103,7 @@ public class FlightTabController {
             return;
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
-        ArrayList<DataPoint> myFlightData = ParserRefactor.parseFile(f, DataTypes.FLIGHTPOINT, errorTab);
+        ArrayList<DataPoint> myFlightData = Parser.parseFile(f, DataTypes.FLIGHTPOINT, errorTab);
         if (myFlightData == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Flight Error");
@@ -112,7 +112,7 @@ public class FlightTabController {
             alert.showAndWait();
             return;
         }
-        DataBaseRefactor.insertDataPoints(myFlightData, errorTab);
+        Database.insertDataPoints(myFlightData, errorTab);
         ArrayList<DataPoint> myFlights = Filter.getAllPoints(DataTypes.FLIGHT);
         updateFlightFields();
         updateFlightsTable(myFlights);
@@ -305,9 +305,10 @@ public class FlightTabController {
         alert.setTitle("Delete Entry");
         alert.setContentText("Are you sure you want to delete?");
         Optional<ButtonType> result = alert.showAndWait();
-        if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
-            DataBaseRefactor.editDataEntry(flightSql);
-            DataBaseRefactor.editDataEntry(flightPointSql);
+
+        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+            Database.editDataEntry(flightSql);
+            Database.editDataEntry(flightPointSql);
             flightFilterButtonPressed();
             mainController.mainMenuHelper();
         }

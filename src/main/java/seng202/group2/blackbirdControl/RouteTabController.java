@@ -159,8 +159,8 @@ public class RouteTabController {
 
 
         ErrorTabController errorTab = mainController.getErrorTabController();
-        ArrayList<DataPoint> myRouteData = ParserRefactor.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
-        DataBaseRefactor.insertDataPoints(myRouteData, errorTab);
+        ArrayList<DataPoint> myRouteData = Parser.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
+        Database.insertDataPoints(myRouteData, errorTab);
 
         ArrayList<DataPoint> validRouteData = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         //setAllRoutePoints(myRouteData); //populating local data with all points
@@ -304,7 +304,7 @@ public class RouteTabController {
         String[] returnString = new String[2];
         if (type == DataTypes.AIRLINEPOINT) {
             String sql = "SELECT * FROM AIRLINE WHERE NAME='" + name + "'";
-            ArrayList<DataPoint> foundAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+            ArrayList<DataPoint> foundAirline = Database.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
             if (foundAirline.size() > 1) {
                 System.err.println("Found more than one airline");
                 //TODO What should be done here?
@@ -324,7 +324,7 @@ public class RouteTabController {
 
         if (type == DataTypes.AIRPORTPOINT) {
             String sql = "SELECT * FROM AIRPORT WHERE NAME='" + name + "'";
-            ArrayList<DataPoint> foundSource = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRPORTPOINT);
+            ArrayList<DataPoint> foundSource = Database.performGenericQuery(sql, DataTypes.AIRPORTPOINT);
             if (foundSource.size() > 1) {
                 System.err.println("Found more than one airport for route src/dest");
                 //TODO What should be done here?

@@ -7,7 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.Database;
 
 import java.util.Optional;
 
@@ -204,7 +204,7 @@ public class AirportPopUpController {
                             " ICAO=\"%5$s\", LATITUDE=\"%6$s\", LONGITUDE=\"%7$s\", ALTITUDE=\"%8$s\", TIMEZONE=\"%9$s\", DST=\"%10$s\"," +
                             " TZ=\"%11$s\" WHERE ID=\"%12$s\"",
                     name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz, airportIdText.getText());
-            DataBaseRefactor.editDataEntry(sql);
+            Database.editDataEntry(sql);
 
             airportNameText.setText(name);
             airportCityText.setText(city);
@@ -266,7 +266,7 @@ public class AirportPopUpController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
-            DataBaseRefactor.editDataEntry(sql);
+            Database.editDataEntry(sql);
             airportTabController.airportFilterButtonPressed();
             stage.close();
         }

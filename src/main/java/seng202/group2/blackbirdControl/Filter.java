@@ -19,7 +19,7 @@ public class Filter {
      *
      * @param type The type of data that we want
      * @return The arraylist of datapoints returned from the database query.
-     * @see DataBaseRefactor
+     * @see Database
      */
     public static ArrayList<DataPoint> getAllPoints(DataTypes type) {
         String sql;
@@ -29,7 +29,7 @@ public class Filter {
                 break;
             case AIRPORTPOINT:
                 sql = "SELECT * FROM AIRPORT";
-                ArrayList<DataPoint> myAirportPoints = DataBaseRefactor.performGenericQuery(sql, type);
+                ArrayList<DataPoint> myAirportPoints = Database.performGenericQuery(sql, type);
                 myAirportPoints = linkRoutesandAirports(myAirportPoints);
                 return myAirportPoints;
             case ROUTEPOINT:
@@ -41,7 +41,7 @@ public class Filter {
             default:
                 return null;
         }
-        return DataBaseRefactor.performGenericQuery(sql, type);
+        return Database.performGenericQuery(sql, type);
     }
 
     /**
@@ -99,7 +99,7 @@ public class Filter {
      * @param searchString The search string from the search bar
      * @param type         The type of data we are filtering
      * @return The arraylist of datapoints returned from the filter query.
-     * @see DataBaseRefactor
+     * @see Database
      */
     static ArrayList<DataPoint> filterSelections(ArrayList<String> menusPressed, String searchString, DataTypes type) {
         ArrayList<DataPoint> filtered;
@@ -110,19 +110,19 @@ public class Filter {
                 break;
             case AIRPORTPOINT:
                 myQuery = airportFilter(menusPressed, searchString);
-                ArrayList<DataPoint> myAirportPoints = DataBaseRefactor.performGenericQuery(myQuery, type);
+                ArrayList<DataPoint> myAirportPoints = Database.performGenericQuery(myQuery, type);
                 myAirportPoints = linkRoutesandAirports(myAirportPoints);
                 return myAirportPoints;
             case ROUTEPOINT:
                 myQuery = routeFilter(menusPressed, searchString); //a special case because we want to filter by selections not in the database
-                return DataBaseRefactor.performGenericQuery(myQuery, type);
+                return Database.performGenericQuery(myQuery, type);
             case FLIGHT:
                 myQuery = flightFilter(menusPressed, searchString);
                 break;
             default:
                 return null;
         }
-        filtered = DataBaseRefactor.performGenericQuery(myQuery, type);
+        filtered = Database.performGenericQuery(myQuery, type);
         return filtered;
     }
 
@@ -251,12 +251,12 @@ public class Filter {
      * the filter dropdown menus.
      *
      * @return The arraylist of distinct strings returned from the database
-     * @see DataBaseRefactor
+     * @see Database
      */
     protected static ArrayList<String> filterDistinct(String column, String table) {
         String sql = "SELECT DISTINCT %s from %s";
         sql = String.format(sql, column, table);
-        ArrayList<String> menuItems = DataBaseRefactor.performDistinctQuery(sql);
+        ArrayList<String> menuItems = Database.performDistinctQuery(sql);
         Collections.sort(menuItems, String.CASE_INSENSITIVE_ORDER);
         return menuItems;
     }
@@ -278,7 +278,7 @@ public class Filter {
         String name = airportToCalc.substring(0, i);
         String icao = airportToCalc.substring(i + 1, airportToCalc.length());
         sql = String.format(sql, name, icao);
-        return DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRPORTPOINT).get(0);
+        return Database.performGenericQuery(sql, DataTypes.AIRPORTPOINT).get(0);
     }
 
 

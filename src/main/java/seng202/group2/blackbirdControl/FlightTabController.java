@@ -25,29 +25,25 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * Created by emr65 on 20/09/16.
+ * Controller for the flight tab. Handles displaying of data, and acts as a controller for adding and deleting data.
  */
 public class FlightTabController {
 
     private MainController mainController;
     private FlightTabController instance;
-
     private Flight flight;
     private FlightPoint flightPoint;
-
-    //MapShit
-    @FXML private WebView webView;
     private WebEngine webEngine;
+    private ObservableList<String> flightSrcICAOList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> flightDstICAOList  = FXCollections.observableArrayList("No values Loaded");
 
-    //FLIGHT and FLIGHT POINT tables
+    //Flight table
     @FXML private TableView<DataPoint> flightTable;
     @FXML private TableView<DataPoint> flightPointTable;
-
-    //FLIGHT Table columns
     @FXML private TableColumn flightSourceCol;
     @FXML private TableColumn flightDestCol;
 
-    //FLIGHT POINT Table columns
+    //Flight point table
     @FXML private TableColumn flightPointTypeCol;
     @FXML private TableColumn flightPointLocaleCol;
     @FXML private TableColumn flightPointAltitudeCol;
@@ -57,25 +53,28 @@ public class FlightTabController {
     @FXML private ComboBox flightSrcICAOMenu;
     @FXML private ComboBox flightDstICAOMenu;
     @FXML private TextField flightSearchQuery;
-
     @FXML private Text flightTabMapErrorText;
+    @FXML private WebView webView;
 
-    ObservableList<String> flightSrcICAOList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> flightDstICAOList  = FXCollections.observableArrayList("No values Loaded");
-
-
-
+    /**
+     * Creates the flight tab
+     */
     public FlightTabController() {
         instance = this;
     }
 
-    public void show(){
-        //mainController.show();
+    /**
+     * Initializes the tables
+     */
+    public void show() {
         flightTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Flight"));
         flightPointTable.setPlaceholder(new Label("No data in table. Double click on a flight"));
     }
 
-    public void initialize(){
+    /**
+     * Initializes the flight tab
+     */
+    public void initialize() {
         flightSrcICAOMenu.setValue(flightSrcICAOList.get(0));
         flightSrcICAOMenu.setItems(flightSrcICAOList);
 
@@ -84,19 +83,19 @@ public class FlightTabController {
         initMap();
     }
 
-
-
-
-    public void setMainController(MainController controller) {
+    /**
+     *
+     * @param controller
+     */
+    void setMainController(MainController controller) {
         this.mainController = controller;
     }
-
 
     /**
      * Called upon clicking the Add Flight Data option in the menu bar. Adds a specified CSV file of a flight to the
      * database and then updates the table
      */
-    public void addFlightData() {
+    void addFlightData() {
         File f = HelperFunctions.getFile("Add Flight Data", false);
         if (f == null) {
             return;
@@ -113,9 +112,6 @@ public class FlightTabController {
         }
         DataBaseRefactor.insertDataPoints(myFlightData, errorTab);
         ArrayList<DataPoint> myFlights = Filter.getAllPoints(DataTypes.FLIGHT);
-
-        //TODO prevent a flight that doesn't begin/end in APT from being added to database, with error message
-
         updateFlightFields();
         updateFlightsTable(myFlights);
         mainController.updateTab(DataTypes.FLIGHT);
@@ -124,9 +120,8 @@ public class FlightTabController {
     /**
      * A method to display the flights
      */
-    public void displayFlights(){
+    void displayFlights() {
         ArrayList<DataPoint> myFlights = Filter.getAllPoints(DataTypes.FLIGHT);
-
         updateFlightFields();
         updateFlightsTable(myFlights);
         mainController.updateTab(DataTypes.FLIGHT);
@@ -136,39 +131,38 @@ public class FlightTabController {
      * Updates all flight filter dropdowns with current data
      */
     private void updateFlightFields() {
-
         flightSrcICAOList = populateFlightSrcList();
         flightSrcICAOMenu.setItems(flightSrcICAOList);
         flightSrcICAOMenu.setValue(flightSrcICAOList.get(0));
 
-
-        flightDstICAOList = populateFlightDstList();  //populating from valid data in database
+        flightDstICAOList = populateFlightDstList();
         flightDstICAOMenu.setItems(flightDstICAOList);
         flightDstICAOMenu.setValue(flightDstICAOList.get(0));
     }
 
     /**
      * Populates the SrcICAOs dropdown upon adding data.
+     *
      * @return The list of current SrcICAOs in the database for flights
      */
-    private ObservableList<String> populateFlightSrcList(){
+    private ObservableList<String> populateFlightSrcList() {
         ArrayList<String> srcICAOs = Filter.filterDistinct("SrcICAO", "FLIGHT");
         ObservableList<String> srcICAOList = FXCollections.observableArrayList(srcICAOs);
-        srcICAOList = HelperFunctions.addNullValue(srcICAOList); //we need to add a null value
+        srcICAOList = HelperFunctions.addNullValue(srcICAOList);
         return srcICAOList;
     }
 
     /**
      * Populates the DstICAO dropdown upon adding data.
+     *
      * @return The list of current DstICAOs in the database for flights
      */
-    private ObservableList<String> populateFlightDstList(){
+    private ObservableList<String> populateFlightDstList() {
         ArrayList<String> dstICAOs = Filter.filterDistinct("DstICAO", "FLIGHT");
         ObservableList<String> dstICAOList = FXCollections.observableArrayList(dstICAOs);
-        dstICAOList = HelperFunctions.addNullValue(dstICAOList); //we need to add a null value
+        dstICAOList = HelperFunctions.addNullValue(dstICAOList);
         return dstICAOList;
     }
-
 
     /**
      * Called upon pressing the 'Filter' button in the flights tab. Grabs all info from the filter selections and sends
@@ -176,42 +170,31 @@ public class FlightTabController {
      * points.
      */
     public void flightFilterButtonPressed() {
-        //TODO this might be why delete flight isn't working
         String srcAirport = flightSrcICAOMenu.getValue().toString();
         String dstAirport = flightDstICAOMenu.getValue().toString();
-        String searchQuery = flightSearchQuery.getText().toString();
+        String searchQuery = flightSearchQuery.getText();
         ArrayList<DataPoint> allPoints;
 
-        if(srcAirport.equals("No values loaded") && dstAirport.equals("No values loaded")){
+        if (srcAirport.equals("No values loaded") && dstAirport.equals("No values loaded")) {
             allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
-        }
-        else {
+        } else {
             ArrayList<String> menusPressed = new ArrayList<>();
             menusPressed.add(srcAirport);
             menusPressed.add(dstAirport);
-
-            //Returns selected Flights !NOT FLIGHT POINTS!//
             allPoints = Filter.filterSelections(menusPressed, searchQuery, DataTypes.FLIGHT);
         }
         updateFlightsTable(allPoints);
-
-
     }
 
     /**
      * Called upon pressing the 'Add Flight' button in Flights. Opens the flight creator
-     * @param actionEvent Mouse Click
      */
-    public void flightMakeFlightButtonPressed(ActionEvent actionEvent) {
-
-        //Brings up popup to create a flight
+    public void flightMakeFlightButtonPressed() {
         try {
             Stage creatorStage = new Stage();
-            Parent root;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightCreatorPopUp.fxml"));
-            root = loader.load();
+            Parent root = loader.load();
 
-            //use controller to control it
             FlightCreatorPopUpController popUpController = loader.getController();
             popUpController.setFlightTabController(instance);
             popUpController.setCreatorStage(creatorStage);
@@ -221,13 +204,15 @@ public class FlightTabController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void enterPressed(KeyEvent ke)
-    {
-        if(ke.getCode() == KeyCode.ENTER)
-        {
+    /**
+     * Assigns an action for the enter key
+     *
+     * @param ke The keyevent that occurred (the Enter key event)
+     */
+    public void enterPressed(KeyEvent ke) {
+        if (ke.getCode() == KeyCode.ENTER) {
             flightFilterButtonPressed();
         }
     }
@@ -235,88 +220,70 @@ public class FlightTabController {
     /**
      * Updates the filght tables upon being called. Also contains a nested function to update the flightPoint table
      * upon clicking a row
+     *
      * @param filteredFlights A list of the flights with which to update the tables
      */
     public void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
-
         flightPointTable.getItems().setAll();
         flightTable.getItems().setAll(filteredFlights);
         flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));
         flightDestCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("destAirport"));
 
-        flightTable.getItems().addListener(new ListChangeListener<DataPoint>() {
-            //This refreshes the current table
-            @Override
-            public void onChanged(Change<? extends DataPoint> c) {
-                flightTable.getColumns().get(0).setVisible(false);
-                flightTable.getColumns().get(0).setVisible(true);
-            }
+        flightTable.getItems().addListener((ListChangeListener<DataPoint>) c -> {
+            flightTable.getColumns().get(0).setVisible(false);
+            flightTable.getColumns().get(0).setVisible(true);
         });
 
-        flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event){
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 1) {
-                    //exportFlightMenuButton.setDisable(false);
-
-                    Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
-                    if (!(pressedFlight == null)) {
-                        flight = pressedFlight;
-                    } else {
-                        return;
-                    }
-                    Route myRoute = new Route(Route.makeRoutePoints(flight));
-                    displayRoute(myRoute);
-
-
-                    flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
-                    flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localType"));
-                    flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localeID"));
-                    flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Float>("altitude"));
-                    flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
-                    flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
+        flightTable.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 1) {
+                Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
+                if (!(pressedFlight == null)) {
+                    flight = pressedFlight;
+                } else {
+                    return;
                 }
+                Route myRoute = new Route(Route.makeRoutePoints(flight));
+                displayRoute(myRoute);
 
+                flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
+                flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localType"));
+                flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localeID"));
+                flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Float>("altitude"));
+                flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
+                flightPointLongitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("longitude"));
             }
         });
 
-        flightPointTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 1) {
-
-                    FlightPoint pressedPoint = (FlightPoint) flightPointTable.getSelectionModel().getSelectedItem();
-                    if (!(pressedPoint == null)) {
-                        flightPoint = pressedPoint;
-                    } else {
-                        return;
-                    }
-                    double lat = flightPoint.getLatitude();
-                    double lng = flightPoint.getLongitude();
-                    ArrayList<Position> myWayPoint = new ArrayList<>();
-                    myWayPoint.add(new Position(lat, lng));
-                    Route myMarker = new Route(myWayPoint);
-                    displayWayPoint(myMarker);
+        flightPointTable.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 1) {
+                FlightPoint pressedPoint = (FlightPoint) flightPointTable.getSelectionModel().getSelectedItem();
+                if (!(pressedPoint == null)) {
+                    flightPoint = pressedPoint;
+                } else {
+                    return;
                 }
+                double lat = flightPoint.getLatitude();
+                double lng = flightPoint.getLongitude();
+                ArrayList<Position> myWayPoint = new ArrayList<>();
+                myWayPoint.add(new Position(lat, lng));
+                Route myMarker = new Route(myWayPoint);
+                displayWayPoint(myMarker);
             }
         });
-
     }
-
 
     /**
      * Exports the current flightPoint data showing into a CSV file of the users chosing.
      */
-    public void exportFlightData() {
-        //Giver user a warning that it will only export the currently selected flight (the one in the flightpoint table)
-        //NEED TO LABEL THE FLIGHT TABLES.
-
-        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(flightPointTable.getItems());
+    void exportFlightData() {
+        ArrayList<DataPoint> myPoints = new ArrayList<>(flightPointTable.getItems());
         Exporter.exportData(myPoints);
     }
 
-    public void deleteSingleFlight(){
-        //TODO delete single flight isn't working, I think the id is always 0 <- delete seems to work now, but needs to clear waypoints also
+    /**
+     * Deletes a single flight
+     */
+    public void deleteSingleFlight() {
         Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
         if (!(pressedFlight == null)) {
             flight = pressedFlight;
@@ -328,19 +295,15 @@ public class FlightTabController {
             alert.showAndWait();
             return;
         }
-        String flightSql = "";
-        String flightPointSql = "";
         int id = flight.getFlightID();
-        flightSql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);
-        flightPointSql = String.format("DELETE FROM FLIGHTPOINT WHERE FlightIDNum = %s", id);
+        String flightSql = String.format("DELETE FROM FLIGHT WHERE FlightIDNum = %s", id);
+        String flightPointSql = String.format("DELETE FROM FLIGHTPOINT WHERE FlightIDNum = %s", id);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Entry");
         alert.setContentText("Are you sure you want to delete?");
-
         Optional<ButtonType> result = alert.showAndWait();
-
-        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+        if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             DataBaseRefactor.editDataEntry(flightSql);
             DataBaseRefactor.editDataEntry(flightPointSql);
             flightFilterButtonPressed();
@@ -348,9 +311,9 @@ public class FlightTabController {
         }
     }
 
-
     /**
-     * Initializes the map with the JavaScript
+     * Initializes the map using the class WebView to render HTML content
+     * @see WebView
      */
     private void initMap() {
         webEngine = webView.getEngine();
@@ -358,34 +321,41 @@ public class FlightTabController {
     }
 
     /**
-     *Displays a route on the map by way of making a javascript and executing it through the web engine
-     * @param newRoute
+     * Displays a route on the map using a JSON query executed by the web engine
+     *
+     * @param newRoute The route to be displayed on the map
+     * @see WebView
      */
     private void displayRoute(Route newRoute) {
         try {
             String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
             webEngine.executeScript(scriptToExecute);
             flightTabMapErrorText.setVisible(false);
-        } catch (netscape.javascript.JSException e){
+        } catch (netscape.javascript.JSException e) {
             flightTabMapErrorText.setVisible(true);
         }
     }
 
+    /**
+     * Displays a particular waypoint
+     * @param newWayPoint The waypoint to display
+     */
     private void displayWayPoint(Route newWayPoint) {
-        try{
+        try {
             String scriptToExecute = "displayWayPoint(" + newWayPoint.toJSONArray() + ")";
             webEngine.executeScript(scriptToExecute);
             flightTabMapErrorText.setVisible(false);
-        } catch (netscape.javascript.JSException e){
+        } catch (netscape.javascript.JSException e) {
             flightTabMapErrorText.setVisible(true);
         }
     }
 
-    public void flightseeAllButtonPressed(ActionEvent actionEvent) {
-
+    /**
+     * See all the flights in the current project
+     */
+    public void flightseeAllButtonPressed() {
         ArrayList<DataPoint> allPoints;
         allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
         updateFlightsTable(allPoints);
-
     }
 }

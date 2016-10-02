@@ -257,7 +257,7 @@ public class FlightTabController {
         flightTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event){
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 1) {
                     //exportFlightMenuButton.setDisable(false);
 
                     Flight pressedFlight = (Flight) flightTable.getSelectionModel().getSelectedItem();
@@ -281,7 +281,7 @@ public class FlightTabController {
         flightPointTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 1) {
 
                     FlightPoint pressedPoint = (FlightPoint) flightPointTable.getSelectionModel().getSelectedItem();
                     flightPoint = pressedPoint;

@@ -599,7 +599,7 @@ public class DataBaseRefactor {
      */
     private static String createFlightTable(){
         String sql = "CREATE TABLE FLIGHT" +
-                "(FlightIDNum   INTEGER PRIMARY KEY AUTOINCREMENT/*incrementing number to identify flight*/," +
+                "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
                 "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
                 "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +       //either the IATA(3) or ICAO(4)
                 ")";

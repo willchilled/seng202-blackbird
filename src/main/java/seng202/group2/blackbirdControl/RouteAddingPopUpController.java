@@ -13,57 +13,49 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-//import org.controlsfx.control.textfield.TextFields;
 import seng202.group2.blackbirdModel.*;
 
 import java.util.ArrayList;
 
 /**
- * Created by sbe67 on 15/09/16.
+ * This Route Adding pop up class allows enters to manually add
+ * a route point to the program.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class RouteAddingPopUpController {
 
-    @FXML private ComboBox airlineSelection;
-    @FXML private ComboBox sourceSelection;
-    @FXML private ComboBox destSelection;
-
-//    @FXML private TextField AirlineIATA;
-//    @FXML private TextField AirlineID;
-//    @FXML private TextField Src;
-//    @FXML private TextField SrcID;
-//    @FXML private TextField Dst;
-//    @FXML private TextField DstID;
-    @FXML private CheckBox Codeshare;
-    @FXML private TextField Stops;
-    @FXML private TextField Equipment;
-    @FXML private Text addRouteInvalidText;
     private Stage adderStage;
     private Parent root;
     private RouteTabController routeTabController;
     private boolean added = false;
 
+    @FXML private ComboBox airlineSelection;
+    @FXML private ComboBox sourceSelection;
+    @FXML private ComboBox destSelection;
+    @FXML private CheckBox Codeshare;
+    @FXML private TextField Stops;
+    @FXML private TextField Equipment;
+    @FXML private Text addRouteInvalidText;
+
+    /**
+     * Initialises the route adding pop up.
+     */
     public void control() {
         adderStage.setScene(new Scene(root));
         adderStage.setTitle("Add Route Information");
         adderStage.initModality(Modality.NONE);
         adderStage.initOwner(null);
 
-        //populates the drop down boxes
         ArrayList<String> airlineNames = Filter.filterDistinct("Name", "Airline");
         ObservableList<String> airlineMenu = FXCollections.observableArrayList(airlineNames);
         airlineMenu = HelperFunctions.addNullValue(airlineMenu);
         airlineSelection.setItems(airlineMenu);
         airlineSelection.setValue(airlineMenu.get(0));
-//        airlineSelection.setEditable(true);
-//        TextFields.bindAutoCompletion(airlineSelection.getEditor(), airlineSelection.getItems());
 
         ArrayList<String> sourceAirports = Filter.filterDistinct("Name", "Airport");
-
-
-
-
-
-
         ObservableList<String> sourceNames = FXCollections.observableArrayList(sourceAirports);
         sourceNames = HelperFunctions.addNullValue(sourceNames);
         sourceSelection.setItems(sourceNames);
@@ -74,8 +66,12 @@ public class RouteAddingPopUpController {
         adderStage.show();
     }
 
-    public void createButtonPressed(){
-
+    /**
+     * This method is called when the create button is pressed, passing the
+     * inputted values through to be checked by both the validator and the
+     * database. If an error occurs, shows an error message.
+     */
+    public void createButtonPressed() {
         String[] values = getValues();
         String[] checkData = Validator.checkRoute(values);
         if (HelperFunctions.allValid(checkData)) {
@@ -83,69 +79,91 @@ public class RouteAddingPopUpController {
             DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT, 0, null);
             ArrayList<DataPoint> myRouteData = new ArrayList<>();
             myRouteData.add(myRoutePoint);
-            DataBaseRefactor.insertDataPoints(myRouteData, null);
+            DatabaseInterface.insertDataPoints(myRouteData, null);
             routeTabController.routesFilterButtonPressed();
             added = true;
-
             adderStage.close();
         } else {
             Validator.displayRouteError(checkData);
             addRouteInvalidText.setVisible(true);
         }
-
-        //adderStage.close();
-
     }
 
+    /**
+     * Helper function to retrieve inputted values that the user has entered
+     *
+     * @return The string array of values retrieved from the entry fields
+     */
     private String[] getValues() {
         String myAirline = airlineSelection.getValue().toString();
         String mySource = sourceSelection.getValue().toString();
         String myDest = destSelection.getValue().toString();
         String routeCodeshare = "";
-        String routeStops = Stops.getText().toString();
-        String routeEquipment = Equipment.getText().toString();
-        //System.out.println(routeStops);
+        String routeStops = Stops.getText();
+        String routeEquipment = Equipment.getText();
 
         boolean codeshareChecked = Codeshare.isSelected();
-        if (codeshareChecked){
+        if (codeshareChecked) {
             routeCodeshare = "Y";
         }
-
-        if(routeStops.isEmpty()) {
+        if (routeStops.isEmpty()) {
             routeStops = "0";
         }
         String[] values = {myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment};
         return values;
     }
 
-
-
-
-    public void cancelButtonPressed(){
-        //just closes the stage
+    /**
+     * Closes the pop up on cancel
+     */
+    public void cancelButtonPressed() {
         adderStage.close();
     }
 
-    public void enterPressed(KeyEvent ke)
-    {
-        if(ke.getCode() == KeyCode.ENTER)
-        {
+    /**
+     * Assigns an action for the enter key
+     *
+     * @param ke The keyevent that occurred (the Enter key event)
+     */
+    public void enterPressed(KeyEvent ke) {
+        if (ke.getCode() == KeyCode.ENTER) {
             createButtonPressed();
         }
     }
 
-    public void setAdderStage(Stage adderStage) {
+    /**
+     * Sets the stage for the pop up
+     *
+     * @param adderStage The stage for the pop up
+     */
+    void setAdderStage(Stage adderStage) {
         this.adderStage = adderStage;
     }
 
+    /**
+     * Sets the root for the pop up
+     *
+     * @param root The parent root
+     */
     public void setRoot(Parent root) {
         this.root = root;
     }
 
-    public void setRouteTabController(RouteTabController routeTabController) {
+    /**
+     * Sets the related route tab for the pop up
+     *
+     * @param routeTabController The route tab invoking the pop up
+     * @see RouteTabController
+     */
+    void setRouteTabController(RouteTabController routeTabController) {
         this.routeTabController = routeTabController;
     }
 
+    /**
+     * Helper function for the error tab controller, to detect whether the point was added or not
+     *
+     * @return Boolean for whether the point was added or not.
+     */
     public boolean isAdded() {
         return added;
     }

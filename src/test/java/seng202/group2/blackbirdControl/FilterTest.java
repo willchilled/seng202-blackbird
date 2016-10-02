@@ -31,11 +31,11 @@ public class FilterTest extends TestCase {
         File flightFile = new File(flightFileString);
 
 
-        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
+        ArrayList<DataPoint> airlinePoints = Parser.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
+        ArrayList<DataPoint> airportPoint = Parser.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
 
-        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
-        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
+        ArrayList<DataPoint> routePoints = Parser.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
+        ArrayList<DataPoint> flightPoints = Parser.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
         //ArrayList<Flight>
 
         Flight flight = new Flight(flightPoints);
@@ -45,16 +45,16 @@ public class FilterTest extends TestCase {
         myFlight.add(f);
         // System.out.println(flight.getType() + "--------------------------");
 
-        DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airlinePoints, null);
-        DataBaseRefactor.insertDataPoints(airportPoint, null);
-        DataBaseRefactor.insertDataPoints(routePoints, null);
-        DataBaseRefactor.insertDataPoints(myFlight, null);
+        DatabaseInterface.createTables();
+        DatabaseInterface.insertDataPoints(airlinePoints, null);
+        DatabaseInterface.insertDataPoints(airportPoint, null);
+        DatabaseInterface.insertDataPoints(routePoints, null);
+        DatabaseInterface.insertDataPoints(myFlight, null);
 
 
         // ArrayList<Fl> a= flightPoints;
 
-        DataBaseRefactor.insertDataPoints(flightPoints, null);
+        DatabaseInterface.insertDataPoints(flightPoints, null);
 
 
     }
@@ -206,7 +206,7 @@ public class FilterTest extends TestCase {
 
 
     public void testAirportLinkWithRoutes(){
-        DataBaseRefactor.createTables();
+        DatabaseInterface.createTables();
 
         String cwd = System.getProperty("user.dir");
         String airportsFileString;
@@ -219,14 +219,14 @@ public class FilterTest extends TestCase {
         File routesFile = new File(routesFileString);
 
 
-        ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
+        ArrayList<DataPoint> airportPoint = Parser.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
 
-        ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
+        ArrayList<DataPoint> routePoints = Parser.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
         //ArrayList<Flight>
 
-        DataBaseRefactor.createTables();
-        DataBaseRefactor.insertDataPoints(airportPoint, null);
-        DataBaseRefactor.insertDataPoints(routePoints, null);
+        DatabaseInterface.createTables();
+        DatabaseInterface.insertDataPoints(airportPoint, null);
+        DatabaseInterface.insertDataPoints(routePoints, null);
 
 
         ArrayList<DataPoint> airportPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
@@ -260,7 +260,7 @@ public class FilterTest extends TestCase {
         String airportsFileString;
         String routesFileString;
         String flightFileString;
-        DataBaseRefactor.createTables();
+        DatabaseInterface.createTables();
 
         airlinesFileString = cwd + "/JUnitTesting/airlinesLargeWithNoFailing";
         airportsFileString = cwd + "/JUnitTesting/airports.txt";
@@ -273,9 +273,9 @@ public class FilterTest extends TestCase {
         File flightFile = new File(flightFileString);
 
 
-        ArrayList<DataPoint> airlinePoints = ParserRefactor.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
+        ArrayList<DataPoint> airlinePoints = Parser.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
 
-        ArrayList<DataPoint> flightPoints = ParserRefactor.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
+        ArrayList<DataPoint> flightPoints = Parser.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
 
 
         Flight flight = new Flight(flightPoints);
@@ -284,10 +284,10 @@ public class FilterTest extends TestCase {
         ArrayList<DataPoint> myFlight = new ArrayList<>();
         myFlight.add(f);
 
-        DataBaseRefactor.insertDataPoints(airlinePoints, null);
+        DatabaseInterface.insertDataPoints(airlinePoints, null);
 
-        DataBaseRefactor.insertDataPoints(myFlight, null);
-        DataBaseRefactor.insertDataPoints(flightPoints, null);
+        DatabaseInterface.insertDataPoints(myFlight, null);
+        DatabaseInterface.insertDataPoints(flightPoints, null);
         double numTrials = 3;
         long totalStart1 =0;
         long totalFinish1 = 0;
@@ -295,18 +295,18 @@ public class FilterTest extends TestCase {
         long totalFinish2 = 0;
         for (int i = 0; i < numTrials; i++) {
             long startTime = System.nanoTime();
-            ArrayList<DataPoint> airportPoint = ParserRefactor.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
-            ArrayList<DataPoint> routePoints = ParserRefactor.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
+            ArrayList<DataPoint> airportPoint = Parser.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
+            ArrayList<DataPoint> routePoints = Parser.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
             long endTime = System.nanoTime();
 
             totalStart1 += startTime;
             totalFinish1 += endTime;
 
-            DataBaseRefactor.createTables();
+            DatabaseInterface.createTables();
             startTime = System.nanoTime();
 
-            DataBaseRefactor.insertDataPoints(airportPoint, null);
-            DataBaseRefactor.insertDataPoints(routePoints, null);
+            DatabaseInterface.insertDataPoints(airportPoint, null);
+            DatabaseInterface.insertDataPoints(routePoints, null);
             endTime = System.nanoTime();
 
             totalStart2 += startTime;

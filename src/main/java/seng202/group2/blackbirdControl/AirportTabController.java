@@ -81,8 +81,8 @@ public class AirportTabController {
     /**
      * Adds airport data using a file chooser. Only valid data will be added into the persistent database.
      *
-     * @see ParserRefactor
-     * @see DataBaseRefactor
+     * @see Parser
+     * @see DatabaseInterface
      */
     void addAirportData() {
         File f = HelperFunctions.getFile("Add Airport Data", false);
@@ -90,8 +90,8 @@ public class AirportTabController {
             return;
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
-        ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT, errorTab);
-        DataBaseRefactor.insertDataPoints(myAirportPoints, errorTab);
+        ArrayList<DataPoint> myAirportPoints = Parser.parseFile(f, DataTypes.AIRPORTPOINT, errorTab);
+        DatabaseInterface.insertDataPoints(myAirportPoints, errorTab);
         ArrayList<DataPoint> validAirportPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
 
         updateAirportFields();
@@ -236,6 +236,7 @@ public class AirportTabController {
      * Links back to the MainController of the program
      *
      * @param controller The controller for the tab window
+     * @see MainController
      */
     void setMainController(MainController controller) {
         this.mainController = controller;

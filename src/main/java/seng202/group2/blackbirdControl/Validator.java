@@ -2,7 +2,7 @@ package seng202.group2.blackbirdControl;
 
 import javafx.scene.control.Alert;
 import org.apache.commons.lang3.StringUtils;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.DatabaseInterface;
 
 /**
  * Created by emr65 on 22/09/16.
@@ -47,8 +47,9 @@ public class Validator {
         return (!callsign.equals("") && callsign.length() <= 40 || callsign.equals(""));
     }
 
-    private static boolean isValidCountry(String country){
-        return (!country.equals("") && country.length() <= 40);
+    private static boolean isValidCountry(String country)
+    {
+        return (!country.equals("") && country.length() <= 40 );
     }
 
     private static boolean isValidAirlineCountry(String country){
@@ -177,40 +178,40 @@ public class Validator {
         String active = attributes[7];
 
 
-        System.out.println("--------VALIDATING AIRLINE---------");
+       // System.out.println("--------VALIDATING AIRLINE---------");
         if(!isValidID(id)){
             badData[0] = "ID";
-            System.out.println("Bad id");
+          //  System.out.println("Bad id");
         }
         if(!isValidName(name)){
             badData[1] = "Name";
-            System.out.println("Bad name");
+           // System.out.println("Bad name");
         }
         if(!isValidAlias(alias)){
             badData[2] = "Alias";
-            System.out.println("Bad alias");
+           // System.out.println("Bad alias");
         }
         if(!isValidIATA(iata)){
             badData[3] = "IATA";
-            System.out.println("Bad iata");
+          //  System.out.println("Bad iata");
         }
         if(!isValidICAO(icao)){
             badData[4] = "ICAO";
-            System.out.println("Bad icao");
+           // System.out.println("Bad icao");
         }
         if(!isValidAirlineCallsign(callsign)){
             badData[5] = "Callsign";
-            System.out.println("Bad callsign");
+           // System.out.println("Bad callsign");
         }
         if(!isValidAirlineCountry(country)){
             badData[6] = "Country";
-            System.out.println("Bad country");
+           // System.out.println("Bad country");
         }
         if(!isValidActive(active)){
             badData[7] = "Active";
-            System.out.println("Bad active");
+           // System.out.println("Bad active");
         }
-        System.out.println("================");
+       // System.out.println("================");
 
 
         return badData;
@@ -385,7 +386,7 @@ public class Validator {
     public static boolean tableColumnchecker(String table, String[] columns){
         boolean correct = true;
         for(String column : columns){
-            if(DataBaseRefactor.checkDBForColumn(table, column) == false){
+            if(DatabaseInterface.checkDBForColumn(table, column) == false){
                 correct = false;
             }
         }

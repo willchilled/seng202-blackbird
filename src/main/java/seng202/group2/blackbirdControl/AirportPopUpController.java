@@ -7,7 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirportPoint;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.DatabaseInterface;
 
 import java.util.Optional;
 
@@ -181,12 +181,30 @@ public class AirportPopUpController {
             airportCancelButton.setVisible(false);
             airportInvalidDataText.setVisible(false);
 
-            String sql = String.format("UPDATE AIRPORT SET NAME='%1$s', CITY='%2$s', COUNTRY='%3$s', IATA='%4$s'," +
-                            " ICAO='%5$s', LATITUDE='%6$s', LONGITUDE='%7$s', ALTITUDE='%8$s', TIMEZONE='%9$s', DST='%10$s'," +
-                            " TZ='%11$s' WHERE ID='%12$s'",
-                    name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz, airportIdText.getText());
+            for(int i=0; i<attributes.length; i++){
+                String current = attributes[i];
+                current = current.replaceAll("\"", "");
+                attributes[i] = current;
+            }
 
-            DataBaseRefactor.editDataEntry(sql);
+             name = attributes[1];
+             city = attributes[2];
+             country = attributes[3];
+             iata = attributes[4];
+             icao = attributes[5];
+             lat = attributes[6];
+             lon = attributes[7];
+             alt = attributes[8];
+             timeZone = attributes[9];
+             dst = attributes[10];
+             tz = attributes[11];
+
+
+            String sql = String.format("UPDATE AIRPORT SET NAME=\"%1$s\", CITY=\"%2$s\", COUNTRY=\"%3$s\", IATA=\"%4$s\"," +
+                            " ICAO=\"%5$s\", LATITUDE=\"%6$s\", LONGITUDE=\"%7$s\", ALTITUDE=\"%8$s\", TIMEZONE=\"%9$s\", DST=\"%10$s\"," +
+                            " TZ=\"%11$s\" WHERE ID=\"%12$s\"",
+                    name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz, airportIdText.getText());
+            DatabaseInterface.editDataEntry(sql);
 
             airportNameText.setText(name);
             airportCityText.setText(city);
@@ -248,7 +266,7 @@ public class AirportPopUpController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
-            DataBaseRefactor.editDataEntry(sql);
+            DatabaseInterface.editDataEntry(sql);
             airportTabController.airportFilterButtonPressed();
             stage.close();
         }
@@ -269,6 +287,7 @@ public class AirportPopUpController {
      * Sets the related airport tab for the pop up
      *
      * @param controller The airport tab invoking the pop up
+     * @see AirportTabController
      */
     void setAirportTabController(AirportTabController controller) {
         this.airportTabController = controller;

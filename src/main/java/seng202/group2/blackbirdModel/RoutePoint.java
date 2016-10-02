@@ -26,15 +26,14 @@ public class RoutePoint extends DataPoint {
     private String dstAirportName;
     private String dstAirportCountry;
 
-    //private int correctEntry;
-
     private AirportPoint source;
     private AirportPoint destination;
-    private int correctEntry=0;
+    private int correctEntry = 0;
 
     /**
      * Creates a RoutePoint with an airline and airlineID
-     * @param airline The airline IATA code for the route
+     *
+     * @param airline   The airline IATA code for the route
      * @param airlineID The airlineID for the route
      */
     public RoutePoint(String airline, int airlineID) {
@@ -47,6 +46,7 @@ public class RoutePoint extends DataPoint {
      * Attempts to create an RoutePoint with a list of strings of length 9.
      * If successful it creates an RoutePoint with values from list and correctEntry as 0.
      * If unsuccessful it creates am RoutePoint with routeID -1, airline as currentLine.toString() and correctEntry 1.
+     *
      * @param currentLine The list of strings holding the information for the RoutePoint in index of:
      *                    0 airline,
      *                    1 airlineID,
@@ -98,7 +98,7 @@ public class RoutePoint extends DataPoint {
                 }
                 this.correctEntry = 1;
             }
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             BadData badRoute = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.ROUTEPOINT, "Invalid Airline or Airport IDs were given (all must be present), or number of stops was non-numeric");
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badRoute, DataTypes.ROUTEPOINT);
@@ -110,13 +110,26 @@ public class RoutePoint extends DataPoint {
 
     /**
      * A function to determine if a RoutePoint has the same routeID
+     *
      * @param obj A RoutePoint to check equality of type against
-     * @return  A boolean variable, true if the RoutePoint has the same routeID
+     * @return A boolean variable, true if the RoutePoint has the same routeID
      */
     @Override
     public boolean equals(Object obj) {
-        RoutePoint mypoint =  (RoutePoint) obj;
+        RoutePoint mypoint = (RoutePoint) obj;
         return routeID == mypoint.getRouteID();
+    }
+
+    /**
+     * Returns the RoutePoint in the form of a string
+     *
+     * @return airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment
+     */
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
+
     }
 
     public int getRouteID() {
@@ -213,23 +226,6 @@ public class RoutePoint extends DataPoint {
 
     public void setDestination(AirportPoint destination) {
         this.destination = destination;
-    }
-
-    /**
-     * Returns the RoutePoint in the form of a string
-     * @return airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment
-     */
-    @Override
-    public String toString() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",
-                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment);
-
-    }
-
-    public String toStringWithAirports() {
-        return String.format("%s, %s, %s, %s,%s ,%s ,%s, %s, %s, %s, %s, %s, %s",
-                airline, airlineID, srcAirport, srcAirportID, dstAirport, dstAirportID, codeshare, stops, equipment, srcAirportName, srcAirportCountry, dstAirportName, dstAirportCountry);
-
     }
 
     public int getCorrectEntry() {

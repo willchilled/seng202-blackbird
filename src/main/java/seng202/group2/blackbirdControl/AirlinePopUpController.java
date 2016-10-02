@@ -7,7 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.AirlinePoint;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.DatabaseInterface;
 
 import java.util.Optional;
 
@@ -139,10 +139,26 @@ public class AirlinePopUpController {
             airlineEditButton.setVisible(true);
             nameText.setVisible(true);
 
-            String sql = String.format("UPDATE AIRLINE SET NAME='%1$s', COUNTRY='%2$s', ALIAS='%3$s'," +
-                            " IATA='%4$s', ICAO='%5$s', CALLSIGN='%6$s', ACTIVE='%7$s' WHERE ID='%8$s'",
+            for(int i=0; i<attributes.length; i++){
+                String current = attributes[i];
+                current = current.replaceAll("\"", "");
+                attributes[i] = current;
+            }
+
+            name = attributes[1];
+            alias =  attributes[2];
+            iata=attributes[3];
+            icao =  attributes[4];
+            callsign = attributes[5];
+            country = attributes[6];
+            active = attributes[7];
+
+
+
+            String sql = String.format("UPDATE AIRLINE SET NAME=\"%1$s\", COUNTRY=\"%2$s\", ALIAS=\"%3$s\"," +
+                            " IATA=\"%4$s\", ICAO=\"%5$s\", CALLSIGN=\"%6$s\", ACTIVE=\"%7$s\" WHERE ID=\"%8$s\"",
                     name, country, alias, iata, icao, callsign, active, idText.getText());
-            DataBaseRefactor.editDataEntry(sql);
+            DatabaseInterface.editDataEntry(sql);
 
             nameText.setText(name);
             countryText.setText(country);
@@ -192,7 +208,7 @@ public class AirlinePopUpController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
-            DataBaseRefactor.editDataEntry(sql);
+            DatabaseInterface.editDataEntry(sql);
             airlineTabController.airlineFilterButtonPressed();
             stage.close();
         }
@@ -202,6 +218,7 @@ public class AirlinePopUpController {
      * Sets the related airline tab for the pop up
      *
      * @param controller The airline tab invoking the pop up
+     * @see AirlineTabController
      */
     void setAirlineTabController(AirlineTabController controller) {
         this.airlineTabController = controller;

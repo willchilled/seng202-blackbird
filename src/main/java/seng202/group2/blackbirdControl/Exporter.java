@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 /**
  * Exports data sets for the user to view later, and import to a different project later if they desire.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 class Exporter {
 
@@ -43,7 +47,7 @@ class Exporter {
      * A method to save the current project, saving as a database file.
      */
     static void exportDataBase() {
-        File theirDB = HelperFunctions.makeFile("Save Project");
+        File theirDB = HelperFunctions.getFile("Save Project", true);
         if (theirDB == null) {  //user cancelled
             return;
         }

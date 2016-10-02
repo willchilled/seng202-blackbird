@@ -1,5 +1,3 @@
-
-
 package seng202.group2.blackbirdModel;
 
 /**
@@ -8,22 +6,21 @@ package seng202.group2.blackbirdModel;
 public class FlightPoint extends DataPoint {
 
 
-
-    private int seqno;
     private String localeType;
     private String localeID;
     private float altitude;
     private float latitude;
     private float longitude;
-    private int correctEntry=0;
+    private int correctEntry = 0;
     private int flightIDNum;
 
     /**
      * Creates a FlightPoint with values given
-     * @param type the locale type
-     * @param localeID the locale ID
-     * @param altitude the altitude
-     * @param latitude the latitude
+     *
+     * @param type      the locale type
+     * @param localeID  the locale ID
+     * @param altitude  the altitude
+     * @param latitude  the latitude
      * @param longitude the longitude
      */
     public FlightPoint(String type, String localeID, float altitude, float latitude, float longitude) {
@@ -39,6 +36,7 @@ public class FlightPoint extends DataPoint {
      * Attempts to create a FlightPoint from a  list of strings of length 5.
      * If successful it creates an FlightPoint with values from list and correctEntry as 0.
      * If unsuccessful it creates am FlightPoint with localeType "I AM INCORRECT".
+     *
      * @param currentLine The list of strings holding the information for the FlightPoint in index of:
      *                    0 localeType,
      *                    1 localeID,
@@ -48,9 +46,6 @@ public class FlightPoint extends DataPoint {
      */
     public FlightPoint(String[] currentLine) {
         super();
-
-        //System.out.println(currentLine.toString());
-
         try {
             if (currentLine.length == 5) {
                 this.localeType = currentLine[0];
@@ -61,7 +56,6 @@ public class FlightPoint extends DataPoint {
             }
             //FOR GRABBING OLD FLIGHTPOINTS FROM DATABASE FOR RECREATION
             if (currentLine.length == 7) {
-                //this.flightIDNum = Integer.parseInt(currentLine[0]);
                 this.localeType = currentLine[2];
                 this.localeID = currentLine[1];
                 this.altitude = Float.parseFloat(currentLine[3]);
@@ -69,12 +63,22 @@ public class FlightPoint extends DataPoint {
                 this.longitude = Float.parseFloat(currentLine[5]);
                 this.flightIDNum = Integer.parseInt(currentLine[6]);
             }
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.localeType = "I AM INCORRECT";
-            correctEntry = 1;   //set as 1 here?
+            correctEntry = 1;
         }
 
+    }
+
+    /**
+     * Returns the FlightPoint in the form of a string
+     *
+     * @return localeType, localeID, altitude, latitude, longitude
+     */
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s, %s,%s",
+                localeType, localeID, altitude, latitude, longitude);
     }
 
     public int getFlightIDNum() {
@@ -120,22 +124,6 @@ public class FlightPoint extends DataPoint {
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
-
-    /**
-     * Returns the FlightPoint in the form of a string
-     * @return localeType, localeID, altitude, latitude, longitude
-     */
-    @Override
-    public String toString() {
-
-
-        //String, int, int, int, int
-
-        return String.format("%s, %s, %s, %s,%s",
-                localeType, localeID, altitude, latitude, longitude);
-
-    }
-
 
     public int getCorrectEntry() {
         return correctEntry;

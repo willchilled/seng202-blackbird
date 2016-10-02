@@ -1,8 +1,6 @@
 package seng202.group2.blackbirdModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**A class for making a route for the purposes of displaying on the GUI
@@ -39,20 +37,16 @@ public class Route {
      * @return an Arraylist of the positions
      */
     public static ArrayList<Position> makeRoutePoints(Flight flight){
-
         ArrayList<Position> positions = new ArrayList<>();
         ArrayList<DataPoint> flightPoints = flight.getFlightPoints();
 
         for (int i = 0; i < flightPoints.size(); i++) {
-
             FlightPoint thisPoint = (FlightPoint) flightPoints.get(i);
             double lat = thisPoint.getLatitude();
             double lng = thisPoint.getLongitude();
             Position position = new Position(lat, lng);
             positions.add(position);
-
         }
-
         return positions;
     }
 

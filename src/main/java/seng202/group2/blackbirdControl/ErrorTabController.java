@@ -54,6 +54,7 @@ public class ErrorTabController {
      * Links back to the MainController of the program
      *
      * @param mainController The controller for the tab
+     * @see MainController
      */
     void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -63,6 +64,7 @@ public class ErrorTabController {
      * Links back to the airport tab, in order to receive bad data points
      *
      * @param airportTabController The airport tab controller
+     * @see AirportTabController
      */
     void setAirportTabController(AirportTabController airportTabController) {
         this.airportTabController = airportTabController;
@@ -72,6 +74,7 @@ public class ErrorTabController {
      * Links back to the airline tab, in order to receive bad data points
      *
      * @param airlineTabController The airline tab controller
+     * @see AirlineTabController
      */
     void setAirlineTabController(AirlineTabController airlineTabController) {
         this.airlineTabController = airlineTabController;
@@ -81,6 +84,7 @@ public class ErrorTabController {
      * Links back to the route tab, in order to receive bad data points
      *
      * @param routeTabController The route tab controller
+     * @see RouteTabController
      */
     void setRouteTabController(RouteTabController routeTabController) {
         this.routeTabController = routeTabController;

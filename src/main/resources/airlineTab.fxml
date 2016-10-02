@@ -81,13 +81,13 @@
                                             <children>
                                                 <ComboBox fx:id="airlineFilterMenu" layoutX="215.39999961853027" layoutY="23.399999618530273" onKeyPressed="#enterPressed" prefWidth="120.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                 <TextField fx:id="airlineSearchQuery" layoutX="420.3999996185303" layoutY="23.399999618530273" onKeyPressed="#enterPressed" prefHeight="25.0" prefWidth="120.0" promptText="Search..." GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                                                <Button fx:id="airlineFilterButton" layoutX="998.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlineFilterButtonPressed" text="Filter" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                                <Button fx:id="airlineFilterButton" layoutX="998.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlineFilterButtonPressed" text="Filter" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" >
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </Button>
                                                 <Text layoutX="165.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
-                                                <Button fx:id="airlineSeeAllButton" layoutX="1056.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlineSeeAllButtonPressed" text="See All Points" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                <Button fx:id="airlineSeeAllButton" layoutX="1056.3999996185303" layoutY="23.399999618530273" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#airlineSeeAllButtonPressed" text="See All Points" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                 <ComboBox fx:id="airlineActiveMenu" layoutX="10.399999618530273" layoutY="23.399999618530273" onKeyPressed="#enterPressed" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                                                 <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Active" GridPane.columnIndex="1" />
                                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Keyword" GridPane.columnIndex="2" />

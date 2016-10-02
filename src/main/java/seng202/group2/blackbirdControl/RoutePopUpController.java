@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 public class RoutePopUpController {
@@ -88,11 +86,11 @@ public class RoutePopUpController {
         }
 
 
-        ArrayList<String> airlineNames = FilterRefactor.filterDistinct("Name", "Airline");
+        ArrayList<String> airlineNames = Filter.filterDistinct("Name", "Airline");
         ObservableList<String> airlineMenu = FXCollections.observableArrayList(airlineNames);
         airlineMenu = HelperFunctions.addNullValue(airlineMenu);
 
-        ArrayList<String> uniqueAirportList = FilterRefactor.filterDistinct("Name", "Airport");
+        ArrayList<String> uniqueAirportList = Filter.filterDistinct("Name", "Airport");
         ObservableList<String> uniqueAirports = FXCollections.observableArrayList(uniqueAirportList);
         uniqueAirports = HelperFunctions.addNullValue(uniqueAirports);
         Integer[] myIndices = getMenuIndex(airlineMenu, uniqueAirports);

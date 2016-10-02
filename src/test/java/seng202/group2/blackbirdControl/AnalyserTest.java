@@ -58,7 +58,7 @@ public class AnalyserTest extends TestCase {
 
     }
     public void testCalculateDistance() throws Exception {
-        ArrayList<DataPoint>  myPoint = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint>  myPoint = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
 
         AirportPoint pointa = (AirportPoint) myPoint.get(0);
         AirportPoint pointb = (AirportPoint) myPoint.get(1);
@@ -77,7 +77,7 @@ public class AnalyserTest extends TestCase {
         //By going through and making sure a>=b for number of incoming and outgoing routes
         //Cool because it doesnt actually depend on data you put, just checks the relative results
 
-        ArrayList<DataPoint> airports =  FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> airports =  Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         airports  = Analyser.rankAirportsByRoutes(airports);
 
         int max_size = airports.size();

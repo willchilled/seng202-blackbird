@@ -90,7 +90,7 @@ public class AirlineTabController {
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myPoints = ParserRefactor.parseFile(f, DataTypes.AIRLINEPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myPoints, errorTab);
-        ArrayList<DataPoint> validAirlineData = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
+        ArrayList<DataPoint> validAirlineData = Filter.getAllPoints(DataTypes.AIRLINEPOINT);
 
         //Populates DropDowns according to data
         updateAirlineFields();
@@ -119,7 +119,7 @@ public class AirlineTabController {
      * @return The observable list to populate the combobox
      */
     private ObservableList<String> populateAirlineCountryList() {
-        ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airline");
+        ArrayList<String> countries = Filter.filterDistinct("country", "Airline");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = HelperFunctions.addNullValue(countryList);
         return countryList;
@@ -198,12 +198,12 @@ public class AirlineTabController {
             activeSelection = "N";
         }
         if (countrySelection.equals("No values Loaded") && activeSelection.equals("No values Loaded")) {
-            allPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
+            allPoints = Filter.getAllPoints(DataTypes.AIRLINEPOINT);
         } else {
             ArrayList<String> menusPressed = new ArrayList<>();
             menusPressed.add(countrySelection);
             menusPressed.add(activeSelection);
-            allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
+            allPoints = Filter.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
         }
         updateAirlinesTable(allPoints);
     }
@@ -212,7 +212,7 @@ public class AirlineTabController {
      * Shows all the airline points currently stored within the database.
      */
     public void airlineSeeAllButtonPressed() {
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT); //airportTable.getItems()
+        ArrayList<DataPoint> allPoints = Filter.getAllPoints(DataTypes.AIRLINEPOINT); //airportTable.getItems()
         updateAirlinesTable(allPoints);
         updateAirlineFields();
         airlineFilterMenu.setValue(airlineCountryList.get(0));

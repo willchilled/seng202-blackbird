@@ -76,7 +76,7 @@ public class AirportAddingPopUpController {
     public void createButtonPressed() {
         String[] airportPoint = getValues();
         String[] checkData = Validator.checkAirport(airportPoint);
-        ArrayList<String> airport = FilterRefactor.filterDistinct("Name", "Airport");
+        ArrayList<String> airport = Filter.filterDistinct("Name", "Airport");
         if(HelperFunctions.allValid(checkData) && (!airport.contains(airportPoint[1]))) {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT, 0, null);

@@ -8,7 +8,7 @@ import java.util.*;
  * This class helps us to perform filters on the inputted data by generating sql strings to be performed for
  * a filter query, then performing this query via the database methods.
  */
-public class FilterRefactor {
+public class Filter {
 
     /**
      * Gets all points within the database of the specified type

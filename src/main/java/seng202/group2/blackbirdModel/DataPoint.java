@@ -3,7 +3,6 @@
 package seng202.group2.blackbirdModel;
 
 import seng202.group2.blackbirdControl.ErrorTabController;
-import seng202.group2.blackbirdControl.FilterRefactor;
 
 import java.util.ArrayList;
 

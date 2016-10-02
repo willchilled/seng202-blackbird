@@ -1,5 +1,3 @@
-
-
 package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
@@ -13,14 +11,20 @@ import seng202.group2.blackbirdModel.DataBaseRefactor;
 
 import java.util.Optional;
 
+/**
+ * This class allows users to edit airport entries.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
+ */
 public class AirportPopUpController {
 
     private AirportTabController airportTabController;
-
     private AirportPoint airportPoint;
-
     private Stage stage;
 
+    //Display fields
     @FXML private Label airportNameText;
     @FXML private Label airportIdText;
     @FXML private Label airportCityText;
@@ -33,6 +37,8 @@ public class AirportPopUpController {
     @FXML private Label airportTimeZoneText;
     @FXML private Label airportDstText;
     @FXML private Label airportTzText;
+
+    //Editable fields
     @FXML private TextField airportNameTextEdit;
     @FXML private TextField airportCityTextEdit;
     @FXML private TextField airportCountryTextEdit;
@@ -44,14 +50,19 @@ public class AirportPopUpController {
     @FXML private TextField airportTimeZoneTextEdit;
     @FXML private TextField airportDstTextEdit;
     @FXML private TextField airportTZTextEdit;
+
+    //Buttons and warning text
     @FXML private Button airportEditButton;
     @FXML private Button airportFinishButton;
     @FXML private Button airportCancelButton;
     @FXML private Button airportDeleteButton;
     @FXML private Text airportInvalidDataText;
 
+    /**
+     * Initialises the pop up.
+     */
     @FXML
-    void setUpPopUp(){
+    void setUpPopUp() {
         airportNameText.setText(airportPoint.getAirportName());
         airportIdText.setText(String.valueOf(airportPoint.getAirportID()));
         airportCountryText.setText(airportPoint.getAirportCountry());
@@ -66,16 +77,19 @@ public class AirportPopUpController {
         airportTzText.setText(airportPoint.getTz());
     }
 
-    public void setAirportPoint(AirportPoint airportPoint) {
-
+    /**
+     * Sets the current airport point.
+     *
+     * @param airportPoint The selected airport points
+     */
+    void setAirportPoint(AirportPoint airportPoint) {
         this.airportPoint = airportPoint;
     }
 
     /**
      * Called upon pressing the edit button in the data viewing menu. Switches to editing mode.
      */
-    public void editAirport(){
-
+    public void editAirport() {
         airportNameText.setVisible(false);
         airportNameTextEdit.setVisible(true);
         airportCityTextEdit.setVisible(true);
@@ -88,55 +102,52 @@ public class AirportPopUpController {
         airportTimeZoneTextEdit.setVisible(true);
         airportDstTextEdit.setVisible(true);
         airportTZTextEdit.setVisible(true);
-//        airportInvalidDataText.setVisible(false);
 
         airportEditButton.setVisible(false);
         airportFinishButton.setVisible(true);
         airportCancelButton.setVisible(true);
         airportDeleteButton.setVisible(false);
 
-
-        if(airportNameText.getText() != ""){
+        if (!airportNameText.getText().isEmpty()) {
             airportNameTextEdit.setText(airportNameText.getText());
         }
-        if(airportCityText.getText() != ""){
+        if (!airportCityText.getText().isEmpty()) {
             airportCityTextEdit.setText(airportCityText.getText());
         }
-        if(airportCountryText.getText() != ""){
+        if (!airportCountryText.getText().isEmpty()) {
             airportCountryTextEdit.setText(airportCountryText.getText());
         }
-        if(airportIataText.getText() != ""){
+        if (!airportIataText.getText().isEmpty()) {
             airportIATATextEdit.setText(airportIataText.getText());
         }
-        if(airportIcaoText.getText() != ""){
+        if (!airportIcaoText.getText().isEmpty()) {
             airportICAOTextEdit.setText(airportIcaoText.getText());
         }
-        if(airportLatitdueText.getText() != ""){
+        if (!airportLatitdueText.getText().isEmpty()) {
             airportLatTextEdit.setText(airportLatitdueText.getText());
         }
-        if(airportLongitudeText.getText() != ""){
+        if (!airportLongitudeText.getText().isEmpty()) {
             airportLongTextEdit.setText(airportLongitudeText.getText());
         }
-        if(airportAltitudeText.getText() != ""){
+        if (!airportAltitudeText.getText().isEmpty()) {
             airportAltTextEdit.setText(airportAltitudeText.getText());
         }
-        if(airportTimeZoneText.getText() != ""){
+        if (!airportTimeZoneText.getText().isEmpty()) {
             airportTimeZoneTextEdit.setText(airportTimeZoneText.getText());
         }
-        if(airportDstText.getText() != ""){
+        if (!airportDstText.getText().isEmpty()) {
             airportDstTextEdit.setText(airportDstText.getText());
         }
-        if(airportTzText.getText() != ""){
+        if (!airportTzText.getText().isEmpty()) {
             airportTZTextEdit.setText(airportTzText.getText());
         }
     }
 
     /**
-     * Called upon pressing the Finish button in the editing menu. Grabs al editable fields and creates a query to pass
+     * Called upon pressing the Finish button in the editing menu. Grabs all editable fields and creates a query to pass
      * to the database. Returns to the viewing menu.
      */
-    public void commitEdit(){
-
+    public void commitEdit() {
         String name = airportNameTextEdit.getText();
         String city = airportCityTextEdit.getText();
         String country = airportCountryTextEdit.getText();
@@ -151,9 +162,7 @@ public class AirportPopUpController {
 
         String[] attributes = new String[] {airportIdText.getText(), name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
         String[] checkData = Validator.checkAirport(attributes);
-
-        if(HelperFunctions.allValid(checkData)) {
-
+        if (HelperFunctions.allValid(checkData)) {
             airportNameText.setVisible(true);
             airportNameTextEdit.setVisible(false);
             airportCityTextEdit.setVisible(false);
@@ -194,8 +203,7 @@ public class AirportPopUpController {
             airportTabController.airportFilterButtonPressed();
             airportTabController.updateAirportFields();
             airportDeleteButton.setVisible(true);
-
-        }else{
+        } else {
             Validator.displayAirportError(checkData);
             airportInvalidDataText.setVisible(true);
         }
@@ -205,8 +213,7 @@ public class AirportPopUpController {
     /**
      * Called upon pressing the cancel button, discards all editable fields and returns to the data viewing menu.
      */
-    public void cancelEdit(){
-
+    public void cancelEdit() {
         airportNameText.setVisible(true);
         airportNameTextEdit.setVisible(false);
         airportCityTextEdit.setVisible(false);
@@ -230,10 +237,9 @@ public class AirportPopUpController {
     /**
      * Deletes a single airport point. Asks user for confirmation before deleting.
      */
-    public void deleteSingleAirport(){
-        String sql = "";
+    public void deleteSingleAirport() {
         int id = airportPoint.getAirportID();
-        sql = String.format("DELETE FROM AIRPORT WHERE ID = %s", id);
+        String sql = String.format("DELETE FROM AIRPORT WHERE ID = %s", id);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Entry");
@@ -241,27 +247,38 @@ public class AirportPopUpController {
 
         Optional<ButtonType> result = alert.showAndWait();
 
-        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+        if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             DataBaseRefactor.editDataEntry(sql);
             airportTabController.airportFilterButtonPressed();
             stage.close();
         }
     }
 
-
-    public void enterPressed(KeyEvent ke)
-    {
-        if(ke.getCode() == KeyCode.ENTER)
-        {
+    /**
+     * Assigns an action for the enter key
+     *
+     * @param ke The keyevent that occurred (the Enter key event)
+     */
+    public void enterPressed(KeyEvent ke) {
+        if (ke.getCode() == KeyCode.ENTER) {
             commitEdit();
         }
     }
 
-
-    public void setAirportTabController(AirportTabController controller) {
+    /**
+     * Sets the related airport tab for the pop up
+     *
+     * @param controller The airport tab invoking the pop up
+     */
+    void setAirportTabController(AirportTabController controller) {
         this.airportTabController = controller;
     }
 
+    /**
+     * Sets the stage for the pop up
+     *
+     * @param stage The stage for the pop up
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }

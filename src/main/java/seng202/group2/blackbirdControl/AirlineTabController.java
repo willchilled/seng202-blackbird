@@ -23,16 +23,17 @@ import java.util.ArrayList;
 
 /**
  * Controller for the airline tab. Handles displaying of data, and acts as a controller for adding and editing data.
+ *
  * @author Team2
- * @version 2.0
+ * @version 1.0
  * @since 19/9/2016
  */
 public class AirlineTabController {
 
     private MainController mainController;
-    AirlineTabController instance;
-    ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
-    ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
+    private AirlineTabController instance;
+    private ObservableList<String> airlineCountryList = FXCollections.observableArrayList("No values Loaded");
+    private ObservableList<String> airlineActiveList  = FXCollections.observableArrayList("No values Loaded");
 
     //Airline Table
     @FXML private TableView<DataPoint> airlineTable;
@@ -77,10 +78,11 @@ public class AirlineTabController {
 
     /**
      * Adds airline data using a file chooser. Only valid data will be added into the persistent database.
+     *
      * @see ParserRefactor
      * @see DataBaseRefactor
      */
-    public void addAirlineData() {
+    void addAirlineData() {
         File f = HelperFunctions.getFile("Add Airline Data", false);
         if (f == null) {
             return;
@@ -113,6 +115,7 @@ public class AirlineTabController {
 
     /**
      * Populates the filter country dropdowns
+     *
      * @return The observable list to populate the combobox
      */
     private ObservableList<String> populateAirlineCountryList() {
@@ -124,6 +127,7 @@ public class AirlineTabController {
 
     /**
      * Updates the airline table displaying data
+     *
      * @param points The arraylist of data points
      */
     private void updateAirlinesTable(ArrayList<DataPoint> points) {
@@ -181,15 +185,15 @@ public class AirlineTabController {
         String searchQuery = airlineSearchQuery.getText();
         ArrayList<DataPoint> allPoints;
 
-        if (activeSelection == "Active") {
+        if (activeSelection.equals("Active")) {
             activeSelection = "Y";
-        } else if (activeSelection == "Inactive") {
+        } else if (activeSelection.equals("Inactive")) {
             activeSelection = "N";
         }
         if (countrySelection.equals("No values Loaded") && activeSelection.equals("No values Loaded")) {
             allPoints = FilterRefactor.getAllPoints(DataTypes.AIRLINEPOINT);
         } else {
-            ArrayList<String> menusPressed = new ArrayList<String>();
+            ArrayList<String> menusPressed = new ArrayList<>();
             menusPressed.add(countrySelection);
             menusPressed.add(activeSelection);
             allPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRLINEPOINT);
@@ -235,6 +239,7 @@ public class AirlineTabController {
 
     /**
      * Assigns an action for the enter key
+     *
      * @param ke The keyevent that occurred (the Enter key event)
      */
     public void enterPressed(KeyEvent ke) {
@@ -245,6 +250,7 @@ public class AirlineTabController {
 
     /**
      * Links back to the MainController of the program
+     *
      * @param controller The stage for the pop up
      */
     void setMainController(MainController controller) {

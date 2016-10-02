@@ -62,9 +62,10 @@ public class AirlinePopUpController {
 
     /**
      * Sets the current airline point to be edited
+     *
      * @param airlinePoint The current airline point
      */
-    public void setAirlinePoint(AirlinePoint airlinePoint) {
+    void setAirlinePoint(AirlinePoint airlinePoint) {
         this.airlinePoint = airlinePoint;
     }
 
@@ -86,25 +87,25 @@ public class AirlinePopUpController {
         airlineEditButton.setVisible(false);
         airlineDeleteButton.setVisible(false);
 
-        if (nameText.getText() != "") {
+        if (!nameText.getText().isEmpty()) {
             airlineNameTextEdit.setText((nameText.getText()));
         }
-        if (countryText.getText() != "") {
+        if (!countryText.getText().isEmpty()) {
             airlineCountryTextEdit.setText(countryText.getText());
         }
-        if (aliasText.getText() != "") {
+        if (!aliasText.getText().isEmpty()) {
             airlineAliasTextEdit.setText(aliasText.getText());
         }
-        if (iataText.getText() != "") {
+        if (!iataText.getText().isEmpty()) {
             airlineIATATextEdit.setText(iataText.getText());
         }
-        if (icaoText.getText() != "") {
+        if (!icaoText.getText().isEmpty()) {
             airlineICAOTextEdit.setText(icaoText.getText());
         }
-        if (callsignText.getText() != "") {
+        if (!callsignText.getText().isEmpty()) {
             airlineCallsignTextEdit.setText(callsignText.getText());
         }
-        if (activeText.getText() != "") {
+        if (!activeText.getText().isEmpty()) {
             airlineActiveTextEdit.setText(activeText.getText());
         }
     }
@@ -122,7 +123,7 @@ public class AirlinePopUpController {
         String callsign = airlineCallsignTextEdit.getText();
         String active = airlineActiveTextEdit.getText();
 
-        String[] attributes = new String[] {idText.getText(), name, alias, iata, icao, callsign, country, active};
+        String[] attributes = new String[]{idText.getText(), name, alias, iata, icao, callsign, country, active};
 
         if (Validator.checkAirline(attributes)) {
             airlineNameTextEdit.setVisible(false);
@@ -161,7 +162,7 @@ public class AirlinePopUpController {
     /**
      * Discards all edited fields and returns to the data viewing menu
      */
-    public void cancelEdit(){
+    public void cancelEdit() {
         airlineNameTextEdit.setVisible(false);
         airlineCountryTextEdit.setVisible(false);
         airlineAliasTextEdit.setVisible(false);
@@ -181,16 +182,15 @@ public class AirlinePopUpController {
      * Deletes a single airline point. Asks user for confirmation before deleting.
      */
     public void deleteSingleAirline() {
-        String sql = "";
         int id = airlinePoint.getAirlineID();
-        sql = String.format("DELETE FROM AIRLINE WHERE ID = %s", id);
+        String sql = String.format("DELETE FROM AIRLINE WHERE ID = %s", id);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Entry");
         alert.setContentText("Are you sure you want to delete?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if((result.isPresent()) && (result.get() == ButtonType.OK)) {
+        if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             DataBaseRefactor.editDataEntry(sql);
             airlineTabController.airlineFilterButtonPressed();
             stage.close();
@@ -199,25 +199,27 @@ public class AirlinePopUpController {
 
     /**
      * Sets the related airline tab for the pop up
+     *
      * @param controller The airline tab invoking the pop up
      */
-    public void setAirlineTabController(AirlineTabController controller) {
+    void setAirlineTabController(AirlineTabController controller) {
         this.airlineTabController = controller;
     }
 
     /**
      * Assigns an action for the enter key
+     *
      * @param ke The keyevent that occurred (the Enter key event)
      */
     public void enterPressed(KeyEvent ke) {
-        if (ke.getCode() == KeyCode.ENTER)
-        {
+        if (ke.getCode() == KeyCode.ENTER) {
             commitEdit();
         }
     }
 
     /**
      * Sets the stage for the pop up
+     *
      * @param stage The stage for the pop up
      */
     public void setStage(Stage stage) {

@@ -1,10 +1,8 @@
 package seng202.group2.blackbirdControl;
 
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.*;
@@ -23,21 +20,23 @@ import seng202.group2.blackbirdModel.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
- * Created by emr65 on 20/09/16.
+ * Controller for the airport tab. Handles displaying of data, and acts as a controller for adding and editing data.
+ *
+ * @author Team2
+ * @version 1.0
+ * @since 19/9/2016
  */
 public class AirportTabController {
 
     private MainController mainController;
-    AirportTabController instance;
-    private boolean allcorrect;
+    private AirportTabController instance;
+    private ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
 
-    //Airport Table
+    //Airport table
     @FXML private TableView<DataPoint> airportTable;
-
-    //Airport table columns
     @FXML private TableColumn airportIDCol;
     @FXML private TableColumn airportNameCol;
     @FXML private TableColumn airportCityCol;
@@ -50,8 +49,6 @@ public class AirportTabController {
     @FXML private TableColumn airportTimeCol;
     @FXML private TableColumn airportDSTCol;
     @FXML private TableColumn airportTZCol;
-    @FXML private TableColumn airportErrorCol;
-
     @FXML private TableColumn airportIncCol;
     @FXML private TableColumn airportOutCol;
 
@@ -59,31 +56,35 @@ public class AirportTabController {
     @FXML private ComboBox airportFilterMenu;
     @FXML private TextField airportSearchQuery;
 
-    //BUTTONS
-    @FXML private Button airportSeeAllButton;
-    @FXML private Button addAirportToTable;
-    @FXML private Button filterButton;
-
-    ObservableList<String> airportCountryList = FXCollections.observableArrayList("No values Loaded");
-
-
+    /**
+     * Sets the airport tab controller.
+     */
     public AirportTabController() {
         instance = this;
     }
 
-    public void initialize(){
+    /**
+     * Initializes the airport tab
+     */
+    public void initialize() {
         airportFilterMenu.setValue(airportCountryList.get(0));
         airportFilterMenu.setItems(airportCountryList);
     }
 
-
-
-    public void show(){
-        //mainController.show();
+    /**
+     * The initial view when the table is empty.
+     */
+    public void show() {
         airportTable.setPlaceholder(new Label("No data in table. To add data select File -> Add Data -> Airport"));
     }
 
-    public void addAirportData() {
+    /**
+     * Adds airport data using a file chooser. Only valid data will be added into the persistent database.
+     *
+     * @see ParserRefactor
+     * @see DataBaseRefactor
+     */
+    void addAirportData() {
         File f = HelperFunctions.getFile("Add Airport Data", false);
         if (f == null) {
             return;
@@ -92,7 +93,7 @@ public class AirportTabController {
         ArrayList<DataPoint> myAirportPoints = ParserRefactor.parseFile(f, DataTypes.AIRPORTPOINT, errorTab);
         DataBaseRefactor.insertDataPoints(myAirportPoints, errorTab);
         ArrayList<DataPoint> validAirportPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        //System.out.println(validAirportPoints.get(1));
+
         updateAirportFields();
         airportFilterMenu.setValue(airportCountryList.get(0));
         updateAirportsTable(validAirportPoints);
@@ -100,26 +101,32 @@ public class AirportTabController {
         mainController.updateTab(DataTypes.AIRPORTPOINT);
     }
 
-
-
-    public void updateAirportFields() {
-        airportCountryList = populateAirportCountryList();  //populating from valid data in database
-        //System.out.println(airportCountryList);
+    /**
+     * Updates the filtering dropdown menus
+     */
+    private void updateAirportFields() {
+        airportCountryList = populateAirportCountryList();
         airportFilterMenu.setItems(airportCountryList);
     }
 
-    private ObservableList<String> populateAirportCountryList(){
-        //Populates the dropdown of airline countries
-        //ArrayList<AirportPoint> allPoints = getAllAirportPoints();
+    /**
+     * Populates the filter country dropdowns
+     *
+     * @return The observable list to populate the combobox
+     */
+    private ObservableList<String> populateAirportCountryList() {
         ArrayList<String> countries = FilterRefactor.filterDistinct("country", "Airport");
         ObservableList<String> countryList = FXCollections.observableArrayList(countries);
         countryList = HelperFunctions.addNullValue(countryList);
-
         return countryList;
     }
 
-    protected void updateAirportsTable(ArrayList<DataPoint> validAirportPoints) {
-
+    /**
+     * Updates the airport table displaying data
+     *
+     * @param validAirportPoints The arraylist of data points
+     */
+    void updateAirportsTable(ArrayList<DataPoint> validAirportPoints) {
         airportTable.getItems().setAll(validAirportPoints);
 
         airportIDCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("airportID"));
@@ -137,27 +144,20 @@ public class AirportTabController {
         airportIncCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("incomingRoutes"));
         airportOutCol.setCellValueFactory(new PropertyValueFactory<AirportPoint, Integer>("outgoingRoutes"));
 
-        airportTable.getItems().addListener(new ListChangeListener<DataPoint>() {
-            //This refreshes the current table
-            @Override
-            public void onChanged(Change<? extends DataPoint> c) {
-                airportTable.getColumns().get(0).setVisible(false);
-                airportTable.getColumns().get(0).setVisible(true);
-            }
+        airportTable.getItems().addListener((ListChangeListener<DataPoint>) c -> {
+            airportTable.getColumns().get(0).setVisible(false);
+            airportTable.getColumns().get(0).setVisible(true);
         });
-
 
         airportTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event){
+            public void handle(MouseEvent event) {
                 if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    Stage stage;
-                    Parent root;
-                    stage = new Stage();
+                    AirportPoint myPoint = (AirportPoint) airportTable.getSelectionModel().getSelectedItem();
+                    Stage stage = new Stage();
                     try {
-                        AirportPoint myPoint = (AirportPoint) airportTable.getSelectionModel().getSelectedItem();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/airportPopup.fxml"));
-                        root = loader.load();
+                        Parent root = loader.load();
                         AirportPopUpController popUpController = loader.getController();
                         popUpController.setAirportTabController(instance);
                         popUpController.setAirportPoint(myPoint);
@@ -168,59 +168,53 @@ public class AirportTabController {
                         stage.setTitle("Detailed Airport Information");
                         stage.initModality(Modality.NONE);
                         stage.initOwner(null);
-
                         stage.show();
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         });
     }
 
+    /**
+     * Helps to filter airports, obtaining the values from the filter dropdowns
+     */
     public void airportFilterButtonPressed() {
-        //NEED TO ADD CASE FOR NONE SELECTED
         String countrySelection = airportFilterMenu.getValue().toString();
         String searchQuery = airportSearchQuery.getText();
-        System.out.println(searchQuery);
+        ArrayList<String> menusPressed = new ArrayList<>(Collections.singletonList(countrySelection));
 
-        ArrayList<String> menusPressed = new ArrayList<>(Arrays.asList(countrySelection));
-        ArrayList<DataPoint> filteredPoints ;
-
-        if(countrySelection.equals("No values Loaded")){
+        ArrayList<DataPoint> filteredPoints;
+        if (countrySelection.equals("No values Loaded")) {
             filteredPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
-        }
-        else{
+        } else {
             filteredPoints = FilterRefactor.filterSelections(menusPressed, searchQuery, DataTypes.AIRPORTPOINT);
         }
-
         updateAirportFields();
         updateAirportsTable(filteredPoints);
     }
 
-
-    public void airportSeeAllButtonPressed(ActionEvent actionEvent) {
-        //gets all airport points and updates view
-        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT); //airportTable.getItems();
+    /**
+     * Shows all the airport points currently stored within the database.
+     */
+    public void airportSeeAllButtonPressed() {
+        ArrayList<DataPoint> allPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         updateAirportsTable(allPoints);
         updateAirportFields();
         airportFilterMenu.setValue(airportCountryList.get(0));
-
         airportSearchQuery.clear();
-
     }
 
-    public void addSingleAirport(ActionEvent actionEvent) {
-        //Brings up popup to insert airport values
+    /**
+     * Brings up adding popup to insert airport values
+     */
+    public void addSingleAirport() {
         try {
             Stage adderStage = new Stage();
-            Parent root;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AirportAddingPopUp.fxml"));
-            root = loader.load();
+            Parent root = loader.load();
 
-            //use controller to control it
             AirportAddingPopUpController popUpController = loader.getController();
             popUpController.setAirportTabController(instance);
             popUpController.setAdderStage(adderStage);
@@ -232,22 +226,31 @@ public class AirportTabController {
         }
     }
 
-
-    public void setMainController(MainController controller) {
+    /**
+     * Links back to the MainController of the program
+     *
+     * @param controller The stage for the pop up
+     */
+    void setMainController(MainController controller) {
         this.mainController = controller;
     }
 
-    public void enterPressed(KeyEvent ke)
-    {
-        if(ke.getCode() == KeyCode.ENTER)
-        {
+    /**
+     * Assigns an action for the enter key
+     *
+     * @param ke The keyevent that occurred (the Enter key event)
+     */
+    public void enterPressed(KeyEvent ke) {
+        if (ke.getCode() == KeyCode.ENTER) {
             airportFilterButtonPressed();
         }
     }
 
-
-    public void exportAirportData() {
-        ArrayList<DataPoint> myPoints = new ArrayList<DataPoint>(airportTable.getItems());
+    /**
+     * Exports current airport data in the table, which may be a subset of all data.
+     */
+    void exportAirportData() {
+        ArrayList<DataPoint> myPoints = new ArrayList<>(airportTable.getItems());
         Exporter.exportData(myPoints);
     }
 }

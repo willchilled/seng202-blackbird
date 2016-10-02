@@ -56,7 +56,7 @@ public class AirlineAddingPopUpController {
     /**
      * This method is called when the create button is pressed, passing the
      * inputted values through to be checked by both the parser and the
-     * database. If an error occurs, shows an alert dialogue box.
+     * database. If an error occurs, shows an error message.
      */
     public void createButtonPressed() {
         String[] airlinePoint = getValues();
@@ -83,16 +83,17 @@ public class AirlineAddingPopUpController {
 
     /**
      * Helper function to retrieve inputted values that the user has entered
-     * @return
+     *
+     * @return The string array of values retrieved from the entry fields
      */
     private String[] getValues() {
-        String airlineName = Name.getText().toString();
-        String id = airlineID.getText().toString();
-        String airlineAlias = Alias.getText().toString();
-        String airlineIATA = IATA.getText().toString();
-        String airlineICAO = ICAO.getText().toString();
-        String airlineCallsign = Callsign.getText().toString();
-        String airlineCountry = Country.getText().toString();
+        String airlineName = Name.getText();
+        String id = airlineID.getText();
+        String airlineAlias = Alias.getText();
+        String airlineIATA = IATA.getText();
+        String airlineICAO = ICAO.getText();
+        String airlineCallsign = Callsign.getText();
+        String airlineCountry = Country.getText();
         boolean ActiveChecked = Active.isSelected();
         String airlineActive;
         if (ActiveChecked) {
@@ -106,6 +107,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Sets the root for the pop up
+     *
      * @param root The parent root
      */
     public void setRoot(Parent root) {
@@ -114,22 +116,25 @@ public class AirlineAddingPopUpController {
 
     /**
      * Sets the stage for the pop up
+     *
      * @param adderStage The stage for the pop up
      */
-    public void setAdderStage(Stage adderStage) {
+    void setAdderStage(Stage adderStage) {
         this.adderStage = adderStage;
     }
 
     /**
      * Sets the related airline tab for the pop up
+     *
      * @param controller The airline tab invoking the pop up
      */
-    public void setAirlineTabController(AirlineTabController controller) {
+    void setAirlineTabController(AirlineTabController controller) {
         airlineTabController = controller;
     }
 
     /**
      * Assigns an action for the enter key
+     *
      * @param ke The keyevent that occurred (the Enter key event)
      */
     public void enterPressed(KeyEvent ke) {
@@ -140,6 +145,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Helper function for the error tab controller, to detect whether the point was added or not
+     *
      * @return Boolean for whether the point was added or not.
      */
     public boolean isAdded() {

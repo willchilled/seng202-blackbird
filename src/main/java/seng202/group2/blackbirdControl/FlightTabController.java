@@ -85,7 +85,9 @@ public class FlightTabController {
     }
 
     /**
-     * @param controller
+     * Links back to the MainController of the program
+     *
+     * @param controller The controller for the tab window
      */
     void setMainController(MainController controller) {
         this.mainController = controller;
@@ -223,7 +225,7 @@ public class FlightTabController {
      *
      * @param filteredFlights A list of the flights with which to update the tables
      */
-    public void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
+    void updateFlightsTable(ArrayList<DataPoint> filteredFlights) {
         flightPointTable.getItems().setAll();
         flightTable.getItems().setAll(filteredFlights);
         flightSourceCol.setCellValueFactory(new PropertyValueFactory<Flight, String>("srcAirport"));

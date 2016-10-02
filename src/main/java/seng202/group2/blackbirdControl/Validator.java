@@ -27,7 +27,7 @@ public class Validator {
     //ID IS A KEY ATTRIBUTE OF AIRLINE SO IS THE ONLY ATTRIBUTE THAT DOES NOT ALLOW CHECKING FOR EMPTY STRING!!!!
 
     private static boolean isValidName(String name){
-         return (!name.equals("") && name.length() <= 40 || name.equals(""));
+         return (!name.equals("") && name.length() <= 40);
     }
 
     private static boolean isValidAlias(String alias){
@@ -47,7 +47,7 @@ public class Validator {
     }
 
     private static boolean isValidCountry(String country){
-        return (!country.equals("") && country.length() <= 40 || country.equals(""));
+        return (!country.equals("") && country.length() <= 40);
     }
 
     private static boolean isValidAirlineCountry(String country){
@@ -246,7 +246,7 @@ public class Validator {
         String timeZone = attributes[9];
         String dst = attributes[10];
         String tz = attributes[11];
-
+//
 //        System.out.println("----VALIDATING AIRPORT----");
 //        if(!isValidID(id)){
 //            System.out.println("BAD ID");

@@ -166,7 +166,7 @@ public class Validator {
      */
     public static String[] checkAirline(String[] attributes){
 
-        String[] badData = new String[7];
+        String[] badData = new String[8];
         String id = attributes[0];
         String name = attributes[1];
         String alias = attributes[2];
@@ -237,7 +237,7 @@ public class Validator {
      */
     public static String[] checkAirport(String[] attributes){
 
-        String[] badData = new String[11];
+        String[] badData = new String[12];
         String id = attributes[0];
         String name = attributes[1];
         String city = attributes[2];
@@ -307,7 +307,7 @@ public class Validator {
     }
 
     public static String[] checkRoute(String[] attributes){  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
-        String[] badData = new String[5];
+        String[] badData = new String[6];
         if (attributes[0].equals("None")){
             badData[0] = "Airline";
         }

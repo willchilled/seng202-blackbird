@@ -109,7 +109,7 @@ public class FlightCreatorPopUpController {
         if (finalPoint.getLocalType().equals("APT") && flightAdderTable.getItems().size() > 1) {
             flightAdderErrorText.setVisible(false);
             ArrayList<DataPoint> myFlightData = new ArrayList<>(flightAdderTable.getItems());
-            Database.insertDataPoints(myFlightData, null);
+            DatabaseInterface.insertDataPoints(myFlightData, null);
             ArrayList<DataPoint> allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
             flightTabController.updateFlightsTable(allPoints);
             creatorStage.close();

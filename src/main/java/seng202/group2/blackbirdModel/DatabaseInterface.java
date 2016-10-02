@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * This class acts as an interface between our program and the database. It includes methods for preparing
  * the sql statements and performing these to update the database.
  */
-public class Database {
+public class DatabaseInterface {
 
     private static int FlightCount = 0;
     private static int flightPointCount = 0;
@@ -27,7 +27,7 @@ public class Database {
      * @param dataBaseName Sets the current database name.
      */
     private static void setDataBaseName(String dataBaseName) {
-        Database.dataBaseName = dataBaseName;
+        DatabaseInterface.dataBaseName = dataBaseName;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Database {
             preparedStatement.setInt(7, FlightCount);
         } catch (SQLException e) {
 //            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.out.println("Database.prepareInsertFlightPointStatement failed");
+//            System.out.println("DatabaseInterface.prepareInsertFlightPointStatement failed");
         }
         return preparedStatement;
     }
@@ -214,7 +214,7 @@ public class Database {
             preparedStatement.setInt(9, stops);
             preparedStatement.setString(10, equp);
         } catch (SQLException e) {
-            //System.out.println("Database.prepareInsertRouteSql failed");
+            //System.out.println("DatabaseInterface.prepareInsertRouteSql failed");
         }
         return preparedStatement;
     }
@@ -261,7 +261,7 @@ public class Database {
             preparedStatement.setString(12, tz);
         } catch (SQLException e) {
 
-            System.out.println("Database.prepareInsertAirportSql failed");
+            System.out.println("DatabaseInterface.prepareInsertAirportSql failed");
         }
 
         return preparedStatement;
@@ -302,7 +302,7 @@ public class Database {
             preparedStatement.setString(7, country);
             preparedStatement.setString(8, active);
         } catch (SQLException e) {
-            System.out.println("Database.prepareInsertAirlineSql failed");
+            System.out.println("DatabaseInterface.prepareInsertAirlineSql failed");
         }
         return preparedStatement;
     }
@@ -370,7 +370,7 @@ public class Database {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("Database.performGenericQuery query failed");
+            System.out.println("DatabaseInterface.performGenericQuery query failed");
             e.printStackTrace();
         }
         return resultPoints;
@@ -403,7 +403,7 @@ public class Database {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-//            System.out.println("Database.performDistinctQuery query failed");
+//            System.out.println("DatabaseInterface.performDistinctQuery query failed");
 //            e.printStackTrace();
         }
         return distinctResults;
@@ -673,7 +673,7 @@ public class Database {
             alert.setHeaderText("The file was not a database file.");
             alert.setContentText("A database was create for you");
             alert.showAndWait();
-            Database.createTables();
+            DatabaseInterface.createTables();
             //Return true to prevent 2 errors from being displayed
             return true;
         }

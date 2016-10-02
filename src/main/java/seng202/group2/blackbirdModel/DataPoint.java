@@ -70,7 +70,7 @@ public class DataPoint {
 
         } else if (type == DataTypes.FLIGHT) {
             String sql = String.format("SELECT * FROM FLIGHTPOINT WHERE FlightIDNum='%s'", dataArray[0]);
-            ArrayList<DataPoint> flightPoints = Database.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
+            ArrayList<DataPoint> flightPoints = DatabaseInterface.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
             //Has grabbed the relevant flightpoints, now construct a new flight
             currentPoint = new Flight(flightPoints);
             //currentPoint will have a correct entry of 1 if incorrect here

@@ -3,7 +3,6 @@ package seng202.group2.blackbirdControl;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -169,7 +168,7 @@ public class RouteTabController {
      * Adds route data using a file chooser. Only valid data will be added into the persistent database.
      *
      * @see Parser
-     * @see Database
+     * @see DatabaseInterface
      */
     void addRouteData() {
         File f = HelperFunctions.getFile("Add Route Data", false);
@@ -178,7 +177,7 @@ public class RouteTabController {
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myRouteData = Parser.parseFile(f, DataTypes.ROUTEPOINT, errorTab);
-        Database.insertDataPoints(myRouteData, errorTab);
+        DatabaseInterface.insertDataPoints(myRouteData, errorTab);
 
         ArrayList<DataPoint> validRouteData = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         updateRoutesTable(validRouteData);
@@ -327,7 +326,7 @@ public class RouteTabController {
         String[] returnString = new String[2];
         if (type == DataTypes.AIRLINEPOINT) {
             String sql = "SELECT * FROM AIRLINE WHERE NAME='" + name + "'";
-            ArrayList<DataPoint> foundAirline = Database.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+            ArrayList<DataPoint> foundAirline = DatabaseInterface.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
             AirlinePoint myAirline = (AirlinePoint) foundAirline.get(0);
             returnString[0] = Integer.toString(myAirline.getAirlineID());
             if (!myAirline.getIata().isEmpty()) {
@@ -341,7 +340,7 @@ public class RouteTabController {
 
         if (type == DataTypes.AIRPORTPOINT) {
             String sql = "SELECT * FROM AIRPORT WHERE NAME='" + name + "'";
-            ArrayList<DataPoint> foundSource = Database.performGenericQuery(sql, DataTypes.AIRPORTPOINT);
+            ArrayList<DataPoint> foundSource = DatabaseInterface.performGenericQuery(sql, DataTypes.AIRPORTPOINT);
             AirportPoint mySource = (AirportPoint) foundSource.get(0);
             returnString[0] = Integer.toString(mySource.getAirportID());
             if (!mySource.getIata().isEmpty()) {

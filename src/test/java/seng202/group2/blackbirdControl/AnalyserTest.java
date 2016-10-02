@@ -46,11 +46,11 @@ public class AnalyserTest extends TestCase {
         ArrayList<DataPoint> myFlight = new ArrayList<>();
         myFlight.add(f);
 
-        Database.createTables();
-        Database.insertDataPoints(airlinePoints, null);
-        Database.insertDataPoints(airportPoint, null);
-        Database.insertDataPoints(routePoints, null);
-        Database.insertDataPoints(myFlight, null);
+        DatabaseInterface.createTables();
+        DatabaseInterface.insertDataPoints(airlinePoints, null);
+        DatabaseInterface.insertDataPoints(airportPoint, null);
+        DatabaseInterface.insertDataPoints(routePoints, null);
+        DatabaseInterface.insertDataPoints(myFlight, null);
 
 
 

@@ -113,7 +113,7 @@ public class FlightTabController {
             alert.showAndWait();
             return;
         }
-        Database.insertDataPoints(myFlightData, errorTab);
+        DatabaseInterface.insertDataPoints(myFlightData, errorTab);
         ArrayList<DataPoint> myFlights = Filter.getAllPoints(DataTypes.FLIGHT);
         updateFlightFields();
         updateFlightsTable(myFlights);
@@ -308,8 +308,8 @@ public class FlightTabController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if((result.isPresent()) && (result.get() == ButtonType.OK)) {
-            Database.editDataEntry(flightSql);
-            Database.editDataEntry(flightPointSql);
+            DatabaseInterface.editDataEntry(flightSql);
+            DatabaseInterface.editDataEntry(flightPointSql);
             flightFilterButtonPressed();
             mainController.mainMenuHelper();
         }

@@ -56,7 +56,7 @@ public class AirportAddingPopUpController {
         adderStage.setTitle("Add Airport Information");
         adderStage.initModality(Modality.NONE);
         adderStage.initOwner(null);
-        airportID.setText(Integer.toString(Database.getMaxInColumn("AIRPORT", "ID") + 1));
+        airportID.setText(Integer.toString(DatabaseInterface.getMaxInColumn("AIRPORT", "ID") + 1));
 
         adderStage.show();
         ObservableList<String> timeZones = populateTimeZoneMenu();
@@ -81,7 +81,7 @@ public class AirportAddingPopUpController {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT, 0, null);
             myAirportData.add(myAirportPoint);
-            Database.insertDataPoints(myAirportData, null);
+            DatabaseInterface.insertDataPoints(myAirportData, null);
             airportTabController.airportFilterButtonPressed();
             airportTabController.updateAirportFields();
             added = true;

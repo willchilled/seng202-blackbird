@@ -10,7 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.Database;
+import seng202.group2.blackbirdModel.DatabaseInterface;
 import seng202.group2.blackbirdModel.DataPoint;
 import seng202.group2.blackbirdModel.DataTypes;
 
@@ -49,7 +49,7 @@ public class AirlineAddingPopUpController {
         adderStage.setTitle("Add Airline Information");
         adderStage.initModality(Modality.NONE);
         adderStage.initOwner(null);
-        airlineID.setText(Integer.toString(Database.getMaxInColumn("AIRLINE", "ID") + 1));
+        airlineID.setText(Integer.toString(DatabaseInterface.getMaxInColumn("AIRLINE", "ID") + 1));
         adderStage.show();
     }
 
@@ -65,7 +65,7 @@ public class AirlineAddingPopUpController {
             ArrayList<DataPoint> myAirlineData = new ArrayList<>();
             DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT, 0, null);
             myAirlineData.add(myAirlinePoint);
-            Database.insertDataPoints(myAirlineData, null);
+            DatabaseInterface.insertDataPoints(myAirlineData, null);
 
             airlineTabController.airlineFilterButtonPressed();
             airlineTabController.updateAirlineFields();

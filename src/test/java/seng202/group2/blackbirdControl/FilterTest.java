@@ -45,16 +45,16 @@ public class FilterTest extends TestCase {
         myFlight.add(f);
         // System.out.println(flight.getType() + "--------------------------");
 
-        Database.createTables();
-        Database.insertDataPoints(airlinePoints, null);
-        Database.insertDataPoints(airportPoint, null);
-        Database.insertDataPoints(routePoints, null);
-        Database.insertDataPoints(myFlight, null);
+        DatabaseInterface.createTables();
+        DatabaseInterface.insertDataPoints(airlinePoints, null);
+        DatabaseInterface.insertDataPoints(airportPoint, null);
+        DatabaseInterface.insertDataPoints(routePoints, null);
+        DatabaseInterface.insertDataPoints(myFlight, null);
 
 
         // ArrayList<Fl> a= flightPoints;
 
-        Database.insertDataPoints(flightPoints, null);
+        DatabaseInterface.insertDataPoints(flightPoints, null);
 
 
     }
@@ -206,7 +206,7 @@ public class FilterTest extends TestCase {
 
 
     public void testAirportLinkWithRoutes(){
-        Database.createTables();
+        DatabaseInterface.createTables();
 
         String cwd = System.getProperty("user.dir");
         String airportsFileString;
@@ -224,9 +224,9 @@ public class FilterTest extends TestCase {
         ArrayList<DataPoint> routePoints = Parser.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
         //ArrayList<Flight>
 
-        Database.createTables();
-        Database.insertDataPoints(airportPoint, null);
-        Database.insertDataPoints(routePoints, null);
+        DatabaseInterface.createTables();
+        DatabaseInterface.insertDataPoints(airportPoint, null);
+        DatabaseInterface.insertDataPoints(routePoints, null);
 
 
         ArrayList<DataPoint> airportPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
@@ -260,7 +260,7 @@ public class FilterTest extends TestCase {
         String airportsFileString;
         String routesFileString;
         String flightFileString;
-        Database.createTables();
+        DatabaseInterface.createTables();
 
         airlinesFileString = cwd + "/JUnitTesting/airlinesLargeWithNoFailing";
         airportsFileString = cwd + "/JUnitTesting/airports.txt";
@@ -284,10 +284,10 @@ public class FilterTest extends TestCase {
         ArrayList<DataPoint> myFlight = new ArrayList<>();
         myFlight.add(f);
 
-        Database.insertDataPoints(airlinePoints, null);
+        DatabaseInterface.insertDataPoints(airlinePoints, null);
 
-        Database.insertDataPoints(myFlight, null);
-        Database.insertDataPoints(flightPoints, null);
+        DatabaseInterface.insertDataPoints(myFlight, null);
+        DatabaseInterface.insertDataPoints(flightPoints, null);
         double numTrials = 3;
         long totalStart1 =0;
         long totalFinish1 = 0;
@@ -302,11 +302,11 @@ public class FilterTest extends TestCase {
             totalStart1 += startTime;
             totalFinish1 += endTime;
 
-            Database.createTables();
+            DatabaseInterface.createTables();
             startTime = System.nanoTime();
 
-            Database.insertDataPoints(airportPoint, null);
-            Database.insertDataPoints(routePoints, null);
+            DatabaseInterface.insertDataPoints(airportPoint, null);
+            DatabaseInterface.insertDataPoints(routePoints, null);
             endTime = System.nanoTime();
 
             totalStart2 += startTime;

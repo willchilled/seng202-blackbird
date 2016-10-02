@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.Database;
+import seng202.group2.blackbirdModel.DatabaseInterface;
 import seng202.group2.blackbirdModel.DataTypes;
 
 import java.io.*;
@@ -58,7 +58,7 @@ public class MenuBarController {
     public void show() {
         if (!opened) {
             showMenus();
-            Database.createTables();
+            DatabaseInterface.createTables();
             opened = true;
         } else {
             opened = true;
@@ -69,7 +69,7 @@ public class MenuBarController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                Database.createTables();
+                DatabaseInterface.createTables();
                 mainController.showTables();
                 showMenuHelper();
                 mainController.clearErrors(DataTypes.AIRPORTPOINT);
@@ -138,7 +138,7 @@ public class MenuBarController {
 
     /**
      * Shows alert that allows user to choose to either replace or merge when adding a new data file
-     * Calls mainController.addXXXData for each datatype, and Database.clearTable when user chooses to replace
+     * Calls mainController.addXXXData for each datatype, and DatabaseInterface.clearTable when user chooses to replace
      *
      * @param type The datatype that we are adding to
      */
@@ -155,7 +155,7 @@ public class MenuBarController {
             alert.showAndWait().ifPresent(response -> {
                 if (response == mergeButton || response == replaceButton) {
                     if (response == replaceButton) {
-                        Database.clearTable(type);
+                        DatabaseInterface.clearTable(type);
                     }
                     AddDataToController(type);
                 }
@@ -234,7 +234,7 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            Database.clearTable(DataTypes.AIRLINEPOINT);
+            DatabaseInterface.clearTable(DataTypes.AIRLINEPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRLINEPOINT);
             mainController.clearErrors(DataTypes.AIRLINEPOINT);
@@ -254,7 +254,7 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            Database.clearTable(DataTypes.AIRPORTPOINT);
+            DatabaseInterface.clearTable(DataTypes.AIRPORTPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRPORTPOINT);
             mainController.clearErrors(DataTypes.AIRPORTPOINT);
@@ -274,7 +274,7 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            Database.clearTable(DataTypes.ROUTEPOINT);
+            DatabaseInterface.clearTable(DataTypes.ROUTEPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.ROUTEPOINT);
             mainController.clearErrors(DataTypes.ROUTEPOINT);
@@ -294,8 +294,8 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            Database.clearTable(DataTypes.FLIGHT);
-            Database.clearTable(DataTypes.FLIGHTPOINT);
+            DatabaseInterface.clearTable(DataTypes.FLIGHT);
+            DatabaseInterface.clearTable(DataTypes.FLIGHTPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.FLIGHT);
             showMenuHelper();
@@ -346,7 +346,7 @@ public class MenuBarController {
      * A method to load a previous database file
      */
     public void loadDb() {
-        File theirDB = HelperFunctions.getFile("Choose a Database", false);
+        File theirDB = HelperFunctions.getFile("Choose an existing project", false);
         if (theirDB == null) {
             return;
         }
@@ -380,18 +380,18 @@ public class MenuBarController {
             alert.setHeaderText("There was a problem with the flight data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            Database.clearTable(DataTypes.FLIGHT);
-            Database.clearTable(DataTypes.FLIGHTPOINT);
-            Database.createTables();
+            DatabaseInterface.clearTable(DataTypes.FLIGHT);
+            DatabaseInterface.clearTable(DataTypes.FLIGHTPOINT);
+            DatabaseInterface.createTables();
         } else if (!(Validator.tableColumnchecker("FLIGHTPOINT", flightPointTableColumns))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error in loading File");
             alert.setHeaderText("There was a problem with the flight data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            Database.clearTable(DataTypes.FLIGHTPOINT);
-            Database.clearTable(DataTypes.FLIGHT);
-            Database.createTables();
+            DatabaseInterface.clearTable(DataTypes.FLIGHTPOINT);
+            DatabaseInterface.clearTable(DataTypes.FLIGHT);
+            DatabaseInterface.createTables();
         }
 
         //check routes in loaded database
@@ -402,8 +402,8 @@ public class MenuBarController {
             alert.setHeaderText("There was a problem with the route data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            Database.clearTable(DataTypes.ROUTEPOINT);
-            Database.createTables();
+            DatabaseInterface.clearTable(DataTypes.ROUTEPOINT);
+            DatabaseInterface.createTables();
         }
 
         //check airlines in loaded database
@@ -414,8 +414,8 @@ public class MenuBarController {
             alert.setHeaderText("There was a problem with the airline data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            Database.clearTable(DataTypes.AIRLINEPOINT);
-            Database.createTables();
+            DatabaseInterface.clearTable(DataTypes.AIRLINEPOINT);
+            DatabaseInterface.createTables();
         }
 
         //check airports in loaded database
@@ -426,8 +426,8 @@ public class MenuBarController {
             alert.setHeaderText("There was a problem with the airport data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            Database.clearTable(DataTypes.AIRPORTPOINT);
-            Database.createTables();
+            DatabaseInterface.clearTable(DataTypes.AIRPORTPOINT);
+            DatabaseInterface.createTables();
         }
     }
 

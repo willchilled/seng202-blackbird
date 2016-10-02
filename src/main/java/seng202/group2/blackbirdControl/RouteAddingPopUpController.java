@@ -58,6 +58,12 @@ public class RouteAddingPopUpController {
 //        TextFields.bindAutoCompletion(airlineSelection.getEditor(), airlineSelection.getItems());
 
         ArrayList<String> sourceAirports = FilterRefactor.filterDistinct("Name", "Airport");
+
+
+
+
+
+
         ObservableList<String> sourceNames = FXCollections.observableArrayList(sourceAirports);
         sourceNames = HelperFunctions.addNullValue(sourceNames);
         sourceSelection.setItems(sourceNames);

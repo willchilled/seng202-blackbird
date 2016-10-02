@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Filter;
 
 /**
  * Created by sbe67 on 15/09/16.
@@ -76,7 +77,8 @@ public class AirportAddingPopUpController {
 
         String[] airportPoint = getValues();
         String[] checkData = Validator.checkAirport(airportPoint);
-        if(HelperFunctions.allValid(checkData)) {
+        ArrayList<String> airport = FilterRefactor.filterDistinct("Name", "Airport");
+        if(HelperFunctions.allValid(checkData) && (!airport.contains(airportPoint[1])) {
             ArrayList<DataPoint> myAirportData = new ArrayList<>();
             DataPoint myAirportPoint = DataPoint.createDataPointFromStringArray(airportPoint, DataTypes.AIRPORTPOINT, 0, null);
             myAirportData.add(myAirportPoint);
@@ -108,6 +110,9 @@ public class AirportAddingPopUpController {
         String airportLongitude = Longitude.getText().toString();
         String airportAltitude = Altitude.getText().toString();
         String airportTZ;
+
+
+
         if(tzComboBox.getValue().toString().equals("None")){
             airportTZ = "0.0";
         } else {

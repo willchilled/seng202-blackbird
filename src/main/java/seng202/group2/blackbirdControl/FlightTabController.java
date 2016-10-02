@@ -272,7 +272,6 @@ public class FlightTabController {
 
 
                     flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
-
                     flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localType"));
                     flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localeID"));
                     flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Float>("altitude"));

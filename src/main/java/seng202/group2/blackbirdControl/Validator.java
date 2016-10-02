@@ -330,19 +330,34 @@ public class Validator {
         return badData;
     }
 
-    public static boolean checkFlightPoint(String[] attributes){ // localeID, wayPointType, alt, lat, long
+    public static String[] checkFlightPoint(String[] attributes){ // type, id, alt, lat, long
+        String[] badData = new String[5];
 
-        String localeid = attributes[0];
-        String type = attributes[1];
+        String type = attributes[0];
+        String localeID = attributes[1];
         String alt = attributes[2];
         String lat = attributes[3];
         String lng = attributes[4];
 
-        return((isValidLocaleID(localeid) && !localeid.equals("")) &&
-                (isValidType(type) && !type.equals("")) &&
-                (isValidAlt(alt) && !alt.equals("")) &&
-                (isValidLat(lat) && !lat.equals("")) &&
-                (isValidLong(lng) && !lng.equals("")));
+        if(!(isValidLocaleID(type) && !type.equals(""))) {
+            badData[0] = "Type";
+        }
+        if(!(isValidType(localeID) && !localeID.equals(""))) {
+            badData[1] = "LocaleID";
+        }
+        if(!(isValidAlt(alt) && !alt.equals(""))) {
+            badData[2] = "Altitude";
+        }
+        if(!(isValidLat(lat) && !lat.equals(""))) {
+            badData[3] = "Latitude";
+        }
+        if(!(isValidLong(lng) && !lng.equals(""))) {
+            badData[4] = "Longitude";
+        }
+
+        return badData;
+
+
 
     }
 
@@ -445,6 +460,29 @@ public class Validator {
                 "Airline:\t\t\tAny Selection\n" +
                 "Stops:\t\t\tSingle Integer\n" +
                 "Equipment:\t\tAny Alphanumeric Sequence");
+
+        alert.showAndWait();
+
+    }
+
+    public static void displayFlightPointError(String[] checkData) {
+        String errorMessage = "Errors with: ";
+        for (String error : checkData) {
+            if (error != null) {
+                errorMessage += (error + ", ");
+            }
+        }
+        errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("IVALID DATA");
+        alert.setHeaderText(errorMessage);
+        alert.setContentText("Constraints:\n\n" +
+                "*REQUIRED*:\tlocaleID, wayPointType, alt, lat, long\n\n" +
+                "LocaleID:\t\t\tAny Alphanumeric Sequence\n" +
+                "WayPointType:\t\tAny Selection\n" +
+                "Altitude:\t\t\tAltitude > 0\n" +
+                "Latitude:\t\t\t-90.0 < Latitude < +90.0\n" +
+                "Longitude:\t\t-180.0 < Longitude < +180.0");
 
         alert.showAndWait();
 

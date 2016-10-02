@@ -108,13 +108,15 @@ public class FlightCreatorPopUpController {
             flightAdderErrorText.setText("FIRST POINT MUST BE OF TYPE APT!");
             flightAdderErrorText.setVisible(true);
         } else {
-            if(Validator.checkFlightPoint(flightPoint)) {
+            String[] checkData = Validator.checkFlightPoint(flightPoint);
+            if(HelperFunctions.allValid(checkData)) {
                 flightAdderErrorText.setVisible(false);
                 ArrayList<DataPoint> myFlightPointData = new ArrayList<>();
                 DataPoint myFlightPoint = DataPoint.createDataPointFromStringArray(flightPoint, DataTypes.FLIGHTPOINT, 0, null);
                 myFlightPointData.add(myFlightPoint);
                 updateWayPointTable(myFlightPointData);
             } else {
+                Validator.displayFlightPointError(checkData);
                 flightAdderErrorText.setText("BAD DATA! PLEASE CHECK CONSTRAINTS");
                 flightAdderErrorText.setVisible(true);
             }

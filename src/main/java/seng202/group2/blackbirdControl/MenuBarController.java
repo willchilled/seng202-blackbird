@@ -1,9 +1,12 @@
 package seng202.group2.blackbirdControl;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
+import javafx.stage.Stage;
 import seng202.group2.blackbirdModel.DataBaseRefactor;
 import seng202.group2.blackbirdModel.DataTypes;
 
@@ -378,5 +381,28 @@ public class MenuBarController {
             DataBaseRefactor.createTables();
         }
     }
+
+    /**
+     * Opens the user manual in a pop up
+     */
+    public void openHelp(){
+        Stage stage;
+        Parent root;
+        stage = new Stage();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/HelpPopUp.fxml"));
+            root = loader.load();
+            HelpViewerController popUpController = loader.getController();
+            popUpController.setStage(stage);
+            popUpController.setRoot(root);
+            popUpController.start();
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            //System.out.println("AH NO!");
+        }
+    }
+
 
 }

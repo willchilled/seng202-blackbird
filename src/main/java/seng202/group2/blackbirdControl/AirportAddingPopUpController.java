@@ -190,6 +190,7 @@ public class AirportAddingPopUpController {
      * Sets the related airport tab for the pop up
      *
      * @param airportTabController The airport tab invoking the pop up
+     * @see AirportTabController
      */
     void setAirportTabController(AirportTabController airportTabController) {
         this.airportTabController = airportTabController;

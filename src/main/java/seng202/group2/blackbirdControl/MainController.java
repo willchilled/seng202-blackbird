@@ -1,6 +1,5 @@
 package seng202.group2.blackbirdControl;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,9 +10,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static javafx.fxml.FXMLLoader.load;
-
-
+/**
+ * The main controller for the GUI view of the program. Links to the different tab controllers that handle
+ * their specific datasets, and provides access for different tabs to communicate with each other if needed.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
+ */
 public class MainController implements Initializable {
 
     @FXML private MenuBarController menuBarController;
@@ -36,8 +40,9 @@ public class MainController implements Initializable {
     /**
      * Sets up connection between the controllers
      * Calls methods to set the main controller of other controllers to this instance.
-     * @param location
-     * @param resources
+     *
+     * @param location The location of the project
+     * @param resources The additional resources bundle needed to operate the program
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,8 +57,6 @@ public class MainController implements Initializable {
         errorTabController.setAirlineTabController(airlineTabController);
         analysisTabController.setMainController(this);
 
-        //check the existing database for persistent data
-        //Database.createTables();    //comment this out for persistent data storage tests
         int airlineSize = Filter.getAllPoints(DataTypes.AIRLINEPOINT).size();
         int airportSize = Filter.getAllPoints(DataTypes.AIRPORTPOINT).size();
         int routeSize = Filter.getAllPoints(DataTypes.ROUTEPOINT).size();
@@ -77,124 +80,119 @@ public class MainController implements Initializable {
                 updateTab(DataTypes.FLIGHT);
             }
         }
-
-
-
-       /* mainTabPane.getSelectionModel().selectedItemProperty()
-                .addListener((obs, oldTab, newTab) -> {
-                    if (newTab == analysisTab) {
-                        analysisTabController.prepareRouteChart();
-                    }
-                });*/
     }
 
     /**
      * Sets up display when new project is selected from the menu bar
      */
-    public void show(){
+    public void show() {
         mainTabPane.setVisible(true);
         openPane.setVisible(false);
         airlineTabController.show();
         airportTabController.show();
         flightTabController.show();
         routeTabController.show();
-
-        //I moved the create tables feature to the MenuBarController show()
     }
 
-    public ErrorTabController getErrorTabController() {
-        //advised by tutor to make this method
+    /**
+     * This method is needed in order to make the error tab accessible to the data tabs, in order for bad
+     * data to be received by the error tab.
+     *
+     * @return The error tab controller
+     */
+    ErrorTabController getErrorTabController() {
         return errorTabController;
     }
-
 
     /**
      * Calls airlineTabController.addAirlineData() to add airline data from file
      */
-    public void addAirlineData(){
+    void addAirlineData() {
         errorTabController.setAllCorrect(true);
         airlineTabController.addAirlineData();
-        errorTabController.showAddingErrorMessage();    //shows only if an error was found
+        errorTabController.showAddingErrorMessage();
     }
 
     /**
      * Calls airportTabController.addAirportData() to add airport data from file
      */
-    public void addAirportData() {
+    void addAirportData() {
         errorTabController.setAllCorrect(true);
         airportTabController.addAirportData();
         errorTabController.showAddingErrorMessage();
-        //analysisTabController.populateRouteGraph();
     }
 
     /**
      * Calls flightTabController.addFlightData() to add flight data from file
      */
-    public void addFlightData() {
+    void addFlightData() {
         flightTabController.addFlightData();
     }
 
     /**
      * Calls routeTabController.addRouteData() to add route data from file
      */
-    public void addRouteData() {
+    void addRouteData() {
         errorTabController.setAllCorrect(true);
         routeTabController.addRouteData();
         errorTabController.showAddingErrorMessage();
-        //myStage.close();
-        //analysisTabController.setGraphData();
     }
 
     /**
      * Calls airportTabController.exportAirportData() to export airport table data to a text file
      */
-    public void exportAirportData(){
+    void exportAirportData() {
         airportTabController.exportAirportData();
     }
 
     /**
      * Calls airlineTabController.exportAirlineData() to export airline table data to a text file
      */
-    public void exportAirlineData(){
+    void exportAirlineData() {
         airlineTabController.exportAirlineData();
     }
 
     /**
      * Calls routeTabController.exportRouteData() to export route table data to a text file
      */
-    public void exportRouteData(){
+    void exportRouteData() {
         routeTabController.exportRouteData();
     }
 
     /**
      * Calls  flightTabController.exportFlightData() to export flightpoint table data to a text file
      */
-    public void exportFlightData(){
+    void exportFlightData() {
         //Giver user a warning that it will only export the currently selected flight (the one in the flightpoint table)
         //NEED TO LABEL THE FLIGHT TABLES.
         flightTabController.exportFlightData();
 
     }
 
-    public void updateRoutes() {
+    /**
+     * Updates the route table
+     */
+    void updateRoutes() {
         //GET POINTS
         ArrayList<DataPoint> routePoints = Filter.getAllPoints(DataTypes.ROUTEPOINT);
         routeTabController.updateRoutesTable(routePoints);
     }
 
-    public void updateAirports() {
-        //getpoints
+    /**
+     * Updates the airports table
+     */
+    void updateAirports() {
         ArrayList<DataPoint> airportPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
         airportTabController.updateAirportsTable(airportPoints);
     }
 
     /**
      * Changes the current tab. Called when new data is added, with given DataType.
-     * @param type
+     *
+     * @param type The type of data that we want the tab view to switch to
      */
-    public void updateTab(DataTypes type) {
-
-        switch(type){
+    void updateTab(DataTypes type) {
+        switch (type) {
             case FLIGHT:
                 mainTabPane.getSelectionModel().select(flightTab);
                 break;
@@ -213,32 +211,35 @@ public class MainController implements Initializable {
     /**
      * A method that calls the See All methods
      */
-    public void showTables(){
+    void showTables() {
         routeTabController.routesSeeAllDataButtonPressed(null);
         airportTabController.airportSeeAllButtonPressed();
         airlineTabController.airlineSeeAllButtonPressed();
         flightTabController.displayFlights();
     }
 
+    /**
+     * @return The current tab
+     */
     public Tab getCurrentTab() {
-        Tab currentTab = mainTabPane.getSelectionModel().getSelectedItem();
-        return currentTab;
+        return mainTabPane.getSelectionModel().getSelectedItem();
     }
 
-    public void clearErrors(DataTypes errorType) {
+    /**
+     * Helper function to clear the error table of specified type
+     * @param errorType The error type we want to clear
+     */
+    void clearErrors(DataTypes errorType) {
         errorTabController.clearEntries(errorType);
     }
 
-    public void mainMenuHelper() {
-//        switch (pointType) {
-//            case AIRLINEPOINT: menuBarController.exportMenusHelper(false, true, false, false); break;
-//            case AIRPORTPOINT: menuBarController.exportMenusHelper(true, false, false, false); break;
-//            case ROUTEPOINT: menuBarController.exportMenusHelper(false, false, true, false); break;
-//            case FLIGHT: menuBarController.exportMenusHelper(false, false, false, true); break;
-//            default: return;
-//        }
+    /**
+     * Helper function to disable/enable appropriate menus
+     */
+    void mainMenuHelper() {
         menuBarController.showMenuHelper();
     }
+
 }
 
 

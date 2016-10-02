@@ -236,6 +236,7 @@ public class AirportTabController {
      * Links back to the MainController of the program
      *
      * @param controller The controller for the tab window
+     * @see MainController
      */
     void setMainController(MainController controller) {
         this.mainController = controller;

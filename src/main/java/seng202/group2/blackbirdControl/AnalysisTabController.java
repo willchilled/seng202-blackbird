@@ -239,6 +239,7 @@ public class AnalysisTabController {
      * Creates link between the AnalysisTab and the MainController
      *
      * @param mainController The controller for this tab window
+     * @see MainController
      */
     void setMainController(MainController mainController) {
         this.mainController = mainController;

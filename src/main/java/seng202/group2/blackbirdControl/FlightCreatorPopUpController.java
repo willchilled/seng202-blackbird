@@ -69,6 +69,7 @@ public class FlightCreatorPopUpController {
      * Sets the related flight tab for the pop up
      *
      * @param controller The flight tab invoking the pop up
+     * @see FlightTabController
      */
     void setFlightTabController(FlightTabController controller) {
         flightTabController = controller;

@@ -218,6 +218,7 @@ public class AirlinePopUpController {
      * Sets the related airline tab for the pop up
      *
      * @param controller The airline tab invoking the pop up
+     * @see AirlineTabController
      */
     void setAirlineTabController(AirlineTabController controller) {
         this.airlineTabController = controller;

@@ -60,16 +60,19 @@ public class AirlineAddingPopUpController {
      */
     public void createButtonPressed() {
         String[] airlinePoint = getValues();
-        if (Validator.checkAirline(airlinePoint)) {
+        String[] checkData = Validator.checkAirline(airlinePoint);
+        if (HelperFunctions.allValid(checkData)) {
             ArrayList<DataPoint> myAirlineData = new ArrayList<>();
             DataPoint myAirlinePoint = DataPoint.createDataPointFromStringArray(airlinePoint, DataTypes.AIRLINEPOINT, 0, null);
             myAirlineData.add(myAirlinePoint);
             DataBaseRefactor.insertDataPoints(myAirlineData, null);
 
             airlineTabController.airlineFilterButtonPressed();
+            airlineTabController.updateAirlineFields();
             added = true;
             adderStage.close();
         } else {
+            Validator.displayAirlineError(checkData);
             addAirlineInvalidText.setVisible(true);
         }
     }

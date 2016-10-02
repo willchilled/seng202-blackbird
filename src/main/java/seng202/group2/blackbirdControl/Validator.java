@@ -164,8 +164,9 @@ public class Validator {
      *                   active
      * @return True if valid, False otherwise
      */
-    public static boolean checkAirline(String[] attributes){
+    public static String[] checkAirline(String[] attributes){
 
+        String[] badData = new String[7];
         String id = attributes[0];
         String name = attributes[1];
         String alias = attributes[2];
@@ -175,43 +176,44 @@ public class Validator {
         String country = attributes[6];
         String active = attributes[7];
 
-//
-//        System.out.println("--------VALIDATING AIRLINE---------");
-//        if(!isValidID(id)){
-//            System.out.println("Bad id");
-//        }
-//        if(!isValidName(name)){
-//            System.out.println("Bad name");
-//        }
-//        if(!isValidAlias(alias)){
-//            System.out.println("Bad alias");
-//        }
-//        if(!isValidIATA(iata)){
-//            System.out.println("Bad iata");
-//        }
-//        if(!isValidICAO(icao)){
-//            System.out.println("Bad icao");
-//        }
-//        if(!isValidAirlineCallsign(callsign)){
-//            System.out.println("Bad callsign");
-//        }
-//        if(!isValidCountry(country)){
-//            System.out.println("Bad country");
-//        }
-//        if(!isValidActive(active)){
-//            System.out.println("Bad active");
-//        }
-//        System.out.println("================");
+
+        System.out.println("--------VALIDATING AIRLINE---------");
+        if(!isValidID(id)){
+            badData[0] = "ID";
+            System.out.println("Bad id");
+        }
+        if(!isValidName(name)){
+            badData[1] = "Name";
+            System.out.println("Bad name");
+        }
+        if(!isValidAlias(alias)){
+            badData[2] = "Alias";
+            System.out.println("Bad alias");
+        }
+        if(!isValidIATA(iata)){
+            badData[3] = "IATA";
+            System.out.println("Bad iata");
+        }
+        if(!isValidICAO(icao)){
+            badData[4] = "ICAO";
+            System.out.println("Bad icao");
+        }
+        if(!isValidAirlineCallsign(callsign)){
+            badData[5] = "Callsign";
+            System.out.println("Bad callsign");
+        }
+        if(!isValidAirlineCountry(country)){
+            badData[6] = "Country";
+            System.out.println("Bad country");
+        }
+        if(!isValidActive(active)){
+            badData[7] = "Active";
+            System.out.println("Bad active");
+        }
+        System.out.println("================");
 
 
-        return (isValidID(id) &&
-                isValidName(name) &&
-                isValidAlias(alias) &&
-                isValidIATA(iata) &&
-                isValidICAO(icao) &&
-                isValidAirlineCallsign(callsign) &&
-                isValidAirlineCountry(country) &&
-                isValidActive(active));
+        return badData;
 
     }
 
@@ -392,6 +394,30 @@ public class Validator {
                 "Time Zone:\tAny word");
 
         alert.showAndWait();
+    }
+
+    public static void displayAirlineError(String[] checkData) {
+        String errorMessage = "Errors with: ";
+        for (String error : checkData) {
+            if (error != null) {
+                errorMessage += (error + ", ");
+            }
+        }
+        errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("IVALID DATA");
+        alert.setHeaderText(errorMessage);
+        alert.setContentText("Constraints:\n\n" +
+                "*REQUIRED*:\tName\n\n" +
+                "Name:\t\tAny word\n" +
+                "Alias:\t\tAny word\n" +
+                "IATA:\t\t3 Letters, UpperCase\n" +
+                "ICAO:\t\t3 Letters, UpperCase\n" +
+                "Callsign:\t\tAny word\n" +
+                "Country:\t\tAny word");
+
+        alert.showAndWait();
+
     }
 
 }

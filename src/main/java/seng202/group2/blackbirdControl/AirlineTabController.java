@@ -105,7 +105,7 @@ public class AirlineTabController {
     /**
      * Updates the filtering dropdown menus
      */
-    private void updateAirlineFields() {
+    public void updateAirlineFields() {
         airlineActiveList = FXCollections.observableArrayList("None", "Active", "Inactive");
         airlineActiveMenu.setItems(airlineActiveList);
 
@@ -180,8 +180,15 @@ public class AirlineTabController {
      * Helps to filter airlines, obtaining the values from the filter dropdowns
      */
     public void airlineFilterButtonPressed() {
-        String countrySelection = airlineFilterMenu.getValue().toString();
-        String activeSelection = airlineActiveMenu.getValue().toString();
+        String countrySelection;
+        String activeSelection;
+        try {
+            countrySelection = airlineFilterMenu.getValue().toString();
+            activeSelection = airlineActiveMenu.getValue().toString();
+        } catch (java.lang.NullPointerException e) {
+            countrySelection = "No values Loaded";
+            activeSelection = "No values Loaded";
+        }
         String searchQuery = airlineSearchQuery.getText();
         ArrayList<DataPoint> allPoints;
 

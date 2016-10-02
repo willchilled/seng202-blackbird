@@ -124,8 +124,8 @@ public class AirlinePopUpController {
         String active = airlineActiveTextEdit.getText();
 
         String[] attributes = new String[]{idText.getText(), name, alias, iata, icao, callsign, country, active};
-
-        if (Validator.checkAirline(attributes)) {
+        String[] checkData = Validator.checkAirline(attributes);
+        if (HelperFunctions.allValid(checkData)) {
             airlineNameTextEdit.setVisible(false);
             airlineCountryTextEdit.setVisible(false);
             airlineAliasTextEdit.setVisible(false);
@@ -155,6 +155,7 @@ public class AirlinePopUpController {
             airlineTabController.airlineFilterButtonPressed();
             airlineDeleteButton.setVisible(true);
         } else {
+            Validator.displayAirlineError(checkData);
             airlineInvalidDataText.setVisible(true);
         }
     }

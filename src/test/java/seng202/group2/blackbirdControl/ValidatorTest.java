@@ -21,11 +21,13 @@ public class ValidatorTest extends TestCase {
 
 
         String[] attributes = new String[] {id, name, alias, iata, icao, callsign, country, active};
-        assertTrue(Validator.checkAirline(attributes));
+        String[] checkData = Validator.checkAirline(attributes);
+        assertTrue(HelperFunctions.allValid(checkData));
 
         iata = "11111";
         attributes = new String[] {id, name, alias, iata, icao, callsign, country, active};
-        assertFalse(Validator.checkAirline(attributes));
+        checkData = Validator.checkAirline(attributes);
+        assertFalse(HelperFunctions.allValid(checkData));
 
     }
 

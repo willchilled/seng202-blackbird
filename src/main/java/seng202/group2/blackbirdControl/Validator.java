@@ -408,8 +408,8 @@ public class Validator {
                 "Name:\t\tAny word\n" +
                 "City:\t\t\tAny word\n" +
                 "Country:\t\tAny word\n" +
-                "IATA:\t\t3 Letters, UpperCase\n" +
-                "ICAO:\t\t3 Letters, UpperCase\n" +
+                "IATA:\t\t 3 Letters, UpperCase\n" +
+                "ICAO:\t\t4 Letters, UpperCase\n" +
                 "Latitude:\t\t-90.0 < Latitude < +90.0\n" +
                 "Longitude:\t-180.0 < Longitude < +180.0\n" +
                 "Altitude:\t\tDecimal > 0\n" +
@@ -433,7 +433,7 @@ public class Validator {
                 "*REQUIRED*:\tName\n\n" +
                 "Name:\t\tAny word\n" +
                 "Alias:\t\tAny word\n" +
-                "IATA:\t\t3 Letters, UpperCase\n" +
+                "IATA:\t\t2 Letters, UpperCase\n" +
                 "ICAO:\t\t3 Letters, UpperCase\n" +
                 "Callsign:\t\tAny word\n" +
                 "Country:\t\tAny word");

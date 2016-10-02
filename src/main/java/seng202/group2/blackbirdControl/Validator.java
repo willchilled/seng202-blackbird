@@ -153,17 +153,10 @@ public class Validator {
 
 
     /**
-     * Checks all attributes of an airline individually for validity. Checks type, length and required attributes.
-     * @param attributes the attributes to be made into an airline point in the order:
-     *                   id
-     *                   name
-     *                   alias
-     *                   iata
-     *                   icao
-     *                   callsign
-     *                   country
-     *                   active
-     * @return True if valid, False otherwise
+     * Checks each attribute of an attempt to create a AirlinePoint for correctness. If the attribute is wrong, it's name
+     * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     * @param attributes Attributes of the datapoint for attempted creation
+     * @return String List of any bad data fields
      */
     public static String[] checkAirline(String[] attributes){
 
@@ -219,22 +212,10 @@ public class Validator {
     }
 
     /**
-     * Checks all attributes of an Airport for validity before trying to perform actions on them. Checks type, lenghth
-     * and validity
-     * @param attributes The attributes to be made into an airport point in the order:
-     *                   id
-     *                   name
-     *                   city
-     *                   country
-     *                   iata
-     *                   icao
-     *                   lat
-     *                   lon
-     *                   alt
-     *                   timeZone
-     *                   dst
-     *                   tz
-     * @return A boolean indicating whether the data is valid or not
+     * Checks each attribute of an attempt to create anAirportPoints for correctness. If the attribute is wrong, it's name
+     * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     * @param attributes Attributes of the datapoint for attempted creation
+     * @return String List of any bad data fields
      */
     public static String[] checkAirport(String[] attributes){
 
@@ -307,6 +288,12 @@ public class Validator {
 
     }
 
+    /**
+     * Checks each attribute of an attempt to create a RoutePoint for correctness. If the attribute is wrong, it's name
+     * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     * @param attributes Attributes of the datapoint for attempted creation
+     * @return String List of any bad data fields
+     */
     public static String[] checkRoute(String[] attributes){  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
         String[] badData = new String[6];
         if (attributes[0].equals("None")){
@@ -331,6 +318,12 @@ public class Validator {
         return badData;
     }
 
+    /**
+     * Checks each attribute of an attempt to create a FlightPoint for correctness. If the attribute is wrong, it's name
+     * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     * @param attributes Attributes of the datapoint for attempted creation
+     * @return String List of any bad data fields
+     */
     public static String[] checkFlightPoint(String[] attributes){ // type, id, alt, lat, long
         String[] badData = new String[5];
 
@@ -393,6 +386,10 @@ public class Validator {
         return correct;
     }
 
+    /**
+     * Formats and displays the error message upon given errors for AirportPoints when a user tries to create a point
+     * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
+     */
     public static void displayAirportError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {
@@ -419,6 +416,10 @@ public class Validator {
         alert.showAndWait();
     }
 
+    /**
+     * Formats and displays the error message upon given errors for AirlinePoints when a user tries to create a point
+     * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
+     */
     public static void displayAirlineError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {
@@ -443,6 +444,10 @@ public class Validator {
 
     }
 
+    /**
+     * Formats and displays the error message upon given errors for RoutePoints when a user tries to create a point
+     * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
+     */
     public static void displayRouteError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {
@@ -466,6 +471,10 @@ public class Validator {
 
     }
 
+    /**
+     * Formats and displays the error message upon given errors for FlightPoints when a user tries to create a point
+     * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
+     */
     public static void displayFlightPointError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {

@@ -170,7 +170,8 @@ public class RoutePopUpController {
     public void commitEdit(){
         String[] values = getValues();
         //System.out.println(Arrays.toString(values));
-        if (Validator.checkRoute(values)) {
+        String[] checkData = Validator.checkRoute(values);
+        if (HelperFunctions.allValid(checkData)) {
             String[] valueFields = RouteTabController.getFields(values);
 
             //DataPoint myRoutePoint = DataPoint.createDataPointFromStringArray(valueFields, DataTypes.ROUTEPOINT);
@@ -199,6 +200,7 @@ public class RoutePopUpController {
             //TODO instead of making the window close after editing, get it to display the updated and linked values
             stage.close();
         } else {
+            Validator.displayRouteError(checkData);
             routeInvalidData.setVisible(true);
         }
     }

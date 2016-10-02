@@ -258,7 +258,7 @@ public class AirlineTabController {
     /**
      * Links back to the MainController of the program
      *
-     * @param controller The stage for the pop up
+     * @param controller The controller for the tab window
      */
     void setMainController(MainController controller) {
         this.mainController = controller;

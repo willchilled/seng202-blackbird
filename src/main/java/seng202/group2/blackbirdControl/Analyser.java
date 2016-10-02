@@ -50,15 +50,14 @@ class Analyser {
      * @param country the country you want to rank
      * @return dictionary containing string of airports as key and number of routes as value
      */
-    public static List<Map.Entry> rankAirportsByRoutes(String country) {
-        ArrayList<DataPoint> myPoints = new ArrayList<>();
+    static List<Map.Entry> rankAirportsByRoutes(String country) {
+        ArrayList<DataPoint> myPoints;
         if (country.equals("All")) {
             myPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         } else {
             ArrayList<String> menus = new ArrayList<>(Arrays.asList(country));
             myPoints = FilterRefactor.filterSelections(menus, "", DataTypes.AIRPORTPOINT);
         }
-
 
         ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airport");
         HashMap<String, Integer> airportsPerCountry = new HashMap<>();
@@ -67,19 +66,17 @@ class Analyser {
             airportsPerCountry.put(currentCountry, 0);
         }
 
+        assert myPoints != null;
         for (DataPoint currentPoint : myPoints) {
             AirportPoint currentAirportPoint = (AirportPoint) currentPoint;
             String newCountry = currentAirportPoint.getAirportCountry();
             int counter = airportsPerCountry.get(newCountry);
-
             airportsPerCountry.put(currentAirportPoint.getAirportCountry(), counter + 1);
         }
         List<Map.Entry> results = new ArrayList(airportsPerCountry.entrySet());
         results = sortDictByValue(results);
 
         return results;
-
-
     }
 
 
@@ -88,43 +85,38 @@ class Analyser {
      * or outgoing routes
      *
      * @param airports   the list of airports needing to be filtered
-     * @param mostRoutes if you want the airports to to be filtered by most or least routes
      * @return the list of airports points filtered by number of incoming and outgoing routes
      */
-    public static ArrayList<DataPoint> rankAirportsByRoutes(ArrayList<DataPoint> airports, boolean mostRoutes) {
-        //technically most routes is deprecated as we dont want to filter by least routes as it will return
-        //lots of 0's, but its not worth the time to change just means you have to parse in an extra value
-        ArrayList<DataPoint> rankedData = new ArrayList<DataPoint>();
-
+    static ArrayList<DataPoint> rankAirportsByRoutes(ArrayList<DataPoint> airports) {
+        ArrayList<DataPoint> rankedData = new ArrayList<>();
         List<AirportPoint> myPoints = new ArrayList<>();
         for (DataPoint cp : airports) {
             AirportPoint cp2 = (AirportPoint) cp;
             myPoints.add(cp2);
         }
-
         Collections.sort(myPoints, (x, y) -> compareAirportPointSize(x, y));
-        if (!mostRoutes) {   //rank by least Routes
-            Collections.reverse(myPoints);
-        }
-
         for (AirportPoint currentPoint : myPoints) {
             DataPoint convertedRoutePoint = currentPoint;
             rankedData.add(convertedRoutePoint);
-
         }
         return rankedData;
     }
 
-
-    private static int compareAirportPointSize(AirportPoint a, AirportPoint another) {
-        if (a.getIncomingRoutes() + a.getOutgoingRoutes() == another.getIncomingRoutes() + another.getOutgoingRoutes()) {
-            if (a.getAirportName().compareTo(another.getAirportName()) >= 0) {
+    /**
+     * Helper function to compare between the number of routes between two airports
+     * @param first First airport
+     * @param second Second airport
+     * @return An integer indicating whether the first airport has more routes than the second (1 if more routes, -1 if fewer routes)
+     */
+    private static int compareAirportPointSize(AirportPoint first, AirportPoint second) {
+        if (first.getIncomingRoutes() + first.getOutgoingRoutes() == second.getIncomingRoutes() + second.getOutgoingRoutes()) {
+            if (first.getAirportName().compareTo(second.getAirportName()) >= 0) {
                 return 1;
             } else {
                 return -1;
             }
 
-        } else if (a.getIncomingRoutes() + a.getOutgoingRoutes() < another.getIncomingRoutes() + another.getOutgoingRoutes()) {
+        } else if (first.getIncomingRoutes() + first.getOutgoingRoutes() < second.getIncomingRoutes() + second.getOutgoingRoutes()) {
             return 1;
         } else {
             return -1;
@@ -137,7 +129,7 @@ class Analyser {
      *
      * @return a dict with number of country as key and number of airports in it as value
      */
-    public static List<Map.Entry> numAirportsPerCountry() {
+    static List<Map.Entry> numAirportsPerCountry() {
         ArrayList<DataPoint> allAirports = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         ArrayList<String> allCountries = FilterRefactor.filterDistinct("country", "Airport");
         HashMap<String, Integer> airportsPerCountry = new HashMap<>();
@@ -145,18 +137,15 @@ class Analyser {
         for (String country : allCountries) {
             airportsPerCountry.put(country, 0);
         }
-
         for (DataPoint currentPoint : allAirports) {
             AirportPoint currentAirportPoint = (AirportPoint) currentPoint;
             String country = currentAirportPoint.getAirportCountry();
             int counter = airportsPerCountry.get(country);
-
             airportsPerCountry.put(currentAirportPoint.getAirportCountry(), counter + 1);
         }
 
         List<Map.Entry> results = new ArrayList(airportsPerCountry.entrySet());
         results = sortDictByValue(results);
-
         return results;
     }
 
@@ -185,7 +174,6 @@ class Analyser {
 
         List<Map.Entry> results = new ArrayList(airlinesPerCountry.entrySet());
         results = sortDictByValue(results);
-
         return results;
     }
 
@@ -195,13 +183,13 @@ class Analyser {
      *
      * @return dictionary where the key is the equipment name and value is the number of route that use it
      */
-    public static List<Map.Entry> routesPerEquipment() {
+    static List<Map.Entry> routesPerEquipment() {
         ArrayList<DataPoint> routePoints = FilterRefactor.getAllPoints(DataTypes.ROUTEPOINT);
         ArrayList<String> uniqueEquip = new ArrayList<>();
         HashSet<String> equipSet = new HashSet<>();
 
-        for (int i = 0; i < routePoints.size(); i++) {
-            RoutePoint currentPoint = (RoutePoint) routePoints.get(i);
+        for (DataPoint routePoint : routePoints) {
+            RoutePoint currentPoint = (RoutePoint) routePoint;
             String currentEquip = currentPoint.getEquipment();
 
             if (currentEquip != null) {
@@ -211,14 +199,12 @@ class Analyser {
                 }
             }
         }
-
         uniqueEquip.addAll(equipSet);
         HashMap<String, Integer> routesPerEquip = new HashMap<>();
 
         for (String country : uniqueEquip) {
             routesPerEquip.put(country, 0);
         }
-
         for (DataPoint currentPoint : routePoints) {
             RoutePoint currentRoute = (RoutePoint) currentPoint;
             String currentEquip = currentRoute.getEquipment();
@@ -232,29 +218,28 @@ class Analyser {
         }
         List<Map.Entry> results = new ArrayList(routesPerEquip.entrySet());
         results = sortDictByValue(results);
-
         return results;
     }
 
+    /**
+     * Sorts dictionary by the value
+     * @param results List containing dictionary values where the key is the equipment name and value is the number of route that use it
+     * @return A sorted list collection containing these dictionary entries
+     */
     private static List<Map.Entry> sortDictByValue(List<Map.Entry> results) {
-        // sorts dictionary by the value
-        Collections.sort(results, new Comparator<Map.Entry>() {
-            @Override
-            public int compare(Map.Entry o1, Map.Entry o2) {
-                int val1 = (int) o1.getValue();
-                int val2 = (int) o2.getValue();
+        Collections.sort(results, (o1, o2) -> {
+            int val1 = (int) o1.getValue();
+            int val2 = (int) o2.getValue();
 
-                if (val1 < val2) {
-                    return 1;
-                } else if (val1 > val2) {
-                    return -1;
-                } else {
-                    return 0;
-                }
+            if (val1 < val2) {
+                return 1;
+            } else if (val1 > val2) {
+                return -1;
+            } else {
+                return 0;
             }
         });
         return results;
     }
-
 
 }

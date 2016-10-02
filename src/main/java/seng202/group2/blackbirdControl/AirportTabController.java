@@ -104,7 +104,7 @@ public class AirportTabController {
     /**
      * Updates the filtering dropdown menus
      */
-    public void updateAirportFields() {
+    void updateAirportFields() {
         airportCountryList = populateAirportCountryList();
         airportFilterMenu.setItems(airportCountryList);
 
@@ -192,7 +192,6 @@ public class AirportTabController {
         ArrayList<String> menusPressed = new ArrayList<>(Collections.singletonList(countrySelection));
 
         ArrayList<DataPoint> filteredPoints;
-        System.out.println("countrySelection: " + countrySelection);
         if (countrySelection.equals("No values Loaded")) {
             filteredPoints = FilterRefactor.getAllPoints(DataTypes.AIRPORTPOINT);
         } else {
@@ -236,7 +235,7 @@ public class AirportTabController {
     /**
      * Links back to the MainController of the program
      *
-     * @param controller The stage for the pop up
+     * @param controller The controller for the tab window
      */
     void setMainController(MainController controller) {
         this.mainController = controller;

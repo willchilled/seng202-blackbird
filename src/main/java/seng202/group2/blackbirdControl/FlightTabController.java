@@ -336,6 +336,7 @@ public class FlightTabController {
             DataBaseRefactor.editDataEntry(flightSql);
             DataBaseRefactor.editDataEntry(flightPointSql);
             flightFilterButtonPressed();
+            mainController.mainMenuHelper();
         }
     }
 

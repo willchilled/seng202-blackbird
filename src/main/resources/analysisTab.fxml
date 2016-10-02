@@ -1,19 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<!--<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1024.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <tabs>-->
 <?import javafx.scene.web.WebView?>
+
+<!--<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="787.0" prefWidth="1024.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">-->
+  <!--<tabs>-->
+
 <Tab text="Analysis" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.group2.blackbirdControl.AnalysisTabController">
    <content>
       <Accordion>
          <panes>
+            <TitledPane animated="false" onMouseClicked="#populateAirlinesPerCountryGraph" text="Number of Airlines Per Country">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                              <BarChart fx:id="airlineChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airlines" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <xAxis>
+                                    <NumberAxis label="Number of Airlines" fx:id="xAxisAirline" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <CategoryAxis fx:id="yAxisAirline" label="Country" side="LEFT" />
+                                 </yAxis>
+                              </BarChart>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="324.0" minWidth="0.0" prefWidth="0.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="927.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="0.0" prefWidth="0.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="229.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="608.0" minHeight="10.0" prefHeight="608.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="126.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children></AnchorPane>
+               </content>
+            </TitledPane>
             <TitledPane animated="false" onMouseClicked="#prepareRouteChart" text="Number of Routes per Airport">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -43,35 +74,6 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-               </content>
-            </TitledPane>
-            <TitledPane animated="false" onMouseClicked="#populateAirlinesPerCountryGraph" text="Number of Airlines Per Country">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-                           <children>
-                              <BarChart fx:id="airlineChart" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" title="Top 20 Countries by Number of Airlines" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <xAxis>
-                                    <NumberAxis label="Number of Airlines" fx:id="xAxisAirline" />
-                                 </xAxis>
-                                 <yAxis>
-                                    <CategoryAxis fx:id="yAxisAirline" label="Country" side="LEFT" />
-                                 </yAxis>
-                              </BarChart>
-                           </children>
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="324.0" minWidth="0.0" prefWidth="0.0" />
-                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="927.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="0.0" prefWidth="0.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="229.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="608.0" minHeight="10.0" prefHeight="608.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="126.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                        </GridPane>
-                     </children></AnchorPane>
                </content>
             </TitledPane>
             <TitledPane animated="false" layoutX="10.0" layoutY="35.0" onMouseClicked="#populateEquipmentChartData" text="Number of Routes for Each Plane Type">
@@ -218,6 +220,5 @@
       </Accordion>
    </content>
 </Tab>
- <!--     </tabs>
-    </TabPane>
--->
+  <!--</tabs>-->
+    <!--</TabPane>-->

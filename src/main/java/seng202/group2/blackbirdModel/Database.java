@@ -1,46 +1,41 @@
-
-
 package seng202.group2.blackbirdModel;
 
 import javafx.scene.control.Alert;
 import seng202.group2.blackbirdControl.ErrorTabController;
-
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 /**
  * This class acts as an interface between our program and the database. It includes methods for preparing
  * the sql statements and performing these to update the database.
  */
-public class DataBaseRefactor {
+public class Database {
 
     private static int FlightCount = 0;
     private static int flightPointCount = 0;
     private static String dataBaseName = "jdbc:sqlite:default.db";
 
-
     /**
      * @return Returns the current database name.
      */
-    public static String getDatabaseName() {
+    private static String getDatabaseName() {
         return dataBaseName;
     }
 
     /**
      * @param dataBaseName Sets the current database name.
      */
-    public static void setDataBaseName(String dataBaseName) {
-        DataBaseRefactor.dataBaseName = dataBaseName;
+    private static void setDataBaseName(String dataBaseName) {
+        Database.dataBaseName = dataBaseName;
     }
 
     /**
      * Creates a connection to the database.
+     *
      * @return The connection to the database.
      */
-    private static Connection makeConnection(){
+    private static Connection makeConnection() {
         Connection c = null;
         try {
             Class.forName("org.sqlite.JDBC");
@@ -71,22 +66,13 @@ public class DataBaseRefactor {
             if (myPoints.get(0).getType().equals(DataTypes.FLIGHTPOINT)) {
                 FlightCount = getMaxInColumn("FLIGHT", "FlightIDnum") + 1;
                 addFlight(myPoints, preparedStatement, currentConnection);
-                //System.out.println("HERE");
-                //System.out.println(FlightCount);
             }
 
             flightPointCount = 0;
 
             for (DataPoint currentPoint : myPoints) {
-                //addSingleAirline(airline, stmt);
-//                System.out.println(currentPoint.getType());
-//                System.out.println(myPoints.toString());
-
                 DataTypes dataType = currentPoint.getType();
-                //DataTypes dataType = currentPoint.getType();
-                //PreparedStatement preparedStatement = null;
-
-                switch (dataType){
+                switch (dataType) {
                     case AIRLINEPOINT:
                         preparedStatement = prepareInsertAirlineSql(currentPoint, preparedStatement, currentConnection);
                         break;
@@ -98,44 +84,33 @@ public class DataBaseRefactor {
                         preparedStatement = prepareInsertRouteSql(currentPoint, preparedStatement, currentConnection);
                         break;
                     case FLIGHTPOINT:
-                        //This behaves differently because the data is ArrayList<DataPoint<FlightPoints>>
-                        //FlightPoint myFlight = (FlightPoint) myPoints.get(0);
                         preparedStatement = prepareInsertFlightPointStatement(currentPoint, preparedStatement, currentConnection);
                         flightPointCount++;
                         break;
                 }
 
-                try{
+                try {
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
-                } catch (SQLException e){   //failed to put datapoint into database
-                    //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType(), e.getMessage() );
-                    //System.out.println(badPoint.getErrorMessage());
+                } catch (SQLException e) {   //failed to put datapoint into database
+                    BadData badPoint = new BadData(currentPoint.getFileLine(), currentPoint.toString(), currentPoint.getType(), e.getMessage());
                     if (errorTabController != null) {
                         errorTabController.updateBadEntries(badPoint, currentPoint.getType());
                         errorTabController.setAllCorrect(false);
                     }
                 }
             }
-            //.close();
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            //System.exit(0);
-            //System.out.println("Some error occurred when making connection? :");
+            //Its like being bad at pokemon because it doesnt catch anything
         }
-
-//        if (!allCorrect) {
-//
-//        }
-        //System.out.println("Records created successfully");
     }
 
     /**
      * Prepares a sql statement for inserting a flightpoint.
-     * @param currentPoint The flightpoint that we want to add to the database.
+     *
+     * @param currentPoint      The flightpoint that we want to add to the database.
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database.
      * @return The prepared sql statement for a flightpoint
@@ -152,12 +127,9 @@ public class DataBaseRefactor {
             preparedStatement.setFloat(5, flightPoint.getLatitude());
             preparedStatement.setFloat(6, flightPoint.getLongitude());
             preparedStatement.setInt(7, FlightCount);
-            // System.out.println(FlightCount);
-
         } catch (SQLException e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.out.println("DataBaseRefactor.prepareInsertFlightPointStatement failed");
-            //e.printStackTrace();
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            System.out.println("Database.prepareInsertFlightPointStatement failed");
         }
         return preparedStatement;
     }
@@ -165,72 +137,59 @@ public class DataBaseRefactor {
     /**
      * Helps to create a new flight entry, as flights are made up of their flightpoints, each flight needs to
      * also be added in to another flight table.
-     * @param myPoints The arraylist of DataPoints
+     *
+     * @param myPoints          The arraylist of DataPoints
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      */
     private static void addFlight(ArrayList<DataPoint> myPoints, PreparedStatement preparedStatement, Connection currentConnection) {
-        //System.out.println(myPoints.size());
         FlightPoint sourcePoint = (FlightPoint) myPoints.get(0);
-        FlightPoint destPoint = (FlightPoint) myPoints.get(myPoints.size()-1);
-
-        String flightSource  = sourcePoint.getLocaleID();
+        FlightPoint destPoint = (FlightPoint) myPoints.get(myPoints.size() - 1);
+        String flightSource = sourcePoint.getLocaleID();
         String destSource = destPoint.getLocaleID();
-        //System.out.println(flightSource + "==" +  destSource);
         preparedStatement = prepareInsertFlightStatement(flightSource, destSource, preparedStatement, currentConnection);
-
-        try{
+        try {
             preparedStatement.executeUpdate();
             preparedStatement.close();
-        }
-        catch (Exception e){
-//            System.out.println(e.getClass().getName() + ", "+ e.getMessage());
-            //System.out.println("Cant add " +  myPoints.toString());
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Flight Error");
             alert.setHeaderText("Invalid flight file");
             alert.setContentText("Invalid entries were found, please check your file");
             alert.showAndWait();
-            System.out.println("DataBaseRefactor.addFlight failed");
         }
     }
 
     /**
      * Helper function to prepare a sql statement to insert a flight
-     * @param flightSource The source of the flight
-     * @param destSource The destination of the flight
+     *
+     * @param flightSource      The source of the flight
+     * @param destSource        The destination of the flight
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement for a flight
      */
     private static PreparedStatement prepareInsertFlightStatement(String flightSource, String destSource, PreparedStatement preparedStatement, Connection currentConnection) {
         String sql = "INSERT INTO FLIGHT(SrcICAO, DstICAO) VALUES (?,?);";
-        //System.out.println(sql);
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
             preparedStatement.setString(1, flightSource);
             preparedStatement.setString(2, destSource);
-
         } catch (SQLException e) {
-            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            //System.out.println("Could no print ");
-            //e.printStackTrace();
-            System.out.println("DataBaseRefactor.prepareInsertFlightStatement failed");
         }
         return preparedStatement;
     }
 
     /**
      * Prepares a route sql statement to insert a route into the database.
-     * @param currentPoint The route that we are wanting to insert
+     *
+     * @param currentPoint      The route that we are wanting to insert
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement to insert a route into the database.
      */
     private static PreparedStatement prepareInsertRouteSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
         RoutePoint route = (RoutePoint) currentPoint;
-
-        //int idNum = route.getRouteID();
         String airline = route.getAirline();
         int airlineID = route.getAirlineID();
         String src = route.getSrcAirport();
@@ -243,11 +202,8 @@ public class DataBaseRefactor {
 
         //make route sql text to execute
         String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        //System.out.println(sql + "I GET TO HERE") ;
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
-            //System.out.println(preparedStatement + "AAAAH");
-            //preparedStatement.setInt(1, idNum);
             preparedStatement.setString(2, airline);
             preparedStatement.setInt(3, airlineID);
             preparedStatement.setString(4, src);
@@ -258,16 +214,15 @@ public class DataBaseRefactor {
             preparedStatement.setInt(9, stops);
             preparedStatement.setString(10, equp);
         } catch (SQLException e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("DataBaseRefactor.prepareInsertRouteSql failed");
+            //System.out.println("Database.prepareInsertRouteSql failed");
         }
-
         return preparedStatement;
     }
 
     /**
      * Prepares an airport sql statement to insert an airport into the database
-     * @param currentPoint The airport point that we are wanting to insert
+     *
+     * @param currentPoint      The airport point that we are wanting to insert
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement to insert an airport into the database.
@@ -305,8 +260,8 @@ public class DataBaseRefactor {
             preparedStatement.setString(11, Dst);
             preparedStatement.setString(12, tz);
         } catch (SQLException e) {
-            //System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.out.println("DataBaseRefactor.prepareInsertAirportSql failed");
+
+            System.out.println("Database.prepareInsertAirportSql failed");
         }
 
         return preparedStatement;
@@ -314,7 +269,8 @@ public class DataBaseRefactor {
 
     /**
      * Prepares an airline sql statement to insert an airline into the database
-     * @param currentPoint The airline point that we are wanting to insert
+     *
+     * @param currentPoint      The airline point that we are wanting to insert
      * @param preparedStatement The current sql statement
      * @param currentConnection The current connection to the database
      * @return The prepared sql statement to insert an airline into the database.
@@ -346,28 +302,30 @@ public class DataBaseRefactor {
             preparedStatement.setString(7, country);
             preparedStatement.setString(8, active);
         } catch (SQLException e) {
-            System.out.println("DataBaseRefactor.prepareInsertAirlineSql failed");
+            System.out.println("Database.prepareInsertAirlineSql failed");
         }
         return preparedStatement;
     }
 
-    public static void editDataEntry(String sql){
-
+    /**
+     * A simple function which can edit a single entry of data in the database
+     * @param sql the prepared sql which is executed by the databes
+     */
+    public static void editDataEntry(String sql) {
         Connection c = makeConnection();
-
         Statement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
             stmt = c.createStatement();
-            stmt.executeUpdate( sql );
+            stmt.executeUpdate(sql);
 
             stmt.close();
             c.commit();
             c.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
         System.out.println("Performing edit:" + sql);
@@ -377,7 +335,8 @@ public class DataBaseRefactor {
     /**
      * Performs a generic query to the database e.g. for filtering and searching. Calls the static method of
      * Datapoint to recreate it from the database response.
-     * @param sql The sql string to execute
+     *
+     * @param sql      The sql string to execute
      * @param dataType The current data type that we are working with
      * @return The arraylist of DataPoints returned from the database query.
      * @see DataPoint
@@ -385,7 +344,6 @@ public class DataBaseRefactor {
     public static ArrayList<DataPoint> performGenericQuery(String sql, DataTypes dataType) {
 
         ArrayList<DataPoint> resultPoints = new ArrayList<>();
-
         try {
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
@@ -395,28 +353,13 @@ public class DataBaseRefactor {
             ResultSet rs = preparedStatement.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             String[] attributes = null;
-
-            while(rs.next()) {
-                //some error occurring here, preventing retrieval of flight points
+            while (rs.next()) {
 
                 int width = rsmd.getColumnCount();
+                attributes = new String[width];
+                for (int i = 0; i < width; i++) {
 
-//                if(dataType == DataTypes.ROUTEPOINT) {
-//                    //System.out.println("Now here");
-//                    attributes = new String[width-1];
-//                    for (int i = 1; i < width; i++) {
-//
-//                        attributes[i-1] = rs.getString(i + 1);
-//                        //System.out.println(i + " " + attributes[i-1]);
-//                    }
-//
-//                } else {
-                    attributes = new String[width];
-                    for (int i = 0; i < width; i++) {
-
-                        attributes[i] = rs.getString(i + 1);
-                         //System.out.println(i + " " + attributes[i]);
-//                    }
+                    attributes[i] = rs.getString(i + 1);
                 }
                 DataPoint myPoint = DataPoint.createDataPointFromStringArray(attributes, dataType, 0, null);
                 resultPoints.add(myPoint);
@@ -427,20 +370,20 @@ public class DataBaseRefactor {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("DataBaseRefactor.performGenericQuery query failed");
+            System.out.println("Database.performGenericQuery query failed");
             e.printStackTrace();
         }
-
         return resultPoints;
     }
 
     /**
      * Helper function to find distinct strings of a specified column with the table. Used to populate
      * the filter dropdown menus.
+     *
      * @param sql The sql string to be executed
      * @return The arraylist of distinct strings
      */
-    public static ArrayList<String> performDistinctQuery(String sql){
+    public static ArrayList<String> performDistinctQuery(String sql) {
 
         ArrayList<String> distinctResults = new ArrayList<>();
 
@@ -451,46 +394,38 @@ public class DataBaseRefactor {
             currentConnection.setAutoCommit(false);
             PreparedStatement preparedStatement = currentConnection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int i = 0;
-
-            while(rs.next()) {
+            while (rs.next()) {
                 distinctResults.add(rs.getString(1));
             }
-
             preparedStatement.close();
             currentConnection.commit();
             currentConnection.close();
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("DataBaseRefactor.performDistinctQuery query failed");
-            e.printStackTrace();
+//            System.out.println("Database.performDistinctQuery query failed");
+//            e.printStackTrace();
         }
-
         return distinctResults;
     }
 
     /**
      * Grabs the Max value of an attribute in a column. Namely for finding the max ID of an entity in a database for the
      * purpose of incrementing when adding a new value. Note this only works for integer values.
-     * @param tableName The table from which to grab the max value
+     *
+     * @param tableName  The table from which to grab the max value
      * @param columnName The attribute of which you want the max value
      * @return Returns an int of the max value
      */
-    public static int getMaxInColumn(String tableName, String columnName){
-        //Returns the highest value in a column for a table
+    public static int getMaxInColumn(String tableName, String columnName) {
         int highID = 0;
         try {
-            //Connect to DB
             Connection c = makeConnection();
             Statement stmt = null;
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
             stmt = c.createStatement();
-
             String sql = "SELECT " + columnName + ", MAX(" + columnName + ") FROM " + tableName;
             ResultSet rs = stmt.executeQuery(sql);
             highID = rs.getInt(columnName);
@@ -504,30 +439,24 @@ public class DataBaseRefactor {
         return highID;
     }
 
-
     /**
      * Deletes an existing database.
      */
-    public static void deleteDBFile(){
-        //deletes pre existing database file
+    private static void deleteDBFile() {
         String cwd = System.getProperty("user.dir");
+        File f = new File(cwd + "/default.db");
 
-        File f = new File(cwd+"/default.db");
-
-        if(f.exists() && f.isFile()){
-            //System.out.println("Deleted db");
+        if (f.exists() && f.isFile()) {
             f.delete();
         }
     }
 
-    //#######################MAKING TABLES//
-
     /**
      * Prepares the sql string to create a new airport table within the database.
+     *
      * @return The sql string to create a new airport table within the database.
      */
-    private static String createAirportTable(){
-        //added additional constraints on some of the fields, but i think adding some on parsing as well may simplify things?
+    private static String createAirportTable() {
         String sql = "CREATE TABLE AIRPORT " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
                 " NAME           VARCHAR(40) UNIQUE NOT NULL," +
@@ -536,21 +465,21 @@ public class DataBaseRefactor {
                 " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
                 " ICAO           CHAR(4)," +
                 " LATITUDE       FLOAT constraint invalid_latitude check (LATITUDE between '-90' and '90')," +
-                " LONGITUDE      FLOAT constraint invalid_longitude check (LONGITUDE between '-180' and '180'),"+
+                " LONGITUDE      FLOAT constraint invalid_longitude check (LONGITUDE between '-180' and '180')," +
                 " ALTITUDE       FLOAT constraint invalid_altitude check (ALTITUDE between '-1500' and '15000')," +
                 " TIMEZONE       FLOAT constraint invalid_timezone check (TIMEZONE between '-12.00' and '14.00')," +
                 " DST            CHAR(1) constraint invalid_daylight_savings_time check (DST in ('E', 'A', 'S', 'O', 'Z', 'N', 'U', ''))," +
                 " TZ             VARCHAR(40))";
-        //System.out.println(sql);
         return sql;
 
     }
 
     /**
      * Prepares the sql string to create a new airline table within the database.
+     *
      * @return The sql string to create a new airline table within the database.
      */
-    private static String createAirlineTable(){
+    private static String createAirlineTable() {
         String sql = "CREATE TABLE AIRLINE " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL constraint invalid_id check (ID > 0)," +
                 " NAME           VARCHAR(40)   NOT NULL," +
@@ -560,16 +489,15 @@ public class DataBaseRefactor {
                 " CALLSIGN           VARCHAR(40)," +
                 " COUNTRY           VARCHAR(40)," + //not null?
                 " ACTIVE           CHAR(1) constraint invalid_active_code check (ACTIVE in ('Y', 'N')) )";
-        //System.out.println(sql);
         return sql;
     }
 
     /**
      * Prepares the sql string to create a new route table within the database.
+     *
      * @return The sql string to create a new route table within the database.
      */
-    private static String createRouteTable(){
-        //creates a route table for sqlite, routes includes links to both the airport and the equipment tables
+    private static String createRouteTable() {
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER PRIMARY KEY AUTOINCREMENT /*ID number for the route*/," +
                 "Airline    VARCHAR(3) /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
@@ -587,43 +515,33 @@ public class DataBaseRefactor {
         return sql;
     }
 
-//    private static String createEquipmentTable(){
-//        //creates an equipment table for sqlite, is used to give routes the multivalued atribute equipment
-//        String sql = "CREATE TABLE EQUIPMENT" +
-//                "(IDnum          INTEGER NOT NULL /*Comes from route*/, " +
-//                "EquipmentName CHAR(3) NOT NULL," +     //can this be null?
-//                "PRIMARY KEY (EquipmentName, IDnum), "+
-//                "FOREIGN KEY (IDnum) REFERENCES ROUTE (IDnum)" +
-//                ")";
-//        return sql;
-//    }
-
     /**
      * Prepares the sql string to create a new flight table within the database.
+     *
      * @return The sql string to create a new flight table within the database.
      */
-    private static String createFlightTable(){
+    private static String createFlightTable() {
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
                 "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
                 "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +       //either the IATA(3) or ICAO(4)
                 ")";
-        //System.out.println(sql);
         return sql;
     }
 
     /**
      * Prepares the sql string to create a new flightpoint table within the database.
+     *
      * @return The sql string to create a new flightpoint table within the database.
      */
-    private static String createFlightPointTable(){
+    private static String createFlightPointTable() {
         String sql = "CREATE TABLE FLIGHTPOINT" +
                 "(SeqOrder         INTEGER NOT NULL /*gives the sequence of the flight points*/," +
-                "LocaleID       VARCHAR(5) NOT NULL, "+
-                "LocationType   CHAR(3) NOT NULL /*Type of location*/, "+
+                "LocaleID       VARCHAR(5) NOT NULL, " +
+                "LocationType   CHAR(3) NOT NULL /*Type of location*/, " +
                 "Altitude       INTEGER NOT NULL /*Altitudinal co-ordinates for flight point*/ constraint invalid_flight_altitude check (Altitude between -1500 and 100000), " +
                 "Latitude       FLOAT NOT NULL constraint invalid_flight_latitude check (LATITUDE between '-90' and '90') /*Latitudinal co-ordinates for flight point*/, " +
-                "Longitude      FLOAT NOT NULL constraint invalid_flight_longitude check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, "+
+                "Longitude      FLOAT NOT NULL constraint invalid_flight_longitude check (LONGITUDE between '-180' and '180') /*Longitudinal co-ordinates for flight point*/, " +
                 "FlightIDNum       INTEGER NOT NULL /*comes from flight*/," +
                 "PRIMARY KEY (FlightIDNum, SeqOrder)," +
                 "FOREIGN KEY (FlightIDNum)" +
@@ -636,20 +554,15 @@ public class DataBaseRefactor {
      * Creates one table for each type of datapoint in the database, in order to store data.
      */
     public static void createTables() {
-        //dropTables();
         setDataBaseName("jdbc:sqlite:default.db");
         deleteDBFile();
         String dbname = getDatabaseName();
         PreparedStatement preparedStatement = null;
-
         Connection c = makeConnection();
         Statement stmt = null;
-
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
-            //System.out.println("Opened database successfully");
-
             stmt = c.createStatement();
             String sql = createAirportTable();
 
@@ -662,31 +575,27 @@ public class DataBaseRefactor {
             preparedStatement = c.prepareStatement(createRouteTable());
             preparedStatement.executeUpdate();
 
-//            preparedStatement = c.prepareStatement(createEquipmentTable());
-//            preparedStatement.executeUpdate();
-
             preparedStatement = c.prepareStatement(createFlightTable());
             preparedStatement.executeUpdate();
 
             preparedStatement = c.prepareStatement(createFlightPointTable());
             preparedStatement.executeUpdate();
 
-
             stmt.close();
             c.close();
         } catch (Exception e) {
-            System.out.println("TABLES NOT CREATED SUCCESSFULLY");
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+//            System.out.println("TABLES NOT CREATED SUCCESSFULLY");
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            System.exit(0);
         }
-        //System.out.println("AIPORT, AIRLINE, ROUTE, EQUIPMENT, FLIGHT Table created successfully");
     }
 
     /**
      * Drops a table, then re-creates it, in order to clear a single table
+     *
      * @param type the enum DataType of the table to be dropped
-     * */
-    public static void clearTable(DataTypes type){
+     */
+    public static void clearTable(DataTypes type) {
         try {
             System.out.println("In the drop table method");
             Connection currentConnection = makeConnection();
@@ -698,7 +607,7 @@ public class DataBaseRefactor {
             String sqlDrop = "";
             String sqlCreate = "";
 
-            switch(type){
+            switch (type) {
                 case AIRLINEPOINT:
                     sqlDrop = "DROP TABLE AIRLINE";
                     sqlCreate = createAirlineTable();
@@ -719,24 +628,23 @@ public class DataBaseRefactor {
                     sqlDrop = "DROP TABLE  FLIGHT";
                     sqlCreate = createFlightTable();
             }
-                try{
-                    preparedStatement = currentConnection.prepareStatement(sqlDrop);
-                    preparedStatement.executeUpdate();
-                    preparedStatement.close();
+            try {
+                preparedStatement = currentConnection.prepareStatement(sqlDrop);
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
 
-                    preparedStatement = currentConnection.prepareStatement(sqlCreate);
-                    preparedStatement.executeUpdate();
-                    preparedStatement.close();
+                preparedStatement = currentConnection.prepareStatement(sqlCreate);
+                preparedStatement.executeUpdate();
+                preparedStatement.close();
 
-                }catch (Exception e){
-                    System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                    System.out.println("Prepared statement failed");
-                }
+            } catch (Exception e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                System.out.println("Prepared statement failed");
+            }
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) {
-            //System.out.println("Some error occurred when making connection? :");
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -760,13 +668,12 @@ public class DataBaseRefactor {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
-            //not a db
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error in loading File");
             alert.setHeaderText("The file was not a database file.");
             alert.setContentText("A database was create for you");
             alert.showAndWait();
-            DataBaseRefactor.createTables();
+            Database.createTables();
             //Return true to prevent 2 errors from being displayed
             return true;
         }
@@ -774,4 +681,3 @@ public class DataBaseRefactor {
     }
 
 }
-

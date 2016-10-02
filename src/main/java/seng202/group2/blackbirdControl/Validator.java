@@ -2,7 +2,7 @@ package seng202.group2.blackbirdControl;
 
 import javafx.scene.control.Alert;
 import org.apache.commons.lang3.StringUtils;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.Database;
 
 /**
  * Created by emr65 on 22/09/16.
@@ -386,7 +386,7 @@ public class Validator {
     public static boolean tableColumnchecker(String table, String[] columns){
         boolean correct = true;
         for(String column : columns){
-            if(DataBaseRefactor.checkDBForColumn(table, column) == false){
+            if(Database.checkDBForColumn(table, column) == false){
                 correct = false;
             }
         }

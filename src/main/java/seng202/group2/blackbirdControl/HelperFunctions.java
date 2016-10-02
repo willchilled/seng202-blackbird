@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.Database;
 
 import java.io.File;
 import java.util.Optional;
@@ -103,7 +103,7 @@ public class HelperFunctions {
         Optional<ButtonType> result = alert.showAndWait();
 
         if((result.isPresent()) && (result.get() == ButtonType.OK)){
-            DataBaseRefactor.editDataEntry(sql);
+            Database.editDataEntry(sql);
             //Query
             //Update
         }

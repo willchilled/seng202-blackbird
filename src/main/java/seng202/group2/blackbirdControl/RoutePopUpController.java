@@ -110,7 +110,7 @@ public class RoutePopUpController {
         String sql = "SELECT * FROM AIRLINE WHERE ID=" + routePoint.getAirlineID();
 
         int myIndex = 0;
-        ArrayList<DataPoint> myAirline = DataBaseRefactor.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
+        ArrayList<DataPoint> myAirline = Database.performGenericQuery(sql, DataTypes.AIRLINEPOINT);
         if (myAirline.size() > 1) {
             System.err.println("More than one airline found");
         } else if (myAirline.size() == 0) {
@@ -123,7 +123,7 @@ public class RoutePopUpController {
 
         String sql1 = "SELECT * FROM AIRPORT WHERE ID=" + routePoint.getSrcAirportID();
         int sourceIndex = 0;
-        ArrayList<DataPoint> sourceAirport = DataBaseRefactor.performGenericQuery(sql1, DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> sourceAirport = Database.performGenericQuery(sql1, DataTypes.AIRPORTPOINT);
         if (sourceAirport.size() > 1) {
             System.err.println("More than one airport found");
         } else if (sourceAirport.size() == 0) {
@@ -136,7 +136,7 @@ public class RoutePopUpController {
 
         String sql2 = "SELECT * FROM AIRPORT WHERE ID=" + routePoint.getDstAirportID();
         int destIndex = 0;
-        ArrayList<DataPoint> destAirport = DataBaseRefactor.performGenericQuery(sql2, DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> destAirport = Database.performGenericQuery(sql2, DataTypes.AIRPORTPOINT);
         if (destAirport.size() > 1) {
             System.err.println("More than one airport found");
         } else if (destAirport.size() == 0) {
@@ -176,11 +176,11 @@ public class RoutePopUpController {
                             " Dst=\"%5$s\", Dstid=\"%6$s\", Codeshare=\"%7$s\", Stops=\"%8$s\", Equipment=\"%9$s\" WHERE IDnum=\"%10$s\"",
                     valueFields[0], valueFields[1], valueFields[2], valueFields[3], valueFields[4], valueFields[5],
                     valueFields[6], valueFields[7], valueFields[8], routeIDText.getText());
-            DataBaseRefactor.editDataEntry(sql);
+            Database.editDataEntry(sql);
             routeTabController.routesFilterButtonPressed();
 
             String sql1 = "SELECT * FROM ROUTE WHERE IDnum='" + routeIDText.getText() + "'";
-            ArrayList<DataPoint> myRoute = DataBaseRefactor.performGenericQuery(sql1, DataTypes.ROUTEPOINT);
+            ArrayList<DataPoint> myRoute = Database.performGenericQuery(sql1, DataTypes.ROUTEPOINT);
             RoutePoint myEditedRoute = (RoutePoint) myRoute.get(0);
 
             setRoutePoint(myEditedRoute);
@@ -254,7 +254,7 @@ public class RoutePopUpController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if((result.isPresent()) && (result.get() == ButtonType.OK)) {
-            DataBaseRefactor.editDataEntry(sql);
+            Database.editDataEntry(sql);
             routeTabController.routesFilterButtonPressed();
             stage.close();
         }

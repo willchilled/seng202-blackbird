@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
-import seng202.group2.blackbirdModel.DataBaseRefactor;
+import seng202.group2.blackbirdModel.Database;
 import seng202.group2.blackbirdModel.DataTypes;
 
 import java.io.*;
@@ -51,7 +51,7 @@ public class MenuBarController {
     public void show() {
         if (opened == false) {
             showMenus();
-            DataBaseRefactor.createTables();
+            Database.createTables();
             opened = true;
         } else {
             opened = true;
@@ -62,7 +62,7 @@ public class MenuBarController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                DataBaseRefactor.createTables();
+                Database.createTables();
                 mainController.showTables();
                 showMenuHelper();
                 mainController.clearErrors(DataTypes.AIRPORTPOINT);
@@ -240,7 +240,7 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);
+            Database.clearTable(DataTypes.AIRLINEPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRLINEPOINT);
             mainController.clearErrors(DataTypes.AIRLINEPOINT);
@@ -260,7 +260,7 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);
+            Database.clearTable(DataTypes.AIRPORTPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.AIRPORTPOINT);
             mainController.clearErrors(DataTypes.AIRPORTPOINT);
@@ -280,7 +280,7 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);
+            Database.clearTable(DataTypes.ROUTEPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.ROUTEPOINT);
             mainController.clearErrors(DataTypes.ROUTEPOINT);
@@ -301,8 +301,8 @@ public class MenuBarController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            DataBaseRefactor.clearTable(DataTypes.FLIGHT);
-            DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);
+            Database.clearTable(DataTypes.FLIGHT);
+            Database.clearTable(DataTypes.FLIGHTPOINT);
             mainController.showTables();
             mainController.updateTab(DataTypes.FLIGHT);
             showMenuHelper();
@@ -312,7 +312,7 @@ public class MenuBarController {
 
     /**
      * Shows alert that allows user to choose to either replace or merge when adding a new data file
-     * Calls mainController.addXXXData for each datatype, and DataBaseRefactor.clearTable when user chooses to replace
+     * Calls mainController.addXXXData for each datatype, and Database.clearTable when user chooses to replace
      * @param type
      */
     public void showAddOptions(DataTypes type) {
@@ -330,7 +330,7 @@ public class MenuBarController {
             alert.showAndWait().ifPresent(response -> {
                 if (response == mergeButton || response == replaceButton) {
                     if (response == replaceButton) {
-                        DataBaseRefactor.clearTable(type);
+                        Database.clearTable(type);
                         //mainController.updateTab(type);
                     }
                     AddDataToController(type);
@@ -373,9 +373,9 @@ public class MenuBarController {
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
             //Must clear both flight and flightpoint table
-            DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
-            DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
-            DataBaseRefactor.createTables();
+            Database.clearTable(DataTypes.FLIGHT);//correct if needed
+            Database.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
+            Database.createTables();
         } else if (!(Validator.tableColumnchecker("FLIGHTPOINT", flightPointTableColumns))) { //check flight point table
             //Give Alert
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -384,9 +384,9 @@ public class MenuBarController {
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
             //Must clear both flight and flightpoint table
-            DataBaseRefactor.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
-            DataBaseRefactor.clearTable(DataTypes.FLIGHT);//correct if needed
-            DataBaseRefactor.createTables();
+            Database.clearTable(DataTypes.FLIGHTPOINT);//correct if needed
+            Database.clearTable(DataTypes.FLIGHT);//correct if needed
+            Database.createTables();
         }
         //check route table
         String[] routeTableColumns = {"IDnum", "Airline", "Airlineid", "Src", "Srcid", "Dst", "Dstid", "Codeshare", "Stops", "Equipment"};
@@ -397,8 +397,8 @@ public class MenuBarController {
             alert.setHeaderText("There was a problem with the route data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            DataBaseRefactor.clearTable(DataTypes.ROUTEPOINT);//correct if needed
-            DataBaseRefactor.createTables();
+            Database.clearTable(DataTypes.ROUTEPOINT);//correct if needed
+            Database.createTables();
         }
         //check airline table
         String[] airlineTableColumns = {"ID", "NAME", "ALIAS", "IATA", "ICAO", "CALLSIGN", "COUNTRY", "ACTIVE"};
@@ -409,8 +409,8 @@ public class MenuBarController {
             alert.setHeaderText("There was a problem with the airline data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            DataBaseRefactor.clearTable(DataTypes.AIRLINEPOINT);//correct if needed
-            DataBaseRefactor.createTables();
+            Database.clearTable(DataTypes.AIRLINEPOINT);//correct if needed
+            Database.createTables();
         }
         //check airport table
         String[] airportTableColumns = {"ID", "NAME", "CITY", "COUNTRY", "IATA", "ICAO", "LATITUDE", "LONGITUDE", "ALTITUDE", "TIMEZONE", "DST", "TZ"};
@@ -421,8 +421,8 @@ public class MenuBarController {
             alert.setHeaderText("There was a problem with the airport data.");
             alert.setContentText("It has been removed, this change has not been saved.");
             alert.showAndWait();
-            DataBaseRefactor.clearTable(DataTypes.AIRPORTPOINT);//correct if needed
-            DataBaseRefactor.createTables();
+            Database.clearTable(DataTypes.AIRPORTPOINT);//correct if needed
+            Database.createTables();
         }
     }
 

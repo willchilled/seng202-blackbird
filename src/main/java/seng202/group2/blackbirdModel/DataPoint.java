@@ -48,7 +48,6 @@ public class DataPoint {
         return fileLine;
     }
 
-
     /**
      * @param dataArray The array of data containing Strings
      * @param type      The input type the Data point should be set to
@@ -71,7 +70,7 @@ public class DataPoint {
 
         } else if (type == DataTypes.FLIGHT) {
             String sql = String.format("SELECT * FROM FLIGHTPOINT WHERE FlightIDNum='%s'", dataArray[0]);
-            ArrayList<DataPoint> flightPoints = DataBaseRefactor.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
+            ArrayList<DataPoint> flightPoints = Database.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
             //Has grabbed the relevant flightpoints, now construct a new flight
             currentPoint = new Flight(flightPoints);
             //currentPoint will have a correct entry of 1 if incorrect here
@@ -82,6 +81,7 @@ public class DataPoint {
 
     /**
      * A function to determine if a data point is of the same type
+     *
      * @param obj A data point to check equality of type against
      * @return A boolean variable, true if the data point is of the same type
      */

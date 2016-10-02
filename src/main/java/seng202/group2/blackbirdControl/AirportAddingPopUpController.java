@@ -22,6 +22,10 @@ import java.util.Arrays;
 
 /**
  * This airport adding pop up class allows the user to add individual airports to the program.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class AirportAddingPopUpController {
 
@@ -95,6 +99,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Obtains the input within the text fields of the pop up
+     *
      * @return The full string of values obtained from the text fields.
      */
     private String[] getValues() {
@@ -129,6 +134,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Populates the time zone drop down box.
+     *
      * @return The observable list which populates the time zone drop down.
      */
     private ObservableList<String> populateTimeZoneMenu() {
@@ -151,6 +157,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Populates the daylight savings time drop down box.
+     *
      * @return The observable list which populates the daylight savings time drop down.
      */
     private ObservableList<String> populateDSTMenu() {
@@ -161,6 +168,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Sets the stage for the pop up
+     *
      * @param adderStage The stage for the pop up
      */
     void setAdderStage(Stage adderStage) {
@@ -169,6 +177,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Sets the root for the pop up
+     *
      * @param root The parent root
      */
     public void setRoot(Parent root) {
@@ -177,6 +186,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Sets the related airport tab for the pop up
+     *
      * @param airportTabController The airport tab invoking the pop up
      */
     void setAirportTabController(AirportTabController airportTabController) {
@@ -185,6 +195,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Assigns an action for the enter key
+     *
      * @param ke The keyevent that occurred (the Enter key event)
      */
     public void enterPressed(KeyEvent ke) {
@@ -195,6 +206,7 @@ public class AirportAddingPopUpController {
 
     /**
      * Helper function for the error tab controller, to detect whether the point was added or not
+     *
      * @return Boolean for whether the point was added or not.
      */
     public boolean isAdded() {

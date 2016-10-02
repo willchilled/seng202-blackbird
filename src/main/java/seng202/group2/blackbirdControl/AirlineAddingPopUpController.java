@@ -83,6 +83,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Helper function to retrieve inputted values that the user has entered
+     *
      * @return The string array of values retrieved from the entry fields
      */
     private String[] getValues() {
@@ -106,6 +107,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Sets the root for the pop up
+     *
      * @param root The parent root
      */
     public void setRoot(Parent root) {
@@ -114,6 +116,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Sets the stage for the pop up
+     *
      * @param adderStage The stage for the pop up
      */
     void setAdderStage(Stage adderStage) {
@@ -122,6 +125,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Sets the related airline tab for the pop up
+     *
      * @param controller The airline tab invoking the pop up
      */
     void setAirlineTabController(AirlineTabController controller) {
@@ -130,6 +134,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Assigns an action for the enter key
+     *
      * @param ke The keyevent that occurred (the Enter key event)
      */
     public void enterPressed(KeyEvent ke) {
@@ -140,6 +145,7 @@ public class AirlineAddingPopUpController {
 
     /**
      * Helper function for the error tab controller, to detect whether the point was added or not
+     *
      * @return Boolean for whether the point was added or not.
      */
     public boolean isAdded() {

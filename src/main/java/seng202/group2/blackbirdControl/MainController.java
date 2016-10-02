@@ -238,7 +238,7 @@ public class MainController implements Initializable {
      */
     public void showTables(){
         routeTabController.routesSeeAllDataButtonPressed(null);
-        airportTabController.airportSeeAllButtonPressed(null);
+        airportTabController.airportSeeAllButtonPressed();
         airlineTabController.airlineSeeAllButtonPressed();
         flightTabController.displayFlights();
     }

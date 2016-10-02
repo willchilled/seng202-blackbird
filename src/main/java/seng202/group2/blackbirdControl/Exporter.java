@@ -21,8 +21,7 @@ public class Exporter {
 
         File fileToSave = HelperFunctions.getFile("Save File", true);
 
-            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(fileToSave), "utf-8"))) {
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileToSave), "utf-8"))) {
                 
                 for(int i = 0; i < points.size(); i++){
                     writer.write(points.get(i).toString()+"\n");

@@ -12,7 +12,7 @@ public class FlightPoint extends DataPoint {
     private int seqno;
     private String localeType;
     private String localeID;
-    private int altitude;
+    private float altitude;
     private float latitude;
     private float longitude;
     private int correctEntry=0;
@@ -26,7 +26,7 @@ public class FlightPoint extends DataPoint {
      * @param latitude the latitude
      * @param longitude the longitude
      */
-    public FlightPoint(String type, String localeID, int altitude, float latitude, float longitude) {
+    public FlightPoint(String type, String localeID, float altitude, float latitude, float longitude) {
 
         this.localeType = type;
         this.localeID = localeID;
@@ -55,7 +55,7 @@ public class FlightPoint extends DataPoint {
             if (currentLine.length == 5) {
                 this.localeType = currentLine[0];
                 this.localeID = currentLine[1];
-                this.altitude = Integer.parseInt(currentLine[2]);
+                this.altitude = Float.parseFloat(currentLine[2]);
                 this.latitude = Float.parseFloat(currentLine[3]);
                 this.longitude = Float.parseFloat(currentLine[4]);
             }
@@ -64,7 +64,7 @@ public class FlightPoint extends DataPoint {
                 //this.flightIDNum = Integer.parseInt(currentLine[0]);
                 this.localeType = currentLine[2];
                 this.localeID = currentLine[1];
-                this.altitude = Integer.parseInt(currentLine[3]);
+                this.altitude = Float.parseFloat(currentLine[3]);
                 this.latitude = Float.parseFloat(currentLine[4]);
                 this.longitude = Float.parseFloat(currentLine[5]);
                 this.flightIDNum = Integer.parseInt(currentLine[6]);
@@ -97,11 +97,11 @@ public class FlightPoint extends DataPoint {
         this.localeID = localeID;
     }
 
-    public int getAltitude() {
+    public float getAltitude() {
         return altitude;
     }
 
-    public void setAltitude(int altitude) {
+    public void setAltitude(float altitude) {
         this.altitude = altitude;
     }
 

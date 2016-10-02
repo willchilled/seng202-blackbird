@@ -525,7 +525,7 @@ public class DataBaseRefactor {
         //added additional constraints on some of the fields, but i think adding some on parsing as well may simplify things?
         String sql = "CREATE TABLE AIRPORT " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL," +
-                " NAME           VARCHAR(40)   NOT NULL," +
+                " NAME           VARCHAR(40) UNIQUE NOT NULL," +
                 " CITY           VARCHAR(40)," +
                 " COUNTRY        VARCHAR(40)   NOT NULL," +
                 " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?

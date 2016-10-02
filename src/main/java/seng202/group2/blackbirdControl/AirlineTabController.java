@@ -1,11 +1,8 @@
 package seng202.group2.blackbirdControl;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-import com.sun.prism.PixelFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,16 +44,10 @@ public class AirlineTabController {
     @FXML private TableColumn airlineCallsignCol;
     @FXML private TableColumn airlineCountryCol;
     @FXML private TableColumn airlineActCol;
-    @FXML private TableColumn airlineErrorCol;
 
     //Searching and filtering
     @FXML private ComboBox airlineFilterMenu;
     @FXML private TextField airlineSearchQuery;
-
-    //Buttons
-    @FXML private Button airlineFilterButton;
-    @FXML private Button airlineSeeAllButton;
-    @FXML private Button addAirlineToTable;
     @FXML private ComboBox airlineActiveMenu;
 
     /**

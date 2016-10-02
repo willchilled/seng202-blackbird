@@ -184,8 +184,13 @@ public class DataBaseRefactor {
             preparedStatement.close();
         }
         catch (Exception e){
-            //System.out.println(e.getClass().getName() + ", "+ e.getMessage());
+//            System.out.println(e.getClass().getName() + ", "+ e.getMessage());
             //System.out.println("Cant add " +  myPoints.toString());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Flight Error");
+            alert.setHeaderText("Invalid flight file");
+            alert.setContentText("Invalid entries were found, please check your file");
+            alert.showAndWait();
             System.out.println("DataBaseRefactor.addFlight failed");
         }
     }

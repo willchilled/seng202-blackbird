@@ -76,12 +76,12 @@ public class ValidatorTest extends TestCase {
 
     public void testCheckFlightPont() throws Exception{
         String[] attributes = new String[] {"1", "BAN", "1.23", "2.34", "3.45"};
-        boolean valid = Validator.checkFlightPoint(attributes);
-        assertEquals(true, valid);
+        String[] checkData = Validator.checkFlightPoint(attributes);
+        assertTrue(HelperFunctions.allValid(checkData));
 
         attributes = new String[] {"HI", "BAN", "apple", "2.34", "3.45"};
-        valid = Validator.checkFlightPoint(attributes);
-        assertEquals(false, valid);
+        checkData = Validator.checkFlightPoint(attributes);
+        assertFalse(HelperFunctions.allValid(checkData));
 
 
     }

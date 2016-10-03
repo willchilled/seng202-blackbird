@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 /**
  * A subclass of DataPoint to hold information about a Flight
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class Flight extends DataPoint {
 
@@ -22,7 +26,7 @@ public class Flight extends DataPoint {
         this.flightPoints = flightPoints;
         FlightPoint source = (FlightPoint) flightPoints.get(0);
         FlightPoint dest = (FlightPoint) flightPoints.get(flightPoints.size() - 1);
-        if (!source.getLocalType().equals("APT") || !dest.getLocalType().equals("APT")) {   //flight begins and ends at invalid locations
+        if (!source.getLocaleType().equals("APT") || !dest.getLocaleType().equals("APT")) {   //flight begins and ends at invalid locations
             this.correctEntry = 1;
         }
         this.srcAirport = source.getLocaleID();
@@ -49,7 +53,6 @@ public class Flight extends DataPoint {
     public ArrayList<DataPoint> getFlightPoints() {
         return flightPoints;
     }
-
 
 }
 

@@ -1,7 +1,11 @@
 package seng202.group2.blackbirdModel;
 
 /**
- * Created by wmu16 on 26/09/16.
+ * Helper class to create Position objects, used by the map to display points
+ *
+ * @author Team2
+ * @version 1.0
+ * @since 26/09/16.
  */
 public class Position {
     public double lat;
@@ -16,4 +20,5 @@ public class Position {
         this.lat = lat;
         this.lng = lng;
     }
+
 }

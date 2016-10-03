@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Created by emr65 on 12/09/16.
+ * Test for the Flight class
  */
 public class FlightTest extends TestCase {
 
     public void testIDONOTHING() throws Exception{
         assertEquals("HELLO", "HELLO");
-
     }
+
 //    public void testGetSrcAirport() throws Exception {
 //
 //        String cwd = System.getProperty("user.dir");
@@ -22,25 +22,18 @@ public class FlightTest extends TestCase {
 //        flightsFileString = cwd + "/JUnitTesting/flight.txt";
 //        File flightsFile = new File(flightsFileString);
 //
-
 //        //Flight testFlight = new Flight(testFlightPoints);
-//
 //        assertEquals("NZCH", testFlight.getSrcAirport());
-//
 //    }
 //
 //    public void testGetDestAirport() throws Exception {
-//
 //        String cwd = System.getProperty("user.dir");
 //        String flightsFileString;
 //        flightsFileString = cwd + "/JUnitTesting/flight.txt";
 //        File flightsFile = new File(flightsFileString);
-//
-
 //        Flight testFlight = new Flight(testFlightPoints);
 //
 //        assertEquals("WSSS", testFlight.getDestAirport());
-//
 //    }
 //
 //    public void testGetFlightPoints() throws Exception {
@@ -48,8 +41,6 @@ public class FlightTest extends TestCase {
 //        String flightsFileString;
 //        flightsFileString = cwd + "/JUnitTesting/flight.txt";
 //        File flightsFile = new File(flightsFileString);
-//
-
 //        Flight testFlight = new Flight(testFlightPoints);
 //
 //        assertEquals(testFlightPoints, testFlight.getFlightPoints());

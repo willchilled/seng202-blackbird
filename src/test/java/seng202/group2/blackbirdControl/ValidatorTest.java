@@ -3,12 +3,11 @@ package seng202.group2.blackbirdControl;
 import junit.framework.TestCase;
 
 /**
- * Created by emr65 on 22/09/16.
+ * Tests the Validator class
  */
 public class ValidatorTest extends TestCase {
 
     public void testCheckAirline() throws Exception {
-
         String id = "1";                            //Int > 0
         String name = "Hello";                      //String < 40 char || empty
         String alias = "Helloy";                    //String < 40 char || empty
@@ -18,21 +17,17 @@ public class ValidatorTest extends TestCase {
         String country = "HELLO WORLD";             //String < 40 char || empty
         String active = "N";                        //Upper Char || empty
 
-
-
-        String[] attributes = new String[] {id, name, alias, iata, icao, callsign, country, active};
+        String[] attributes = new String[]{id, name, alias, iata, icao, callsign, country, active};
         String[] checkData = Validator.checkAirline(attributes);
         assertTrue(HelperFunctions.allValid(checkData));
 
         iata = "11111";
-        attributes = new String[] {id, name, alias, iata, icao, callsign, country, active};
+        attributes = new String[]{id, name, alias, iata, icao, callsign, country, active};
         checkData = Validator.checkAirline(attributes);
         assertFalse(HelperFunctions.allValid(checkData));
-
     }
 
     public void testCheckAirport() throws Exception {
-
         String id = "1";                            //int > 0
         String name = "Bye";                        //String < 40 char || empty
         String city = "Byetown";                    //String < 40 char || empty
@@ -46,44 +41,38 @@ public class ValidatorTest extends TestCase {
         String dst = "A";                           // Upper Char || empty
         String tz = "The Goodbye zone/Farewll";     //String < 40 char || empty
 
-
-
-        String[] attributes = new String[] {id, name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
+        String[] attributes = new String[]{id, name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
         String[] checkData = Validator.checkAirport(attributes);
         assertTrue(HelperFunctions.allValid(checkData));
 
         lat = "9999999";
-        attributes = new String[] {id, name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
+        attributes = new String[]{id, name, city, country, iata, icao, lat, lon, alt, timeZone, dst, tz};
         checkData = Validator.checkAirport(attributes);
         assertFalse(HelperFunctions.allValid(checkData));
-
-
     }
 
-    public void testCheckRoute() throws Exception{
-        String[] attributes = new String[] {"2B", "410", "AER", "Y", "1", "CR2"};
+    public void testCheckRoute() throws Exception {
+        String[] attributes = new String[]{"2B", "410", "AER", "Y", "1", "CR2"};
         String[] checkData = Validator.checkRoute(attributes);
         assertTrue(HelperFunctions.allValid(checkData));
 
-        attributes = new String[] {"None", "410", "AER", "7", "KZN", "7", "hi"};
+        attributes = new String[]{"None", "410", "AER", "7", "KZN", "7", "hi"};
         checkData = Validator.checkRoute(attributes);
         assertFalse(HelperFunctions.allValid(checkData));
 
-        attributes = new String[] {"2B", "410", "AER", "7", "KZN", "NOT_VALID"};
+        attributes = new String[]{"2B", "410", "AER", "7", "KZN", "NOT_VALID"};
         checkData = Validator.checkRoute(attributes);
         assertFalse(HelperFunctions.allValid(checkData));
     }
 
-    public void testCheckFlightPont() throws Exception{
-        String[] attributes = new String[] {"1", "BAN", "1.23", "2.34", "3.45"};
+    public void testCheckFlightPont() throws Exception {
+        String[] attributes = new String[]{"1", "BAN", "1.23", "2.34", "3.45"};
         String[] checkData = Validator.checkFlightPoint(attributes);
         assertTrue(HelperFunctions.allValid(checkData));
 
-        attributes = new String[] {"HI", "BAN", "apple", "2.34", "3.45"};
+        attributes = new String[]{"HI", "BAN", "apple", "2.34", "3.45"};
         checkData = Validator.checkFlightPoint(attributes);
         assertFalse(HelperFunctions.allValid(checkData));
-
-
     }
 
 }

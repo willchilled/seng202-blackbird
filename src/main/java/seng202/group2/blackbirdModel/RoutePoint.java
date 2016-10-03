@@ -1,5 +1,3 @@
-
-
 package seng202.group2.blackbirdModel;
 
 import org.apache.commons.lang3.StringUtils;
@@ -7,8 +5,11 @@ import seng202.group2.blackbirdControl.ErrorTabController;
 
 /**
  * A subclass of dataPoint that stores information about a route
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
-
 public class RoutePoint extends DataPoint {
 
     private int routeID;    //our given id to routes
@@ -37,7 +38,6 @@ public class RoutePoint extends DataPoint {
      * @param airlineID The airlineID for the route
      */
     public RoutePoint(String airline, int airlineID) {
-
         this.airline = airline;
         this.airlineID = airlineID;
     }
@@ -84,7 +84,7 @@ public class RoutePoint extends DataPoint {
                 this.stops = Integer.parseInt(currentLine[8]);
                 this.equipment = currentLine[9];
 
-                if (currentLine.length == 14) {
+                if (currentLine.length == 14) { //if it contains the name of the source and dest airport
                     this.srcAirportName = currentLine[10];
                     this.srcAirportCountry = currentLine[11];
                     this.dstAirportName = currentLine[12];
@@ -267,5 +267,6 @@ public class RoutePoint extends DataPoint {
     public void setDstAirportCountry(String dstAirportCountry) {
         this.dstAirportCountry = dstAirportCountry;
     }
+
 }
 

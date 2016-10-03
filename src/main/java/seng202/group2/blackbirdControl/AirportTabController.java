@@ -81,13 +81,17 @@ public class AirportTabController {
     /**
      * Adds airport data using a file chooser. Only valid data will be added into the persistent database.
      *
+     * @param replace boolean to inform if data being added is replacing or merging
      * @see Parser
      * @see DatabaseInterface
      */
-    void addAirportData() {
+    void addAirportData(boolean replace) {
         File f = HelperFunctions.getFile("Add Airport Data", false);
         if (f == null) {
             return;
+        }
+        if(replace) {
+            DatabaseInterface.clearTable(DataTypes.AIRPORTPOINT);
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myAirportPoints = Parser.parseFile(f, DataTypes.AIRPORTPOINT, errorTab);

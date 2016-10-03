@@ -115,6 +115,7 @@ public class Filter {
                 myQuery = airportFilter(menusPressed, searchString);
                 ArrayList<DataPoint> myAirportPoints = DatabaseInterface.performGenericQuery(myQuery, type);
                 myAirportPoints = linkRoutesandAirports(myAirportPoints);
+                //System.out.println(myAirportPoints);
                 return myAirportPoints;
             case ROUTEPOINT:
                 myQuery = routeFilter(menusPressed, searchString); //a special case because we want to filter by selections not in the database

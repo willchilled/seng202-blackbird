@@ -167,13 +167,17 @@ public class RouteTabController {
     /**
      * Adds route data using a file chooser. Only valid data will be added into the persistent database.
      *
+     * @param replace boolean to inform if data being added is replacing or merging
      * @see Parser
      * @see DatabaseInterface
      */
-    void addRouteData() {
+    void addRouteData(boolean replace) {
         File f = HelperFunctions.getFile("Add Route Data", false);
         if (f == null) {
             return;
+        }
+        if(replace) {
+            DatabaseInterface.clearTable(DataTypes.ROUTEPOINT);
         }
         ErrorTabController errorTab = mainController.getErrorTabController();
         ArrayList<DataPoint> myRouteData = Parser.parseFile(f, DataTypes.ROUTEPOINT, errorTab);

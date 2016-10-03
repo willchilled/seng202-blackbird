@@ -106,19 +106,24 @@ public class MainController implements Initializable {
 
     /**
      * Calls airlineTabController.addAirlineData() to add airline data from file
+     *
+     * @param replace boolean to inform if data being added is replacing or merging
      */
-    void addAirlineData() {
+    void addAirlineData(boolean replace) {
         errorTabController.setAllCorrect(true);
-        airlineTabController.addAirlineData();
+        airlineTabController.addAirlineData(replace);
         errorTabController.showAddingErrorMessage();
     }
 
     /**
      * Calls airportTabController.addAirportData() to add airport data from file
+     *
+     * @param replace boolean to inform if data being added is replacing or merging
+     *
      */
-    void addAirportData() {
+    void addAirportData(boolean replace) {
         errorTabController.setAllCorrect(true);
-        airportTabController.addAirportData();
+        airportTabController.addAirportData(replace);
         errorTabController.showAddingErrorMessage();
     }
 
@@ -131,10 +136,12 @@ public class MainController implements Initializable {
 
     /**
      * Calls routeTabController.addRouteData() to add route data from file
+     *
+     * @param replace boolean to inform if data being added is replacing or merging
      */
-    void addRouteData() {
+    void addRouteData(boolean replace) {
         errorTabController.setAllCorrect(true);
-        routeTabController.addRouteData();
+        routeTabController.addRouteData(replace);
         errorTabController.showAddingErrorMessage();
     }
 

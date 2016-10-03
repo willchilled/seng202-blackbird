@@ -45,7 +45,7 @@ public class HelpViewerController {
      */
     private void initDoc() {
         webEngine = webView.getEngine();
-        URL urlHello = getClass().getResource("/Help/HelpDocManual.html");
+        URL urlHello = getClass().getResource("/Help/HelpDocManualHTML.html");
         webEngine.load(urlHello.toExternalForm());
     }
 

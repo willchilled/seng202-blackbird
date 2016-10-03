@@ -671,7 +671,7 @@ public class DatabaseInterface {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error in loading File");
             alert.setHeaderText("The file was not a database file.");
-            alert.setContentText("A database was create for you");
+            alert.setContentText("A database was created for you");
             alert.showAndWait();
             DatabaseInterface.createTables();
             //Return true to prevent 2 errors from being displayed

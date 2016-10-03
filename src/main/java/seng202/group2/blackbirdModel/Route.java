@@ -3,8 +3,13 @@ package seng202.group2.blackbirdModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**A class for making a route for the purposes of displaying on the GUI
- * Created by wmu16 on 26/09/16.
+/**
+ * A class for making a route for the purposes of displaying on the GUI.
+ * Note: this is different to the RoutePoint class.
+ *
+ * @author Team2
+ * @version 1.0
+ * @since 26/9/2016
  */
 public class Route {
 
@@ -12,6 +17,7 @@ public class Route {
 
     /**
      * A constructor for making the route out of points
+     *
      * @param positions a series of Points of the form (lat, long)
      */
     public Route(ArrayList<Position> positions) {
@@ -19,8 +25,9 @@ public class Route {
     }
 
     /**
-     * conversion to a JScript executable string of the route
-     * @return The JScript Array
+     * conversion to a JSON query of the route
+     *
+     * @return The JSON Array
      */
     public String toJSONArray() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -33,15 +40,16 @@ public class Route {
 
     /**
      * Creates a list of Positions using the position class in order to create a route
+     *
      * @param flight with all its flight points
      * @return an Arraylist of the positions
      */
-    public static ArrayList<Position> makeRoutePoints(Flight flight){
+    public static ArrayList<Position> makeRoutePoints(Flight flight) {
         ArrayList<Position> positions = new ArrayList<>();
         ArrayList<DataPoint> flightPoints = flight.getFlightPoints();
 
-        for (int i = 0; i < flightPoints.size(); i++) {
-            FlightPoint thisPoint = (FlightPoint) flightPoints.get(i);
+        for (DataPoint flightPoint : flightPoints) {
+            FlightPoint thisPoint = (FlightPoint) flightPoint;
             double lat = thisPoint.getLatitude();
             double lng = thisPoint.getLongitude();
             Position position = new Position(lat, lng);

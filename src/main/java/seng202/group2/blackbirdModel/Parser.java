@@ -2,21 +2,19 @@ package seng202.group2.blackbirdModel;
 
 import com.opencsv.CSVReader;
 import seng202.group2.blackbirdControl.ErrorTabController;
+
 import java.io.*;
 import java.util.ArrayList;
 
 /**
  * This class handles parsing of data, using an imported library called opencsv and the class CSVReader
  * to read through an inputted file.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class Parser {
-    /**
-     *
-     * @param file
-     * @param pointType
-     * @return
-     *
-     */
 
     /**
      * Parses a given file using CSVReader to generate a string array. This is then passed to the DataPoint
@@ -76,12 +74,9 @@ public class Parser {
                     allDataPoints.add(currentDataPoint);
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return allDataPoints;
     }
 

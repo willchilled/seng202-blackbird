@@ -2,6 +2,7 @@ package seng202.group2.blackbirdModel;
 
 import javafx.scene.control.Alert;
 import seng202.group2.blackbirdControl.ErrorTabController;
+
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,6 +10,10 @@ import java.util.ArrayList;
 /**
  * This class acts as an interface between our program and the database. It includes methods for preparing
  * the sql statements and performing these to update the database.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class DatabaseInterface {
 
@@ -41,9 +46,7 @@ public class DatabaseInterface {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
             c.setAutoCommit(false);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return c;
@@ -69,7 +72,6 @@ public class DatabaseInterface {
             }
 
             flightPointCount = 0;
-
             for (DataPoint currentPoint : myPoints) {
                 DataTypes dataType = currentPoint.getType();
                 switch (dataType) {
@@ -102,8 +104,8 @@ public class DatabaseInterface {
             }
             currentConnection.commit();
             currentConnection.close();
-        } catch (Exception e) {
-            //Its like being bad at pokemon because it doesnt catch anything
+        } catch (Exception e) { //a connection error has occurred
+            System.out.println("DatabaseInterface.insertDataPoints failed");
         }
     }
 
@@ -127,9 +129,8 @@ public class DatabaseInterface {
             preparedStatement.setFloat(5, flightPoint.getLatitude());
             preparedStatement.setFloat(6, flightPoint.getLongitude());
             preparedStatement.setInt(7, FlightCount);
-        } catch (SQLException e) {
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.out.println("DatabaseInterface.prepareInsertFlightPointStatement failed");
+        } catch (SQLException e) {  //could not construct prepared statement
+            System.out.println("DatabaseInterface.prepareInsertFlightPointStatement failed");
         }
         return preparedStatement;
     }
@@ -175,7 +176,8 @@ public class DatabaseInterface {
             preparedStatement = currentConnection.prepareStatement(sql);
             preparedStatement.setString(1, flightSource);
             preparedStatement.setString(2, destSource);
-        } catch (SQLException e) {
+        } catch (SQLException e) {  //could not construct prepared statement
+            System.out.println("DatabaseInterface.prepareInsertFlightStatement failed");
         }
         return preparedStatement;
     }
@@ -200,7 +202,6 @@ public class DatabaseInterface {
         int stops = route.getStops();
         String equp = route.getEquipment();
 
-        //make route sql text to execute
         String sql = "INSERT INTO ROUTE(IDnum, Airline, Airlineid, Src, Srcid, Dst, Dstid, Codeshare, Stops, Equipment) VALUES (?,?,?,?,?,?,?,?,?,?)";
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
@@ -213,8 +214,8 @@ public class DatabaseInterface {
             preparedStatement.setString(8, codeshare);
             preparedStatement.setInt(9, stops);
             preparedStatement.setString(10, equp);
-        } catch (SQLException e) {
-            //System.out.println("DatabaseInterface.prepareInsertRouteSql failed");
+        } catch (SQLException e) {  //could not construct prepared statement
+            System.out.println("DatabaseInterface.prepareInsertRouteSql failed");
         }
         return preparedStatement;
     }
@@ -242,7 +243,6 @@ public class DatabaseInterface {
         float timezone = airport.getTimeZone();
         String Dst = airport.getDst();
         String tz = airport.getTz();
-
         String sql = "INSERT INTO AIRPORT (ID, NAME, CITY, COUNTRY, IATA, ICAO, LATITUDE, LONGITUDE, ALTITUDE, TIMEZONE, DST, TZ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
@@ -259,11 +259,9 @@ public class DatabaseInterface {
             preparedStatement.setFloat(10, timezone);
             preparedStatement.setString(11, Dst);
             preparedStatement.setString(12, tz);
-        } catch (SQLException e) {
-
+        } catch (SQLException e) {  //could not construct prepared statement
             System.out.println("DatabaseInterface.prepareInsertAirportSql failed");
         }
-
         return preparedStatement;
     }
 
@@ -276,24 +274,20 @@ public class DatabaseInterface {
      * @return The prepared sql statement to insert an airline into the database.
      */
     private static PreparedStatement prepareInsertAirlineSql(DataPoint currentPoint, PreparedStatement preparedStatement, Connection currentConnection) {
-        AirlinePoint airline = (AirlinePoint) currentPoint; //Casting to make more specific
+        AirlinePoint airline = (AirlinePoint) currentPoint;
         int id = airline.getAirlineID();
         String name = airline.getAirlineName();
-        //System.out.println(name);
         String alias = airline.getAirlineAlias();
         String iata = airline.getIata();
         String icao = airline.getIcao();
         String callsign = airline.getCallsign();
         String country = airline.getCountry();
         String active = airline.getActive();
-        //System.out.println(active);
 
         String sql = "INSERT INTO AIRLINE (ID, NAME, ALIAS, IATA, ICAO, CALLSIGN, COUNTRY, ACTIVE) VALUES  (?,?,?,?,?,?,?,?);";
         try {
             preparedStatement = currentConnection.prepareStatement(sql);
-            //System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setInt(1, id);
-            // System.out.println(preparedStatement + "AAAAH");
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, alias);
             preparedStatement.setString(4, iata);
@@ -301,7 +295,7 @@ public class DatabaseInterface {
             preparedStatement.setString(6, callsign);
             preparedStatement.setString(7, country);
             preparedStatement.setString(8, active);
-        } catch (SQLException e) {
+        } catch (SQLException e) {  //could not construct prepared statement
             System.out.println("DatabaseInterface.prepareInsertAirlineSql failed");
         }
         return preparedStatement;
@@ -309,6 +303,7 @@ public class DatabaseInterface {
 
     /**
      * A simple function which can edit a single entry of data in the database
+     *
      * @param sql the prepared sql which is executed by the databes
      */
     public static void editDataEntry(String sql) {
@@ -320,16 +315,14 @@ public class DatabaseInterface {
             c.setAutoCommit(false);
             stmt = c.createStatement();
             stmt.executeUpdate(sql);
-
             stmt.close();
+
             c.commit();
             c.close();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Performing edit:" + sql);
-
     }
 
     /**
@@ -342,7 +335,6 @@ public class DatabaseInterface {
      * @see DataPoint
      */
     public static ArrayList<DataPoint> performGenericQuery(String sql, DataTypes dataType) {
-
         ArrayList<DataPoint> resultPoints = new ArrayList<>();
         try {
             Connection currentConnection = makeConnection();
@@ -352,9 +344,8 @@ public class DatabaseInterface {
             PreparedStatement preparedStatement = currentConnection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
-            String[] attributes = null;
+            String[] attributes;
             while (rs.next()) {
-
                 int width = rsmd.getColumnCount();
                 attributes = new String[width];
                 for (int i = 0; i < width; i++) {
@@ -367,9 +358,9 @@ public class DatabaseInterface {
             preparedStatement.close();
             currentConnection.close();
             rs.close();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {    //class not found
             e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (SQLException e) {  //the generic query failed
             System.out.println("DatabaseInterface.performGenericQuery query failed");
             e.printStackTrace();
         }
@@ -384,9 +375,7 @@ public class DatabaseInterface {
      * @return The arraylist of distinct strings
      */
     public static ArrayList<String> performDistinctQuery(String sql) {
-
         ArrayList<String> distinctResults = new ArrayList<>();
-
         try {
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
@@ -400,11 +389,11 @@ public class DatabaseInterface {
             preparedStatement.close();
             currentConnection.commit();
             currentConnection.close();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {    //class not found
             e.printStackTrace();
-        } catch (SQLException e) {
-//            System.out.println("DatabaseInterface.performDistinctQuery query failed");
-//            e.printStackTrace();
+        } catch (SQLException e) {  //the generic query failed
+            System.out.println("DatabaseInterface.performDistinctQuery query failed");
+            e.printStackTrace();
         }
         return distinctResults;
     }
@@ -431,9 +420,7 @@ public class DatabaseInterface {
             highID = rs.getInt(columnName);
             stmt.close();
             c.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return highID;
@@ -445,7 +432,6 @@ public class DatabaseInterface {
     private static void deleteDBFile() {
         String cwd = System.getProperty("user.dir");
         File f = new File(cwd + "/default.db");
-
         if (f.exists() && f.isFile()) {
             f.delete();
         }
@@ -462,7 +448,7 @@ public class DatabaseInterface {
                 " NAME           VARCHAR(40) UNIQUE NOT NULL," +
                 " CITY           VARCHAR(40)," +
                 " COUNTRY        VARCHAR(40)   NOT NULL," +
-                " IATA           CHAR(3)," +    //database isn't happy with any duplicate values, including null. Note: can have either IATA or ICAO, perform check if it has at least one?
+                " IATA           CHAR(3)," +
                 " ICAO           CHAR(4)," +
                 " LATITUDE       FLOAT constraint invalid_latitude check (LATITUDE between '-90' and '90')," +
                 " LONGITUDE      FLOAT constraint invalid_longitude check (LONGITUDE between '-180' and '180')," +
@@ -483,11 +469,11 @@ public class DatabaseInterface {
         String sql = "CREATE TABLE AIRLINE " +
                 "(ID INTEGER PRIMARY KEY    NOT NULL constraint invalid_id check (ID > 0)," +
                 " NAME           VARCHAR(40)   NOT NULL," +
-                " ALIAS           VARCHAR(40)," +   //alias can be null
-                " IATA           CHAR(2)," +    //can have either IATA or ICAO
+                " ALIAS           VARCHAR(40)," +
+                " IATA           CHAR(2)," +
                 " ICAO           CHAR(3)," +
                 " CALLSIGN           VARCHAR(40)," +
-                " COUNTRY           VARCHAR(40)," + //not null?
+                " COUNTRY           VARCHAR(40)," +
                 " ACTIVE           CHAR(1) constraint invalid_active_code check (ACTIVE in ('Y', 'N')) )";
         return sql;
     }
@@ -500,17 +486,17 @@ public class DatabaseInterface {
     private static String createRouteTable() {
         String sql = "CREATE TABLE ROUTE" +
                 "(IDnum     INTEGER PRIMARY KEY AUTOINCREMENT /*ID number for the route*/," +
-                "Airline    VARCHAR(3) /*Airline iata for route*/," +  //this is either the IATA(2) or ICAO(3)
+                "Airline    VARCHAR(3) /*Airline iata for route*/," +
                 "Airlineid  INTEGER /*ID of Airline for route*/," +
-                "Src        VARCHAR(4) NOT NULL /*Source location for route*/," +   //either the IATA(3) or ICAO(4)
+                "Src        VARCHAR(4) NOT NULL /*Source location for route*/," +
                 "Srcid      INTEGER NOT NULL /*ID number for source location location*/," +
-                "Dst        VARCHAR(4) NOT NULL /*Destination location for route*/," +   //either the IATA(3) or ICAO(4)
+                "Dst        VARCHAR(4) NOT NULL /*Destination location for route*/," +
                 "Dstid      INTEGER NOT NULL /*ID number for destination location*/," +
-                "Codeshare  CHAR(1) constraint invalid_codeshare_field check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +    //accept 'N'?
+                "Codeshare  CHAR(1) constraint invalid_codeshare_field check (Codeshare in ('Y', '')) /*'Y' if operated by another carrier*/," +
                 "Stops      INTEGER constraint invalid_stop_number check (Stops >= 0) /*Number of stops the route takes*/," +
                 "Equipment  VARCHAR(50), " +
                 "foreign key (Srcid) references AIRPORT," +
-                "foreign key (Dstid) references AIRPORT" +    //foreign key can only be primary key of other table
+                "foreign key (Dstid) references AIRPORT" +
                 ")";
         return sql;
     }
@@ -523,8 +509,8 @@ public class DatabaseInterface {
     private static String createFlightTable() {
         String sql = "CREATE TABLE FLIGHT" +
                 "(FlightIDNum   INTEGER PRIMARY KEY /*incrementing number to identify flight*/," +
-                "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +   //either the IATA(3) or ICAO(4)
-                "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +       //either the IATA(3) or ICAO(4)
+                "SrcICAO        VARCHAR(4) NOT NULL /*Source ICAO code*/," +
+                "DstICAO        VARCHAR(4) NOT NULL /*Destination ICAO code*/" +
                 ")";
         return sql;
     }
@@ -557,9 +543,9 @@ public class DatabaseInterface {
         setDataBaseName("jdbc:sqlite:default.db");
         deleteDBFile();
         String dbname = getDatabaseName();
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         Connection c = makeConnection();
-        Statement stmt = null;
+        Statement stmt;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection(getDatabaseName());
@@ -584,9 +570,8 @@ public class DatabaseInterface {
             stmt.close();
             c.close();
         } catch (Exception e) {
-//            System.out.println("TABLES NOT CREATED SUCCESSFULLY");
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.exit(0);
+            System.err.println("Database tables were not created successfully");
+            System.out.println("DatabaseInterface.createTables failed");
         }
     }
 
@@ -597,13 +582,11 @@ public class DatabaseInterface {
      */
     public static void clearTable(DataTypes type) {
         try {
-            //System.out.println("In the drop table method");
             Connection currentConnection = makeConnection();
             Class.forName("org.sqlite.JDBC");
             currentConnection = DriverManager.getConnection(getDatabaseName());
             currentConnection.setAutoCommit(false);
-            PreparedStatement preparedStatement = null;
-            PreparedStatement preparedStatement2 = null;
+            PreparedStatement preparedStatement;
             String sqlDrop = "";
             String sqlCreate = "";
 
@@ -643,8 +626,8 @@ public class DatabaseInterface {
             }
             currentConnection.commit();
             currentConnection.close();
-        } catch (Exception e) {
-//            e.printStackTrace();
+        } catch (Exception e) { //tables could not be cleared
+            System.out.println("DatabaseInterface.clearTable failed");
         }
     }
 
@@ -671,10 +654,9 @@ public class DatabaseInterface {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error in loading File");
             alert.setHeaderText("The file was not a database file.");
-            alert.setContentText("A database was create for you");
+            alert.setContentText("A database was created for you");
             alert.showAndWait();
             DatabaseInterface.createTables();
-            //Return true to prevent 2 errors from being displayed
             return true;
         }
         return exists;

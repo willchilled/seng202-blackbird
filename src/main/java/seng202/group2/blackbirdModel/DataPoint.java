@@ -1,5 +1,3 @@
-
-
 package seng202.group2.blackbirdModel;
 
 import seng202.group2.blackbirdControl.ErrorTabController;
@@ -7,25 +5,26 @@ import seng202.group2.blackbirdControl.ErrorTabController;
 import java.util.ArrayList;
 
 /**
- * A super class for the data points held in the program
+ * A superclass for the data points held in the program. Its type is defined by a string attribute named type.
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class DataPoint {
-     /* This is a more generic type of Data called a dataPoint
-        Its type is defined by a string called type
-        To make a data just go Datapoint myPoint = new FlightPoint
-        However You would then have to set the Type using myPoint.setType*/
 
     private DataTypes type;
     private int fileLine;
 
     /**
-     * Creates Data Point with type null
+     * Creates Data Point with type null. Type must be set later after constructed.
      */
     public DataPoint() {
         this.type = null;
     }
 
     /**
+     * Creates a datapoint with a specified type.
      * @param type creates a dataPoint with a type
      */
     public DataPoint(DataTypes type) {
@@ -40,11 +39,11 @@ public class DataPoint {
         this.type = type;
     }
 
-    public void setFileLine(int fileLine) {
+    void setFileLine(int fileLine) {
         this.fileLine = fileLine;
     }
 
-    public int getFileLine() {
+    int getFileLine() {
         return fileLine;
     }
 
@@ -73,7 +72,6 @@ public class DataPoint {
             ArrayList<DataPoint> flightPoints = DatabaseInterface.performGenericQuery(sql, DataTypes.FLIGHTPOINT);
             //Has grabbed the relevant flightpoints, now construct a new flight
             currentPoint = new Flight(flightPoints);
-            //currentPoint will have a correct entry of 1 if incorrect here
         }
         currentPoint.type = type;
         return currentPoint;

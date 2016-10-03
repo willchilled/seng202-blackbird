@@ -5,6 +5,10 @@ import seng202.group2.blackbirdControl.ErrorTabController;
 
 /**
  * A subclass of Datapoint that stores information about an airport
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class AirportPoint extends DataPoint {
 
@@ -24,7 +28,6 @@ public class AirportPoint extends DataPoint {
     private int outgoingRoutes = 0;
     private int correctEntry = 0;
 
-
     /**
      * Creates an AirportPoint with an ID and Name
      *
@@ -32,10 +35,8 @@ public class AirportPoint extends DataPoint {
      * @param airportName The Name of the airport
      */
     public AirportPoint(int airportID, String airportName) {
-
         this.airportID = airportID;
         this.airportName = airportName;
-
     }
 
     /**
@@ -59,11 +60,10 @@ public class AirportPoint extends DataPoint {
      */
     public AirportPoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
-
         if (currentLine.length == 12 || currentLine.length == 14) {
             try {
-                this.airportID = Integer.parseInt(currentLine[0]);    //should not be null
-                this.airportName = currentLine[1];    //let people name airline whatever they want
+                this.airportID = Integer.parseInt(currentLine[0]);
+                this.airportName = currentLine[1];
                 this.airportCity = currentLine[2];
                 this.airportCountry = currentLine[3];
                 this.iata = currentLine[4];
@@ -71,7 +71,7 @@ public class AirportPoint extends DataPoint {
                 if (currentLine[6].isEmpty()) {
                     this.latitude = 0;
                 } else {
-                    this.latitude = Float.parseFloat(currentLine[6].trim());    //should not be null, handle by parser later
+                    this.latitude = Float.parseFloat(currentLine[6].trim());
                 }
                 if (currentLine[7].isEmpty()) {
                     this.longitude = 0;
@@ -93,11 +93,11 @@ public class AirportPoint extends DataPoint {
 
                 if (currentLine.length == 14) { // We add a special case for when there is data in the array
                     this.outgoingRoutes = Integer.parseInt(currentLine[12]);
-                    this.incomingRoutes = Integer.parseInt(currentLine[13]);//check this is the right way round
+                    this.incomingRoutes = Integer.parseInt(currentLine[13]);
                 }
-
             } catch (NumberFormatException e) {
-                BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT, "Invalid numeric values given (within Airport ID, altitude, longitude or latitude fields)");
+                BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT,
+                        "Invalid numeric values given (within Airport ID, altitude, longitude or latitude fields)");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
                     errorTabController.setAllCorrect(false);
@@ -105,13 +105,26 @@ public class AirportPoint extends DataPoint {
                 this.correctEntry = 1;
             }
         } else {
-            BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT, "Invalid file line length, expecting 12 comma separated values");
+            BadData badAirport = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRPORTPOINT,
+                    "Invalid file line length, expecting 12 comma separated values");
             if (errorTabController != null) {
                 errorTabController.updateBadEntries(badAirport, DataTypes.AIRPORTPOINT);
                 errorTabController.setAllCorrect(false);
             }
             this.correctEntry = 1;
         }
+    }
+
+    /**
+     * Returns the AirportPoint in the form of a string
+     *
+     * @return airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz
+     */
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
+
     }
 
     public int getAirportID() {
@@ -210,24 +223,12 @@ public class AirportPoint extends DataPoint {
         this.tz = tz;
     }
 
-    public int getCorrectEntry() {
+    int getCorrectEntry() {
         return correctEntry;
     }
 
     public void setCorrectEntry(int correctEntry) {
         this.correctEntry = correctEntry;
-    }
-
-    /**
-     * Returns the AirportPoint in the form of a string
-     *
-     * @return airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz
-     */
-    @Override
-    public String toString() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
-
     }
 
     public int getIncomingRoutes() {
@@ -245,7 +246,6 @@ public class AirportPoint extends DataPoint {
     public void setOutgoingRoutes(int outgoingRoutes) {
         this.outgoingRoutes = outgoingRoutes;
     }
-
 
 }
 

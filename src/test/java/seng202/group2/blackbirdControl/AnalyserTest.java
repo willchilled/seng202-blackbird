@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by sha162 on 25/09/16.
+ * Tests the Analyser class
  */
 public class AnalyserTest extends TestCase {
 
@@ -51,25 +51,15 @@ public class AnalyserTest extends TestCase {
         DatabaseInterface.insertDataPoints(airportPoint, null);
         DatabaseInterface.insertDataPoints(routePoints, null);
         DatabaseInterface.insertDataPoints(myFlight, null);
-
-
-
-
-
     }
+
     public void testCalculateDistance() throws Exception {
-        ArrayList<DataPoint>  myPoint = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
+        ArrayList<DataPoint> myPoint = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
 
         AirportPoint pointa = (AirportPoint) myPoint.get(0);
         AirportPoint pointb = (AirportPoint) myPoint.get(1);
-
-
         double distance = Analyser.calculateDistance(pointa, pointb);
-
-
-        assertEquals(distance, 106.70512500498786); //eveyone knows the distance between goroka and madang is 106.70512500498786 km
-
-
+        assertEquals(distance, 106.70512500498786); //everyone knows the distance between goroka and madang is 106.70512500498786 km
     }
 
     public void testRankAirports() throws Exception {
@@ -77,46 +67,46 @@ public class AnalyserTest extends TestCase {
         //By going through and making sure a>=b for number of incoming and outgoing routes
         //Cool because it doesnt actually depend on data you put, just checks the relative results
 
-        ArrayList<DataPoint> airports =  Filter.getAllPoints(DataTypes.AIRPORTPOINT);
-        airports  = Analyser.rankAirportsByRoutes(airports);
+        ArrayList<DataPoint> airports = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
+        airports = Analyser.rankAirportsByRoutes(airports);
 
         int max_size = airports.size();
         int current = 0;
 
-        while (current < max_size-1){
+        while (current < max_size - 1) {
             AirportPoint currentPoint = (AirportPoint) airports.get(current);
-            AirportPoint nextPoint = (AirportPoint) airports.get(current+1);
+            AirportPoint nextPoint = (AirportPoint) airports.get(current + 1);
             int curIncAndOutRoutes = currentPoint.getIncomingRoutes() + currentPoint.getOutgoingRoutes();
-            int nextIncAndOutRoutes =  nextPoint.getIncomingRoutes() + nextPoint.getOutgoingRoutes();
-            assertTrue(curIncAndOutRoutes>= nextIncAndOutRoutes);
+            int nextIncAndOutRoutes = nextPoint.getIncomingRoutes() + nextPoint.getOutgoingRoutes();
+            assertTrue(curIncAndOutRoutes >= nextIncAndOutRoutes);
             current++;
         }
     }
 
 
-    public void testNumAirportsPerCountry() throws Exception{
+    public void testNumAirportsPerCountry() throws Exception {
         List<Map.Entry> a = Analyser.numAirportsPerCountry();
         assertEquals(a.get(0).getValue(), 80);
         assertEquals(a.get(0).getKey(), "Canada");
     }
 
-    public void testNumAirlinesPerCountry() throws Exception{
-       List<Map.Entry> result =  Analyser.numAirlinesPerCountry();
+    public void testNumAirlinesPerCountry() throws Exception {
+        List<Map.Entry> result = Analyser.numAirlinesPerCountry();
         assertEquals(result.get(0).getValue(), 18); //Max value is usa with 18 airlines
 
     }
 
-    public void testRoutesPerEquipment() throws Exception{
-        List<Map.Entry> result =  Analyser.routesPerEquipment();
+    public void testRoutesPerEquipment() throws Exception {
+        List<Map.Entry> result = Analyser.routesPerEquipment();
         assertEquals(result.get(0).getValue(), 15463);
         assertEquals(result.get(0).getKey(), "320");
     }
 
-    public void testRankAirportsByRoutes() throws Exception{
-        List<Map.Entry> result =  Analyser.rankAirportsByRoutes("All");
+    public void testRankAirportsByRoutes() throws Exception {
+        List<Map.Entry> result = Analyser.rankAirportsByRoutes("All");
         assertEquals(result.get(0).getKey(), "Canada");
         assertEquals(result.get(0).getValue(), 80);
-        result =  Analyser.rankAirportsByRoutes("Canada");
+        result = Analyser.rankAirportsByRoutes("Canada");
         assertEquals(result.get(0).getKey(), "Canada");
         assertEquals(result.get(0).getValue(), 80);
     }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by wmu16 on 17/09/16.
+ * Tests the Filter class
  */
 public class FilterTest extends TestCase {
     public void setUp() throws Exception {
@@ -30,20 +30,17 @@ public class FilterTest extends TestCase {
         File routesFile = new File(routesFileString);
         File flightFile = new File(flightFileString);
 
-
         ArrayList<DataPoint> airlinePoints = Parser.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
         ArrayList<DataPoint> airportPoint = Parser.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
 
         ArrayList<DataPoint> routePoints = Parser.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
         ArrayList<DataPoint> flightPoints = Parser.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
-        //ArrayList<Flight>
 
         Flight flight = new Flight(flightPoints);
         flight.setType(DataTypes.FLIGHT);
         DataPoint f = flight;
         ArrayList<DataPoint> myFlight = new ArrayList<>();
         myFlight.add(f);
-        // System.out.println(flight.getType() + "--------------------------");
 
         DatabaseInterface.createTables();
         DatabaseInterface.insertDataPoints(airlinePoints, null);
@@ -51,12 +48,7 @@ public class FilterTest extends TestCase {
         DatabaseInterface.insertDataPoints(routePoints, null);
         DatabaseInterface.insertDataPoints(myFlight, null);
 
-
-        // ArrayList<Fl> a= flightPoints;
-
         DatabaseInterface.insertDataPoints(flightPoints, null);
-
-
     }
 
     public void testFilterSelectionsWithAirports() throws Exception {
@@ -70,7 +62,6 @@ public class FilterTest extends TestCase {
 //        System.out.println(testPoint.toStringWithRoutes());
 //        assertEquals(testPoint.getOutgoingRoutes(), 1); //Might add more of these tests later and also they should really be in a different place
 //        assertEquals(testPoint.getIncomingRoutes(), 2);//These two tests are to make sure the number of incoming + outgoing routes is correct
-
 
         assertEquals(dataPoints.size(), 4);
 
@@ -91,8 +82,7 @@ public class FilterTest extends TestCase {
         assertEquals(dataPoints.size(), 2); //Both lines are None
     }
 
-    public void testFilterSelectionsWithAirlines() throws Exception{
-
+    public void testFilterSelectionsWithAirlines() throws Exception {
         String search = "";
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("Russia", "None"));
         ArrayList<DataPoint> dataPoints = Filter.filterSelections(selectedFields, "", DataTypes.AIRLINEPOINT);
@@ -128,10 +118,9 @@ public class FilterTest extends TestCase {
 
         dataPoints = Filter.getAllPoints(DataTypes.AIRLINEPOINT);
         assertEquals(dataPoints.size(), 100);
-
     }
 
-    public void testRouteFilterSelections() throws  Exception{
+    public void testRouteFilterSelections() throws Exception {
         String search = "";
         ArrayList<String> selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "None"));
         ArrayList<DataPoint> dataPoints = Filter.filterSelections(selectedFields, "", DataTypes.ROUTEPOINT);
@@ -158,15 +147,9 @@ public class FilterTest extends TestCase {
         selectedFields = new ArrayList<>(Arrays.asList("None", "None", "None", "None"));
         dataPoints = Filter.filterSelections(selectedFields, "Narsarsuaq", DataTypes.ROUTEPOINT);
         assertEquals(dataPoints.size(), 2);
-
-
-
-
-
-
     }
 
-    public void testFlightFilter() throws Exception{
+    public void testFlightFilter() throws Exception {
         ArrayList<String> menusPressed = new ArrayList<>();
         menusPressed.add("None");
         menusPressed.add("None");
@@ -187,25 +170,20 @@ public class FilterTest extends TestCase {
 
         mp = Filter.getAllPoints(DataTypes.FLIGHT);
         assertEquals(mp.size(), 1);
-
     }
 
 
-    public void testFindAirportPointForDistance(){
+    public void testFindAirportPointForDistance() {
         Filter.findAirportPointForDistance("Goroka AYGA");
-
-
-
-
     }
 
-    public void testFilterDistinct(){
+    public void testFilterDistinct() {
         ArrayList<String> conutries = Filter.filterDistinct("Country", "Airline");
         assertEquals(conutries.size(), 46);
     }
 
 
-    public void testAirportLinkWithRoutes(){
+    public void testAirportLinkWithRoutes() {
         DatabaseInterface.createTables();
 
         String cwd = System.getProperty("user.dir");
@@ -222,7 +200,6 @@ public class FilterTest extends TestCase {
         ArrayList<DataPoint> airportPoint = Parser.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
 
         ArrayList<DataPoint> routePoints = Parser.parseFile(routesFile, DataTypes.ROUTEPOINT, null);
-        //ArrayList<Flight>
 
         DatabaseInterface.createTables();
         DatabaseInterface.insertDataPoints(airportPoint, null);
@@ -231,9 +208,8 @@ public class FilterTest extends TestCase {
 
         ArrayList<DataPoint> airportPoints = Filter.getAllPoints(DataTypes.AIRPORTPOINT);
 
-        for (DataPoint p: airportPoints){
+        for (DataPoint p : airportPoints) {
             AirportPoint myp = (AirportPoint) p;
-            //System.out.println(myp.toStringWithRoutes());
         }
         AirportPoint currentPoint = (AirportPoint) airportPoints.get(0); //These are hard coded into the files
         assertEquals(currentPoint.getOutgoingRoutes(), 2);
@@ -246,14 +222,10 @@ public class FilterTest extends TestCase {
         currentPoint = (AirportPoint) airportPoints.get(2);
         assertEquals(currentPoint.getOutgoingRoutes(), 1);
         assertEquals(currentPoint.getIncomingRoutes(), 2);
-
-
-
     }
 
 
-
-    public void testBenchmarkFilterSpeeds(){
+    public void testBenchmarkFilterSpeeds() {
         int benchMarkTime = 5;
         String cwd = System.getProperty("user.dir");
         String airlinesFileString;
@@ -272,11 +244,9 @@ public class FilterTest extends TestCase {
         File routesFile = new File(routesFileString);
         File flightFile = new File(flightFileString);
 
-
         ArrayList<DataPoint> airlinePoints = Parser.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
 
         ArrayList<DataPoint> flightPoints = Parser.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
-
 
         Flight flight = new Flight(flightPoints);
         flight.setType(DataTypes.FLIGHT);
@@ -285,13 +255,12 @@ public class FilterTest extends TestCase {
         myFlight.add(f);
 
         DatabaseInterface.insertDataPoints(airlinePoints, null);
-
         DatabaseInterface.insertDataPoints(myFlight, null);
         DatabaseInterface.insertDataPoints(flightPoints, null);
         double numTrials = 3;
-        long totalStart1 =0;
+        long totalStart1 = 0;
         long totalFinish1 = 0;
-        long totalStart2 =0;
+        long totalStart2 = 0;
         long totalFinish2 = 0;
         for (int i = 0; i < numTrials; i++) {
             long startTime = System.nanoTime();
@@ -311,20 +280,19 @@ public class FilterTest extends TestCase {
 
             totalStart2 += startTime;
             totalFinish2 += endTime;
-
         }
 
-        assertTrue(((totalFinish1 - totalStart1)/1000000000.0)/ numTrials < benchMarkTime); //Ensuring parsing airports and routes takes under 3 seconds
-        assertTrue(((totalFinish2 - totalStart2)/1000000000.0)/ numTrials < benchMarkTime); //Adding airports and routes should take less than 3 seconds
+        assertTrue(((totalFinish1 - totalStart1) / 1000000000.0) / numTrials < benchMarkTime); //Ensuring parsing airports and routes takes under 3 seconds
+        assertTrue(((totalFinish2 - totalStart2) / 1000000000.0) / numTrials < benchMarkTime); //Adding airports and routes should take less than 3 seconds
         assertTrue(findTimeTakes(numTrials, DataTypes.ROUTEPOINT) < benchMarkTime); //Ensuring Filtering routes can be done in under 3 seconds
         assertTrue(findTimeTakes(numTrials, DataTypes.AIRPORTPOINT) < benchMarkTime);
         assertTrue(findTimeTakes(numTrials, DataTypes.AIRLINEPOINT) < benchMarkTime);
         assertTrue(findTimeTakes(numTrials, DataTypes.FLIGHT) < 3);
     }
 
-    public double findTimeTakes(double numTrials, DataTypes type){
-        long totalStartTime=0;
-        long totalFinishTime=0;
+    public double findTimeTakes(double numTrials, DataTypes type) {
+        long totalStartTime = 0;
+        long totalFinishTime = 0;
 
         for (int i = 0; i < numTrials; i++) {
 
@@ -334,10 +302,7 @@ public class FilterTest extends TestCase {
             totalStartTime += startTime;
             totalFinishTime += endTime;
         }
-
-        return ((totalFinishTime - totalStartTime)/ numTrials)/1000000000.0;
+        return ((totalFinishTime - totalStartTime) / numTrials) / 1000000000.0;
     }
-
-
 
 }

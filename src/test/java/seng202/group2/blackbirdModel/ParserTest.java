@@ -6,12 +6,12 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Created by sha162 on 16/09/16.
+ * Tests for the Parser class
  */
-public class ParserRefactorTest extends TestCase {
+public class ParserTest extends TestCase {
+
     public void setUp() throws Exception {
         super.setUp();
-
         String cwd = System.getProperty("user.dir");
         String airlinesFileString;
         String airportsFileString;
@@ -28,7 +28,6 @@ public class ParserRefactorTest extends TestCase {
         File routesFile = new File(routesFileString);
         File flightFile = new File(flightFileString);
 
-
         ArrayList<DataPoint> airlinePoints = Parser.parseFile(airlinesFile, DataTypes.AIRLINEPOINT, null);
         ArrayList<DataPoint> airportPoint = Parser.parseFile(airportsFile, DataTypes.AIRPORTPOINT, null);
 
@@ -36,44 +35,24 @@ public class ParserRefactorTest extends TestCase {
         ArrayList<DataPoint> flightPoints = Parser.parseFile(flightFile, DataTypes.FLIGHTPOINT, null);
        // System.out.println(airlinePoints.get(0).getType());
 
-
-
         Flight hello = new Flight(flightPoints);
         DataPoint myFlight = hello;
         myFlight.setType(DataTypes.FLIGHTPOINT);
 
-
         DataPoint myFlight2 = new Flight(flightPoints);
         //System.out.println(myFlight2.getType());
-
         //DataPoint myFlight3 = new DataPoint("Flight", flightPoints);
-
-
-
         //System.out.println(hello.getType());
         //DataPoint test = DataPoint.createDataPointFromStringArray(flightPoints, "FlightPoint");//new DataPoint(flightPoints);
-//
-//
+
         testDatatype(airlinePoints, DataTypes.AIRLINEPOINT);
         testDatatype(airportPoint, DataTypes.AIRPORTPOINT);
         testDatatype(routePoints, DataTypes.ROUTEPOINT);
         testDatatype(flightPoints, DataTypes.FLIGHTPOINT);
-
          //System.out.println(flightPoints.get(0).getType());
-
-
-
-
-//        BBDatabase.deleteDBFile();
-//        BBDatabase.createTables();
-//        BBDatabase.addAirlinePointstoDB(airlinePoints);
-//        BBDatabase.addAirportPointsToDB(airportPoints);
-//        BBDatabase.addRoutePointstoDB(routePoints);
-
     }
 
     public void testDatatype(ArrayList<DataPoint> allPoints, DataTypes type){
-        //System.out.println(type);
         for (int i=0; i<allPoints.size(); i++){
             assertEquals(allPoints.get(i).getType(), type);
         }

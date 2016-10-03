@@ -38,7 +38,7 @@ as well as providing various forms of analyses to the user on this data. It
 is designed primarily for startup airlines to provide the end goal of
 answering two key questions: Where should planes fly? and how should they get
 there? BlackBird is an open source product and all the code is available from
-XXXXX along with JavaDoc found at XXXXXX
+https://github.com/Marethyu1/BlackBird
 
 It imports standard CSV files of each data type and displays them in a user
 friendly GUI whilst also sorting this data persistently in a databse. The
@@ -56,22 +56,15 @@ To run the product simply execute the Jar file. For further help on the product
 
 there is a help section in the menu bar at the top of the application for
 further information on how to use the product. For more information please
-visit http://stefanwebapp.azurewebsites.net/ XXXXXXXX
+visit http://stefanwebapp.azurewebsites.net/
 
 or alternatively for more info or submitting bug reports please PM Stefan Hall
 on FB. He's a very nice guy just shy at first.
 
 
+3 JAVADOC
+Javadoc can be generated with intellij our preferred development environment.
 
 
-
-######################TO TALK ABOUT####################
-
-             BUILDING AND RUNNING??
-             HOW TO FIND JAVADOC ETC
-
-########################################################
-
-
-
-
+4 Clone
+To build just clone the repository and run the main!

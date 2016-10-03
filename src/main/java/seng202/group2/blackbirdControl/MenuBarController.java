@@ -155,13 +155,16 @@ public class MenuBarController {
             alert.showAndWait().ifPresent(response -> {
                 if (response == mergeButton || response == replaceButton) {
                     if (response == replaceButton) {
-                        DatabaseInterface.clearTable(type);
+
+                        addDataToController(type, true);
                     }
-                    AddDataToController(type);
+                    else {
+                        addDataToController(type, false);
+                    }
                 }
             });
         } else {
-            AddDataToController(type);
+            addDataToController(type, false);
         }
     }
 
@@ -169,17 +172,18 @@ public class MenuBarController {
      * Calls the relevant tab that data is being added to, via the main controller.
      *
      * @param type The data type that we are adding to
+     * @param replace boolean to inform if data being added is replacing or merging
      */
-    private void AddDataToController(DataTypes type) {
+    private void addDataToController(DataTypes type, boolean replace) {
         switch (type) {
             case AIRLINEPOINT:
-                mainController.addAirlineData();
+                mainController.addAirlineData(replace);
                 break;
             case ROUTEPOINT:
-                mainController.addRouteData();
+                mainController.addRouteData(replace);
                 break;
             case AIRPORTPOINT:
-                mainController.addAirportData();
+                mainController.addAirportData(replace);
                 break;
             //Flights is not checked here, as we do not need to check for merging or overwriting an imported flight file.
         }

@@ -29,6 +29,7 @@ public class FlightCreatorPopUpController {
     private Parent root;
     private FlightTabController flightTabController;
     private WebEngine webEngine;
+    private boolean added = false;
 
     @FXML private TableView<DataPoint> flightAdderTable;
     @FXML private TableColumn flightAdderLocaleIDCol;
@@ -90,6 +91,13 @@ public class FlightCreatorPopUpController {
     }
 
     /**
+     * @return Boolean for whether the point was added or not.
+     */
+    public boolean isAdded() {
+        return added;
+    }
+
+    /**
      * User cancels making a flight, closes the pop up
      */
     public void flightCreatorCancelButtonPressed() {
@@ -106,12 +114,14 @@ public class FlightCreatorPopUpController {
             return;
         }
         FlightPoint finalPoint = (FlightPoint) flightAdderTable.getItems().get(flightAdderTable.getItems().size() - 1);
-        if (finalPoint.getLocalType().equals("APT") && flightAdderTable.getItems().size() > 1) {
+        if (finalPoint.getLocaleType().equals("APT") && flightAdderTable.getItems().size() > 1) {
             flightAdderErrorText.setVisible(false);
             ArrayList<DataPoint> myFlightData = new ArrayList<>(flightAdderTable.getItems());
             DatabaseInterface.insertDataPoints(myFlightData, null);
             ArrayList<DataPoint> allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
             flightTabController.updateFlightsTable(allPoints);
+            flightTabController.updateFlightFields();
+            added = true;
             creatorStage.close();
         } else {
             flightAdderErrorText.setText("Final point must be of type APT");
@@ -172,7 +182,7 @@ public class FlightCreatorPopUpController {
         FlightPoint myPoint = (FlightPoint) point.get(0);
 
         flightAdderLocaleIDCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("LocaleID"));
-        flightAdderTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("LocalType"));
+        flightAdderTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("LocaleType"));
         flightAdderAltCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("Altitude"));
         flightAdderLatCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("Latitude"));
         flightAdderLongCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("Longitude"));

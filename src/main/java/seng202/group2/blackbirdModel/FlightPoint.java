@@ -87,15 +87,15 @@ public class FlightPoint extends DataPoint {
         return flightIDNum;
     }
 
-    public String getLocalType() {
+    public String getLocaleType() {
         return localeType;
     }
 
-    public void setLocalType(String type) {
+    public void setLocaleType(String type) {
         this.localeType = type;
     }
 
-    String getLocaleID() {
+    public String getLocaleID() {
         return localeID;
     }
 

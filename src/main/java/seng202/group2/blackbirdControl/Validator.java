@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import seng202.group2.blackbirdModel.DatabaseInterface;
 
 /**
- * Created by emr65 on 22/09/16.
+ *
  */
 public class Validator {
     private static boolean isValidID(String id){

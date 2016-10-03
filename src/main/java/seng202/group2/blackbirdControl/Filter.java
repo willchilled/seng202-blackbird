@@ -1,5 +1,6 @@
 package seng202.group2.blackbirdControl;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import seng202.group2.blackbirdModel.*;
 
 import java.util.*;
@@ -63,19 +64,21 @@ public class Filter {
         }
 
         for (DataPoint myPoint : myRoutes) {
+            RoutePoint currentRoutePoint = (RoutePoint) myPoint;
+
+            int outGoingRouteKey = currentRoutePoint.getSrcAirportID();
+            int incomingRouteKey = currentRoutePoint.getDstAirportID();
             try {
-                RoutePoint currentRoutePoint = (RoutePoint) myPoint;
-                int outGoingRouteKey = currentRoutePoint.getSrcAirportID();
-                int incomingRouteKey = currentRoutePoint.getDstAirportID();
-
-                int currentOutAmount = outgoingRoutesDict.get(outGoingRouteKey);
-                outgoingRoutesDict.put(outGoingRouteKey, currentOutAmount + 1);
-
                 int currentIncAmount = incomingRoutesDict.get(incomingRouteKey);
                 incomingRoutesDict.put(incomingRouteKey, currentIncAmount + 1);
             } catch (Exception e) {
-                //empty
             }
+            try{
+                int currentOutAmount = outgoingRoutesDict.get(outGoingRouteKey);
+                outgoingRoutesDict.put(outGoingRouteKey, currentOutAmount + 1);
+            } catch(Exception e){
+            }
+
         }
 
         for (DataPoint myPoint : myAirportPoints) {

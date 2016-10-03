@@ -105,7 +105,7 @@ public class DatabaseInterface {
             currentConnection.commit();
             currentConnection.close();
         } catch (Exception e) { //a connection error has occurred
-            System.out.println("DatabaseInterface.insertDataPoints failed");
+            //empty
         }
     }
 

@@ -5,6 +5,10 @@ import seng202.group2.blackbirdControl.ErrorTabController;
 
 /**
  * A subclass of datapoint that stores information about an airline
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class AirlinePoint extends DataPoint {
 
@@ -16,47 +20,47 @@ public class AirlinePoint extends DataPoint {
     private String callsign;
     private String country;
     private String active;
-    private int correctEntry=0;
+    private int correctEntry = 0;
 
     /**
      * Creates an airlinePoint with an ID and Name
-     * @param airlineID The ID number for the airline
+     *
+     * @param airlineID   The ID number for the airline
      * @param airlineName The name of the airline
      */
     public AirlinePoint(int airlineID, String airlineName) {
-
         this.airlineID = airlineID;
         this.airlineName = airlineName;
-
     }
 
     /**
      * Attempts to create an airlinePoint from a list of strings with length 8.
      * If successful it creates an airline with values from list and correctEntry as 0.
      * If unsuccessful it creates am airline with airlineID -1, airlineName as currentLine.toString() and correctEntry 1.
-     * @param currentLine   The list of strings holding the information for the airline in index of:
-     *                      0 airlineID,
-     *                      1 airlineName,
-     *                      2 airlineAlias,
-     *                      3 iata,
-     *                      4 icao,
-     *                      5 callsign,
-     *                      6 country,
-     *                      7 active,
+     *
+     * @param currentLine The list of strings holding the information for the airline in index of:
+     *                    0 airlineID,
+     *                    1 airlineName,
+     *                    2 airlineAlias,
+     *                    3 iata,
+     *                    4 icao,
+     *                    5 callsign,
+     *                    6 country,
+     *                    7 active,
      */
     public AirlinePoint(String[] currentLine, int count, ErrorTabController errorTabController) {
         super();
-        if (currentLine.length == 8){
+        if (currentLine.length == 8) {
             try {
-                this.airlineID = Integer.parseInt(currentLine[0]);	//should not be null
-                this.airlineName = currentLine[1];	//let people name airline whatever they want
+                this.airlineID = Integer.parseInt(currentLine[0]);
+                this.airlineName = currentLine[1];
                 this.airlineAlias = currentLine[2];
-                this.iata= currentLine[3];
-                this.icao =currentLine[4];
+                this.iata = currentLine[3];
+                this.icao = currentLine[4];
                 this.callsign = currentLine[5];
                 this.country = currentLine[6].trim();
                 this.active = currentLine[7].trim().toUpperCase();
-            } catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 BadData badAirline = new BadData(count, StringUtils.join(currentLine, ", "), DataTypes.AIRLINEPOINT, "Invalid Airline ID given");
                 if (errorTabController != null) {
                     errorTabController.updateBadEntries(badAirline, DataTypes.AIRLINEPOINT);
@@ -140,6 +144,7 @@ public class AirlinePoint extends DataPoint {
 
     /**
      * Returns the airline in the form of a string
+     *
      * @return airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active
      */
     @Override
@@ -148,7 +153,7 @@ public class AirlinePoint extends DataPoint {
                 airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
     }
 
-    public int getCorrectEntry() {
+    int getCorrectEntry() {
         return correctEntry;
     }
 

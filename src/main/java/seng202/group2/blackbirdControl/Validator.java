@@ -7,6 +7,10 @@ import seng202.group2.blackbirdModel.DatabaseInterface;
 /**
  * This class acts to help validate if entries are valid, when manually adding data. These checks are performed
  * before adding to the database, in order to give users a detailed help message for adding.
+ *
+ * @author Team2
+ * @version 1.0
+ * @since 22/9/2016
  */
 public class Validator {
 
@@ -136,7 +140,6 @@ public class Validator {
     private static boolean isValidTZ(String TZ) {
         return ((!TZ.equals("") && TZ.length() <= 40) || TZ.equals(""));
     }
-
 
     /**
      * Checks each attribute of an attempt to create a AirlinePoint for correctness. If the attribute is wrong, it's name

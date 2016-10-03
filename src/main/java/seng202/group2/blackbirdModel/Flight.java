@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 /**
  * A subclass of DataPoint to hold information about a Flight
+ *
+ * @author Team2
+ * @version 2.0
+ * @since 19/9/2016
  */
 public class Flight extends DataPoint {
 
@@ -49,7 +53,6 @@ public class Flight extends DataPoint {
     public ArrayList<DataPoint> getFlightPoints() {
         return flightPoints;
     }
-
 
 }
 

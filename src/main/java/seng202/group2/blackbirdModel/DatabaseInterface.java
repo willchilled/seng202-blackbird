@@ -323,7 +323,6 @@ public class DatabaseInterface {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Performing edit:" + sql);
     }
 
     /**
@@ -655,7 +654,7 @@ public class DatabaseInterface {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error in loading File");
             alert.setHeaderText("The file was not a database file.");
-            alert.setContentText("A database was create for you");
+            alert.setContentText("A database was created for you");
             alert.showAndWait();
             DatabaseInterface.createTables();
             return true;

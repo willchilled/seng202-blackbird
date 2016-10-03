@@ -78,6 +78,17 @@ public class AirlinePoint extends DataPoint {
         }
     }
 
+    /**
+     * Returns the airline in the form of a string
+     *
+     * @return airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active
+     */
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s",
+                airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
+    }
+
     public int getAirlineID() {
         return airlineID;
     }
@@ -140,17 +151,6 @@ public class AirlinePoint extends DataPoint {
 
     public void setActive(String active) {
         this.active = active;
-    }
-
-    /**
-     * Returns the airline in the form of a string
-     *
-     * @return airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active
-     */
-    @Override
-    public String toString() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s",
-                airlineID, airlineName, airlineAlias, iata, icao, callsign, country, active);
     }
 
     int getCorrectEntry() {

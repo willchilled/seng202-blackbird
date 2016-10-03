@@ -115,6 +115,18 @@ public class AirportPoint extends DataPoint {
         }
     }
 
+    /**
+     * Returns the AirportPoint in the form of a string
+     *
+     * @return airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz
+     */
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
+
+    }
+
     public int getAirportID() {
         return airportID;
     }
@@ -233,18 +245,6 @@ public class AirportPoint extends DataPoint {
 
     public void setOutgoingRoutes(int outgoingRoutes) {
         this.outgoingRoutes = outgoingRoutes;
-    }
-
-    /**
-     * Returns the AirportPoint in the form of a string
-     *
-     * @return airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz
-     */
-    @Override
-    public String toString() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-                airportID, airportName, airportCity, airportCountry, iata, icao, latitude, longitude, altitude, timeZone, dst, tz);
-
     }
 
 }

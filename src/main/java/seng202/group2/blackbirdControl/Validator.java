@@ -5,161 +5,147 @@ import org.apache.commons.lang3.StringUtils;
 import seng202.group2.blackbirdModel.DatabaseInterface;
 
 /**
- *
+ * This class acts to help validate if entries are valid, when manually adding data. These checks are performed
+ * before adding to the database, in order to give users a detailed help message for adding.
  */
 public class Validator {
-    private static boolean isValidID(String id){
 
-        if(id.equals("")){
+    private static boolean isValidID(String id) {
+        if (id.equals("")) {
             return false;
         }
         try {
-            int num = Integer.parseInt(id);   // Checks to see if it is an int. However if it passes here it could still
-            if(num > 0){
+            int num = Integer.parseInt(id);
+            if (num > 0) {
                 return true;
             }
-        }catch(NumberFormatException e){      // fail later at the database if it is not unique
+        } catch (NumberFormatException e) {      // fail later at the database if it is not unique
             return false;
         }
         return false;
-
     }
 
-    //ID IS A KEY ATTRIBUTE OF AIRLINE SO IS THE ONLY ATTRIBUTE THAT DOES NOT ALLOW CHECKING FOR EMPTY STRING!!!!
-
-    private static boolean isValidName(String name){
-         return (!name.equals("") && name.length() <= 40);
+    private static boolean isValidName(String name) {
+        return (!name.equals("") && name.length() <= 40);
     }
 
-    private static boolean isValidAlias(String alias){
+    private static boolean isValidAlias(String alias) {
         return (!alias.equals("") && alias.length() <= 40 || alias.equals(""));
     }
 
-    private static boolean isValidIATA(String iata){
-        return (!iata.equals("") && iata.length() <= 3 && isAllUpper(iata)|| iata.equals(""));
+    private static boolean isValidIATA(String iata) {
+        return (!iata.equals("") && iata.length() <= 3 && isAllUpper(iata) || iata.equals(""));
     }
 
-    private static boolean isValidICAO(String icao){
+    private static boolean isValidICAO(String icao) {
         return (!icao.equals("") && icao.length() <= 4 && isAllUpper(icao) || icao.equals(""));
     }
 
-    private static boolean isValidAirlineCallsign(String callsign){
+    private static boolean isValidAirlineCallsign(String callsign) {
         return (!callsign.equals("") && callsign.length() <= 40 || callsign.equals(""));
     }
 
-    private static boolean isValidCountry(String country)
-    {
-        return (!country.equals("") && country.length() <= 40 );
+    private static boolean isValidCountry(String country) {
+        return (!country.equals("") && country.length() <= 40);
     }
 
-    private static boolean isValidAirlineCountry(String country){
+    private static boolean isValidAirlineCountry(String country) {
         return (country.length() <= 40 && StringUtils.isAlphaSpace(country) || country.equals(""));
     }
 
-    private static boolean isValidActive(String active){
-        return (!active.equals("") && active.length() == 1 && isAllUpper(active)|| active.equals(""));
+    private static boolean isValidActive(String active) {
+        return (!active.equals("") && active.length() == 1 && isAllUpper(active) || active.equals(""));
     }
 
-    private static boolean isValidCity(String city){
+    private static boolean isValidCity(String city) {
         return (!city.equals("") && city.length() <= 40 || city.equals(""));
     }
-    private static boolean isValidLocaleID(String localeID){
+
+    private static boolean isValidLocaleID(String localeID) {
         return (!localeID.equals("") && localeID.length() <= 40 || localeID.equals(""));
     }
 
-    private static boolean isValidType(String type){
+    private static boolean isValidType(String type) {
         return (!type.equals("") && type.length() <= 40 || type.equals(""));
     }
 
-    private static boolean isValidLat(String lat){
-
-        if(lat.equals("")){
+    private static boolean isValidLat(String lat) {
+        if (lat.equals("")) {
             return true;
         }
         try {
             float num = Float.parseFloat(lat);
-            if(num <= 90 && num >= -90){
+            if (num <= 90 && num >= -90) {
                 return true;
             }
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
         return false;
-
     }
 
-    private static boolean isValidLong(String lon){
-
-        if(lon.equals("")){
+    private static boolean isValidLong(String lon) {
+        if (lon.equals("")) {
             return true;
         }
         try {
             float num = Float.parseFloat(lon);
-            if(num <= 180.0 && num >= -180.0){
+            if (num <= 180.0 && num >= -180.0) {
                 return true;
             }
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
         return false;
-
     }
 
-    private static boolean isValidTimeZone(String timeZone){
-
-        if(timeZone.equals("")){
+    private static boolean isValidTimeZone(String timeZone) {
+        if (timeZone.equals("")) {
             return true;
         }
         try {
             float num = Float.parseFloat(timeZone);
-            if(num <= 14.0 && num >= -12.0){
+            if (num <= 14.0 && num >= -12.0) {
                 return true;
             }
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;
-
     }
 
-    private static boolean isValidAlt(String alt){
-
-        if(alt.equals("")){
+    private static boolean isValidAlt(String alt) {
+        if (alt.equals("")) {
             return true;
         }
         try {
             float num = Float.parseFloat(alt);
-            if(num >= 0.00){
+            if (num >= 0.00) {
                 return true;
             }
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;
-
     }
 
-    private static boolean isValidDST(String DST){
-
-        return ((!DST.equals("") && DST.length() == 1 && isAllUpper(DST) ) || DST.equals(""));
-
+    private static boolean isValidDST(String DST) {
+        return ((!DST.equals("") && DST.length() == 1 && isAllUpper(DST)) || DST.equals(""));
     }
 
-    private static boolean isValidTZ(String TZ){
-
+    private static boolean isValidTZ(String TZ) {
         return ((!TZ.equals("") && TZ.length() <= 40) || TZ.equals(""));
-
     }
 
 
     /**
      * Checks each attribute of an attempt to create a AirlinePoint for correctness. If the attribute is wrong, it's name
      * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     *
      * @param attributes Attributes of the datapoint for attempted creation
      * @return String List of any bad data fields
      */
-    public static String[] checkAirline(String[] attributes){
-
+    static String[] checkAirline(String[] attributes) {
         String[] badData = new String[8];
         String id = attributes[0];
         String name = attributes[1];
@@ -170,55 +156,41 @@ public class Validator {
         String country = attributes[6];
         String active = attributes[7];
 
-
-       // System.out.println("--------VALIDATING AIRLINE---------");
-        if(!isValidID(id)){
+        if (!isValidID(id)) {
             badData[0] = "ID";
-          //  System.out.println("Bad id");
         }
-        if(!isValidName(name)){
+        if (!isValidName(name)) {
             badData[1] = "Name";
-           // System.out.println("Bad name");
         }
-        if(!isValidAlias(alias)){
+        if (!isValidAlias(alias)) {
             badData[2] = "Alias";
-           // System.out.println("Bad alias");
         }
-        if(!isValidIATA(iata)){
+        if (!isValidIATA(iata)) {
             badData[3] = "IATA";
-          //  System.out.println("Bad iata");
         }
-        if(!isValidICAO(icao)){
+        if (!isValidICAO(icao)) {
             badData[4] = "ICAO";
-           // System.out.println("Bad icao");
         }
-        if(!isValidAirlineCallsign(callsign)){
+        if (!isValidAirlineCallsign(callsign)) {
             badData[5] = "Callsign";
-           // System.out.println("Bad callsign");
         }
-        if(!isValidAirlineCountry(country)){
+        if (!isValidAirlineCountry(country)) {
             badData[6] = "Country";
-           // System.out.println("Bad country");
         }
-        if(!isValidActive(active)){
+        if (!isValidActive(active)) {
             badData[7] = "Active";
-           // System.out.println("Bad active");
         }
-       // System.out.println("================");
-
-
         return badData;
-
     }
 
     /**
      * Checks each attribute of an attempt to create anAirportPoints for correctness. If the attribute is wrong, it's name
      * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     *
      * @param attributes Attributes of the datapoint for attempted creation
      * @return String List of any bad data fields
      */
-    public static String[] checkAirport(String[] attributes){
-
+    static String[] checkAirport(String[] attributes) {
         String[] badData = new String[12];
         String id = attributes[0];
         String name = attributes[1];
@@ -233,84 +205,67 @@ public class Validator {
         String dst = attributes[10];
         String tz = attributes[11];
 
-        //System.out.println("----VALIDATING AIRPORT----");
-        if(!isValidID(id)){
+        if (!isValidID(id)) {
             badData[0] = "ID";
-            //System.out.println("BAD ID");
         }
-        if(!isValidName(name)){
+        if (!isValidName(name)) {
             badData[1] = "name";
-            //System.out.println("BAD name");
         }
-        if(!isValidCity(city)){
+        if (!isValidCity(city)) {
             badData[2] = "city";
-            //System.out.println("BAD city");
         }
-        if(!isValidCountry(country)){
+        if (!isValidCountry(country)) {
             badData[3] = "country";
-            //System.out.println("BAD country");
         }
-        if(!isValidIATA(iata)){
+        if (!isValidIATA(iata)) {
             badData[4] = "iata";
-            //System.out.println("BAD iata");
         }
-        if(!isValidICAO(icao)){
+        if (!isValidICAO(icao)) {
             badData[5] = "icao";
-            //System.out.println("BAD icao");
         }
-        if(!isValidLat(lat)){
+        if (!isValidLat(lat)) {
             badData[6] = "lat";
-            //System.out.println("BAD lat");
         }
-        if(!isValidLong(lon)){
+        if (!isValidLong(lon)) {
             badData[7] = "lon";
-            //System.out.println("BAD lon");
         }
-        if(!isValidAlt(alt)){
+        if (!isValidAlt(alt)) {
             badData[8] = "alt";
-            //System.out.println("BAD alt");
         }
-        if(!isValidTimeZone(timeZone)){
+        if (!isValidTimeZone(timeZone)) {
             badData[9] = "timeZone";
-            //System.out.println("BAD timeZone");
         }
-        if(!isValidDST(dst)){
+        if (!isValidDST(dst)) {
             badData[10] = "dst";
-            //System.out.println("BAD dst");
         }
-        if(!isValidTZ(tz)){
+        if (!isValidTZ(tz)) {
             badData[11] = "tz";
-            //System.out.println("BAD tz");
         }
-        //System.out.println("------------------");
-
         return badData;
-
     }
 
     /**
      * Checks each attribute of an attempt to create a RoutePoint for correctness. If the attribute is wrong, it's name
      * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     *
      * @param attributes Attributes of the datapoint for attempted creation
      * @return String List of any bad data fields
      */
-    public static String[] checkRoute(String[] attributes){  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
+    static String[] checkRoute(String[] attributes) {  //myAirline, mySource, myDest, routeCodeshare, routeStops, routeEquipment
         String[] badData = new String[6];
-        if (attributes[0].equals("None")){
+        if (attributes[0].equals("None")) {
             badData[0] = "Airline";
         }
         if (attributes[1].equals("None")) {
             badData[1] = "Src Airport";
         }
-        if (attributes[2].equals("None")){
+        if (attributes[2].equals("None")) {
             badData[2] = "Dst Airport";
         }
-
         boolean num = StringUtils.isNumeric(attributes[4]);
         if (!num) {
             badData[4] = "Codeshare";
         }
-
         boolean validEquip = StringUtils.isAlphanumericSpace(attributes[5]);
         if (!validEquip) {
             badData[5] = "Equipment";
@@ -321,65 +276,61 @@ public class Validator {
     /**
      * Checks each attribute of an attempt to create a FlightPoint for correctness. If the attribute is wrong, it's name
      * is added to a bad data list which is then passed to the error message to tell the user what is wrong
+     *
      * @param attributes Attributes of the datapoint for attempted creation
      * @return String List of any bad data fields
      */
-    public static String[] checkFlightPoint(String[] attributes){ // type, id, alt, lat, long
+    static String[] checkFlightPoint(String[] attributes) { // type, id, alt, lat, long
         String[] badData = new String[5];
-
         String type = attributes[0];
         String localeID = attributes[1];
         String alt = attributes[2];
         String lat = attributes[3];
         String lng = attributes[4];
-
-        if(!(isValidLocaleID(type) && !type.equals(""))) {
+        if (!(isValidLocaleID(type) && !type.equals(""))) {
             badData[0] = "Type";
         }
-        if(!(isValidType(localeID) && !localeID.equals(""))) {
+        if (!(isValidType(localeID) && !localeID.equals(""))) {
             badData[1] = "LocaleID";
         }
-        if(!(isValidAlt(alt) && !alt.equals(""))) {
+        if (!(isValidAlt(alt) && !alt.equals(""))) {
             badData[2] = "Altitude";
         }
-        if(!(isValidLat(lat) && !lat.equals(""))) {
+        if (!(isValidLat(lat) && !lat.equals(""))) {
             badData[3] = "Latitude";
         }
-        if(!(isValidLong(lng) && !lng.equals(""))) {
+        if (!(isValidLong(lng) && !lng.equals(""))) {
             badData[4] = "Longitude";
         }
-
         return badData;
-
-
-
     }
 
     /**
      * A helper function for checking if all characters ar upper case
+     *
      * @param s The string to check
      * @return A Boolean indicating if it is in fact all upper case
      */
     private static boolean isAllUpper(String s) {
-        for(char c : s.toCharArray()) {
-            if(Character.isLetter(c) && Character.isLowerCase(c)) {
+        for (char c : s.toCharArray()) {
+            if (Character.isLetter(c) && Character.isLowerCase(c)) {
                 return false;
             }
         }
         return true;
     }
 
-    //IDK if this is the correct place for this function
     /**
      * A method to check if a table has the correct columns
-     * @param table the table to check
+     *
+     * @param table   the table to check
      * @param columns the columns to checkare in the table
      * @return A boolean describing if the has
      */
-    public static boolean tableColumnchecker(String table, String[] columns){
+    static boolean tableColumnchecker(String table, String[] columns) {
         boolean correct = true;
-        for(String column : columns){
-            if(DatabaseInterface.checkDBForColumn(table, column) == false){
+        for (String column : columns) {
+            if (!DatabaseInterface.checkDBForColumn(table, column)) {
                 correct = false;
             }
         }
@@ -388,9 +339,10 @@ public class Validator {
 
     /**
      * Formats and displays the error message upon given errors for AirportPoints when a user tries to create a point
+     *
      * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
      */
-    public static void displayAirportError(String[] checkData) {
+    static void displayAirportError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {
             if (error != null) {
@@ -412,15 +364,15 @@ public class Validator {
                 "Longitude:\t-180.0 < Longitude < +180.0\n" +
                 "Altitude:\t\tDecimal > 0\n" +
                 "Time Zone:\tAny word");
-
         alert.showAndWait();
     }
 
     /**
      * Formats and displays the error message upon given errors for AirlinePoints when a user tries to create a point
+     *
      * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
      */
-    public static void displayAirlineError(String[] checkData) {
+    static void displayAirlineError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {
             if (error != null) {
@@ -439,16 +391,15 @@ public class Validator {
                 "ICAO:\t\t3 Letters, UpperCase\n" +
                 "Callsign:\t\tAny word\n" +
                 "Country:\t\tAny word");
-
         alert.showAndWait();
-
     }
 
     /**
      * Formats and displays the error message upon given errors for RoutePoints when a user tries to create a point
+     *
      * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
      */
-    public static void displayRouteError(String[] checkData) {
+    static void displayRouteError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {
             if (error != null) {
@@ -468,14 +419,14 @@ public class Validator {
                 "Equipment:\t\tAny Alphanumeric Sequence");
 
         alert.showAndWait();
-
     }
 
     /**
      * Formats and displays the error message upon given errors for FlightPoints when a user tries to create a point
+     *
      * @param checkData The array of attributes of a dataPoint attempted to be created which has errors.
      */
-    public static void displayFlightPointError(String[] checkData) {
+    static void displayFlightPointError(String[] checkData) {
         String errorMessage = "Errors with: ";
         for (String error : checkData) {
             if (error != null) {
@@ -495,7 +446,6 @@ public class Validator {
                 "Longitude:\t\t-180.0 < Longitude < +180.0");
 
         alert.showAndWait();
-
     }
 
 }

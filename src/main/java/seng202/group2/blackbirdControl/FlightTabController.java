@@ -133,7 +133,7 @@ public class FlightTabController {
     /**
      * Updates all flight filter dropdowns with current data
      */
-    private void updateFlightFields() {
+    public void updateFlightFields() {
         flightSrcICAOList = populateFlightSrcList();
         flightSrcICAOMenu.setItems(flightSrcICAOList);
         flightSrcICAOMenu.setValue(flightSrcICAOList.get(0));
@@ -197,13 +197,17 @@ public class FlightTabController {
             Stage creatorStage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightCreatorPopUp.fxml"));
             Parent root = loader.load();
-
             FlightCreatorPopUpController popUpController = loader.getController();
             popUpController.setFlightTabController(instance);
             popUpController.setCreatorStage(creatorStage);
             popUpController.setRoot(root);
             popUpController.control();
-            mainController.mainMenuHelper();
+
+            creatorStage.setOnHidden(e -> {
+                if (popUpController.isAdded()) {
+                    mainController.mainMenuHelper();
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -249,7 +253,7 @@ public class FlightTabController {
                 displayRoute(myRoute);
 
                 flightPointTable.getItems().setAll(pressedFlight.getFlightPoints());
-                flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localType"));
+                flightPointTypeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localeType"));
                 flightPointLocaleCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("localeID"));
                 flightPointAltitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, Float>("altitude"));
                 flightPointLatitudeCol.setCellValueFactory(new PropertyValueFactory<DataPoint, String>("latitude"));
@@ -311,6 +315,7 @@ public class FlightTabController {
             DatabaseInterface.editDataEntry(flightSql);
             DatabaseInterface.editDataEntry(flightPointSql);
             flightFilterButtonPressed();
+            updateFlightFields();
             mainController.mainMenuHelper();
         }
     }
@@ -363,5 +368,7 @@ public class FlightTabController {
         ArrayList<DataPoint> allPoints;
         allPoints = Filter.getAllPoints(DataTypes.FLIGHT);
         updateFlightsTable(allPoints);
+        updateFlightFields();
+        flightSearchQuery.clear();
     }
 }

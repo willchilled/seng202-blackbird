@@ -124,7 +124,7 @@ public class DatabaseInterface {
             preparedStatement = currentConnection.prepareStatement(sql);
             preparedStatement.setInt(1, flightPointCount);
             preparedStatement.setString(2, flightPoint.getLocaleID());
-            preparedStatement.setString(3, flightPoint.getLocalType());
+            preparedStatement.setString(3, flightPoint.getLocaleType());
             preparedStatement.setFloat(4, flightPoint.getAltitude());
             preparedStatement.setFloat(5, flightPoint.getLatitude());
             preparedStatement.setFloat(6, flightPoint.getLongitude());

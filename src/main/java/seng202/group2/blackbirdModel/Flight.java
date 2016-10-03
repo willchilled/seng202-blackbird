@@ -26,7 +26,7 @@ public class Flight extends DataPoint {
         this.flightPoints = flightPoints;
         FlightPoint source = (FlightPoint) flightPoints.get(0);
         FlightPoint dest = (FlightPoint) flightPoints.get(flightPoints.size() - 1);
-        if (!source.getLocalType().equals("APT") || !dest.getLocalType().equals("APT")) {   //flight begins and ends at invalid locations
+        if (!source.getLocaleType().equals("APT") || !dest.getLocaleType().equals("APT")) {   //flight begins and ends at invalid locations
             this.correctEntry = 1;
         }
         this.srcAirport = source.getLocaleID();
